@@ -1,0 +1,98 @@
+setenv LC_CTYPE en_US.UTF-8
+defutf8 on
+utf8 on
+
+# Control K (Default is Control-A)
+escape ^Kk
+
+activity "%"
+# Make activity messages yellow on black
+sorendition =s Yk
+#shelltitle 'zsh'
+msgwait 2
+autodetach            on
+defmonitor            on
+crlf                  off
+deflogin              on
+hardcopy_append       on
+multiuser             off
+
+startup_message       off
+vbell                 off
+
+defscrollback         10000
+silencewait           15
+
+bufferfile            $HOME/.screen_exchange
+# Keep dead windows till I kill them with a 9 iron.
+#zombie cr
+
+# If a window goes unresponsive, don't block the whole session waiting for it.
+nonblock on
+
+# Emulate a logout msg
+pow_detach_msg "Screen session of \$LOGNAME \$:cr:\$:nl:ended."
+
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+termcapinfo xterm*|rxvt* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
+termcapinfo xterm*|rxvt* ti@:te=\E[3J
+termcapinfo xterm*|rxvt* hs@:cs=\E[%i%d;%dr:im=\E[4h:ei=\E[4l
+termcapinfo xterm*|rxvt* hs@:cs=\E[%i%p1%d;%p2%dr:im=\E[4h:ei=\E[4l
+# terminfo and termcap for nice 256 color terminal
+# # allow bold colors - necessary for some reason
+attrcolor b ".I"
+
+# Evil evil keybindings. Do Not Want!
+bind ^\
+bind \\
+bind ^h
+bind h
+bind ^Q
+bind q
+bind ^S
+bind s
+
+# for launching some of the stuff i use most
+bind m screen -t 'mail' mutt
+bind v screen -t 'vim' vim
+bind i screen -t 'irssi' irssi
+bind z screen -t 'zsh' zsh
+bind t screen -t 'htop' htop
+bind g screen -t 'gila' ssh gila
+bind h screen -t 'miker' ssh miker
+bind w screen -t 'web' ssh web
+bind y screen -t 'ncmpc' ncmpc -c
+bind s screen -t 'root' sudo -s
+
+# binding the F1 - F8 keys to the first 8 screens, F11 = previous | F12 = next
+bindkey -k k1 select 0
+bindkey -k k2 select 1
+bindkey -k k3 select 2
+bindkey -k k4 select 3
+bindkey -k k5 select 4
+bindkey -k k6 select 5
+bindkey -k k7 select 6
+bindkey -k k8 select 7
+bindkey -k F2 next
+bindkey -k F1 prev
+
+# Launch some default programs
+screen zsh
+#screen zsh
+#screen sudo -s
+#screen ssh gila
+#screen mutt
+
+shell   zsh
+
+hardstatus on
+hardstatus alwayslastline "%{=b kW}[ %{= Y}$USER @ %H %{b W}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{b W}][%{= Y} %m/%d/%y %{Y}%C %{b W}]"
+
+# Double-check to force the focus to irssi after boot
+#focus
+#select 0
+
+# erase background with current bg color
+defbce "on"
+
+defflow "off"

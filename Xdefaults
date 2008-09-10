@@ -1,0 +1,145 @@
+! Color Codes
+! black
+XTerm*color0:             #242424
+XTerm*color8:             #828282
+! red
+XTerm*color1:             #BF7979
+XTerm*color9:             #F4A45F
+! green
+XTerm*color2:             #97B26B
+XTerm*color10:            #C5F779
+! yellow
+XTerm*color3:             #cdcda1
+XTerm*color11:            #ffffaf
+! blue
+XTerm*color4:             #285A8B
+XTerm*color12:            #98afd9
+! magenta
+XTerm*color5:             #d9b798
+XTerm*color13:            #d7d998
+! cyan
+XTerm*color6:             #a1b5cd
+XTerm*color14:            #a1b5cd
+! white
+XTerm*color7:             #ffffff
+XTerm*color15:            #dedede
+
+!XTerm settings
+XTerm*cursorBlink: false 
+XTerm*cursorColor: #73B8D9 
+XTerm*colorMode: 	true
+XTerm*pointerColor:	blue
+XTerm*pointerColor2: 	yellow
+XTerm*borderWidth:	0
+XTerm*transparent:	true
+XTerm*scrollBar:	false
+XTerm*foreground: #ffffff
+XTerm*background: #000000
+XTerm*loginShell: true 
+XTerm*eightBitInput: false
+XTerm*hideScrollbar: true
+XTerm*hideTabbar: true
+XTerm*hideButton: true
+XTerm*hideMenubar: true
+XTerm*.multiScroll: true
+XTerm*.showBlinkAsBold: true
+XTerm*.utf8: 1
+XTerm*.visualBell: true
+!XTerm*faceName: andale mono
+!XTerm*faceName: terminus:size=13
+XTerm*faceName: droid sans mono:size=12
+XTerm*shadowColor: #222222
+XTerm*saveLines: 10000
+XTerm*on4Clicks: all
+!XTerm*termName: xterm-color
+XTerm*colorBDMode: true
+XTerm*on2Clicks:  regex [^ \n]+
+XTerm*on3Clicks: regex (ftp|http|https|mailto|news|nntp|telnet|file|aim):[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;/?:@&~=%-]*))?
+XTerm*on5Clicks:  line
+XTerm*cutNewline: true
+XTerm*metaSendsEscape: true
+XTerm*locale: utf8
+XTerm*jumpScroll: true
+XTerm*multiScroll: true
+XTerm*scrollTtyOutput: false
+XTerm*scrollKey: true
+
+!aterm Settings
+aterm*cursorColor: #73B8D9 
+aterm*colorMode: 	true
+aterm*pointerColor:	blue
+aterm*pointerColor2: 	yellow
+aterm*borderWidth: 0	
+aterm*transparent:	true
+aterm*fading:		80	
+aterm*scrollBar:	false
+aterm*saveLines: 	45999	
+aterm*foreground: white
+aterm*background: black
+aterm*loginShell:true
+aterm*hideScrollbar: true
+aterm*hideTabbar: true
+aterm*hideButton: true
+aterm*hideMenubar: true
+aterm*backgroundFade: 50 
+aterm*shading: 35 
+aterm*font: 9x15bold 
+!aterm*font:  -*-andale mono-*-*-*-*-*-*-*-*-*-*-*-*
+aterm*geometry: 80x25 
+
+urxvt*cursorColor: blue 
+urxvt*tintColor: white
+urxvt*background: black
+urxvt*foreground: white
+urxvt*geometry: 80x25
+urxvt*shading: 35 
+urxvt*fading: 10
+urxvt*loginShell: true 
+urxvt*scrollBar: false
+urxvt*meta8: false 
+urxvt*mouseWheelScrollPage: true
+urxvt*inheritPixmap: true 
+urxvt*font: xft:andale mono:pixelsize=16 
+urxvt*scrollTtyOutput: false
+urxvt*scrollTtyKeypress: true
+urxvt*scrollWithBuffer: flase
+urxvt*scrollKey: true
+
+!Cursors - Choose one
+!Xcursor.theme: Blue
+!Xcursor.theme: Grounation
+!Xcursor.theme: gentoo-silver
+!Xcursor.theme: gentoo-blue
+!Xcursor.theme: gentoo
+!Xcursor.theme: handhelds
+!Xcursor.theme: neutral 
+!Xcursor.theme: redglass
+!Xcursor.theme: Silver
+!Xcursor.theme: lil-polar
+!Xcursor.theme: whiteglass
+Xcursor.theme: PolarCursorTheme
+!Xcursor.theme: PolarCursorTheme-Blue
+!Xcursor.theme: Polar
+!Xcursor.theme: PolarCursorTheme-Green
+
+
+
+
+Xcursor.size: 18 
+
+!Xft settings
+Xft.dpi:                 120
+Xft.hinting:            1 
+Xft.hintstyle:          hintfull
+Xft.antialias:          1 
+Xft.rgba:               rgb
+
+!Xautolock
+Xautolock.time: 45 
+Xautolock.locker: xlock
+
+!Xlock
+xlock.mode: blank
+
+*VT100.Translations: #override  \
+	Alt<Key>;:       dabbrev-expand()

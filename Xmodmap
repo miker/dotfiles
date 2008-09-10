@@ -1,0 +1,7 @@
+keycode 129 = XF86AudioPause
+keycode 231 = XF86AudioPlay
+keycode 198 = XF86AudioPrev
+keycode 236 = XF86AudioNext
+keycode 176 = XF86AudioRaiseVolume
+keycode 174 = XF86AudioLowerVolume
+keycode 160 = XF86AudioMute

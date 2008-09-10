@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openbox_menu xmlns="http://openbox.org/4.0/menu">
+
+<menu id="internet-menu" label="Internet">
+  <item label="firefox">
+    <action name="Execute"><execute>nice -n15 firefox</execute></action>
+  </item>
+  <item label="gajim">
+    <action name="Execute"><execute>gajim</execute></action>
+  </item>
+  <item label="pidgin">
+    <action name="Execute"><execute>pidgin</execute></action>
+  </item>
+  <item label="Liferea">
+    <action name="Execute"><execute>nice -n19 liferea</execute></action>
+  </item>
+  <item label="deluge">
+    <action name="Execute"><execute>deluge</execute></action>
+  </item>
+  <item label="mutt">
+    <action name="Execute"><execute>xterm -e mutt</execute></action>
+  </item>
+  <item label="xchat">
+    <action name="Execute"><execute>xchat</execute></action>
+  </item>
+</menu>
+
+<menu id="multimedia-menu" label="Multimedia">
+  <item label="gthumb">
+    <action name="Execute"><execute>gthumb</execute></action>
+  </item>
+  <item label="cowbell">
+    <action name="Execute"><execute>cowbell</execute></action>
+  </item>
+  <item label="gmpc">
+    <action name="Execute"><execute>gmpc</execute></action>
+  </item>
+  <item label="devede">
+    <action name="Execute"><execute>devede</execute></action>
+  </item>
+  <item label="k3b">
+    <action name="Execute"><execute>k3b</execute></action>
+  </item>
+  <item label="gimp">
+    <action name="Execute"><execute>gimp</execute></action>
+  </item>
+  <item label="gcolor2">
+    <action name="Execute"><execute>gcolor2</execute></action>
+  </item>
+</menu>
+
+<menu id="games-menu" label="Games">
+  <item label="urbanterror">
+    <action name="Execute"><execute>/usr/games/bin/urbanterror</execute></action>
+  </item>
+  <item label="nexuiz">
+    <action name="Execute"><execute>/usr/games/bin/nexuiz</execute></action>
+  </item>
+    <item label="warsow">
+    <action name="Execute"><execute>/usr/games/bin/warsow</execute></action>
+  </item>
+    <item label="alienarena">
+    <action name="Execute"><execute>/usr/games/bin/alienarena</execute></action>
+  </item>
+  <item label="savage">
+    <action name="Execute"><execute>~/bin/savage</execute></action>
+  </item>
+  <item label="xmoto">
+    <action name="Execute"><execute>/usr/games/bin/xmoto</execute></action>
+  </item>
+</menu>
+
+<menu id="sysutils-menu" label="Tools">
+  <item label="VirtualBox">
+    <action name="Execute"><execute>VirtualBox</execute></action>
+  </item>
+    <item label="htop">
+      <action name="Execute"><execute>xterm -e htop</execute></action>
+    </item>
+  <item label="nitrogen">
+    <action name="Execute"><execute>nitrogen /home/gregf/.wallpaper</execute></action>
+  </item>
+  <item label="mysql">
+    <action name="Execute"><execute>xterm -e mysql -h gecko.lizardhost.co.uk -u root -p</execute></action>
+  </item>
+  <item label="alsamixer">
+    <action name="Execute"><execute>xterm -e alsamixer</execute></action>
+  </item>
+  <item label="pcmanfm">
+    <action name="Execute"><execute>pcmanfm</execute></action>
+  </item>
+</menu>
+
+<menu id="office-menu" label="Office">
+  <item label="stuffkeeper">
+    <action name="Execute"><execute>stuffkeeper</execute></action>
+  </item>
+  <item label="abiword">
+    <action name="Execute"><execute>abiword</execute></action>
+  </item>
+  <item label="gvim">
+    <action name="Execute"><execute>gvim</execute></action>
+  </item>
+  <item label="gnumeric">
+    <action name="Execute"><execute>gnumeric</execute></action>
+  </item>
+</menu>
+<menu id="openbox-menu" label="openbox">
+  <item label="Reconfigure">
+    <action name="Reconfigure" />
+  </item>
+  <separator />
+  <item label="Exit">
+    <action name="Exit" />
+  </item>
+</menu>
+
+<menu id="root-menu" label="Openbox 3">
+  <item label="xterm">
+    <action name="Execute"><execute>xterm</execute></action>
+  </item>
+  <item label="gmrun">
+    <action name="Execute"><execute>gmrun</execute></action>
+  </item>
+  <separator />
+  <menu id="internet-menu" />
+  <menu id="multimedia-menu" />
+  <menu id="games-menu" />
+  <menu id="sysutils-menu" />
+  <menu id="office-menu" />
+  <menu id="openbox-menu" />
+</menu>
+
+</openbox_menu>
