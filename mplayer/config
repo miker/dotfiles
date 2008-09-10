@@ -1,0 +1,31 @@
+[default]
+fs="yes"
+vo="xv"
+#ao="alsa"
+#channels=2
+#lang=en
+monitoraspect = "16:9"
+#af=volnorm
+#vf=denoise3d,pp
+#framedrop=1
+#hardframedrop=0
+#double="yes"
+#srate="48000"
+#mixer-channel="Master"
+#ffactor="10"
+#sub-bg-alpha="0"
+#sub-bg-color="0"
+#subfont-text-scale="3.7"
+#subfont-blur="1"
+#autoq=100
+#vf=pp=de,hqdn3d
+#ontop="1"
+#stop-xscreensaver="yes"
+#heartbeat-cmd="/usr/bin/xscreensaver-command -deactivate > /dev/null"
+#a52drc=1
+#mc=0.2
+#autosync=30
+
+#[xvmc]
+#vo=xvmc
+#vc=ffmpeg12mc

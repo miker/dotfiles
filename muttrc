@@ -1,0 +1,191 @@
+###############################################################################
+# Mutt settings file for Greg Fitzgerald <netzdamon@gmail.com>
+#
+# Most recent update: Sun 25 May 2008 02:54:39 PM EDT
+#
+###############################################################################
+###############################################################################
+# I do not include this for the sake it has some passwords.
+# Basic idea though.
+###############################################################################
+#set imap_user = 'you@gmail.com'
+#set imap_pass = 'password'
+#set spoolfile = imaps://imap.gmail.com:993/INBOX
+#set folder = imaps://imap.gmail.com:993
+#set record="imaps://imap.gmail.com/[Gmail]/Sent Mail"
+#set postponed="imaps://imap.gmail.com/[Gmail]/Drafts"
+#set mbox="imaps://imap.gmail.com[Gmail]/All Mail"
+#set smtp_url="smtps://you:password@smtp.gmail.com"
+source ~/.mutt/imap.rc
+
+# Setup some colors
+source ~/.mutt/colors.rc
+# Setup gnupg bindings
+source ~/.mutt/mutt.gpg
+# Mailboxes
+source ~/.mutt/mailboxes
+
+#My email address, and some alternatives I use.
+set realname="Greg Fitzgerald"
+set from="Greg Fitzgerald <netzdamon@gmail.com>"
+alternates (gregf@gregf.org|netzdamon@gmail.com|greg.fitzgerald@gmail.com|gregf@lizardhost.co.uk|gregf@feoc-uk.com|fgreg@ibiblio.org)
+
+# Prefer plaintext over html
+auto_view text/html
+alternative_order text/plain text/html
+
+folder-hook   "."   push "<collapse-all>"
+
+
+#Set some paths
+set signature=~/.mutt/signature
+set header_cache="~/.tmp/mutt/hcache"
+set message_cachedir="~/.tmp/mutt/msgcache/"
+set certificate_file="~/.tmp/mutt/certs"
+set mailcap_path="~/.mailcap"
+set tmpdir=$HOME/.tmp/mutt
+
+
+#Set some basic settings
+set imap_check_subscribed=no
+set imap_peek=yes
+set imap_servernoise=yes
+set delete=yes
+set sleep_time = 0
+set ascii_chars=yes
+set thorough_search
+set auto_tag=yes
+set sig_dashes
+set implicit_autoview
+set autoedit=yes
+set reply_to=yes
+set confirmappend=no
+set edit_headers=no
+set envelope_from=yes
+set fast_reply=yes
+set nouse_domain
+set metoo
+set include=yes
+set copy=yes
+set imap_keepalive = 5
+set timeout = 600 # or 600
+set wrap_search=yes
+set use_idn=yes
+set mail_check = 5
+set check_new
+set mark_old=no
+set markers=no
+set menu_context=5
+set menu_move_off=yes
+set menu_scroll
+set metoo=no
+set pager_context=10
+set pager_index_lines=10
+set pager_stop=no
+set postpone=yes
+set quote_regexp="^([ \t]*[|>:])+"
+set read_inc=50
+set recall=no
+set resolve=no
+set smart_wrap
+set wrapmargin
+set sort=threads
+set check_mbox_size=yes
+set sort_aux=date
+unset strict_threads
+set sort_browser=reverse-date
+set sort_alias=alias
+set suspend=no
+set tilde=yes
+set use_from=yes
+set user_agent=yes
+unset wait_key
+unset beep
+unset beep_new
+unset askbcc
+unset askcc
+unset collapse_unread
+set quit=ask-yes
+set write_bcc=no
+set move=no
+set editor="vim +/^$ ++1 +':setf mail' +':set spell spelllang=en' +'set tw=72'"
+set query_command="abook --mutt-query '%s'"
+set mask = '!(^\.)|(\.log$)|(\.lst$)|(\.cache$)' # Ignore these file types when browsing folders
+# I want attachments to stay with the email If I forward one
+set mime_forward=yes
+set mime_forward_rest=yes
+# My system is using utf8
+set send_charset="us-ascii:utf-8"
+set charset=utf-8
+set followup_to
+set honor_followup_to=yes
+
+# Some index formats
+#set status_format=" %r %b %f %n      Del %d      Msgs %m %l %> (%P)"
+#set pager_format="%-10.10i %[!%a %b %d %R]"
+set date_format="%I:%M%P %m/%d/%y  "
+set index_format="%d %-15.15L [%Z] %s"
+#set folder_format="%2C %t %8s %d %N %f"
+
+# Ignore all headers by default
+# Unigore ones I care to see
+ignore *
+unignore from: date subject to cc reply-to bcc
+unignore organization x-mailer: x-newsreader: user-agent:
+hdr_order From Date: From: To: Cc: Subject:
+
+# Set some keybindings
+bind  pager /   search
+bind  pager L   list-reply
+bind  pager b   bounce-message
+bind  pager f   forward-message
+bind  pager m   mail
+bind  pager g   group-reply
+bind  pager j   next-line
+bind  pager k   previous-line
+bind  pager :   enter-command
+
+bind  index x   sync-mailbox
+bind  index a   tag-prefix
+bind  index \;  tag-entry
+bind browser <return> view-file
+
+bind  pager  p previous-undeleted
+bind  pager  n next-undeleted
+bind  pager  \n next-unread
+bind compose \n send-message
+bind compose s send-message
+
+bind  pager   <up>     previous-line
+bind  pager   <down>   next-line
+bind  pager   <left>   exit
+bind  pager   <right>  view-attachments
+bind  attach  <left>   exit
+bind  attach  <right>  view-attach
+bind  index   <right>  display-message
+macro index   <left> "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
+bind  browser <right>  select-entry
+bind  browser <left>   exit
+
+macro attach W <save-entry><kill-line>/home/gregf/downloads/attachments/
+macro attach E <save-entry><kill-line>/home/gregf/downloads/attachments/<enter>
+
+macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
+macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
+
+macro index,pager a "<pipe-message>abook --add-email-quiet<return>"
+
+# Settings for sidebar patch
+# http://www.lunar-linux.org/index.php?option=com_content&task=view&id=44
+set sidebar_width=25
+set sidebar_visible=yes
+
+bind index p sidebar-prev
+bind index n sidebar-next
+bind index o sidebar-open
+bind pager p sidebar-prev
+bind pager n sidebar-next
+bind pager o sidebar-open
+
+# View Special Formats
+auto_view text/html
