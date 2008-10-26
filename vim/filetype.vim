@@ -1730,6 +1730,15 @@ runtime! ftdetect/*.vim
 
 augroup END
 
+" markdown filetype file
+if exists("did\_load\_filetypes")
+ finish
+endif
+
+augroup markdown
+ au! BufRead,BufNewFile *.mkd   setfiletype mkd
+augroup END
+
 
 " If the GUI is already running, may still need to install the Syntax menu.
 " Don't do it when the 'M' flag is included in 'guioptions'.

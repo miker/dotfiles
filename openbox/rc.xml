@@ -339,15 +339,6 @@
         <command>gmpc</command>
       </action>
     </keybind>
-    <keybind key="A-j">
-      <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>~/dmenu.sh</name>
-        </startupnotify>
-        <command>~/dmenu.sh</command>
-      </action>
-    </keybind>
     <keybind key="A-p">
       <action name="Execute">
         <startupnotify>
@@ -393,6 +384,15 @@
         <command>/home/gregf/code/bin/google/google.sh</command>
       </action>
     </keybind>
+    <keybind key="A-j">
+      <action name="Execute">
+        <startupnotify>
+          <enabled>true</enabled>
+          <name>xterm</name>
+        </startupnotify>
+        <command>/home/gregf/code/bin/gentoobugs/gentoobugs.rb</command>
+      </action>
+    </keybind>
     <keybind key="A-o">
       <action name="Execute">
         <startupnotify>
@@ -415,9 +415,9 @@
       <action name="Execute">
         <startupnotify>
           <enabled>true</enabled>
-          <name>pcmanfm</name>
+          <name>thunar</name>
         </startupnotify>
-        <command>pcmanfm</command>
+        <command>thunar</command>
       </action>
     </keybind>
     <keybind key="XF86AudioPlay">

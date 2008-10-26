@@ -25,9 +25,11 @@
     pl = pull
     lo = log --date=local --pretty=full --stat
     me = log --date=local --pretty=short --author=netzdamon@gmail.com --stat
-    ps = push origin master:refs/heads/master
+    gp = push origin master:refs/heads/master
     gc = clean -f
     md = clone git:mideo.git mideo
+    code = clone git@github.com:gregf/scripts.git bin
+    doc = clone git:doc.git doc
     gr = reset
 
 [apply]
@@ -39,3 +41,6 @@
     filemode = true
     bare = false
     logallrefupdates = true
+[diff]
+    external = /usr/bin/vimdiff
+    renames = true
