@@ -7,9 +7,9 @@
 
 nitrogen --restore &
 
-ssh -f -n -N gila &
-ssh -f -n -N web &
-ssh -f -n -N miker &
+#ssh -f -n -N gila &
+#ssh -f -n -N web &
+#ssh -f -n -N miker &
 
 dbus-launch --exit-with-session  &
 #xscreensaver -no-splash &

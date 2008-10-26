@@ -1,7 +1,7 @@
 ###############################################################################
 # Zsh settings file for Greg Fitzgerald <netzdamon@gmail.com>
 #
-# Most recent update: Tue 09 Sep 2008 01:00:31 PM EDT
+# Most recent update: Wed Oct  8 15:24:37 2008
 ###############################################################################
 # TODO
 # . ~/.zsh/config
@@ -50,7 +50,7 @@ trap clear 0
 case `uname` in
 	OpenBSD)
         # Enviroment Varibles
-        export PKG_PATH=ftp://ftp.openbsd.org/pub/4.3/packages/`machine -a`/
+        export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/4.3/packages/`machine -a`/
 
 	    # which version of ls should we use?
 	    if [ -x /usr/local/bin/gls ]; then
@@ -63,10 +63,10 @@ case `uname` in
 		    fi
 	    fi
 	    # Aliases
-alias cvsup="cd /usr; cvs -d anoncvs@anoncvs1.usa.openbsd.org:/cvs checkout -P -rOPENBSD_4_3 src"
+        alias cvsup="cd /usr; cvs -d anoncvs@anoncvs1.usa.openbsd.org:/cvs checkout -P -rOPENBSD_4_3 src"
 	    alias cvsrun="sudo cvsup -g -L 2 /etc/cvs-supfile"
-alias killall="pkill"
-    alias shred="rm -P"
+        alias killall="pkill"
+        alias shred="rm -P"
 	;;
 	FreeBSD)
         #SSH_ASKPASS="/usr/local/bin/ssh-askpass-gtk2"
@@ -74,8 +74,11 @@ alias killall="pkill"
         CLICOLOR=$LSCOLORS
 
         alias ls='ls -GF'
-    alias portu="sudo csup -L 2 /etc/ports-cvsup"
-alias srcu="sudo csup -L 2 /etc/src-cvsup"
+        alias portu="sudo csup -L 2 /etc/ports-cvsup"
+        alias srcu="sudo csup -L 2 /etc/src-cvsup"
+        export LANG="en_US.UTF-8"
+        export LC_CTYPE="en_US.UTF-8"
+        export LC_ALL="en_US.UTF-8"
    ;;
 	Linux)
 	    #export SSH_ASKPASS="/usr/bin/gtk2-ssh-askpass"
@@ -151,7 +154,6 @@ fi
 ## (( ${+*} )) = if variable is set don't try to set it again
 #(( ${+GREP_OPTIONS} )) || export GREP_OPTIONS="--color=auto -nsi"
 (( ${+TZ} )) || export TZ="EST5EDT"
-(( ${+LANG} )) || export LANG="en_US"
 (( ${+MPD_HOST} )) || export MPD_HOST="127.0.0.1"
 (( ${+MPD_PORT} )) || export MPD_PORT="6600"
 (( ${+GIT_AUTHOR_EMAIL} )) || export GIT_AUTHOR_EMAIL="netzdamon@gmail.com"
@@ -163,6 +165,7 @@ export MANPAGER="most"
 export PAGER="most"
 export EDITOR="vim"
 export VISUAL="vim"
+export NNTPSERVER="news.gwi.net"
 
 ################################################################################
 # Resource Limits
@@ -219,8 +222,8 @@ alias cpan="perl -MCPAN -e shell"
 alias cup='cvs -z3 update -Pd'
 alias mv='nocorrect /bin/mv'
 alias rm='nocorrect /bin/rm -i'
-alias shred='nocorrect ionice -c3 /usr/bin/shred -fuz'
-alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l2 -v -x -r'
+alias shred='nocorrect ionice -c3 /usr/bin/shred -fuzv'
+alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l1 -v -x -r'
 alias man='nocorrect man'
 alias mkdir='nocorrect /bin/mkdir -p'
 alias find='noglob find'
@@ -235,7 +238,7 @@ alias ml="nice -n1 mplayer -loop 0 -af volnorm -stop-xscreensaver"
 alias e="gvim"
 alias v="vim"
 alias t="thunar"
-alias p="nice -n 19 paludis"
+#alias p="nice -n 19 paludis"
 alias repo='cd /var/paludis/repositories'
 alias scm='cd /home/gregf/code/scm/'
 alias sc='script/console'
@@ -253,6 +256,7 @@ alias migrate='rake db:migrate db:test:clone'
 alias gi='sudo gem install --no-ri --include-dependencies'
 alias giti="vim .gitignore"
 alias gs='gem search -b'
+alias g='gthumb'
 alias vmware='VMWARE_USE_SHIPPED_GTK=yes /opt/vmware/workstation/bin/vmware'
 alias burniso='wodim -v dev=/dev/cdrw'
 alias burndvdiso='growisofs -speed=8 -dvd-compat -Z /dev/dvdrw=$1'
@@ -266,7 +270,6 @@ alias la="ls -a"
 alias l="ls"
 alias f-spot='dbus-launch f-spot'
 alias d="devtodo -A"
-alias gp="git push origin master:refs/heads/master"
 alias zkbd="zsh /usr/share/zsh/4.3.4/functions/Misc/zkbd"
 alias gnp="git-notpushed"
 alias s="sudo"
@@ -277,10 +280,10 @@ alias reboot='sudo reboot'
 alias oa='openarena'
 alias savage="~/code/bin/savage/savage.sh"
 alias wcyy="mplayer http://68.142.81.164:80/citadelcc_WCYY_FM\?MSWMExt\=.asf"
+alias wkit="mplayer http://64.92.199.73/WKIT-FM"
 alias dropcache='sudo echo 3 > /proc/sys/vm/drop_caches'
 alias deploy='cap deploy:migrations'
 alias lock='alock -auth pam -bg blank:color=black'
-alias paludis='nice -n 19 paludis'
 alias lsnoext="ls | grep -v '\.'"
 alias cleanliferea="sqlite3 ~/.liferea_1.4/liferea.db vacuum"
 alias urb='urbanterror +connect 208.43.15.167:27960'
@@ -288,8 +291,10 @@ alias starcraft=' wine ~/.wine/drive_c/Program\ Files/Starcraft/StarCraft.exe'
 alias ipager='k ipager; sleep 1; ipager &'
 alias devilspie='k devilspie; sleep 1; devilspie &'
 alias gis="git status | grep --color=always '^[^a-z]\+\(new file:\|modified:\)' | cut -d'#' -f2-"
-alias latestkernel='finger @finger.kernel.org'
+alias latestkernel='lynx -dump http://kernel.org/kdist/finger_banner'
 alias update-eix='ionice -c3 update-eix'
+alias dosbox='dosbox -conf ~/.dosbox.conf -fulscreen'
+alias ports='netstat --inet -pln'
 ################################################################################
 # Functions and Completion
 ################################################################################
@@ -309,11 +314,11 @@ compctl -f -x 'S[1][2][3][4][5][6][7][8][9]' -k '(1 2 3 4 5 6 7 8 9)' \
   - 'p[1,-1]' -c + -K 'match-man' \
   -- man
 
-#if [ -f ~/.ssh/known_hosts ]; then
-    #local _myhosts
-    #_myhosts=( ${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*} )
-    #zstyle ':completion:*' hosts $_myhosts
-#fi
+if [ -f ~/.ssh/known_hosts ]; then
+    local _myhosts
+    _myhosts=( ${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*} )
+    zstyle ':completion:*' hosts $_myhosts
+fi
 
 ################################################################################
 # Custom Functions
@@ -373,7 +378,7 @@ function calc() { echo "$*" | bc; }
 function date {
     if [ $# = 0 ]; then
         # format: saturday, december 21, 2002 06:46:38 pm est
-        command date +"%a, %b %e %y %i:%m:%s %p %z"
+        command date +"%a, %b %e %Y %I:%M:%S%P %Z"
     else
         # execute real `date'
         command date $@
@@ -421,6 +426,7 @@ function mcdrom {
             cd;umount /cdrom
             echo "-- umounted cdrom --"
             pwd
+            eject
         fi
     fi
 }
@@ -530,7 +536,7 @@ function sg {
 
 function http_headers {
     curl='whence curl'
-    curl -I -L $@ ;
+    curl -I -L $@
 }
 
 function mktar {
@@ -552,6 +558,18 @@ function remindme {
   sleep $1 && zenity --info --text "$2" &
 }
 
+function background {
+    nohup $1 &> /dev/null &    
+}
+
+function cdgem {
+    cd `gem env gemdir`/gems
+    cd `ls --color=never | grep $1 | sort | tail -1`
+}
+
+function keepempty {
+    for i in $(find . -type d -regex ``./[^.].*'' -empty); do touch $i"/.gitignore"; done;
+}
 ################################################################################
 # Get keys working
 #
@@ -578,7 +596,17 @@ case `echo $TERM` in
         source ~/.zkbd/mrxvt-pc-linux-gnu
     ;;
     screen|screen-*)
-        source ~/.zkbd/screen-bce-pc-linux-gnu
+        case `uname` in
+            OpenBSD)
+                source ~/.zkbd/screen-unknown-openbsd4.3
+            ;;
+            Linux)
+                source ~/.zkbd/screen-bce-pc-linux-gnu
+            ;;
+            FreeBSD)
+                source ~/.zkbd/screen-bce-portbld-freebsd7.0
+            ;;
+        esac
     ;;
 esac
 
@@ -704,12 +732,12 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # http://zsh.sourceforge.net/Doc/Release/zsh_15.html#SEC81
 setopt always_to_end append_history auto_continue auto_list auto_menu \
 auto_param_slash auto_remove_slash auto_resume bg_nice no_check_jobs no_hup \
-complete_in_word correct csh_junkie_history correct_all extended_glob \
+complete_in_word csh_junkie_history extended_glob \
 glob_complete hist_find_no_dups hist_ignore_all_dups hist_ignore_dups \
 hist_ignore_space hist_no_functions hist_save_no_dups list_ambiguous \
 long_list_jobs menu_complete rm_star_wait zle inc_append_history \
 share_history prompt_subst no_list_beep local_options local_traps \
-hist_verify correct extended_history hist_reduce_blanks
+hist_verify extended_history hist_reduce_blanks
 
 unset beep equals mail_warning
 
@@ -717,10 +745,10 @@ unset beep equals mail_warning
 # Setup Path
 ################################################################################
 script_path=(~/code/bin/conky ~/code/bin/clipboard)
-path=($path /usr/local/bin /usr/bin /bin /usr/X11R6/bin ${HOME}/code/bin /opt/virtualbox /usr/share/texmf/bin /usr/lib/jre1.5.0_10/bin /usr/games/bin $script_path)
+path=($path /usr/local/bin /usr/bin /bin /usr/X11R6/bin ${HOME}/code/bin /opt/virtualbox /usr/share/texmf/bin /usr/lib/jre1.5.0_10/bin /usr/games/bin /usr/libexec/git-core $script_path)
 fpath=(~/.zsh/functions $fpath)
 autoload -U ~/.zsh/functions/*(:t)
-cdpath=($cdpath ~/code)
+#cdpath=($cdpath ~/code)
 if (( EUID == 0 )); then
     rootpath=(/sbin /usr/sbin /usr/local/sbin)
     # hack to fix "Can not write to history" after leaving sudo or su

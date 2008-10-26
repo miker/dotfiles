@@ -1,7 +1,7 @@
 scriptencoding utf-8
 "-----------------------------------------------------------------------
 " Vim settings file for Greg Fitzgerald
-" Most recent update: Wed 03 Sep 2008 11:39:55 AM EDT
+" Most recent update: Fri 10 Oct 2008 05:24:41 PM EDT
 "-----------------------------------------------------------------------
 
 "-----------------------------------------------------------------------
@@ -69,9 +69,9 @@ set noeol
 " Characters to break at for line wrapping
 set breakat=\ \	!@*-+;:,.?
 " Number of lines to jump when cursor reaches bottom
-set scrolloff=5
+"set scrolloff=5
 " Same thing for horizontal
-set sidescroll=5
+"set sidescroll=5
 " Override ignorecase if search has capital letters
 set smartcase
 " No visual/audio bells
@@ -255,7 +255,7 @@ map		:wQ :wq
 map		:Q :q
 nmap <C-N> :tabn<CR>
 nmap <C-P> :tabp<CR>
-noremap <silent> <C-O> :FuzzyFinderFile<CR>
+noremap <silent> <C-O> :FuzzyFinderTextMate<CR>
 noremap <silent> <F8> :FuzzyFinderMruFile<CR>
 noremap <silent> <F9> :NERDTreeToggle<CR>
 " Spell check
@@ -304,6 +304,10 @@ if has("eval")
     fun! <SID>StripWhite()
         %s/[ \t]\+$//ge
 	    %s!^\( \+\)\t!\=StrRepeat("\t", 1 + strlen(submatch(1)) / 8)!ge
+    endfun
+
+    fun! <SID>RemoveBlankLines()
+        %s/^[\ \t]*\n//g
     endfun
 endif
 
@@ -385,10 +389,10 @@ if has("autocmd") && has("eval")
         autocmd BufEnter * :call <SID>WindowWidth()
 
         " StripWhite space on save
-        autocmd FileWritePre * :call <SID>StripWhite()
-        autocmd FileAppendPre * :call <SID>StripWhite()
-        autocmd FilterWritePre * :call <SID>StripWhite()
-        autocmd BufWritePre * :call <SID>StripWhite()
+        "autocmd FileWritePre * :call <SID>StripWhite()
+        "autocmd FileAppendPre * :call <SID>StripWhite()
+        "autocmd FilterWritePre * :call <SID>StripWhite()
+        "autocmd BufWritePre * :call <SID>StripWhite()
 
         " Update header in .vimrc and .bashrc before saving
         autocmd BufWritePre *vimrc  :call <SID>UpdateRcHeader()
@@ -411,7 +415,7 @@ if has("autocmd")
         autocmd!
 
         autocmd BufNewFile *.rb 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
-                    \ 0put ='#!/usr/bin/ruby' | set sw=2 sts=2 et tw=80 |
+                    \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
                     \ norm G
 
         autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
@@ -422,6 +426,17 @@ if has("autocmd")
                     \ 1put ='' | 2put ='' | call setline(3, '#include "' .
                     \ substitute(expand("%:t"), ".cc$", ".hh", "") . '"') |
                     \ set sw=4 sts=4 et tw=80 | norm G
+        autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
+        au! BufRead,BufNewFile *.mkd   setfiletype mkd
+
+        "ruby
+        autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+        autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+        autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+        autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+        "improve autocomplete menu color
+        highlight Pmenu ctermbg=238 gui=bold
+        au BufRead,BufNewFile *.js set ft=javascript.jquery
     augroup END
 endif
 
@@ -443,7 +458,7 @@ else
 endif
 
 if (has("gui_running"))
-    colorscheme zenburn
+    colorscheme darkspectrum 
     set guifont=Andale\ Mono\ 14
 	set mousem=popup	" Nice pop-up
 	set selection=exclusive	" Allow one char past EOL
@@ -507,3 +522,11 @@ endif
 if has("eval")
     runtime! macros/matchit.vim
 endif
+
+"ruby
+autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+"improve autocomplete menu color
+highlight Pmenu ctermbg=238 gui=bold

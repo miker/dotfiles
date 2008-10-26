@@ -1,0 +1,7 @@
+*.bak
+*.~
+*.old
+.svn
+known_hosts
+ssh/controls/*
+mutt/imap.rc
