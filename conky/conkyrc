@@ -2,18 +2,18 @@ background yes
 use_xft yes
 double_buffer yes
 draw_shades yes
-gap_x 10
-gap_y 10
+gap_x 10 
+gap_y 20
 alignment top_right
 xftfont droid sans mono:size=8
 cpu_avg_samples 2
 net_avg_samples 2
 minimum_size 330 10
 #maximum_width 330
-own_window yes
-own_window_type desktop
+#own_window yes
+#own_window_type desktop
 own_window_transparent yes
-own_window_hints undecorated,below,sticky
+#own_window_hints undecorated,below,sticky
 stippled_borders 2
 update_interval 2
 out_to_console no

@@ -1,4 +1,4 @@
-scriptencoding utf-8
+"scriptencoding utf-8
 "-----------------------------------------------------------------------
 " Vim settings file for Greg Fitzgerald
 " Most recent update: Fri 10 Oct 2008 05:24:41 PM EDT
@@ -8,126 +8,129 @@ scriptencoding utf-8
 " Settings
 "-----------------------------------------------------------------------
 
-" Turn Off word-wrapping
-set nowrap
-" Turn off backups
-set nobackup
-" Turn off swapfile
-set noswapfile
-" Soft tab 4
-set sw=4
-" Soft tab stop
-set sts=4
-" Tab stop
-set ts=4
-" Expand tabs to spaces
-set expandtab
-" Highlight search
-set hlsearch
-" Backup extension if on
-set backupext=.bak
-" Backups directory if on
-set backupdir=~/.backups/
-" Line breaks for linewrap
-set linebreak
-" Backspace over everything
-set bs=2
-" Case-insensitive search
-set ignorecase
-" Auto indent
-set autoindent
-" No startup messages
-set shm+=Im
-" Smart identing
-set smartindent
-" Show matching brackets
-set showmatch
-" Temporary directory
-set dir=~/.tmp/vim/
-" Universal clipboard
-set clipboard=unnamed
-" Movement keys for wrapping
-set ww+=<,>,[,]
-" Allow unsaved hidden buffers
-set hidden
-" I like darkbackgrounds with light colors
-set background=dark
-" Never let a window be less than 1px
-set winminheight=1
-" Show last command
-set showcmd
-" History size
-set history=900
-" Default fileformat
-set fileformat=unix
-" Display list of matching files for completion
-set wildmode=list:longest	" Display list of matching files for completion
-" Ignore these file's for completion
-set wildignore=*.o,*.class,*~,*.lo,*.bak
-" Do not require end-of-line
-set noeol
-" Characters to break at for line wrapping
-set breakat=\ \	!@*-+;:,.?
-" Number of lines to jump when cursor reaches bottom
-"set scrolloff=5
-" Same thing for horizontal
-"set sidescroll=5
-" Override ignorecase if search has capital letters
-set smartcase
-" No visual/audio bells
-set vb t_vb=
-" Do not stay vi compatible
-set nocompatible
-" Default encoding
-set encoding=utf-8
-" Enable wild menu
-set wildmenu
-" Smart tab
-set smarttab
-" Lazy Redrew, Helps speed things up.
-set lazyredraw
-" Print line numbers and syntax highlighting
-set printoptions+=syntax:y,number:y
-" improves performance -- let OS decide when to flush disk
-set nofsync
+"" Turn Off word-wrapping
+"set wrap
+"" Turn off backups
+"set nobackup
+"" Turn off swapfile
+"set noswapfile
+"" Soft tab 4
+"set sw=4
+"" Soft tab stop
+"set sts=4
+"" Tab stop
+"set ts=4
+"" wrapping
+"set wm=4
+"set tw=80
+"" Expand tabs to spaces
+"set expandtab
+"" Highlight search
+"set hlsearch
+"" Backup extension if on
+"set backupext=.bak
+"" Backups directory if on
+"set backupdir=~/.backups/
+"" Line breaks for linewrap
+"set linebreak
+"" Backspace over everything
+"set bs=2
+"" Case-insensitive search
+"set ignorecase
+"" Auto indent
+"set autoindent
+"" No startup messages
+"set shm+=Im
+"" Smart identing
+"set smartindent
+"" Show matching brackets
+"set showmatch
+"" Temporary directory
+"set dir=~/.tmp/vim/
+"" Universal clipboard
+"set clipboard=unnamed
+"" Movement keys for wrapping
+"set ww+=<,>,[,]
+"" Allow unsaved hidden buffers
+"set hidden
+"" I like darkbackgrounds with light colors
+"set background=dark
+"" Never let a window be less than 1px
+"set winminheight=1
+"" Show last command
+"set showcmd
+"" History size
+"set history=900
+"" Default fileformat
+"set fileformat=unix
+"" Display list of matching files for completion
+"set wildmode=list:longest	" Display list of matching files for completion
+"" Ignore these file's for completion
+"set wildignore=*.o,*.class,*~,*.lo,*.bak
+"" Do not require end-of-line
+""set noeol
+"" Characters to break at for line wrapping
+""set breakat=\ \	!@*-+;:,.?
+"" Number of lines to jump when cursor reaches bottom
+""set scrolloff=5
+"" Same thing for horizontal
+""set sidescroll=5
+"" Override ignorecase if search has capital letters
+"set smartcase
+"" No visual/audio bells
+""set vb t_vb=
+"" Do not stay vi compatible
+"set nocompatible
+"" Default encoding
+"set encoding=utf-8
+"" Enable wild menu
+"set wildmenu
+"" Smart tab
+"set smarttab
+"" Lazy Redrew, Helps speed things up.
+""set lazyredraw
+"" Print line numbers and syntax highlighting
+"set printoptions+=syntax:y,number:y
+"" improves performance -- let OS decide when to flush disk
+""set nofsync
 
 "-----------------------------------------------------------------------
 " Plugin settings
 "-----------------------------------------------------------------------
 
 " Settings for HiMTCHBrkt
-let g:HiMtchBrkt_surround= 1
-let g:HiMtchBrktOn= 1
-" Settings for NERDCommenter
-let g:NERDShutUp=1
-" Settings for git status bar plugin
-let g:git_branch_status_head_current=1
+"let g:HiMtchBrkt_surround= 1
+"let g:HiMtchBrktOn= 1
+"" Settings for NERDCommenter
+"let g:NERDShutUp=1
+"" Settings for git status bar plugin
+"let g:git_branch_status_head_current=1
 
-" Hightlight redundent spaces
-highlight RedundantSpaces ctermbg=red guibg=red
-match     RedundantSpaces /\s\+$\| \+\ze\t/
+"" Hightlight redundent spaces
+""highlight RedundantSpaces ctermbg=red guibg=red
+""match     RedundantSpaces /\s\+$\| \+\ze\t/
 
-" Disable modelines, use securemodelines.vim instead
-set nomodeline
-let g:secure_modelines_verbose = 0
-let g:secure_modelines_modelines = 15
+"" Disable modelines, use securemodelines.vim instead
+"set nomodeline
+"let g:secure_modelines_verbose = 0
+"let g:secure_modelines_modelines = 15
 
-let loaded_matchparen=1
+"let loaded_matchparen=1
 
-" http://vim.sourceforge.net/scripts/script.php?script_id=2328
-let g:nickname = "gregf"
+"" http://vim.sourceforge.net/scripts/script.php?script_id=2328
+"let g:nickname = "gregf"
 
-let g:secure_modelines_allowed_items = [
-                \ "textwidth",   "tw",
-                \ "softtabstop", "sts",
-                \ "tabstop",     "ts",
-                \ "shiftwidth",  "sw",
-                \ "expandtab",   "et",   "noexpandtab", "noet",
-                \ "filetype",    "ft",
-                \ "foldmethod",  "fdm",
-                \ "readonly",    "ro",   "noreadonly", "noro",
-                \ "rightleft",   "rl",   "norightleft", "norl"
-                \ ]
+"let g:secure_modelines_allowed_items = [
+                "\ "textwidth",   "tw",
+                "\ "softtabstop", "sts",
+                "\ "tabstop",     "ts",
+                "\ "shiftwidth",  "sw",
+                "\ "expandtab",   "et",   "noexpandtab", "noet",
+                "\ "filetype",    "ft",
+                "\ "foldmethod",  "fdm",
+                "\ "readonly",    "ro",   "noreadonly", "noro",
+                "\ "rightleft",   "rl",   "norightleft", "norl"
+                "\ ]
 
 "-----------------------------------------------------------------------
 " Nice statusbar
@@ -140,16 +143,16 @@ set statusline+=%f\                          " file name
 if has("eval")
     let g:scm_cache = {}
     fun! ScmInfo()
-        let l:key = getcwd()
-        if ! has_key(g:scm_cache, l:key)
-            if (isdirectory(getcwd() . "/.git"))
-                let g:scm_cache[l:key] = "[" . substitute(readfile(getcwd() . "/.git/HEAD", "", 1)[0],
-                            \ "^.*/", "", "") . "] "
-            else
-                let g:scm_cache[l:key] = ""
-            endif
-        endif
-        return g:scm_cache[l:key]
+	let l:key = getcwd()
+	if ! has_key(g:scm_cache, l:key)
+	    if (isdirectory(getcwd() . "/.git"))
+		let g:scm_cache[l:key] = "[" . substitute(readfile(getcwd() . "/.git/HEAD", "", 1)[0],
+			    \ "^.*/", "", "") . "] "
+	    else
+		let g:scm_cache[l:key] = ""
+	    endif
+	endif
+	return g:scm_cache[l:key]
     endfun
     set statusline+=%{ScmInfo()}             " scm info
 endif
@@ -170,10 +173,10 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
 endif
 
-" If possible, try to use a narrow number column.
+"If possible, try to use a narrow number column.
 if v:version >= 700
     try
-        setlocal numberwidth=3
+	setlocal numberwidth=3
     catch
     endtry
 endif
@@ -237,7 +240,7 @@ if (version >= 700)
 	endfunction
 endif
 
-" Update .*rc header
+"Update .*rc header
 fun! <SID>UpdateRcHeader()
     let l:c=col(".")
     let l:l=line(".")
@@ -245,9 +248,9 @@ fun! <SID>UpdateRcHeader()
     call cursor(l:l, l:c)
 endfun
 
-"-----------------------------------------------------------------------
-" Key maps
-"-----------------------------------------------------------------------
+""-----------------------------------------------------------------------
+"" Key maps
+""-----------------------------------------------------------------------
 
 map		:W :w
 map		:WQ :wq
@@ -289,9 +292,9 @@ noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
 " Delete blank lines
 noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
 
-"-----------------------------------------------------------------------
-" Functions
-"-----------------------------------------------------------------------
+""-----------------------------------------------------------------------
+"" Functions
+""-----------------------------------------------------------------------
 
 function Mideo()
     chdir /home/gregf/mideo/
@@ -302,18 +305,18 @@ endfunction
 " Removes unnecessary whitespace
 if has("eval")
     fun! <SID>StripWhite()
-        %s/[ \t]\+$//ge
+	%s/[ \t]\+$//ge
 	    %s!^\( \+\)\t!\=StrRepeat("\t", 1 + strlen(submatch(1)) / 8)!ge
     endfun
 
     fun! <SID>RemoveBlankLines()
-        %s/^[\ \t]*\n//g
+	%s/^[\ \t]*\n//g
     endfun
 endif
 
-"-----------------------------------------------------------------------
-" auto commands
-"-----------------------------------------------------------------------
+""-----------------------------------------------------------------------
+"" auto commands
+""-----------------------------------------------------------------------
 
 if isdirectory(expand("$VIMRUNTIME/ftplugin"))
   if has("eval")
@@ -344,10 +347,10 @@ if has("autocmd")
     au BufRead,BufNewFile COMMIT_EDITMSG setf git
 
     autocmd BufNewFile,BufRead /tmp/mutt*
-        \ setf mail |
-        \ set spell |
-        \ set spell spelllang=en_us |
-        \ set spellfile=~/.vim/spellfile.add
+	\ setf mail |
+	\ set spell |
+	\ set spell spelllang=en_us |
+	\ set spellfile=~/.vim/spellfile.add
 
     au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,/tmp/mutt* :set ft=mail
     au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,~/.tmp/mutt/mutt* :set ft=mail
@@ -383,60 +386,60 @@ endif
 
 if has("autocmd") && has("eval")
     augroup gregf
-        autocmd!
+	autocmd!
 
-        " Automagic line numbers
-        autocmd BufEnter * :call <SID>WindowWidth()
+	" Automagic line numbers
+	autocmd BufEnter * :call <SID>WindowWidth()
 
-        " StripWhite space on save
-        "autocmd FileWritePre * :call <SID>StripWhite()
-        "autocmd FileAppendPre * :call <SID>StripWhite()
-        "autocmd FilterWritePre * :call <SID>StripWhite()
-        "autocmd BufWritePre * :call <SID>StripWhite()
+	" StripWhite space on save
+	"autocmd FileWritePre * :call <SID>StripWhite()
+	"autocmd FileAppendPre * :call <SID>StripWhite()
+	"autocmd FilterWritePre * :call <SID>StripWhite()
+	"autocmd BufWritePre * :call <SID>StripWhite()
 
-        " Update header in .vimrc and .bashrc before saving
-        autocmd BufWritePre *vimrc  :call <SID>UpdateRcHeader()
-        autocmd BufWritePre *zshrc :call <SID>UpdateRcHeader()
+	" Update header in .vimrc and .bashrc before saving
+	autocmd BufWritePre *vimrc  :call <SID>UpdateRcHeader()
+	autocmd BufWritePre *zshrc :call <SID>UpdateRcHeader()
 
-        " Always do a full syntax refresh
-        autocmd BufEnter * syntax sync fromstart
+	" Always do a full syntax refresh
+	autocmd BufEnter * syntax sync fromstart
 
-        " For svn-commit, don't create backups
-        autocmd BufRead svn-commit.tmp :setlocal nobackup
+	" For svn-commit, don't create backups
+	autocmd BufRead svn-commit.tmp :setlocal nobackup
 
-        " m4 matchit support
-        autocmd FileType m4 :let b:match_words="(:),`:',[:],{:}"
+	" m4 matchit support
+	autocmd FileType m4 :let b:match_words="(:),`:',[:],{:}"
     augroup END
 endif
 
 " content creation
 if has("autocmd")
     augroup content
-        autocmd!
+	autocmd!
 
-        autocmd BufNewFile *.rb 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
-                    \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
-                    \ norm G
+	autocmd BufNewFile *.rb 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
+		    \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
+		    \ norm G
 
-        autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
-                    \ 1put ='' | call MakeIncludeGuards() |
-                    \ set sw=4 sts=4 et tw=80 | norm G
+	autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
+		    \ 1put ='' | call MakeIncludeGuards() |
+		    \ set sw=4 sts=4 et tw=80 | norm G
 
-        autocmd BufNewFile *.cc 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
-                    \ 1put ='' | 2put ='' | call setline(3, '#include "' .
-                    \ substitute(expand("%:t"), ".cc$", ".hh", "") . '"') |
-                    \ set sw=4 sts=4 et tw=80 | norm G
-        autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
-        au! BufRead,BufNewFile *.mkd   setfiletype mkd
+	autocmd BufNewFile *.cc 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
+		    \ 1put ='' | 2put ='' | call setline(3, '#include "' .
+		    \ substitute(expand("%:t"), ".cc$", ".hh", "") . '"') |
+		    \ set sw=4 sts=4 et tw=80 | norm G
+	autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
+	au! BufRead,BufNewFile *.mkd   setfiletype mkd
 
-        "ruby
-        autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-        autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-        autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-        autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-        "improve autocomplete menu color
-        highlight Pmenu ctermbg=238 gui=bold
-        au BufRead,BufNewFile *.js set ft=javascript.jquery
+	"ruby
+	autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+	autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+	autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+	autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+	"improve autocomplete menu color
+	highlight Pmenu ctermbg=238 gui=bold
+	au BufRead,BufNewFile *.js set ft=javascript.jquery
     augroup END
 endif
 
@@ -450,7 +453,7 @@ endif
 " GUI Options plus colorschemes
 "-----------------------------------------------------------------------
 
-if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen'
+if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt-unicode'
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
     colorscheme zenburn
 else
@@ -485,22 +488,22 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
 endif
 
-" Extra terminal things
+"Extra terminal things
 if (&term =~ "xterm") && (&termencoding == "")
     set termencoding=utf-8
 endif
 
 if &term =~ "xterm"
     if has('title')
-        set title
+	set title
     endif
     if exists('&t_SI')
-        let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
-        let &t_EI = "\<Esc>]12;grey80\x7"
+	let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
+	let &t_EI = "\<Esc>]12;grey80\x7"
     endif
 endif
 
-" Include $HOME in cdpath
+"Include $HOME in cdpath
 if has("file_in_path")
     let &cdpath=','.expand("$HOME").','.expand("$HOME").'/code'
 endif
@@ -508,13 +511,13 @@ endif
 if has("eval")
     " If we're in a wide window, enable line numbers.
     fun! <SID>WindowWidth()
-        if winwidth(0) > 90
-            setlocal foldcolumn=2
-            setlocal number
-        else
-            setlocal nonumber
-            setlocal foldcolumn=0
-        endif
+	if winwidth(0) > 90
+	    setlocal foldcolumn=2
+	    setlocal number
+	else
+	    setlocal nonumber
+	    setlocal foldcolumn=0
+	endif
     endfun
 endif
 

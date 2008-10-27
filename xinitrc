@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # Set your Default Window Manager
-#DEFAULTWM='awesome'
+DEFAULTWM='awesome -c /home/gregf/.config/awesome/rc.lua'
 #DEFAULTWM='startfluxbox'
-DEFAULTWM='openbox-session'
+#DEFAULTWM='openbox-session'
 
 
 # Set some enviroment varibles
@@ -42,6 +42,9 @@ keychain --clear -q ~/.ssh/id_dsa
 source ~/.keychain/`hostname`-sh > /dev/null
 
 # Execute window manager into background
-exec $DEFAULTWM &
-wmpid=$!
+exec $DEFAULTWM & wmpid=$!
+#nitrogen --restore &
+/home/gregf/code/bin/conky/conky.sh start &
+#firefox &
+#liferea &
 wait $wmpid
