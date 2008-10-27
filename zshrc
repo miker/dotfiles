@@ -593,7 +593,7 @@ case `echo $TERM` in
         source ~/.zkbd/xterm-xfree86-pc-linux-gnu
     ;;
     rxvt|rxvt-*)
-        source ~/.zkbd/mrxvt-pc-linux-gnu
+        source ~/.zkbd/rxvt-unicode-pc-linux-gnu
     ;;
     screen|screen-*)
         case `uname` in

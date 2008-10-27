@@ -24,6 +24,33 @@ XTerm*color14:            #a1b5cd
 XTerm*color7:             #ffffff
 XTerm*color15:            #dedede
 
+! Color Codes
+! black
+urxvt*color0:             #242424
+urxvt*color8:             #828282
+! red
+urxvt*color1:             #BF7979
+urxvt*color9:             #F4A45F
+! green
+urxvt*color2:             #97B26B
+urxvt*color10:            #C5F779
+! yellow
+urxvt*color3:             #cdcda1
+urxvt*color11:            #ffffaf
+! blue
+urxvt*color4:             #285A8B
+urxvt*color12:            #98afd9
+! magenta
+urxvt*color5:             #d9b798
+urxvt*color13:            #d7d998
+! cyan
+urxvt*color6:             #a1b5cd
+urxvt*color14:            #a1b5cd
+! white
+urxvt*color7:             #ffffff
+urxvt*color15:            #dedede
+
+
 !XTerm settings
 XTerm*cursorBlink: false 
 XTerm*cursorColor: #73B8D9 
@@ -87,19 +114,22 @@ aterm*font: 9x15bold
 !aterm*font:  -*-andale mono-*-*-*-*-*-*-*-*-*-*-*-*
 aterm*geometry: 80x25 
 
-urxvt*cursorColor: blue 
+urxvt*cursorColor: #73B8D9 
 urxvt*tintColor: white
-urxvt*background: black
-urxvt*foreground: white
 urxvt*geometry: 80x25
-urxvt*shading: 35 
-urxvt*fading: 10
+urxvt*foreground: #ffffff
+urxvt*background: #000000
+urxvt*urlLauncher: firefox -new-tab 
+!urxvt*shading: 35 
+!urxvt*fading: 10
 urxvt*loginShell: true 
 urxvt*scrollBar: false
 urxvt*meta8: false 
 urxvt*mouseWheelScrollPage: true
-urxvt*inheritPixmap: true 
-urxvt*font: xft:andale mono:pixelsize=16 
+!urxvt*inheritPixmap: true 
+!urxvt*font: xft:andale mono:pixelsize=18
+urxvt*font: xft:droid sans mono:size=12
+
 urxvt*scrollTtyOutput: false
 urxvt*scrollTtyKeypress: true
 urxvt*scrollWithBuffer: flase

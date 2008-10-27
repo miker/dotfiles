@@ -1,0 +1,29 @@
+---------------------------
+-- xeno awesome theme --
+---------------------------
+-- need to actually customize this still. for now its just xeno
+
+font          = fixed 8
+
+bg_normal     = #000000
+bg_focus      = #3465A4
+bg_urgent     = #ff0000
+
+fg_normal     = #ffffff
+fg_focus      = #ffffff
+fg_urgent     = #ffffff
+
+border_width  = 1 
+border_normal = #000055
+border_focus  = #3465A4
+border_marked = #91231c
+
+titlebar_close_button = true
+
+# You can add as many variables as
+# you wish and access them by using
+# beautiful.variable in your rc.lua
+#bg_widget    = #cc0000
+
+# You can use your own command to set your wallpaper
+wallpaper_cmd = nitrogen --restore
