@@ -114,15 +114,12 @@ end
 -- Define tags table.
 tags_names	= { "urxvt", "internet", "jabber", "news", "music", "mail", "irc", "vbox", "burning" }
 tags_layout	= { "tile", "max", "magnifier", "max", "max", "max", "tile", "tile", "tile" } 
-tnumber 	= { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9" }
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
     tags[s] = {}
     -- Create 9 tags per screen.
      for tagnumber = 1, 9 do
---     for tagnumber,v in pairs(tnumber) do
-        --tags[s][tagnumber] = tag({ name = tagnumber, layout = layouts[1] })
         tags[s][tagnumber] = tag({ name = tags_names[tagnumber], layout = tags_layout[tagnumber] })
         -- Add tags to screen one by one
         tags[s][tagnumber].screen = s
