@@ -186,7 +186,7 @@ DIRSTACKSIZE=16
 ################################################################################
 #auto logout after timeout in seconds
 
-if [ $TERM = "linux" ]; then
+if [[ $TERM == "linux" ]]; then
     TMOUT=1800
 fi
 
