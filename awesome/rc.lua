@@ -29,6 +29,7 @@ music = 5
 mail = 6
 irc = 7
 vbox = 8
+burning = 9
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
@@ -69,19 +70,20 @@ apptags =
     ["gmpc"] = { screen = 1, tag = music },
     ["mutt"] = { screen = 1, tag = mail },
     ["XChat"] = { screen = 1, tag = irc },
-    ["virtualbox"] = { screen = 1, tag = vbox }
+    ["virtualbox"] = { screen = 1, tag = vbox },
+    ["k3b"] = { screen = 1, tag = burning }
 }
 
 startup = 
 {
-	"nitrogren --restore &",
-	"xsetroot -cursor_name PolarCursorTheme &",
-	"dbus-launch --exit-with-session &",
-	"lomoco -8 --sms &",
-	"xcompmgr -cC -t-3 -l-5 -r5 -o.65 &",
-	"firefox &",
-	"liferea &",
-	"urxvtd -q -o -f &"
+       --[[ "nitrogren --restore &",]]
+	--"xsetroot -cursor_name PolarCursorTheme &",
+	--"dbus-launch --exit-with-session &",
+	--"lomoco -8 --sms &",
+	--"xcompmgr -cC -t-3 -l-5 -r5 -o.65 &",
+	--"firefox &",
+	--"liferea &",
+	--[["urxvtd -q -o -f &"]]
 }
 
 
@@ -104,13 +106,13 @@ tabulous.autotab_start()
 
 -- {{{ startup
 -- Run apps listed in startup table
---[[for i,v in pairs(startup) do]]
-	--awful.spawn(v)
---[[end]]
+for i,v in pairs(startup) do
+	awful.spawn(v)
+end
 
 -- {{{ Tags
 -- Define tags table.
-tags_names	= { "urxvt", "internet", "jabber", "news", "music", "mail", "irc", "vbox", "9" }
+tags_names	= { "urxvt", "internet", "jabber", "news", "music", "mail", "irc", "vbox", "burning" }
 tags_layout	= { "tile", "max", "magnifier", "max", "max", "max", "tile", "tile", "tile" } 
 tnumber 	= { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9" }
 tags = {}
@@ -154,8 +156,8 @@ mytextbox.text = "<b><small> awesome " .. AWESOME_VERSION .. " </small></b>"
 mypromptbox = widget({ type = "textbox", name = "mypromptbox", align = "left" })
 
 -- Create an iconbox widget
-myiconbox = widget({ type = "textbox", name = "myiconbox", align = "left" })
-myiconbox.text = "<bg image=\"/usr/share/awesome/icons/awesome16.png\" resize=\"true\"/>"
+--myiconbox = widget({ type = "textbox", name = "myiconbox", align = "left" })
+--myiconbox.text = "<bg image=\"/usr/share/awesome/icons/awesome16.png\" resize=\"true\"/>"
 
 -- Create a systray
 mysystray = widget({ type = "systray", name = "mysystray", align = "right" })
