@@ -1,22 +1,22 @@
 ---------------------------
 -- gregf awesome theme --
 ---------------------------
-
-font          = fixed 12 
-
-bg_normal     = #C9C9C9
-bg_focus      = #2979E2
-bg_urgent     = #ff0000
-
-fg_normal     = #000000
-fg_focus      = #FFFFFF
-fg_urgent     = #000000
-
-border_width  = 1 
+ 
+font = fixed bold 12
+ 
+bg_normal = #C9C9C9
+bg_focus = #2979E2
+bg_urgent = #ff0000
+ 
+fg_normal = #000000
+fg_focus = #FFFFFF
+fg_urgent = #000000
+ 
+border_width = 1
 border_normal = #000055
-border_focus  = #2979E2
+border_focus = #2979E2
 border_marked = #91231c
-
+ 
 titlebar_close_button = true
-
+ 
 wallpaper_cmd = nitrogen --restore
