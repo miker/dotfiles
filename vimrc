@@ -1,4 +1,4 @@
-"scriptencoding utf-8
+scriptencoding utf-8
 "-----------------------------------------------------------------------
 " Vim settings file for Greg Fitzgerald
 " Most recent update: Fri 10 Oct 2008 05:24:41 PM EDT
@@ -8,129 +8,129 @@
 " Settings
 "-----------------------------------------------------------------------
 
-"" Turn Off word-wrapping
-"set wrap
-"" Turn off backups
-"set nobackup
-"" Turn off swapfile
-"set noswapfile
-"" Soft tab 4
-"set sw=4
-"" Soft tab stop
-"set sts=4
-"" Tab stop
-"set ts=4
-"" wrapping
-"set wm=4
-"set tw=80
-"" Expand tabs to spaces
-"set expandtab
-"" Highlight search
-"set hlsearch
-"" Backup extension if on
-"set backupext=.bak
-"" Backups directory if on
-"set backupdir=~/.backups/
-"" Line breaks for linewrap
-"set linebreak
-"" Backspace over everything
-"set bs=2
-"" Case-insensitive search
-"set ignorecase
-"" Auto indent
-"set autoindent
-"" No startup messages
-"set shm+=Im
-"" Smart identing
-"set smartindent
-"" Show matching brackets
-"set showmatch
-"" Temporary directory
-"set dir=~/.tmp/vim/
-"" Universal clipboard
-"set clipboard=unnamed
-"" Movement keys for wrapping
-"set ww+=<,>,[,]
-"" Allow unsaved hidden buffers
-"set hidden
-"" I like darkbackgrounds with light colors
-"set background=dark
-"" Never let a window be less than 1px
-"set winminheight=1
-"" Show last command
-"set showcmd
-"" History size
-"set history=900
-"" Default fileformat
-"set fileformat=unix
-"" Display list of matching files for completion
-"set wildmode=list:longest	" Display list of matching files for completion
-"" Ignore these file's for completion
-"set wildignore=*.o,*.class,*~,*.lo,*.bak
-"" Do not require end-of-line
-""set noeol
-"" Characters to break at for line wrapping
-""set breakat=\ \	!@*-+;:,.?
-"" Number of lines to jump when cursor reaches bottom
-""set scrolloff=5
-"" Same thing for horizontal
-""set sidescroll=5
-"" Override ignorecase if search has capital letters
-"set smartcase
-"" No visual/audio bells
-""set vb t_vb=
-"" Do not stay vi compatible
-"set nocompatible
-"" Default encoding
-"set encoding=utf-8
-"" Enable wild menu
-"set wildmenu
-"" Smart tab
-"set smarttab
-"" Lazy Redrew, Helps speed things up.
-""set lazyredraw
-"" Print line numbers and syntax highlighting
-"set printoptions+=syntax:y,number:y
-"" improves performance -- let OS decide when to flush disk
-""set nofsync
+" Turn Off word-wrapping
+set wrap
+" Turn off backups
+set nobackup
+" Turn off swapfile
+set noswapfile
+" Soft tab 4
+set sw=4
+" Soft tab stop
+set sts=4
+" Tab stop
+set ts=4
+" wrapping
+set wm=4
+set tw=80
+" Expand tabs to spaces
+set expandtab
+" Highlight search
+set hlsearch
+" Backup extension if on
+set backupext=.bak
+" Backups directory if on
+set backupdir=~/.backups/
+" Line breaks for linewrap
+set linebreak
+" Backspace over everything
+set bs=2
+" Case-insensitive search
+set ignorecase
+" Auto indent
+set autoindent
+" No startup messages
+set shm+=Im
+" Smart identing
+set smartindent
+" Show matching brackets
+set showmatch
+" Temporary directory
+set dir=~/.tmp/vim/
+" Universal clipboard
+set clipboard=unnamed
+" Movement keys for wrapping
+set ww+=<,>,[,]
+" Allow unsaved hidden buffers
+set hidden
+" I like darkbackgrounds with light colors
+set background=dark
+" Never let a window be less than 1px
+set winminheight=1
+" Show last command
+set showcmd
+" History size
+set history=900
+" Default fileformat
+set fileformat=unix
+" Display list of matching files for completion
+set wildmode=list:longest	" Display list of matching files for completion
+" Ignore these file's for completion
+set wildignore=*.o,*.class,*~,*.lo,*.bak
+" Do not require end-of-line
+set noeol
+" Characters to break at for line wrapping
+set breakat=\ \	!@*-+;:,.?
+" Number of lines to jump when cursor reaches bottom
+"set scrolloff=5
+" Same thing for horizontal
+"set sidescroll=5
+" Override ignorecase if search has capital letters
+set smartcase
+" No visual/audio bells
+set vb t_vb=
+" Do not stay vi compatible
+set nocompatible
+" Default encoding
+set encoding=utf-8
+" Enable wild menu
+set wildmenu
+" Smart tab
+set smarttab
+" Lazy Redrew, Helps speed things up.
+"set lazyredraw
+" Print line numbers and syntax highlighting
+set printoptions+=syntax:y,number:y
+" improves performance -- let OS decide when to flush disk
+set nofsync
 
 "-----------------------------------------------------------------------
 " Plugin settings
 "-----------------------------------------------------------------------
 
-" Settings for HiMTCHBrkt
-"let g:HiMtchBrkt_surround= 1
-"let g:HiMtchBrktOn= 1
-"" Settings for NERDCommenter
-"let g:NERDShutUp=1
-"" Settings for git status bar plugin
-"let g:git_branch_status_head_current=1
+"Settings for HiMTCHBrkt
+let g:HiMtchBrkt_surround= 1
+let g:HiMtchBrktOn= 1
+" Settings for NERDCommenter
+let g:NERDShutUp=1
+" Settings for git status bar plugin
+let g:git_branch_status_head_current=1
 
-"" Hightlight redundent spaces
-""highlight RedundantSpaces ctermbg=red guibg=red
-""match     RedundantSpaces /\s\+$\| \+\ze\t/
+" Hightlight redundent spaces
+highlight RedundantSpaces ctermbg=red guibg=red
+match     RedundantSpaces /\s\+$\| \+\ze\t/
 
-"" Disable modelines, use securemodelines.vim instead
-"set nomodeline
-"let g:secure_modelines_verbose = 0
-"let g:secure_modelines_modelines = 15
+" Disable modelines, use securemodelines.vim instead
+set nomodeline
+let g:secure_modelines_verbose = 0
+let g:secure_modelines_modelines = 15
 
-"let loaded_matchparen=1
+let loaded_matchparen=1
 
-"" http://vim.sourceforge.net/scripts/script.php?script_id=2328
-"let g:nickname = "gregf"
+" http://vim.sourceforge.net/scripts/script.php?script_id=2328
+let g:nickname = "gregf"
 
-"let g:secure_modelines_allowed_items = [
-                "\ "textwidth",   "tw",
-                "\ "softtabstop", "sts",
-                "\ "tabstop",     "ts",
-                "\ "shiftwidth",  "sw",
-                "\ "expandtab",   "et",   "noexpandtab", "noet",
-                "\ "filetype",    "ft",
-                "\ "foldmethod",  "fdm",
-                "\ "readonly",    "ro",   "noreadonly", "noro",
-                "\ "rightleft",   "rl",   "norightleft", "norl"
-                "\ ]
+let g:secure_modelines_allowed_items = [
+		\ "textwidth",   "tw",
+		\ "softtabstop", "sts",
+		\ "tabstop",     "ts",
+		\ "shiftwidth",  "sw",
+		\ "expandtab",   "et",   "noexpandtab", "noet",
+		\ "filetype",    "ft",
+		\ "foldmethod",  "fdm",
+		\ "readonly",    "ro",   "noreadonly", "noro",
+		\ "rightleft",   "rl",   "norightleft", "norl"
+		\ ]
 
 "-----------------------------------------------------------------------
 " Nice statusbar
