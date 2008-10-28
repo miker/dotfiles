@@ -23,6 +23,12 @@ vbell                 off
 defscrollback         10000
 silencewait           15
 
+# print wackier status messages
+nethack on
+
+# restore window contents after using (e.g.) vi
+altscreen on
+ 
 bufferfile            $HOME/.screen_exchange
 # Keep dead windows till I kill them with a 9 iron.
 #zombie cr
@@ -33,11 +39,11 @@ nonblock on
 # Emulate a logout msg
 pow_detach_msg "Screen session of \$LOGNAME \$:cr:\$:nl:ended."
 
-termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
-termcapinfo xterm*|rxvt* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
-termcapinfo xterm*|rxvt* ti@:te=\E[3J
-termcapinfo xterm*|rxvt* hs@:cs=\E[%i%d;%dr:im=\E[4h:ei=\E[4l
-termcapinfo xterm*|rxvt* hs@:cs=\E[%i%p1%d;%p2%dr:im=\E[4h:ei=\E[4l
+termcapinfo xterm*|rxvt-* 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+termcapinfo xterm*|rxvt-* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
+termcapinfo xterm*|rxvt-* ti@:te=\E[3J
+termcapinfo xterm*|rxvt-* hs@:cs=\E[%i%d;%dr:im=\E[4h:ei=\E[4l
+termcapinfo xterm*|rxvt-* hs@:cs=\E[%i%p1%d;%p2%dr:im=\E[4h:ei=\E[4l
 # terminfo and termcap for nice 256 color terminal
 # # allow bold colors - necessary for some reason
 attrcolor b ".I"
@@ -98,4 +104,5 @@ select 0
 # erase background with current bg color
 defbce "on"
 
-defflow "off"
+# disable Ctrl-S/Ctrl-Q "flow control"
+defflow off
