@@ -492,7 +492,7 @@ function hook_timer ()
     -- For unix time_t lovers
     -- mytextbox.text = " " .. os.time() .. " time_t "
     -- Otherwise use:
-    mytextbox.text = " " .. os.date() .. " "
+    mytextbox.text = " " .. os.date("%A %B %d %I:%M:%S%P") .. " "
 end
 
 -- Set up some hooks
