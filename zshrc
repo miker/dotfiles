@@ -185,9 +185,12 @@ DIRSTACKSIZE=16
 # Term Settings
 ################################################################################
 #auto logout after timeout in seconds
-TMOUT=1800
 
-# if we are in X then disable TMOUT
+if [ $TERM = "linux" ]; then
+    TMOUT=1800
+fi
+
+## if we are in X then disable TMOUT
 case $TERM in
   xterm*|rxvt|(dt|k|E)term|rxvt-*)
     unset TMOUT
@@ -196,11 +199,11 @@ esac
 
 case $TERM in
     xterm*|rxvt|(dt|k|E)term|?rxvt-*)
-	    # display user@host and full dir in *term title
-	    precmd () { print -Pn  "\033]0;%n@%m %~\007" }
-	    # display user@host and name of current process in *term title
-	    preexec () { print -Pn "\033]0;%n@%m <$1> %~\007" }
-	;;
+        # display user@host and full dir in *term title
+        precmd () { print -Pn  "\033]0;%n@%m %~\007" }
+        # display user@host and name of current process in *term title
+        preexec () { print -Pn "\033]0;%n@%m <$1> %~\007" }
+    ;;
     screen-*)
         # Set screen's window title to the command the user typed.
         preexec() { print -n '\ek'$1'\e\\' }
@@ -592,8 +595,21 @@ case `echo $TERM` in
     xterm-xfree86)
         source ~/.zkbd/xterm-xfree86-pc-linux-gnu
     ;;
-    rxvt|rxvt-*)
-        source ~/.zkbd/rxvt-unicode-pc-linux-gnu
+    rxvt-unicode)
+        case `uname` in
+            Linux)
+                source ~/.zkbd/rxvt-unicode-pc-linux-gnu
+            ;;
+            OpenBSD)
+                source ~/.zkbd/rxvt-unicode-unknown-openbsd4.3
+            ;;
+            *)
+                source ~/.zkbd/rxvt-unicode-pc-linux-gnu
+            ;;
+        esac
+    ;;
+    mrxvt)
+        source ~/.zkbd/mrxvt-pc-linux-gnu
     ;;
     screen|screen-*)
         case `uname` in
