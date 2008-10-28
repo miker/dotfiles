@@ -11,7 +11,7 @@ require("beautiful")
 theme_path = "/home/gregf/.config/awesome/themes/gregf"
 
 -- This is used later as the default terminal to run.
-terminal = "urxvt"
+terminal = "urxvtc"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -72,7 +72,8 @@ apptags =
     ["virtualbox"] = { screen = 1, tag = vbox }
 }
 
-startup = {
+startup = 
+{
 	"nitrogren --restore &",
 	"xsetroot -cursor_name PolarCursorTheme &",
 	"dbus-launch --exit-with-session &",
@@ -80,9 +81,7 @@ startup = {
 	"xcompmgr -cC -t-3 -l-5 -r5 -o.65 &",
 	"firefox &",
 	"liferea &",
-	"urxvtd -q -o -f &",
-	"urxvt -t mutt -e mutt &"
-
+	"urxvtd -q -o -f &"
 }
 
 
@@ -105,20 +104,22 @@ tabulous.autotab_start()
 
 -- {{{ startup
 -- Run apps listed in startup table
-for i,v in pairs(startup) do
-	awful.spawn(v)
-end
+--[[for i,v in pairs(startup) do]]
+	--awful.spawn(v)
+--[[end]]
 
 -- {{{ Tags
 -- Define tags table.
 tags_names	= { "urxvt", "internet", "jabber", "news", "music", "mail", "irc", "vbox", "9" }
 tags_layout	= { "tile", "max", "magnifier", "max", "max", "max", "tile", "tile", "tile" } 
+tnumber 	= { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9" }
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
     tags[s] = {}
     -- Create 9 tags per screen.
-    for tagnumber = 1, 9 do
+     for tagnumber = 1, 9 do
+--     for tagnumber,v in pairs(tnumber) do
         --tags[s][tagnumber] = tag({ name = tagnumber, layout = layouts[1] })
         tags[s][tagnumber] = tag({ name = tags_names[tagnumber], layout = tags_layout[tagnumber] })
         -- Add tags to screen one by one
@@ -206,21 +207,24 @@ for s = 1, screen.count() do
 end
 
 for i = 1, keynumber do
-    keybinding({ modkey }, i,
+    -- Use F1-F9 for desktops instead of 1-9
+    hotkey = "F"..i
+    
+    keybinding({ modkey }, hotkey,
                    function ()
                        local screen = mouse.screen
                        if tags[screen][i] then
                            awful.tag.viewonly(tags[screen][i])
                        end
                    end):add()
-    keybinding({ modkey, "Control" }, i,
+    keybinding({ modkey, "Control" }, hotkey,
                    function ()
                        local screen = mouse.screen
                        if tags[screen][i] then
                            tags[screen][i].selected = not tags[screen][i].selected
                        end
                    end):add()
-    keybinding({ modkey, "Shift" }, i,
+    keybinding({ modkey, "Shift" }, hotkey,
                    function ()
                        local sel = client.focus
                        if sel then
@@ -229,7 +233,7 @@ for i = 1, keynumber do
                            end
                        end
                    end):add()
-    keybinding({ modkey, "Control", "Shift" }, i,
+    keybinding({ modkey, "Control", "Shift" }, hotkey,
                    function ()
                        local sel = client.focus
                        if sel then
@@ -249,7 +253,11 @@ keybinding({ modkey }, "Return", function () awful.spawn(terminal) end):add()
 
 -- added by gregf
 keybinding({ modkey }, "p", function() awful.spawn("exec `dmenu_path | dmenu -b`") end):add()
+keybinding({ modkey }, "o", function() awful.spawn("exec /home/gregf/code/bin/clipboard/clipboard.sh") end):add()
+keybinding({ modkey }, "n", function() awful.spawn("exec urxvtc -e screen -xRD") end):add()
+keybinding({ modkey }, "g", function() awful.spawn("exec /home/gregf/code/bin/google/google.sh") end):add()
 
+-- restart / quit
 keybinding({ modkey, "Control" }, "r", awesome.restart):add()
 keybinding({ modkey, "Shift" }, "q", awesome.quit):add()
 
@@ -264,7 +272,7 @@ keybinding({ modkey, "Control" }, "j", function () awful.screen.focus(1) end):ad
 keybinding({ modkey, "Control" }, "k", function () awful.screen.focus(-1) end):add()
 keybinding({ modkey, "Control" }, "space", awful.client.togglefloating):add()
 keybinding({ modkey, "Control" }, "Return", function () client.focus:swap(awful.client.master()) end):add()
-keybinding({ modkey }, "o", awful.client.movetoscreen):add()
+--keybinding({ modkey }, "o", awful.client.movetoscreen):add()
 keybinding({ modkey }, "Tab", awful.client.focus.history.previous):add()
 keybinding({ modkey }, "u", awful.client.urgent.jumpto):add()
 keybinding({ modkey, "Shift" }, "r", function () client.focus:redraw() end):add()
@@ -280,28 +288,28 @@ keybinding({ modkey }, "space", function () awful.layout.inc(layouts, 1) end):ad
 keybinding({ modkey, "Shift" }, "space", function () awful.layout.inc(layouts, -1) end):add()
 
 -- Prompt
-keybinding({ modkey }, "F1", function ()
-    awful.prompt.run({ prompt = "Run: " }, mypromptbox, awful.spawn, awful.completion.bash,
-os.getenv("HOME") .. "/.cache/awesome/history") end):add()
-keybinding({ modkey }, "F4", function ()
-                                 awful.prompt.run({ prompt = "Run Lua code: " }, mypromptbox, awful.eval, awful.prompt.bash,
-os.getenv("HOME") .. "/.cache/awesome/history_eval") end):add()
-keybinding({ modkey, "Ctrl" }, "i", function ()
-                                        if mypromptbox.text then
-                                            mypromptbox.text = nil
-                                        else
-                                            mypromptbox.text = nil
-                                            if client.focus.class then
-                                                mypromptbox.text = "Class: " .. client.focus.class .. " "
-                                            end
-                                            if client.focus.instance then
-                                                mypromptbox.text = mypromptbox.text .. "Instance: ".. client.focus.instance .. " "
-                                            end
-                                            if client.focus.role then
-                                                mypromptbox.text = mypromptbox.text .. "Role: ".. client.focus.role
-                                            end
-                                        end
-                                    end):add()
+--keybinding({ modkey }, "F1", function ()
+--    awful.prompt.run({ prompt = "Run: " }, mypromptbox, awful.spawn, awful.completion.bash,
+--os.getenv("HOME") .. "/.cache/awesome/history") end):add()
+--keybinding({ modkey }, "F4", function ()
+--                                 awful.prompt.run({ prompt = "Run Lua code: " }, mypromptbox, awful.eval, awful.prompt.bash,
+--[[os.getenv("HOME") .. "/.cache/awesome/history_eval") end):add()]]
+--keybinding({ modkey, "Ctrl" }, "i", function ()
+                                        --if mypromptbox.text then
+                                            --mypromptbox.text = nil
+                                        --else
+                                            --mypromptbox.text = nil
+                                            --if client.focus.class then
+                                                --mypromptbox.text = "Class: " .. client.focus.class .. " "
+                                            --end
+                                            --if client.focus.instance then
+                                                --mypromptbox.text = mypromptbox.text .. "Instance: ".. client.focus.instance .. " "
+                                            --end
+                                            --if client.focus.role then
+                                                --mypromptbox.text = mypromptbox.text .. "Role: ".. client.focus.role
+                                            --end
+                                        --end
+                                    --end):add()
 
 --- Tabulous, tab manipulation
 keybinding({ modkey, "Control" }, "y", function ()
