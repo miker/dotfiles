@@ -74,19 +74,6 @@ apptags =
     ["k3b"] = { screen = 1, tag = burning }
 }
 
-startup = 
-{
-       --[[ "nitrogren --restore &",]]
-	--"xsetroot -cursor_name PolarCursorTheme &",
-	--"dbus-launch --exit-with-session &",
-	--"lomoco -8 --sms &",
-	--"xcompmgr -cC -t-3 -l-5 -r5 -o.65 &",
-	--"firefox &",
-	--"liferea &",
-	--[["xtermd -q -o -f &"]]
-}
-
-
 -- Define if we want to use titlebar on all applications.
 use_titlebar = true 
 -- }}}
@@ -103,12 +90,6 @@ awful.beautiful.register(beautiful)
 -- Uncomment this to activate autotabbing
 tabulous.autotab_start()
 -- }}}
-
--- {{{ startup
--- Run apps listed in startup table
-for i,v in pairs(startup) do
-	awful.spawn(v)
-end
 
 -- {{{ Tags
 -- Define tags table.
