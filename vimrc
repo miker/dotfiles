@@ -76,7 +76,7 @@ set breakat=\ \	!@*-+;:,.?
 " Same thing for horizontal
 "set sidescroll=5
 " Override ignorecase if search has capital letters
-set smartcase
+"set smartcase
 " No visual/audio bells
 set vb t_vb=
 " Do not stay vi compatible
