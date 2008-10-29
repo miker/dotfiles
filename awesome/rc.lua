@@ -11,7 +11,7 @@ require("beautiful")
 theme_path = "/home/gregf/.config/awesome/themes/gregf"
 
 -- This is used later as the default terminal to run.
-terminal = "urxvtc"
+terminal = "xterm"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -21,7 +21,7 @@ terminal = "urxvtc"
 modkey = "Mod1"
 
 -- tag bindings
-urxvt = 1
+xterm = 1
 internet = 2
 jabber = 3
 news = 4
@@ -50,7 +50,7 @@ layouts =
 -- Table of clients that should be set floating. The index may be either
 -- the application class or instance. The instance is useful when running
 -- a console app in a terminal like (Music on Console)
---    urxvt -name mocp -e mocp
+--    xterm -name mocp -e mocp
 floatapps =
 {
     -- by class
@@ -83,7 +83,7 @@ startup =
 	--"xcompmgr -cC -t-3 -l-5 -r5 -o.65 &",
 	--"firefox &",
 	--"liferea &",
-	--[["urxvtd -q -o -f &"]]
+	--[["xtermd -q -o -f &"]]
 }
 
 
@@ -112,7 +112,7 @@ end
 
 -- {{{ Tags
 -- Define tags table.
-tags_names	= { "urxvt", "internet", "jabber", "news", "music", "mail", "irc", "vbox", "burning" }
+tags_names	= { "xterm", "internet", "jabber", "news", "music", "mail", "irc", "vbox", "burning" }
 tags_layout	= { "tile", "max", "magnifier", "max", "max", "max", "tile", "tile", "tile" } 
 tags = {}
 for s = 1, screen.count() do
@@ -253,7 +253,7 @@ keybinding({ modkey }, "Return", function () awful.spawn(terminal) end):add()
 -- added by gregf
 keybinding({ modkey }, "p", function() awful.spawn("exec `dmenu_path | dmenu -b`") end):add()
 keybinding({ modkey }, "o", function() awful.spawn("exec /home/gregf/code/bin/clipboard/clipboard.sh") end):add()
-keybinding({ modkey }, "n", function() awful.spawn("exec urxvtc -e screen -xRD") end):add()
+keybinding({ modkey }, "n", function() awful.spawn("exec xterm -e screen -xRD") end):add()
 keybinding({ modkey }, "g", function() awful.spawn("exec /home/gregf/code/bin/google/google.sh") end):add()
 
 -- restart / quit
