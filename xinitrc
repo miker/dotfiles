@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Set your Default Window Manager
-DEFAULTWM='awesome -c /home/gregf/.config/awesome/rc.lua'
+DEFAULTWM='awesome'
 #DEFAULTWM='startfluxbox'
 #DEFAULTWM='openbox-session'
 
@@ -13,17 +13,19 @@ export TMDIR=$TMP
 export TERMCMD=/usr/bin/xterm
 export BROWSER=/usr/bin/firefox-bin
 export TERMINAL=/usr/bin/xterm
-export MOZ_DISABLE_PANGO=1
+#export MOZ_DISABLE_PANGO=1
 
 unclutter -idle 15 -reset -root &
 
 #xmodmap ~/.Xmodmap
-#xset -b -bc +dpms r rate 195 30
 xset -b -bc +dpms r rate 250 50
 xrdb -load ~/.Xdefaults
 
 # Load multimedia keys
 xmodmap ~/.Xmodmap
+
+# Load Xdefaults
+xrdb -load ~/.Xdefaults
 
 # Disable repeat for multimediakeys
 xset -r 129 -r 231 -r 198 -r 236 -r 160
@@ -31,6 +33,8 @@ xset -r 129 -r 231 -r 198 -r 236 -r 160
 # Make capslock key equal to escape
 #xmodmap -e "remove lock = Caps_Lock"
 #xmodmap -e "keysym Caps_Lock = Escape"
+
+nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1
 
 xsetroot -solid black &
 
@@ -43,8 +47,12 @@ source ~/.keychain/`hostname`-sh > /dev/null
 
 # Execute window manager into background
 exec $DEFAULTWM & wmpid=$!
-#nitrogen --restore &
-/home/gregf/code/bin/conky/conky.sh start &
-#firefox &
-#liferea &
+    nitrogen --restore &
+    dbus-launch --exit-with-session  &
+    lomoco -8 --sms &
+    /home/gregf/code/bin/conky/conky.sh start &
+    xsetroot -cursor_name arrow &
+    nice -n15 firefox &
+    nice -n19 liferea &
+    xterm -t mutt -e mutt
 wait $wmpid
