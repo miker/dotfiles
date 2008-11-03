@@ -90,6 +90,7 @@ XTerm*jumpScroll: true
 XTerm*multiScroll: true
 XTerm*scrollTtyOutput: false
 XTerm*scrollKey: true
+XTerm*bellIsUrgent: true
 
 !aterm Settings
 aterm*cursorColor: #73B8D9 

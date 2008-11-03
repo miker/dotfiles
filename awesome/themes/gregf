@@ -4,8 +4,8 @@
  
 font = droid sans mono 12
  
-bg_normal = #C9C9C9
-bg_focus = #2979E2
+bg_normal = #CCCCCC
+bg_focus = #0066FF
 bg_urgent = #ff0000
  
 fg_normal = #000000
@@ -14,7 +14,7 @@ fg_urgent = #000000
  
 border_width = 1
 border_normal = #000055
-border_focus = #2979E2
+border_focus = #0066FF
 border_marked = #91231c
  
 titlebar_close_button = true

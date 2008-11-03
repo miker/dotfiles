@@ -12,7 +12,23 @@ servers = (
     chatnet = "QuakeNet";
     port = "6667";
   },
-  { address = "silc.silcnet.org"; chatnet = "SILC"; port = "706"; }
+  { address = "silc.silcnet.org"; chatnet = "SILC"; port = "706"; },
+  {
+    address = "irc.oftc.net";
+    chatnet = "OFTC";
+    port = "6667";
+    use_ssl = "no";
+    ssl_verify = "no";
+    autoconnect = "yes";
+  },
+  {
+    address = "irc.freenode.net";
+    chatnet = "FREENODE";
+    port = "6667";
+    use_ssl = "no";
+    ssl_verify = "no";
+    autoconnect = "yes";
+  }
 );
 
 chatnets = {
@@ -48,11 +64,22 @@ chatnets = {
     max_whois = "30";
   };
   SILC = { type = "SILC"; };
+  OFTC = {
+    type = "IRC";
+    autosendcmd = "/^msg nickserv identify katmai96;wait 2000";
+  };
+  FREENODE = {
+    type = "IRC";
+    autosendcmd = "/^msg nickserv identify katmai96;wait 2000";
+  };
 };
 
 channels = (
   { name = "#irssi"; chatnet = "ircnet"; autojoin = "No"; },
-  { name = "silc"; chatnet = "silc"; autojoin = "No"; }
+  { name = "silc"; chatnet = "silc"; autojoin = "No"; },
+  { name = "#awesome"; chatnet = "FREENODE"; },
+  { name = "#awesome"; chatnet = "OFTC"; autojoin = "yes"; },
+  { name = "#OpenBSD"; chatnet = "OFTC"; autojoin = "yes"; }
 );
 
 aliases = {
@@ -223,11 +250,22 @@ settings = {
     use_ssl = "yes";
     server_reconnect_time = "1min";
   };
-  "fe-text" = { actlist_sort = "refnum"; paste_verify_line_count = "3"; };
+  "fe-text" = {
+    actlist_sort = "refnum";
+    paste_verify_line_count = "3";
+    term_force_colors = "yes";
+  };
   "fe-common/core" = {
     theme = "marker";
     hide_colors = "yes";
     use_msgs_window = "yes";
+    bell_beeps = "yes";
+    beep_msg_level = "MSGS NOTICES DCC DCCMSGS HILIGHT";
+    autolog = "yes";
+    autolog_path = "~/.irssi/logs/$tag/$0.log";
+    hide_text_style = "yes";
+    completion_auto = "yes";
+    window_auto_change = "yes";
   };
   "irc/dcc" = {
     dcc_autorename = "yes";
