@@ -5,3 +5,5 @@
 known_hosts
 ssh/controls/*
 mutt/imap.rc
+irssi/config
+irssi/logs/*

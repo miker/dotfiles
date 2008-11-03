@@ -48,11 +48,11 @@ source ~/.keychain/`hostname`-sh > /dev/null
 # Execute window manager into background
 exec $DEFAULTWM & wmpid=$!
     nitrogen --restore &
-    dbus-launch --exit-with-session  &
-    lomoco -8 --sms &
-    /home/gregf/code/bin/conky/conky.sh start &
-    xsetroot -cursor_name arrow &
-    nice -n15 firefox &
-    nice -n19 liferea &
-    xterm -t mutt -e mutt
+    #dbus-launch --exit-with-session  &
+    #lomoco -8 --sms &
+    #conky
+    #xsetroot -cursor_name arrow &
+    xterm &
+    #nice -n15 firefox &
+    #nice -n19 liferea &
 wait $wmpid

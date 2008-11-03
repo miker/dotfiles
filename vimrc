@@ -456,12 +456,14 @@ endif
 if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt-unicode'
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
     colorscheme zenburn
+    "colorscheme peaksea
 else
     colorscheme jammy
 endif
 
 if (has("gui_running"))
     colorscheme darkspectrum 
+    "colorscheme peaksea
     set guifont=Andale\ Mono\ 14
 	set mousem=popup	" Nice pop-up
 	set selection=exclusive	" Allow one char past EOL
