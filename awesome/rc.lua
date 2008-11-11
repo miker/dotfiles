@@ -9,6 +9,80 @@ require("naughty")
 -- config.lua.
 loadfile(awful.util.getdir("config").."/config.lua")()
 
+-- {{{ Variable definitions
+-- This is a file path to a theme file which will defines colors.
+theme_path = "/home/gregf/.config/awesome/themes/gregf"
+-- This is used later as the default terminal and editor to run.
+terminal = "xterm"
+editor = os.getenv("EDITOR") or "vim"
+editor_cmd = terminal .. " -e " .. editor
+
+-- Default modkey.
+-- Usually, Mod4 is the key with a logo between Control and Alt.
+-- If you do not like this or do not have such a key,
+-- I suggest you to remap Mod4 to another key using xmodmap or other tools.
+-- However, you can use another modifier like Mod1, but it may interact with others.
+modkey = "Mod1"
+superkey = "Mod4"
+
+-- tag bindings
+xterm = 1
+internet = 2
+jabber = 3
+news = 4
+music = 5
+mail = 6
+irc = 7
+vbox = 8
+burning = 9
+-- Table of layouts to cover with awful.layout.inc, order matters.
+layouts =
+{
+    "tile",
+    "tileleft",
+    "tilebottom",
+    "tiletop",
+    "fairh",
+    "fairv",
+    "magnifier",
+    "max",
+    "fullscreen",
+    "spiral",
+    "dwindle",
+    "floating"
+}
+
+-- Table of clients that should be set floating. The index may be either
+-- the application class or instance. The instance is useful when running
+-- a console app in a terminal like (Music on Console)
+--    xterm -name mocp -e mocp
+
+floatapps =
+{
+    -- by class
+    ["MPlayer"] = true,
+    ["pinentry"] = true,
+    ["gimp"] = true,
+    ["gajim.py"] = true
+}
+
+-- Applications to be moved to a pre-defined tag by class or instance.
+-- Use the screen and tags indices.
+apptags =
+{
+    ["Firefox"] = { screen = 1, tag = internet},
+    ["gajim.py"] = { screen = 1, tag = jabber },
+    ["liferea"] = { screen = 1, tag = news },
+    ["gmpc"] = { screen = 1, tag = music },
+    ["mutt"] = { screen = 1, tag = mail },
+    ["XChat"] = { screen = 1, tag = irc },
+    ["virtualbox"] = { screen = 1, tag = vbox },
+    ["k3b"] = { screen = 1, tag = burning }
+}
+-- Define if we want to use titlebar on all applications.
+use_titlebar = true 
+-- }}}
+
 -- {{{ Initialization
 -- Initialize theme (colors).
 beautiful.init(config.theme)
@@ -17,6 +91,7 @@ beautiful.init(config.theme)
 -- This allows to not pass plenty of arguments to each function
 -- to inform it about colors we want it to draw.
 awful.beautiful.register(beautiful)
+-- }}}
 
 -- {{{ Tags
 -- Define tags table.
@@ -127,9 +202,9 @@ for s = 1, screen.count() do
 end
 
 for i = 1, keynumber do
+    
     -- Use F1-F9 for desktops instead of 1-9
     hotkey = "F"..i
-    
     keybinding({ config.keys.modkey }, hotkey,
                    function ()
                        local screen = mouse.screen
@@ -146,19 +221,17 @@ for i = 1, keynumber do
                    end):add()
     keybinding({ config.keys.modkey, config.keys.shift }, i,
                    function ()
-                       local sel = client.focus
-                       if sel then
-                           if tags[sel.screen][i] then
-                               awful.client.movetotag(tags[sel.screen][i])
+                       if client.focus then
+                           if tags[client.focus.screen][i] then
+                               awful.client.movetotag(tags[client.focus.screen][i])
                            end
                        end
                    end):add()
     keybinding({ config.keys.modkey, config.keys.control, config.keys.shift }, i,
                    function ()
-                       local sel = client.focus
-                       if sel then
-                           if tags[sel.screen][i] then
-                               awful.client.toggletag(tags[sel.screen][i])
+                       if client.focus then
+                           if tags[client.focus.screen][i] then
+                               awful.client.toggletag(tags[client.focus.screen][i])
                            end
                        end
                    end):add()
@@ -212,6 +285,9 @@ keybinding({ config.keys.modkey, config.keys.control }, "h", function () awful.t
 keybinding({ config.keys.modkey, config.keys.control }, "l", function () awful.tag.incncol(-1) end):add()
 keybinding({ config.keys.modkey }, "space", function () awful.layout.inc(config.layouts, 1) end):add()
 keybinding({ config.keys.modkey, config.keys.shift }, "space", function () awful.layout.inc(config.layouts, -1) end):add()
+
+-- Client awful tagging: this is useful to tag some clients and then do stuff like move to tag on them
+keybinding({ config.keys.modkey }, "t", awful.client.togglemarked):add()
 
 for i = 1, keynumber do
     keybinding({ config.keys.modkey, config.keys.shift }, "F" .. i,
