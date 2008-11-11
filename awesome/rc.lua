@@ -9,80 +9,6 @@ require("naughty")
 -- config.lua.
 loadfile(awful.util.getdir("config").."/config.lua")()
 
--- {{{ Variable definitions
--- This is a file path to a theme file which will defines colors.
-theme_path = "/home/gregf/.config/awesome/themes/gregf"
--- This is used later as the default terminal and editor to run.
-terminal = "xterm"
-editor = os.getenv("EDITOR") or "vim"
-editor_cmd = terminal .. " -e " .. editor
-
--- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod1"
-superkey = "Mod4"
-
--- tag bindings
-xterm = 1
-internet = 2
-jabber = 3
-news = 4
-music = 5
-mail = 6
-irc = 7
-media = 8
-burning = 9
--- Table of layouts to cover with awful.layout.inc, order matters.
-layouts =
-{
-    "tile",
-    "tileleft",
-    "tilebottom",
-    "tiletop",
-    "fairh",
-    "fairv",
-    "magnifier",
-    "max",
-    "fullscreen",
-    "spiral",
-    "dwindle",
-    "floating"
-}
-
--- Table of clients that should be set floating. The index may be either
--- the application class or instance. The instance is useful when running
--- a console app in a terminal like (Music on Console)
---    xterm -name mocp -e mocp
-
-floatapps =
-{
-    -- by class
-    ["MPlayer"] = true,
-    ["pinentry"] = true,
-    ["gimp"] = true,
-    ["gajim.py"] = true
-}
-
--- Applications to be moved to a pre-defined tag by class or instance.
--- Use the screen and tags indices.
-apptags =
-{
-    ["Firefox"] = { screen = 1, tag = internet},
-    ["gajim.py"] = { screen = 1, tag = jabber },
-    ["liferea"] = { screen = 1, tag = news },
-    ["gmpc"] = { screen = 1, tag = music },
-    ["mutt"] = { screen = 1, tag = mail },
-    ["XChat"] = { screen = 1, tag = irc },
-    ["virtualbox"] = { screen = 1, tag = media },
-    ["k3b"] = { screen = 1, tag = burning }
-}
--- Define if we want to use titlebar on all applications.
-use_titlebar = true 
--- }}}
-
 -- {{{ Initialization
 -- Initialize theme (colors).
 beautiful.init(config.theme)
@@ -134,7 +60,9 @@ mylauncher = awful.widget.launcher({ image = "/usr/share/awesome/icons/awesome16
                                      menu = { id="mydevmenu", items=mydevmenu, menu_toggle=true } })
 
 -- Create a systray
-mysystray = widget({ type = "systray", align = "right" })
+if config.systray then
+    mysystray = widget({ type = "systray", align = "right" })
+end
 
 -- Create a wibox for each screen and add it
 mywibox = {}
