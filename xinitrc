@@ -13,7 +13,7 @@ export TMDIR=$TMP
 export TERMCMD=/usr/bin/xterm
 export BROWSER=/usr/bin/firefox-bin
 export TERMINAL=/usr/bin/xterm
-#export MOZ_DISABLE_PANGO=1
+export MOZ_DISABLE_PANGO=1
 
 unclutter -idle 15 -reset -root &
 
@@ -49,10 +49,11 @@ source ~/.keychain/`hostname`-sh > /dev/null
 exec $DEFAULTWM & wmpid=$!
     nitrogen --restore &
     dbus-launch --exit-with-session  &
-    lomoco -8 --sms &
-    /home/gregf/code/bin/conky/conky.sh start &
+    conky
     xsetroot -cursor_name arrow &
+    xterm &
+    xterm -T mutt -e mutt &
     nice -n15 firefox &
     nice -n19 liferea &
-    xterm -t mutt -e mutt
+    nice -n19 gpodder &
 wait $wmpid

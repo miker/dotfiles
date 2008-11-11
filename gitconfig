@@ -41,6 +41,7 @@
     filemode = true
     bare = false
     logallrefupdates = true
+    autocrlf = false
 [diff]
     external = /usr/bin/vimdiff
     renames = true

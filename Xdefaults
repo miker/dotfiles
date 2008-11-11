@@ -1,55 +1,31 @@
 ! Color Codes
+! *color seems to work for me on my Linux box. I have not tested this well. If
+! you don't think the colors are loading. Add your terminal name in front for
+! example XTerm*color0: #242424
 ! black
-XTerm*color0:             #242424
-XTerm*color8:             #828282
+*color0:             #242424
+*color8:             #828282
 ! red
-XTerm*color1:             #BF7979
-XTerm*color9:             #F4A45F
+*color1:             #BF7979
+*color9:             #F4A45F
 ! green
-XTerm*color2:             #97B26B
-XTerm*color10:            #C5F779
+*color2:             #97B26B
+*color10:            #C5F779
 ! yellow
-XTerm*color3:             #cdcda1
-XTerm*color11:            #ffffaf
+*color3:             #cdcda1
+*color11:            #ffffaf
 ! blue
-XTerm*color4:             #285A8B
-XTerm*color12:            #98afd9
+*color4:             #285A8B
+*color12:            #98afd9
 ! magenta
-XTerm*color5:             #d9b798
-XTerm*color13:            #d7d998
+*color5:             #d9b798
+*color13:            #d7d998
 ! cyan
-XTerm*color6:             #a1b5cd
-XTerm*color14:            #a1b5cd
+*color6:             #a1b5cd
+*color14:            #a1b5cd
 ! white
-XTerm*color7:             #ffffff
-XTerm*color15:            #dedede
-
-! Color Codes
-! black
-urxvt*color0:             #242424
-urxvt*color8:             #828282
-! red
-urxvt*color1:             #BF7979
-urxvt*color9:             #F4A45F
-! green
-urxvt*color2:             #97B26B
-urxvt*color10:            #C5F779
-! yellow
-urxvt*color3:             #cdcda1
-urxvt*color11:            #ffffaf
-! blue
-urxvt*color4:             #285A8B
-urxvt*color12:            #98afd9
-! magenta
-urxvt*color5:             #d9b798
-urxvt*color13:            #d7d998
-! cyan
-urxvt*color6:             #a1b5cd
-urxvt*color14:            #a1b5cd
-! white
-urxvt*color7:             #ffffff
-urxvt*color15:            #dedede
-
+*color7:             #ffffff
+*color15:            #dedede
 
 !XTerm settings
 XTerm*cursorBlink: false 
@@ -74,11 +50,11 @@ XTerm*.utf8: 1
 XTerm*.visualBell: true
 !XTerm*faceName: andale mono
 !XTerm*faceName: terminus:size=13
-XTerm*faceName: droid sans mono:size=12
+XTerm*faceName: droid sans mono:size=12:antialias=true
+!XTerm*faceName: terminus:size=12:antialias=false
 XTerm*shadowColor: #222222
 XTerm*saveLines: 10000
 XTerm*on4Clicks: all
-!XTerm*termName: xterm-color
 XTerm*colorBDMode: true
 XTerm*on2Clicks:  regex [^ \n]+
 XTerm*on3Clicks: regex (ftp|http|https|mailto|news|nntp|telnet|file|aim):[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;/?:@&~=%-]*))?
@@ -90,50 +66,28 @@ XTerm*jumpScroll: true
 XTerm*multiScroll: true
 XTerm*scrollTtyOutput: false
 XTerm*scrollKey: true
+XTerm*bellIsUrgent: true
 
-!aterm Settings
-aterm*cursorColor: #73B8D9 
-aterm*colorMode: 	true
-aterm*pointerColor:	blue
-aterm*pointerColor2: 	yellow
-aterm*borderWidth: 0	
-aterm*transparent:	true
-aterm*fading:		80	
-aterm*scrollBar:	false
-aterm*saveLines: 	45999	
-aterm*foreground: white
-aterm*background: black
-aterm*loginShell:true
-aterm*hideScrollbar: true
-aterm*hideTabbar: true
-aterm*hideButton: true
-aterm*hideMenubar: true
-aterm*backgroundFade: 50 
-aterm*shading: 35 
-aterm*font: 9x15bold 
-!aterm*font:  -*-andale mono-*-*-*-*-*-*-*-*-*-*-*-*
-aterm*geometry: 80x25 
-
-urxvt*cursorColor: #73B8D9 
-urxvt*tintColor: white
-urxvt*geometry: 80x25
-urxvt*foreground: #ffffff
-urxvt*background: #000000
-urxvt*urlLauncher: firefox -new-tab 
-!urxvt*shading: 35 
-!urxvt*fading: 10
-urxvt*loginShell: true 
-urxvt*scrollBar: false
-urxvt*meta8: false 
-urxvt*mouseWheelScrollPage: true
-!urxvt*inheritPixmap: true 
-!urxvt*font: xft:andale mono:pixelsize=18
-urxvt*font: xft:droid sans mono:size=12
-
-urxvt*scrollTtyOutput: false
-urxvt*scrollTtyKeypress: true
-urxvt*scrollWithBuffer: flase
-urxvt*scrollKey: true
+URxvt*cursorColor: #73B8D9 
+URxvt*tintColor: white
+URxvt*geometry: 80x25
+URxvt*foreground: #ffffff
+URxvt*background: #000000
+URxvt*urlLauncher: firefox -new-tab 
+URxvt*shading: 35 
+URxvt*fading: 10
+URxvt*loginShell: true 
+URxvt*scrollBar: false
+URxvt*meta8: false 
+URxvt*mouseWheelScrollPage: true
+URxvt*inheritPixmap: true 
+URxvt*font: xft:droid sans mono:size=12
+URxvt*scrollTtyOutput: false
+URxvt*scrollTtyKeypress: true
+URxvt*scrollWithBuffer: flase
+URxvt*scrollKey: true
+URxvt*urgentOnBell: true
+URxvt*visualBell: true
 
 !Cursors - Choose one
 !Xcursor.theme: Blue
@@ -152,13 +106,10 @@ Xcursor.theme: PolarCursorTheme
 !Xcursor.theme: Polar
 !Xcursor.theme: PolarCursorTheme-Green
 
-
-
-
 Xcursor.size: 18 
 
 !Xft settings
-Xft.dpi:                 120
+Xft.dpi:                120
 Xft.hinting:            1 
 Xft.hintstyle:          hintfull
 Xft.antialias:          1 

@@ -1,0 +1,57 @@
+--- Log opened Wed Nov 05 15:48:54 2008
+15:48 -NickServ(NickServ@services.)- This nickname is registered. Please choose a different nickname, or identify via /msg NickServ identify <password>.
+15:49 Irssi: Starting query in FREENODE with nickserv
+15:49 gregf> regain gregf katmai96
+15:49 -NickServ(NickServ@services.)- Invalid command. Use /msg NickServ help for a command listing.
+--- Log closed Wed Nov 05 15:49:47 2008
+--- Log opened Wed Nov 05 15:49:56 2008
+15:49 Irssi: Starting query in FREENODE with nickserv
+15:49 gregf> help
+15:49 -NickServ(NickServ@services.)- ***** NickServ Help *****
+15:49 -NickServ(NickServ@services.)- NickServ allows users to 'register' a nickname, and stop
+15:49 -NickServ(NickServ@services.)- others from using that nick. NickServ allows the owner of a
+15:49 -NickServ(NickServ@services.)- nickname to disconnect a user from the network that is using
+15:49 -NickServ(NickServ@services.)- their nickname.
+15:49 -NickServ(NickServ@services.)-  
+15:49 -NickServ(NickServ@services.)- For more information on a command, type:
+15:49 -NickServ(NickServ@services.)- /msg NickServ help <command>
+15:49 -NickServ(NickServ@services.)- For a verbose listing of all commands, type:
+15:49 -NickServ(NickServ@services.)- /msg NickServ help commands
+15:49 -NickServ(NickServ@services.)-  
+15:49 -NickServ(NickServ@services.)- The following commands are available:
+15:49 -NickServ(NickServ@services.)- GHOST           Reclaims use of a nickname.
+15:49 -NickServ(NickServ@services.)- GROUP           Adds a nickname to your account.
+15:49 -NickServ(NickServ@services.)- UNGROUP         Removes a nickname from your account.
+15:49 -NickServ(NickServ@services.)- IDENTIFY        Identifies to services for a nickname.
+15:49 -NickServ(NickServ@services.)- INFO            Displays information on registrations.
+15:49 -NickServ(NickServ@services.)- LISTCHANS       Lists channels that you have access to.
+15:49 -NickServ(NickServ@services.)- REGISTER        Registers a nickname.
+15:49 -NickServ(NickServ@services.)- SET             Sets various control flags.
+15:49 -NickServ(NickServ@services.)- RELEASE         Releases a services enforcer.
+15:49 -NickServ(NickServ@services.)-  
+15:49 -NickServ(NickServ@services.)- Other commands: DROP, HELP, ID, LOGOUT, MYACCESS, SETPASS, 
+15:49 -NickServ(NickServ@services.)-                 ACC, STATUS, TAXONOMY, VERIFY
+15:49 -NickServ(NickServ@services.)- ***** End of Help *****
+--- Log closed Wed Nov 05 15:50:02 2008
+--- Log opened Wed Nov 05 15:50:18 2008
+15:50 Irssi: Starting query in FREENODE with nickserv
+15:50 gregf> idenitfy katmai96
+--- Log closed Wed Nov 05 15:50:20 2008
+--- Log opened Wed Nov 05 15:50:24 2008
+15:50 -NickServ(NickServ@services.)- Invalid command. Use /msg NickServ help for a command listing.
+--- Log closed Wed Nov 05 15:55:52 2008
+--- Log opened Wed Nov 05 21:15:39 2008
+21:15 -NickServ(NickServ@services.)- This nickname is registered. Please choose a different nickname, or identify via /msg NickServ identify <password>.
+21:15 Irssi: Starting query in FREENODE with nickserv
+21:15 gregf> identify katmai96
+21:15 -NickServ(NickServ@services.)- You are now identified for gregf.
+--- Log closed Wed Nov 05 21:21:38 2008
+--- Log opened Thu Nov 06 01:17:42 2008
+01:17 -NickServ(NickServ@services.)- This nickname is registered. Please choose a different nickname, or identify via /msg NickServ identify <password>.
+01:17 Irssi: Starting query in FREENODE with nickserv
+01:17 gregf> identify katmai96
+01:17 -NickServ(NickServ@services.)- You are now identified for gregf.
+--- Log closed Thu Nov 06 01:23:40 2008
+--- Log opened Thu Nov 06 16:15:56 2008
+16:15 -NickServ(NickServ@services.)- This nickname is registered. Please choose a different nickname, or identify via /msg NickServ identify <password>.
+--- Log closed Thu Nov 06 16:21:45 2008

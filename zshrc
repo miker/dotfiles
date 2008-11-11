@@ -234,7 +234,7 @@ alias wget="wget -c"
 alias lsd='ls -Fld *(-/DN)'
 alias weather="/home/gregf/code/bin/forecast/forecast.rb"
 alias ncmpc="ncmpc -c"
-alias fixdbus="sudo -s dbus-uuidgen --ensure"
+alias fixdbus="dbus-uuidgen --ensure"
 alias wp="feh --bg-scale"
 alias m="nice -n1 mplayer -af volnorm -stop-xscreensaver"
 alias ml="nice -n1 mplayer -loop 0 -af volnorm -stop-xscreensaver"
@@ -487,7 +487,7 @@ function ech {
 }
 
 function junk {
-    scp -r $* web:~/blog/shared/stuff/
+    scp -r $* web:~/www/stuff/
 }
 
 function dotfile {
@@ -608,8 +608,8 @@ case `echo $TERM` in
             ;;
         esac
     ;;
-    mrxvt)
-        source ~/.zkbd/mrxvt-pc-linux-gnu
+    rxvt)
+        source ~/.zkbd/rxvt-pc-linux-gnu
     ;;
     screen|screen-*)
         case `uname` in
@@ -674,8 +674,8 @@ compctl -g '*.Z *.gz *.tgz' + -g '*' zcat gunzip tar open
 compctl -g '*.tar.Z *.tar.gz *.tgz *.tar.bz2' + -g '*' tar bzip2 open
 compctl -g '*.zip *.ZIP' + -g '*' unzip zip open
 compctl -g '*.rar *.RAR' + -g '*' rar unrar open
-compctl -g '*.(mp3|MP3|ogg|OGG|WAV|wav)' + -g '*(-/)'  ogg123 mpg123 audacious wma123 mplayer vlc
-compctl -g '*.(divx|DIVX|m4v|M4V|wmv|WMV|avi|AVI|mpg|mpeg|MPG|MPEG|WMV|wmv|mov|MOV|wma|WMA|w4a|W4A)' + -g '*(-/)'  xine mplayer kmplayer gmplayer vlc
+compctl -g '*.(mp3|MP3|ogg|OGG|WAV|wav|ogv|OGV)' + -g '*(-/)'  ogg123 mpg123 audacious wma123 mplayer vlc
+compctl -g '*.(divx|DIVX|m4v|M4V|wmv|WMV|avi|AVI|mpg|mpeg|MPG|MPEG|WMV|wmv|mov|MOV|wma|WMA|w4a|W4A|part|PART)' + -g '*(-/)'  xine mplayer kmplayer gmplayer vlc
 compctl -g '*.(pdf|PDF|ps|PS|tiff|TIFF)' + -g '*(-/)' evince acroread xpdf epdfview
 compctl -g '*.(jpg|JPG|jpeg|JPEG|gif|GIF|tiff|TIFF|png|PNG|tga|TGA)' + -g '*(-/)' feh gthumb xv f-spot gqview
 

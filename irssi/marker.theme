@@ -328,6 +328,7 @@ formats = {
     topic_unset = " %KT:[%G{channel %G$1}%K]/{nick %W$0}: %|%w$2";
     new_topic = " %KT:[%G{channel %G$1}%K]/{nick %W$0}: %|%w$2";
 
+    pubmsg = "{pubmsgnick $2 {pubnick \00309$0}}$1";
   };
   "fe-common/irc" = {
     chanmode_change = " %Km:%w{%wmode $1}%K/%n{nick $2}";

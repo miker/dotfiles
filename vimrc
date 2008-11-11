@@ -65,8 +65,6 @@ set history=900
 set fileformat=unix
 " Display list of matching files for completion
 set wildmode=list:longest	" Display list of matching files for completion
-" Ignore these file's for completion
-set wildignore=*.o,*.class,*~,*.lo,*.bak
 " Do not require end-of-line
 set noeol
 " Characters to break at for line wrapping
@@ -78,7 +76,8 @@ set breakat=\ \	!@*-+;:,.?
 " Override ignorecase if search has capital letters
 "set smartcase
 " No visual/audio bells
-set vb t_vb=
+"set vb t_vb=
+set visualbell
 " Do not stay vi compatible
 set nocompatible
 " Default encoding
@@ -93,6 +92,16 @@ set smarttab
 set printoptions+=syntax:y,number:y
 " improves performance -- let OS decide when to flush disk
 set nofsync
+" make sure we set a xterm title
+set title
+" start the scrolling three lines before the border
+set scrolloff=3
+" Don't prompt me for crap
+set shortmess=atI
+" ruler
+set ruler
+" ignore these in auto complete
+set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif
 
 "-----------------------------------------------------------------------
 " Plugin settings
@@ -462,6 +471,7 @@ endif
 
 if (has("gui_running"))
     colorscheme darkspectrum 
+    colorscheme literal_tango
     set guifont=Andale\ Mono\ 14
 	set mousem=popup	" Nice pop-up
 	set selection=exclusive	" Allow one char past EOL

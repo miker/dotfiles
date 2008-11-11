@@ -1,0 +1,58 @@
+--- Log opened Fri Nov 07 20:00:33 2008
+20:00 -NickServ(services@services.oftc.net)- This nickname is registered and protected.  If it is your nickname, you may
+20:00 -NickServ(services@services.oftc.net)- authenticate yourself to services with the IDENTIFY command.  If you do
+20:00 -NickServ(services@services.oftc.net)- not authenticate or change your nickname, I will change your nickname.  You
+20:00 -NickServ(services@services.oftc.net)- are getting this notice because you are not on the access list for the gregf
+20:00 -NickServ(services@services.oftc.net)- nickname.
+20:00 Irssi: Starting query in oftc with nickserv
+20:00 gregf> identify katmai96
+20:00 -NickServ(services@services.oftc.net)- You are successfully identified as gregf.
+--- Log closed Fri Nov 07 20:00:52 2008
+--- Log opened Fri Nov 07 20:59:07 2008
+20:59 -NickServ(services@services.oftc.net)- This nickname is registered and protected.  If it is your nickname, you may
+20:59 -NickServ(services@services.oftc.net)- authenticate yourself to services with the IDENTIFY command.  If you do
+20:59 -NickServ(services@services.oftc.net)- not authenticate or change your nickname, I will change your nickname.  You
+20:59 -NickServ(services@services.oftc.net)- are getting this notice because you are not on the access list for the gregf
+20:59 -NickServ(services@services.oftc.net)- nickname.
+20:59 Irssi: Starting query in oftc with nickserv
+20:59 gregf> idenitfy katmai96
+20:59 -NickServ(services@services.oftc.net)- Unknown command idenitfy, /msg NickServ HELP for help.
+--- Log closed Fri Nov 07 20:59:25 2008
+--- Log opened Fri Nov 07 20:59:58 2008
+20:59 Irssi: Starting query in oftc with nickserv
+20:59 Guest2111> regain gregf katmai96
+20:59 -NickServ(services@services.oftc.net)- REGAIN succeed on nickname gregf. You have been changed to your nickname.
+--- Log closed Fri Nov 07 21:05:06 2008
+--- Log opened Sat Nov 08 08:41:22 2008
+08:41 -NickServ(services@services.oftc.net)- This nickname is registered and protected.  If it is your nickname, you may
+08:41 -NickServ(services@services.oftc.net)- authenticate yourself to services with the IDENTIFY command.  If you do
+08:41 -NickServ(services@services.oftc.net)- not authenticate or change your nickname, I will change your nickname.  You
+08:41 -NickServ(services@services.oftc.net)- are getting this notice because you are not on the access list for the gregf
+08:41 -NickServ(services@services.oftc.net)- nickname.
+08:41 -NickServ(services@services.oftc.net)- Unknown command ident, /msg NickServ HELP for help.
+--- Log closed Sat Nov 08 08:47:06 2008
+--- Log opened Sat Nov 08 08:48:50 2008
+08:48 -NickServ(services@services.oftc.net)- Unknown command ident, /msg NickServ HELP for help.
+08:50 Irssi: Starting query in oftc with nickserv
+08:50 gregf_> regain gregf katmai96
+08:50 -NickServ(services@services.oftc.net)- REGAIN succeed on nickname gregf. You have been changed to your nickname.
+--- Log closed Sat Nov 08 08:51:08 2008
+--- Log opened Sat Nov 08 20:43:43 2008
+20:43 -NickServ(services@services.oftc.net)- This nickname is registered and protected.  If it is your nickname, you may
+20:43 -NickServ(services@services.oftc.net)- authenticate yourself to services with the IDENTIFY command.  If you do
+20:43 -NickServ(services@services.oftc.net)- not authenticate or change your nickname, I will change your nickname.  You
+20:43 -NickServ(services@services.oftc.net)- are getting this notice because you are not on the access list for the gregf
+20:43 -NickServ(services@services.oftc.net)- nickname.
+20:43 -NickServ(services@services.oftc.net)- Unknown command ident, /msg NickServ HELP for help.
+--- Log closed Sat Nov 08 20:49:34 2008
+--- Log opened Sun Nov 09 09:50:59 2008
+09:50 -NickServ(services@services.oftc.net)- This nickname is registered and protected.  If it is your nickname, you may
+09:50 -NickServ(services@services.oftc.net)- authenticate yourself to services with the IDENTIFY command.  If you do
+09:50 -NickServ(services@services.oftc.net)- not authenticate or change your nickname, I will change your nickname.  You
+09:50 -NickServ(services@services.oftc.net)- are getting this notice because you are not on the access list for the gregf
+09:50 -NickServ(services@services.oftc.net)- nickname.
+09:50 -NickServ(services@services.oftc.net)- Unknown command ident, /msg NickServ HELP for help.
+09:51 Irssi: Starting query in oftc with nickserv
+09:51 gregf> identify katmai96
+09:51 -NickServ(services@services.oftc.net)- You are successfully identified as gregf.
+--- Log closed Sun Nov 09 09:51:20 2008

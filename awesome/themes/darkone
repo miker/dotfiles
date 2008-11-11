@@ -1,20 +1,20 @@
 ---------------------------
--- gregf awesome theme --
+-- darkone awesome theme --
 ---------------------------
  
 font = droid sans mono 12
-bg_normal = #CCCCCC
-bg_focus = #2C619C
-bg_urgent = #ff0000
+bg_normal = #303030
+bg_focus = #3A3A3A
+bg_urgent = #97B26B
  
-fg_normal = #000000
-fg_focus = #FFFFFF
+fg_normal = #CCCCCC
+fg_focus = #9BB037
 fg_urgent = #000000
  
-border_width = 1
-border_normal = #000055
-border_focus = #2C619C
-border_marked = #91231c
+border_width = 3 
+border_normal = #000000
+border_focus = #242424
+border_marked = #CCCCCC
  
 titlebar_close_button = true
 taglist_squares = true

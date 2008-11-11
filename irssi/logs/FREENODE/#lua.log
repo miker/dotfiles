@@ -1,0 +1,327 @@
+--- Log opened Thu Nov 06 16:19:19 2008
+16:19  j:gregf:(n=gregf@207.5.168.94)
+16:19 Irssi: #lua: Total of 121 nicks (0 ops, 0 halfops, 0 voices, 121 normal)
+16:19 Irssi: Join to #lua was synced in 0 secs
+16:38  q:cladhaire:(n=jnwhiteh@WoWUIDev/WoWI/Featured/Dongle/cladhaire)
+16:42  q:b0ne:(n=b0ne@70.86.148.98)
+16:42  j:cladhaire:(n=jnwhiteh@WoWUIDev/WoWI/Featured/Dongle/cladhaire)
+16:43  ~:cladhaire >> clad|sleep
+16:43  q:blankthemuffin:(n=josh@116.250.39.225)
+16:44  q:THC4k:(n=Miranda@p5B0C90F7.dip0.t-ipconnect.de)
+16:47  j:Dejan:(n=dejan@79-72-229-82.dynamic.dsl.as9105.com)
+16:52  q:Lisimba:(i=kaas@dyn33-dh.nbw.tue.nl)
+17:01  q:demi_alucard:(n=tensai@189.61.92.52)
+17:02  j:demi_alucard:(n=tensai@189.61.92.52)
+17:03  j:zLouD:(n=zloud7@pD9E8545C.dip.t-dialin.net)
+17:03  q:Funkeh`:(n=funk@WoWUIDev/WoWAce/Ace3/BigWigs/funkeh)
+17:06  q:barika:(n=tbalazs@gordius.iit.bme.hu)
+17:06  j:barika:(n=tbalazs@gordius.iit.bme.hu)
+17:07  q:TobiasFar_:(n=tfar@port-2890.pppoe.wtnet.de)
+17:09  j:Lisimba:(n=kaas@s55915088.adsl.wanadoo.nl)
+17:10  q:blastbeat:(n=blastbea@pD9E6CDCC.dip.t-dialin.net)
+17:10  q:cncfanatics:(n=cncfanat@WoWUIDev/cncfanatics)
+17:14  weigon_> does someone know about patches for lua + dlopen + hpux ?
+17:14  weigon_> HP/UX doesn't have the normal -ldl interface
+17:19  ventonegro> weigon_: shl_load?
+17:19  weigon_> right
+17:20  weigon_> looking at loadlib.c it doesn't implement it
+17:20  ventonegro> nope, but shouldn't take long to write
+17:20  ventonegro> a couple hours
+17:20  weigon_> perhaps i'm lucky and don't have to care about old hpux 10.
+17:20  ventonegro> :-)
+17:21  p:Keffo_:(n=keffo@90-231-37-224-no154.tbcn.telia.com)
+17:22  j:Keffo:(n=keffo@90-231-37-224-no154.tbcn.telia.com)
+17:22  Keffo> damnit, turn that registered crap off already
+17:22  ventonegro> +1
+17:22  Keffo> I need to add copyright notice to inf+1 files, anyone know any scripts?
+17:23  Keffo> preferably in lua, for masturbatory purposes
+17:23  j:Lisimba2:(n=kaas@s55915088.adsl.wanadoo.nl)
+17:23  m:+o ventonegro/ChanServ
+17:25  m:-R/ventonegro
+17:25  Keffo> yay
+17:26  m:-o ventonegro/ChanServ
+17:32  sanooj> why was the +R annoying?
+17:33  haste> requires you to identify with nickserv before you can join afaik
+17:33  etan1> Because Keffo's client is broken. =) But more to the point because it requires you to register and identify in order to talk or change nick.
+17:34  Keffo> what's broken about it?
+17:34  Keffo> the logic is broken!
+17:35  sanooj> it's broken if it doesn't identify you with the nickserv without you noticing. :)
+17:35  etan1> You claimed your client didn't let you send anything at all, which means you can't identify as your real nick and then change names.
+17:35  cbreak> potential configuration issue
+17:35  etan1> Regardless, I don't think it was doing much useful for the channel and is a tad annoying.
+17:36  etan1> But you guys can fight it out if you want to. =) I'm heading out.
+17:38  j:blastbeat:(n=blastbea@pD9E6CDCC.dip.t-dialin.net)
+17:40  q:Lisimba:(n=kaas@s55915088.adsl.wanadoo.nl)
+17:40  Keffo> It's annoying, yeah, and also not very inviting to freshies
+17:42  j:epoch:(n=K-I-S-S@p3m/member/epoch)
+17:43  ventonegro> it bothers me when I reconnect and my old nick is still around, it prevents ERC from registering me again with nickserv
+17:44  cbreak> you can authenticate with nickserv even when your nick is in action
+17:44  cbreak> and then just "ghost" it
+17:44  ventonegro> nope, I must ghost it, then change nicks, then authenticate
+17:45  InsertWittyName> I authenticate.
+17:45  InsertWittyName> ghost
+17:45  InsertWittyName> change nicks.
+17:45  cbreak> I only did it once
+17:45  cbreak> but it was rather painless
+17:46  cbreak> once I managed to remember my password...
+17:46  ventonegro> hm... so one can identifies before changing nicks
+17:46  ventonegro> cool! :-D
+17:47  cbreak> nickserv:
+17:47  cbreak> Syntax: IDENTIFY <nick> <password>
+17:48  ventonegro> yeah yeah
+17:48  ventonegro> but... was +R really that necessary?
+17:48  Keffo> it was when those children kept trolling
+17:49  ventonegro> well, gtg now
+17:49  ventonegro> if they come back, leave a message for me
+17:49  cbreak> wasn't there a time where a bot tried to join with hundreds of random nicks?
+17:50  q:ventonegro:(n=user@136.166.1.3)
+17:50  q:epoch:(n=K-I-S-S@p3m/member/epoch)
+17:51  j:epoch:(n=K-I-S-S@p3m/member/epoch)
+17:52  j:b0ne:(n=b0ne@70.86.148.98)
+17:55  q:demi_alucard:(n=tensai@189.61.92.52)
+18:09  q:epoch:(n=K-I-S-S@p3m/member/epoch)
+18:09  j:epoch:(n=K-I-S-S@p3m/member/epoch)
+18:12  j:sculptor:(n=sculptor@93.86.74.2)
+18:19  j:Shirik:(n=nospam@conspiracy/developer/Shirik)
+18:28  bnovc> does lua have no equivalent to && in a condition/bool?
+18:28  bnovc> i surprisingly can't find it on basic lua tutorials
+18:29  rjek> What does && do?
+18:29  bnovc> ah its literal 'and'
+18:29  bnovc> && is an and for most languages
+18:29  rjek> In /some/ languages that are based on C syntax.
+18:29  rjek> The vast majority don't.
+18:30  bnovc> well, perl, php, java, c, c#, vb, etc. all support it
+18:30  rjek> It was an afterthought in VB.
+18:30  rjek> But all the others you list are partially based on C syntax.
+18:31  bnovc> sure but most popular languages are
+18:31  rjek> I'm utterly astounded that you've not found a Lua tutorial that uses boolean logic in if statements, though.
+18:31  rjek> Aha!  Lua would be more popular if it used && for and, rather than a keyword? >:)
+18:31  bnovc> it uses boolean logic but not with an 'and'
+18:31  bnovc> i didn't say that the use of '&&' was the cause of the popularity
+18:32  rjek> http://www.lua.org/pil/3.3.html
+18:32  rjek> First place I looked, includes the use of and.
+18:32  rjek> Anyway, bed.
+18:32  rjek> Night.
+18:33  bnovc> i should have searched for logical operators instead of conditionals probably
+18:33  bnovc> thanks 
+18:34  sztanpet> lua is designed with minimal bloat and clearness in mind, thats why you wont find ++ either
+18:34  bnovc> yep, i already tried ++
+18:34  bnovc> there are numerous things that i have come to expect that dont work
+18:34  j:Funkeh`:(n=funk@WoWUIDev/WoWAce/Ace3/BigWigs/funkeh)
+18:35  bnovc> i also just tried "length = 3; for i=1,length do print(i); length = 100; end"
+18:35  bnovc> expecting that to cause the for loop to be extended
+18:36  bnovc> apparently it doesn't evaluate the conditions for the loop per iteration
+18:36  sztanpet> it optimizes wherever it can, yes
+18:37  bnovc> well thats optimization at the cost of functionality
+18:37  bnovc> is there a common workaround for that
+18:38  sztanpet> sure, go for while
+18:38  j:hakware:(n=weechat@c-71-234-190-248.hsd1.ct.comcast.net)
+18:39  bnovc> yuck
+18:41  sztanpet> or produce your own iterator whatever you wish
+18:41  bnovc> you mean produce my own iterator with lua code that internally uses a while?
+18:42  sztanpet> does it?
+18:46  ~:hakware >> ENKI-][
+18:47  q:threeve:(n=Jason@64.157.28.107)
+18:49  q:epoch:(n=K-I-S-S@p3m/member/epoch)
+18:49  j:Algonquian:(n=algon@adsl-75-13-162-63.dsl.fyvlar.sbcglobal.net)
+18:51  p:Slakah:(n=Slakah@5acd4394.bb.sky.com)
+18:57 Netsplit verne.freenode.net <-> irc.freenode.net quits: Funkeh`, sylvaan, MattJ100_, InsertWittyName, juvinious, MattJ, Dejan, Guest58155, neomantra, rphillips,  (+5 more, use /NETSPLIT to show all of them)
+18:58 Netsplit over, joins: Funkeh`, blastbeat, Dejan, Guest58155, InsertWittyName, MattJ, neomantra, sylvaan, rphillips, geocalc (+5 more)
+19:02  j:drmikecrowe_:(n=drmikecr@208-104-120-154.lwhe.2wcm.comporium.net)
+19:04  q:drmikecrowe:(n=drmikecr@208-104-120-154.lwhe.2wcm.comporium.net)
+19:04  ~:drmikecrowe_ >> drmikecrowe
+19:10  q:InsertWittyName:(n=InsertWi@82-38-209-42.cable.ubr01.wake.blueyonder.co.uk)
+19:26  j:threeve:(n=threeve@c-71-201-249-18.hsd1.il.comcast.net)
+19:27  q:LordMetroid:(n=lordmetr@90-224-93-243-no108.tbcn.telia.com)
+19:29  ~:cogwheel >> cog|away
+19:38  q:zLouD:(n=zloud7@pD9E8545C.dip.t-dialin.net)
+19:44  j:Kilroo:(n=Kilroo@cpe-098-026-168-017.triad.res.rr.com)
+19:45  q:blastbeat:(n=blastbea@pD9E6CDCC.dip.t-dialin.net)
+19:46  q:Shirik:(n=nospam@conspiracy/developer/Shirik)
+19:46  q:MattJ:(n=MattJ@88-111-141-211.dynamic.dsl.as9105.com)
+19:56  j:Vornucopia:(n=vorn@64-252-141-161.adsl.snet.net)
+19:59  j:lhf:(n=lhf@139.82.86.2)
+20:00  q:Vornotron:(n=vorn@64-252-136-73.adsl.snet.net)
+20:04  j:Shirik:(n=nospam@conspiracy/developer/Shirik)
+20:04  q:threeve:(n=threeve@c-71-201-249-18.hsd1.il.comcast.net)
+20:04  j:threeve:(n=threeve@c-71-201-249-18.hsd1.il.comcast.net)
+20:04  lhf> weigon_: see http://www.geda.seul.org/mailinglist/geda-dev37/msg00094.html
+20:05  lhf> but I think recent HPUX have dlopen and friends.
+20:07  q:Vornucopia:(n=vorn@64-252-141-161.adsl.snet.net)
+20:07  q:ckknight:(n=ckknight@WoWUIDev/WoWAce/CurseStaff/CurseForge/ckknight)
+20:08  j:Vornucopia:(n=vorn@64-252-73-43.adsl.snet.net)
+20:08  weigon_> yeah, it is 
+20:08  weigon_> luckily I don't have to support HP/UX 10.x
+20:09  lhf> so, doesn't Lua build unmodified in HP/UX ?
+20:15  q:weigon_:(n=jan@nat/sun/x-acab5dc81d1862fe)
+20:17  ~:Tem|afk >> Tem
+20:20  j:ckknight:(n=ckknight@WoWUIDev/WoWAce/CurseStaff/CurseForge/ckknight)
+20:26  j:Kyevan:(n=kyevan@lofn.hardison.net)
+20:28  j:InsertWittyName:(n=InsertWi@82-38-209-42.cable.ubr01.wake.blueyonder.co.uk)
+20:40  j:alc:(n=alc@123.117.70.88)
+20:41  j:Vornotron:(n=vorn@64-252-148-130.adsl.snet.net)
+20:47  j:roadt:(n=roadt@61.191.27.34)
+20:48  q:Vornucopia:(n=vorn@64-252-73-43.adsl.snet.net)
+20:56  q:Dejan:(n=dejan@79-72-229-82.dynamic.dsl.as9105.com)
+21:00  q:Funkeh`:(n=funk@WoWUIDev/WoWAce/Ace3/BigWigs/funkeh)
+21:00  j:Funkeh`:(n=funk@WoWUIDev/WoWAce/Ace3/BigWigs/funkeh)
+21:01  Chunky_Ks> I have dlopen on my hpux build box here
+21:01  Chunky_Ks> HP-UX phux B.11.00 A 9000/869 1473544391 two-user license
+21:01  lhf> Chunky_Ks: and how did you build Lua?
+21:02  lhf> I think "make bsd" works for hpux
+21:03  Chunky_Ks> mh.
+21:03  Chunky_Ks> I haven't build lua on this monstrosity before
+21:03  Chunky_Ks> gimme a minute to play with it
+21:03  Chunky_Ks> HPUX is another of those unixes that just needs to die already
+21:05  Chunky_Ks> ... awesome, our HPUX's tar can't even extract a tar  file
+21:05  Chunky_Ks> only understands using a tape
+21:06  lhf> tar -xvf does not work?
+21:06  lhf> after gunzip?
+21:06  Chunky_Ks> nope
+21:06  lhf> I find this very odd.
+21:07  Chunky_Ks> oh
+21:07  Chunky_Ks> there it is
+21:07  Chunky_Ks> it was just tar -xvf- that was broken
+21:07  lhf> http://www.informatik.uni-frankfurt.de/doc/man/hpux/tar.1.html
+21:07  j:epoch:(n=K-I-S-S@p3m/member/epoch)
+21:08  *** Chunky_Ks tries make posix 
+21:08  lhf> oh, no need for -
+21:08  lhf> try bsd and you'll get .so support
+21:08  Chunky_Ks> "If the name of the file is -, tar writes to the standard output or reads from the standard input, whichever is appropriate
+21:08  epoch> shared object
+21:08  Chunky_Ks> "
+21:09  Chunky_Ks> I usually extract tarballs thus: gzip -cd file.tar.gz | tar -xvf-
+21:09  epoch> Chunky_Ks, fail
+21:09  epoch> tar -zxvf *tar.gz
+21:09  lhf> you need a space after f
+21:09  Chunky_Ks> lhf: oh. gyuh
+21:09  lhf> tar -xvf -
+21:10  epoch> its gzipped too
+21:10  Chunky_Ks> epoch: not fail. go use a system that isn't GNU
+21:10  epoch> and you wanna just skip the tar -z function
+21:10  epoch> fail says i.
+21:10  epoch> like what, a MAC?
+21:10  Chunky_Ks> oh. you missed the first half of this conversation
+21:10  Chunky_Ks> HPUX
+21:10  epoch> hell no -- never in life
+21:10  epoch> who the hell uses that anymore anyway...
+21:10  Chunky_Ks> Lots of people.
+21:10  lhf> Chunky_Ks: OTOH since you have gunzip, perhaps you have gtar.
+21:11  epoch> lots of people you know maybe
+21:11  *** epoch is in 2000+
+21:11  epoch> \cisco routers/switches linux\bsd servers and windows * usres
+21:11  epoch> uf
+21:11  epoch> unf
+21:12  epoch> thats the only way to fly bebbeh
+21:12  Chunky_Ks> mh. let's not have this discussion, but suffice to say that lots of people sitll use lots of unices other than those ones
+21:12  Kyevan> No Macintosh systems in there? :P
+21:12  epoch> hell no
+21:12  epoch> macintosh pftuh
+21:12  epoch> no use
+21:12  epoch> apple only exists because bill gates didnt want a monopoly
+21:12  Chunky_Ks> I speak from experience, since I work at a company whose software runs on seven different flavors of unix, and I do tech support for all of them.
+21:12  Kyevan> Our setup is linux/bsd servers, windows desktops, macintosh laptops.
+21:12  epoch> feed competitor money to make competitive products
+21:12  epoch> heh
+21:13  Chunky_Ks> lhf: make posix built and runs
+21:13  Kyevan> And the network is a horrible mix of whatever we happened to have when we needed it :P
+21:13  epoch> "monopoly is just a game mr. president.. im trying to rule the fucking world" -bill gates
+21:13  lhf> sure, but not loadlib...
+21:13  lhf> Chunky_Ks: please try "make clean bsd test"
+21:13  epoch> anyways
+21:13  *** epoch &
+21:13  Chunky_Ks> k
+21:14  Kyevan> (Note, this is effectively a home network that just so happens to have some business use, not a real business network.)
+21:14  q:Keffo:(n=keffo@90-231-37-224-no154.tbcn.telia.com)
+21:14  Chunky_Ks> AIX, SCO, HPUX. All three still in massive use, all three need to die horrible horrible deaths
+21:14  lhf> AIX was horrible from day 1
+21:14  Chunky_Ks> although they do keep me in work, so I guess they're not all bad
+21:14  Chunky_Ks> so was SCO
+21:16  Chunky_Ks> lhf: http://lua.pastey.net/100880
+21:16  Chunky_Ks> for this thing: 
+21:16  Chunky_Ks> bash-2.05# uname -a                                                                             
+21:16  Chunky_Ks> HP-UX phux B.11.00 A 9000/869 1473544391 two-user license
+21:16  lhf> thanks. there you go, loadlib support and all.
+21:16  Chunky_Ks> I have a beefyfast modern HPUX box somewhere too that I could try if you wanted
+21:16  lhf> no , that's ok
+21:16  Kyevan> :P you think that's bad? we recently got our hands on a few second-handers... one of them was, for some reason known only to the gods, running xenix
+21:17  Chunky_Ks> well, xenix really is dead
+21:17  Kyevan> It's now one of our DOS terminals <_<
+21:17  q:doub:(n=doub@pha75-20-88-189-232-211.fbx.proxad.net)
+21:17  lhf> thanks. bedtime
+21:18  p:lhf:(n=lhf@139.82.86.2)
+21:25  q:stuckie:(i=stuckie@82-40-140-47.cable.ubr02.uddi.blueyonder.co.uk)
+21:44  q:InsertWittyName:(n=InsertWi@82-38-209-42.cable.ubr01.wake.blueyonder.co.uk)
+21:47  j:dedebkgrn:(n=dedebkgr@209.216.196.2)
+21:47  q:dedebkgrn:(n=dedebkgr@209.216.196.2)
+22:00  j:MachinShin:(n=vat@user-0cev2du.cable.mindspring.com)
+22:05  q:Slade-:(i=user@255.85.204.68.cfl.res.rr.com)
+22:10  j:tieTYT:(n=jane@ip70-187-171-123.oc.oc.cox.net)
+22:10  tieTYT> whoa
+22:10  tieTYT> this channel is big
+22:10  tieTYT> is there a java lua interpreter?
+22:12  sztanpet> yes kalua
+22:13  sztanpet> http://code.google.com/p/kahlua/
+22:14  tieTYT> oh right i found this but it seems to be for mobile phones
+22:16  q:ENKI-][:(n=weechat@c-71-234-190-248.hsd1.ct.comcast.net)
+22:16  j:Khelku1:(n=seb@mkogames.com)
+22:23  q:epoch:(n=K-I-S-S@p3m/member/epoch)
+22:34  q:Khelkun:(n=seb@mkogames.com)
+22:40  j:snogglethorpe:(n=snogglet@fencepost.gnu.org)
+22:43  ~:sylvaan >> sylvanaar
+22:46  q:Funkeh`:(n=funk@WoWUIDev/WoWAce/Ace3/BigWigs/funkeh)
+23:00 Netsplit verne.freenode.net <-> irc.freenode.net quits: threeve, ckknight, MattJ100_, sylvanaar, juvinious, rphillips, neomantra, Guest58155, Kilroo, Azrael07,  (+3 more, use /NETSPLIT to show all of them)
+23:05 Netsplit over, joins: ckknight, threeve, Kilroo, Guest58155, neomantra, sylvanaar, rphillips, geocalc, juvinious, lua_bot (+3 more)
+23:05  j:_juvinious:(n=juviniou@65.34.159.36)
+23:05  q:batrick:(n=batrick@c-68-35-53-13.hsd1.nm.comcast.net)
+23:05  q:rphillips:(n=rphillip@unaffiliated/rphillips)
+23:05  j:batrick:(n=batrick@c-68-35-53-13.hsd1.nm.comcast.net)
+23:05  j:rphillips:(n=rphillip@unaffiliated/rphillips)
+23:19  j:StealthAsimov:(i=1000@c-4a81e255.030-101-6b6c6d10.cust.bredbandsbolaget.se)
+23:23  q:Guest58155:(n=skullsho@83.120.33.65.cfl.res.rr.com)
+23:23  j:Guest58155:(n=skullsho@83.120.33.65.cfl.res.rr.com)
+23:31  ~:Tem >> Tem\afk
+23:31  ~:Tem\afk >> Tem
+23:34  j:rabbit-:(n=johannes@220-253-45-140.VIC.netspace.net.au)
+23:38  j:scul:(n=sculptor@213.253.116.195)
+23:39 Netsplit verne.freenode.net <-> irc.freenode.net quits: threeve, MattJ100_, ckknight, sylvanaar, juvinious, neomantra, rabbit-, Azrael07, geocalc, Kilroo,  (+2 more, use /NETSPLIT to show all of them)
+23:40  batcoder-7> i guess decompiling wise, people  could never get the *true* source, maybe just something similar 
+23:40  batcoder-7> been doing some research on it 
+23:40 Netsplit over, joins: neomantra
+23:40  j:_juvinious:(n=juviniou@c-65-34-159-36.hsd1.fl.comcast.net)
+23:41  j:Sculptorio:(n=sculptor@93.86.74.2)
+23:41  j:MattJ100:(n=matthew@heavyhorse.vm.bytemark.co.uk)
+23:44  q:_juvinious:(n=juviniou@c-65-34-159-36.hsd1.fl.comcast.net)
+23:44  j:Major_Victory:(n=Major@c-98-213-24-159.hsd1.il.comcast.net)
+23:44  j:rabbit-:(n=johannes@220-253-45-140.VIC.netspace.net.au)
+23:44  j:_juvinious:(n=juviniou@65.34.159.36)
+23:44  j:ckknight:(n=ckknight@WoWUIDev/WoWAce/CurseStaff/CurseForge/ckknight)
+23:44  j:threeve:(n=threeve@c-71-201-249-18.hsd1.il.comcast.net)
+23:44  j:Kilroo:(n=Kilroo@cpe-098-026-168-017.triad.res.rr.com)
+23:44  j:sylvanaar:(n=sylvanaa@unaffiliated/sylvanaar)
+23:44  j:geocalc:(n=geocalc@91-171-205-31.rev.libertysurf.net)
+23:44  j:juvinious:(n=juviniou@c-65-34-159-36.hsd1.fl.comcast.net)
+23:44  j:lua_bot:(n=lua_bot@li37-84.members.linode.com)
+23:44  j:Azrael07:(n=mdoison@91.121.159.48)
+23:44  j:juvinious_:(n=juviniou@c-65-34-159-36.hsd1.fl.comcast.net)
+23:46  q:threeve:(n=threeve@c-71-201-249-18.hsd1.il.comcast.net)
+23:46  j:threeve:(n=threeve@c-71-201-249-18.hsd1.il.comcast.net)
+23:48  q:_juvinious:(n=juviniou@65.34.159.36)
+23:53  q:juvinious_:(n=juviniou@c-65-34-159-36.hsd1.fl.comcast.net)
+23:53  q:juvinious:(n=juviniou@c-65-34-159-36.hsd1.fl.comcast.net)
+23:54  j:MachinShn:(n=vat@user-0cev2du.cable.mindspring.com)
+23:57  q:sculptor:(n=sculptor@93.86.74.2)
+23:58  j:MachinSh_:(n=vat@user-0cev2du.cable.mindspring.com)
+23:58  q:MachinShin:(n=vat@user-0cev2du.cable.mindspring.com)
+23:59  j:cncfanatics:(n=cncfanat@WoWUIDev/cncfanatics)
+23:59  q:MachinShn:(n=vat@user-0cev2du.cable.mindspring.com)
+23:59  q:scul:(n=sculptor@213.253.116.195)
+--- Day changed Fri Nov 07 2008
+00:04  q:threeve:(n=threeve@c-71-201-249-18.hsd1.il.comcast.net)
+00:08  ~:MachinSh_ >> MachinShin
+00:14  j:blankthemuffin:(n=josh@116.250.39.225)
+00:14  q:Kilroo:(n=Kilroo@cpe-098-026-168-017.triad.res.rr.com)
+00:14  j:epoch:(n=K-I-S-S@p3m/member/epoch)
+00:25  q:cncfanatics:(n=cncfanat@WoWUIDev/cncfanatics)
+00:29  q:sztanpet:(n=sztanpet@142.58ec54.tvnetwork.hu)
+00:30  j:sztanpet:(n=sztanpet@142.58ec54.tvnetwork.hu)
