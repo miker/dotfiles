@@ -84,8 +84,10 @@ case `uname` in
 	    #export SSH_ASKPASS="/usr/bin/gtk2-ssh-askpass"
 
         if [[ -f /etc/gentoo-release ]]; then
+            export RUBYOPT="" #will break gentoo's ebuild for rubygems, if your using it comment this out
             alias ms="mirrorselect -b10 -s5 -D"
             alias python-updater="python-updater -P paludis"
+            alias dp="dispatch-conf"
 
             export ECHANGELOG_USER="Greg Fitzgerald <netzdamon@gmail.com>"
             export PALUDIS_OPTIONS="--show-reasons summary --dl-reinstall-scm weekly --log-level warning --dl-reinstall if-use-changed --show-use-descriptions changed"
@@ -298,6 +300,7 @@ alias latestkernel='lynx -dump http://kernel.org/kdist/finger_banner'
 alias update-eix='ionice -c3 update-eix'
 alias dosbox='dosbox -conf ~/.dosbox.conf -fulscreen'
 alias ports='netstat --inet -pln'
+alias vim="vim -p"
 ################################################################################
 # Functions and Completion
 ################################################################################
