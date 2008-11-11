@@ -472,7 +472,9 @@ endif
 
 if (has("gui_running"))
     colorscheme darkspectrum 
-    set guifont=Andale\ Mono\ 14
+    "set guifont=Andale\ Mono\ 14
+    set guifont=Droid\ Sans\ Mono\ 10
+    "set guifont=ProggyCleanTTSZBP:h12:cDEFAULT
 	set mousem=popup	" Nice pop-up
 	set selection=exclusive	" Allow one char past EOL
 	set ttymouse=xterm2	" Terminal type for mouse code recognition
