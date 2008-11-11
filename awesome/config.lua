@@ -82,14 +82,14 @@ config.theme_path =  awful.util.getdir("config") .. "/themes/"
 config.theme = config.theme_path..config.theme_name
 
 -- tag bindings
-main = 1
+dev = 1
 www = 2 
 im = 3 
 news = 4 
 music = 5 
 mail = 6 
 irc = 7 
-vbox = 8 
+media = 8 
 misc = 9
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
@@ -117,14 +117,14 @@ config.float = {
 }
 
 config.tags = {
-    { tag = 1,  name = "main",    layout = "tiletop",     key = "1", },
+    { tag = 1,  name = "dev",    layout = "tiletop",     key = "1", },
     { tag = 2,  name = "www",     layout = "max",         key = "2", },
     { tag = 3,  name = "im",      layout = "floating",    key = "3", },
     { tag = 4,  name = "news",    layout = "max",         key = "4", },
     { tag = 5,  name = "music",   layout = "max",         key = "5", },
     { tag = 6,  name = "mail",    layout = "max",         key = "q", },
     { tag = 7,  name = "irc",     layout = "tiletop",     key = "w", },
-    { tag = 8,  name = "vbox",    layout = "tiletop",     key = "e", },
+    { tag = 8,  name = "media",    layout = "tiletop",     key = "e", },
     { tag = 9,  name = "misc",    layout = "tiletop",     key = "r", }
 }
 
@@ -137,12 +137,12 @@ config.tags = {
 config.maps = {
     { name = music, screen = 1,     apps = {"gmpc"}, },
     { name = www,   screen = 1,     apps = {".*Firefox"}, },
-    { name = vbox,  screen = 1,     apps = {".?DownThemAll!", "Downloads", "DTA"}, },
+    { name = media,  screen = 1,     apps = {".?DownThemAll!", "Downloads", "DTA"}, },
     { name = im,    screen = 1,     apps = { "gajim.*"}, },
     { name = news,  screen = 1,     apps = {"liferea"}, },
     { name = misc,  screen = 1,     apps = {"k3b", "Deluge", "gpodder"}, },
     { name = mail,  screen = 1,     apps = {"mutt"}, },
-    { name = main,  screen = 1,     apps = {"htop"}, },
+    { name = dev,  screen = 1,     apps = {"htop"}, },
     { name = irc,   screen = 1,     apps = {"XChat.*", "irssi"}, }
 }
 

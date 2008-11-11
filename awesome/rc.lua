@@ -33,7 +33,7 @@ news = 4
 music = 5
 mail = 6
 irc = 7
-vbox = 8
+media = 8
 burning = 9
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
@@ -76,7 +76,7 @@ apptags =
     ["gmpc"] = { screen = 1, tag = music },
     ["mutt"] = { screen = 1, tag = mail },
     ["XChat"] = { screen = 1, tag = irc },
-    ["virtualbox"] = { screen = 1, tag = vbox },
+    ["virtualbox"] = { screen = 1, tag = media },
     ["k3b"] = { screen = 1, tag = burning }
 }
 -- Define if we want to use titlebar on all applications.
@@ -95,7 +95,7 @@ awful.beautiful.register(beautiful)
 
 -- {{{ Tags
 -- Define tags table.
-tags_names	= { "main", "www", "im", "news", "music", "mail", "irc", "vbox", "misc" }
+tags_names	= { "dev", "www", "im", "news", "music", "mail", "irc", "media", "misc" }
 tags_layout	= { "tiletop", "max", "fairv", "max", "max", "max", "tiletop", "tiletop", "tiletop" } 
 tags = {}
 for s = 1, screen.count() do
@@ -117,7 +117,7 @@ mytextbox = widget({ type = "textbox", align = "right" })
 -- Set the default text in textbox
 mytextbox.text = "<b><small> " .. AWESOME_RELEASE .. " </small></b>"
 
--- Create a laucher widget and a main menu
+-- Create a laucher widget and a dev menu
 myawesomemenu = {
    { "manual", config.apps.terminal .. " -e man awesome" },
    { "edit config", config.apps.editor .. " " .. awful.util.getdir("config") .. "/rc.lua" },
@@ -125,13 +125,13 @@ myawesomemenu = {
    { "quit", awesome.quit }
 }
 
-mymainmenu = {
+mydevmenu = {
    { "awesome", myawesomemenu, "/usr/share/awesome/icons/awesome16.png" },
    { "open terminal", config.apps.terminal }
 }
 
 mylauncher = awful.widget.launcher({ image = "/usr/share/awesome/icons/awesome16.png",
-                                     menu = { id="mymainmenu", items=mymainmenu, menu_toggle=true } })
+                                     menu = { id="mydevmenu", items=mydevmenu, menu_toggle=true } })
 
 -- Create a systray
 mysystray = widget({ type = "systray", align = "right" })
@@ -187,7 +187,7 @@ end
 
 -- {{{ Mouse bindings
 awesome.buttons({
-    button({ }, 3, function () awful.menu.new({ id="mymainmenu", items=mymainmenu }) end),
+    button({ }, 3, function () awful.menu.new({ id="mydevmenu", items=mydevmenu }) end),
     button({ }, 4, awful.tag.viewnext),
     button({ }, 5, awful.tag.viewprev)
 })
