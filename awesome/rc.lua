@@ -115,7 +115,7 @@ end
 
 -- {{{ Mouse bindings
 awesome.buttons({
-    button({ }, 3, function () awful.menu.new({ id="mydevmenu", items=mydevmenu }) end),
+    button({ }, 3, function () awful.menu.new({ id="mydevmenu", items=mydevmenu, menu_toggle=true }) end),
     button({ }, 4, awful.tag.viewnext),
     button({ }, 5, awful.tag.viewprev)
 })
