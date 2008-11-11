@@ -13,6 +13,7 @@ mailboxes =merb
 mailboxes =MR
 mailboxes =jquery
 mailboxes =paperclip
+mailboxes =awesomewm
 mailboxes =gentoo-bugs
 mailboxes =gentoo-catalyst
 mailboxes =gentoo-dev

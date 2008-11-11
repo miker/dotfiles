@@ -1,14 +1,14 @@
 [default]
 fs="yes"
 vo="xv"
-#ao="alsa"
+ao="alsa"
 #ao="null" # start mplayer muted
 #nosound="yes" # or instead of null we could use this
 #channels=2
-#lang=en
+lang=en
 monitoraspect = "16:9"
-#af=volnorm
-#vf=denoise3d,pp
+af=volnorm
+vf=denoise3d,pp
 #framedrop=1
 #hardframedrop=0
 double="yes"
