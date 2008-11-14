@@ -11,7 +11,7 @@ export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X1
 export TMP=$HOME/.tmp
 export TMDIR=$TMP
 export TERMCMD=/usr/bin/xterm
-export BROWSER=/usr/bin/firefox-bin
+export BROWSER=/usr/bin/firefox
 export TERMINAL=/usr/bin/xterm
 export MOZ_DISABLE_PANGO=1
 
