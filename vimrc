@@ -92,14 +92,12 @@ set smarttab
 set printoptions+=syntax:y,number:y
 " improves performance -- let OS decide when to flush disk
 set nofsync
-" make sure we set a xterm title
-set title
 " start the scrolling three lines before the border
 set scrolloff=3
 " Don't prompt me for crap
 set shortmess=atI
 " ruler
-set ruler
+"set ruler
 " ignore these in auto complete
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif
 
@@ -270,6 +268,7 @@ nmap <C-P> :tabp<CR>
 noremap <silent> <C-O> :FuzzyFinderTextMate<CR>
 noremap <silent> <F8> :FuzzyFinderMruFile<CR>
 noremap <silent> <F9> :NERDTreeToggle<CR>
+noremap <silent> <F10> :call <SID>Restart()<CR>
 " Spell check
 noremap <silent> <F1> z=
 " Spell Check (Reverse)
@@ -309,6 +308,10 @@ function Mideo()
     chdir /home/gregf/mideo/
     open TODO
     NERDTreeFromBookmark mideo
+endfunction
+
+function <SID>Restart()
+    !touch $PWD/tmp/restart.txt
 endfunction
 
 " Removes unnecessary whitespace
@@ -430,6 +433,10 @@ if has("autocmd")
 		    \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
 		    \ norm G
 
+	autocmd BufNewFile *.lua 0put ='# vim: set sw=4 sts=4 et tw=80 :' |
+		    \ 0put ='#!/usr/bin/env lua' | set sw=4 sts=4 et tw=80 |
+		    \ norm G
+
 	autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
 		    \ 1put ='' | call MakeIncludeGuards() |
 		    \ set sw=4 sts=4 et tw=80 | norm G
@@ -473,8 +480,7 @@ endif
 if (has("gui_running"))
     colorscheme darkspectrum 
     "set guifont=Andale\ Mono\ 14
-    set guifont=Droid\ Sans\ Mono\ 10
-    "set guifont=ProggyCleanTTSZBP:h12:cDEFAULT
+    set guifont=Droid\ Sans\ Mono\ 12
 	set mousem=popup	" Nice pop-up
 	set selection=exclusive	" Allow one char past EOL
 	set ttymouse=xterm2	" Terminal type for mouse code recognition
@@ -507,11 +513,11 @@ endif
 
 if &term =~ "xterm"
     if has('title')
-	set title
+	    set title
     endif
     if exists('&t_SI')
-	let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
-	let &t_EI = "\<Esc>]12;grey80\x7"
+	    let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
+    	let &t_EI = "\<Esc>]12;grey80\x7"
     endif
 endif
 
