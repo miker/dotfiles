@@ -120,6 +120,23 @@ case `uname` in
                 sudo /sbin/rc-update del $1 default
             }
 
+            function instkernel {
+                if ![ -f $PWD/.config ]; then
+                    echo "Please run make menuconfig first"
+                    exit
+                fi
+                if ![ EUID == 0 ]; then
+                    echo "You must be root to run this"
+                    exit
+                fi
+                mount /boot
+                make clean
+                make -j3 all && make -j3 modules_install && make -j3 install
+                vim /boot/grub/grub.conf
+                umount /boot
+                echo "You are now ready to reboot."
+            }
+
         fi
 
         # We Want utf8
