@@ -27,6 +27,7 @@ config.tags = {}
 config.layouts = {}
 config.float = {}
 config.theme = {}
+config.menu = {}
 
 -- {{{ Keys
 -- Setup some default key bindings.
@@ -128,11 +129,6 @@ config.tags = {
     { tag = 9,  name = "misc",    layout = "tiletop",     key = "r", }
 }
 
--- has to be called before config.maps
---[[for i,t in pairs(config.tags) do]]
-    --t[t.name] = i
---[[end]]
-
 -- possible add tagnumber and layout into this?
 config.maps = {
     { name = music, screen = 1,     apps = {"gmpc"}, },
@@ -146,11 +142,26 @@ config.maps = {
     { name = irc,   screen = 1,     apps = {"XChat.*", "irssi"}, }
 }
 
+-- {{{ Menu
+config.menu = {
+    root = {
+        { "open terminal", config.apps.terminal },
+        { "awesome", config.menu.root, "/usr/share/awesome/icons/awesome16.png" }
+    },
+    myawesomemenu = {
+       { "manual", config.apps.terminal .. " -e man awesome" },
+       { "edit config", config.apps.editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
+       { "restart", awesome.restart },
+       { "quit", awesome.quit }
+    },
+}
+--- }}}
+
 -- Define if we want to use titlebar on all applications.
 config.titlebar = false 
--- }}}
-
-config.systray = false 
+-- Display the systray applets
+config.systray = true 
+-- Enable mouse warping
 config.mouse_warping = false 
 
 -- set time_t to true if you would rather use that over date_format
@@ -158,16 +169,17 @@ config.time_t = false
 config.date_format = "%A %B %d %I:%M:%S%P"
 
 config.iconbox = false 
+-- honorsizehints when set to true leaves a gap between client windows.
 config.honorsizehints = false 
 
 
-naughty.notify({ text = "notification",
-                 title = "title",
-                 position = "top_right",
-                 timeout = 5,
-                 --icon="/path/to/image",
-                 fg="#FFFFFF",
-                 bg="#000000",
-                 screen = 1 })
+--[[naughty.notify({ text = "notification",]]
+                 --title = "title",
+                 --position = "top_right",
+                 --timeout = 5,
+                 ----icon="/path/to/image",
+                 --fg="#FFFFFF",
+                 --bg="#000000",
+                 --[[screen = 1 })]]
 
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80
