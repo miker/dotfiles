@@ -46,7 +46,7 @@ mytextbox.text = "<b><small> " .. AWESOME_RELEASE .. " </small></b>"
 -- Create a laucher widget and a dev menu
 myawesomemenu = {
    { "manual", config.apps.terminal .. " -e man awesome" },
-   { "edit config", config.apps.editor .. " " .. awful.util.getdir("config") .. "/rc.lua" },
+   { "edit config", config.apps.editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
    { "restart", awesome.restart },
    { "quit", awesome.quit }
 }
@@ -115,6 +115,7 @@ end
 
 -- {{{ Mouse bindings
 awesome.buttons({
+    --button({ }, 3, function () awful.menu.new({ id="mydevmenu", items=mydevmenu, menu_toggle=true }) end),
     button({ }, 3, function () awful.menu.new({ id="mydevmenu", items=mydevmenu, menu_toggle=true }) end),
     button({ }, 4, awful.tag.viewnext),
     button({ }, 5, awful.tag.viewprev)
@@ -218,7 +219,7 @@ keybinding({ config.keys.modkey, config.keys.shift }, "space", function () awful
 keybinding({ config.keys.modkey }, "t", awful.client.togglemarked):add()
 
 for i = 1, keynumber do
-    keybinding({ config.keys.modkey, config.keys.shift }, "F" .. i,
+    keybinding({ config.keys.modkey, config.keys.shift }, i,
                    function ()
                        local screen = mouse.screen
                        if tags[screen][i] then
