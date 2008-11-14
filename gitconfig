@@ -20,7 +20,7 @@
     changed = green
     untracked = cyan
 [alias]
-    ci = commit -v
+    ci = commit -v -s
     st = status
     pl = pull
     lo = log --date=local --pretty=full --stat
