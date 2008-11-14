@@ -29,6 +29,8 @@
     gc = clean -f
     md = clone git:mideo.git mideo
     code = clone git@github.com:gregf/scripts.git bin
+    dotfiles = clone git@github.com:gregf/dotfiles.git
+    overlay = clone git@github.com:gregf/gregf-overlay.git
     doc = clone git:doc.git doc
     gr = reset
 
