@@ -16,6 +16,7 @@ print("Configuration Loaded...")
 --  Map tags differently. Instead of F1..F9 use 1..5 then q..r(6..9)
 --  Config option true/false for taskbar.
 --  Config option true/false to display the widget bar, hotkey to turn on off
+--  Hash for Config.menu
 -- }}} 
 
 -- {{{ Config settings 
@@ -78,7 +79,7 @@ config.apps.dmenu_cmd = config.apps.dmenu.." -b "..config.apps.dmenu_nb..config.
 
 -- {{{ Config settings 
 config.home = os.getenv("HOME")
-config.theme_name = "darkone" or "gregf"
+config.theme_name = "darkone/theme" or "gregf/theme"
 config.theme_path =  awful.util.getdir("config") .. "/themes/"
 config.theme = config.theme_path..config.theme_name
 
