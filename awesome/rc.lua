@@ -5,18 +5,20 @@
 require("awful")
 require("beautiful")
 require("naughty")
+require("revelation")
 -- Load my config settings. Most of everything you'll want to tweak is in
 -- config.lua.
 loadfile(awful.util.getdir("config").."/config.lua")()
 
 -- {{{ Initialization
 -- Initialize theme (colors).
+--beautiful.init(config.theme)
 beautiful.init(config.theme)
 
 -- Register theme in awful.
 -- This allows to not pass plenty of arguments to each function
 -- to inform it about colors we want it to draw.
-awful.beautiful.register(beautiful)
+--awful.beautiful.register(beautiful)
 -- }}}
 
 -- {{{ Tags
@@ -43,7 +45,7 @@ mytextbox = widget({ type = "textbox", align = "right" })
 -- Set the default text in textbox
 mytextbox.text = "<b><small> " .. AWESOME_RELEASE .. " </small></b>"
 
--- Create a laucher widget and a dev menu
+-- Create a laucher widget and a main menu
 myawesomemenu = {
    { "manual", config.apps.terminal .. " -e man awesome" },
    { "edit config", config.apps.editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
@@ -51,13 +53,13 @@ myawesomemenu = {
    { "quit", awesome.quit }
 }
 
-mydevmenu = {
-   { "awesome", myawesomemenu, "/usr/share/awesome/icons/awesome16.png" },
-   { "open terminal", config.apps.terminal }
-}
+mymainmenu = awful.menu.new({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
+                                        { "open terminal", config.apps.terminal }
+                                      }
+                            })
 
-mylauncher = awful.widget.launcher({ image = "/usr/share/awesome/icons/awesome16.png",
-                                     menu = { id="mydevmenu", items=mydevmenu, menu_toggle=true } })
+mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+                                     menu = mymainmenu })
 
 -- Create a systray
 if config.systray then
@@ -115,8 +117,7 @@ end
 
 -- {{{ Mouse bindings
 awesome.buttons({
-    --button({ }, 3, function () awful.menu.new({ id="mydevmenu", items=mydevmenu, menu_toggle=true }) end),
-    button({ }, 3, function () awful.menu.new({ id="mydevmenu", items=mydevmenu, menu_toggle=true }) end),
+    button({ }, 3, function () mymainmenu:toggle() end),
     button({ }, 4, awful.tag.viewnext),
     button({ }, 5, awful.tag.viewprev)
 })
@@ -184,6 +185,8 @@ keybinding({ config.keys.super }, "l", function() awful.util.spawn(config.apps.r
 keybinding({ config.keys.super }, "f", function() awful.util.spawn(config.apps.browser) end):add()
 keybinding({ config.keys.super }, "h", function() awful.util.spawn(config.apps.terminal.." -T htop -e htop") end):add()
 keybinding({ config.keys.super }, "p", function() awful.util.spawn(config.apps.music) end):add()
+keybinding({ config.keys.super }, "k", function() awful.util.spawn("gvim") end):add()
+keybinding({ config.keys.super }, "e", function() revelation() end):add()
 
 -- restart / quit
 keybinding({ config.keys.modkey, config.keys.control }, "r", awesome.restart):add()
@@ -335,7 +338,7 @@ end)
 awful.hooks.arrange.register(function (screen)
     local layout = awful.layout.get(screen)
     if layout then
-        mylayoutbox[screen].image = image("/usr/share/awesome/icons/layouts/" .. layout .. "w.png")
+        mylayoutbox[screen].image = image(beautiful["layout_" .. layout])
     else
         mylayoutbox[screen].image = nil
     end
