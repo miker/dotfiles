@@ -15,7 +15,7 @@ export BROWSER=/usr/bin/firefox
 export TERMINAL=/usr/bin/xterm
 export MOZ_DISABLE_PANGO=1
 
-unclutter -idle 15 -reset -root &
+unclutter -idle 30 -reset -root &
 
 #xmodmap ~/.Xmodmap
 xset -b -bc +dpms r rate 250 50
@@ -34,7 +34,8 @@ xset -r 129 -r 231 -r 198 -r 236 -r 160
 #xmodmap -e "remove lock = Caps_Lock"
 #xmodmap -e "keysym Caps_Lock = Escape"
 
-nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1
+# Not needed with 180.06 and above.
+#nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1
 
 xsetroot -solid black &
 
