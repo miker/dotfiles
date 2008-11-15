@@ -243,7 +243,7 @@ alias sd='export DISPLAY=:0.0'
 alias cpan="perl -MCPAN -e shell"
 alias cup='cvs -z3 update -Pd'
 alias mv='nocorrect /bin/mv'
-alias rm='nocorrect /bin/rm -i'
+alias rm='nocorrect /bin/rm -I --preserve-root'
 alias shred='nocorrect ionice -c3 /usr/bin/shred -fuzv'
 alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l1 -v -x -r'
 alias man='nocorrect man'
