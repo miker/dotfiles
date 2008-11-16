@@ -5,7 +5,6 @@
 require("awful")
 require("beautiful")
 require("naughty")
-require("revelation")
 -- Load my config settings. Most of everything you'll want to tweak is in
 -- config.lua.
 loadfile(awful.util.getdir("config").."/config.lua")()
@@ -186,7 +185,6 @@ keybinding({ config.keys.super }, "f", function() awful.util.spawn(config.apps.b
 keybinding({ config.keys.super }, "h", function() awful.util.spawn(config.apps.terminal.." -T htop -e htop") end):add()
 keybinding({ config.keys.super }, "p", function() awful.util.spawn(config.apps.music) end):add()
 keybinding({ config.keys.super }, "k", function() awful.util.spawn("gvim") end):add()
-keybinding({ config.keys.super }, "e", function() revelation() end):add()
 
 -- restart / quit
 keybinding({ config.keys.modkey, config.keys.control }, "r", awesome.restart):add()
