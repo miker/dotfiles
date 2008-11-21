@@ -185,6 +185,8 @@ keybinding({ config.keys.super }, "f", function() awful.util.spawn(config.apps.b
 keybinding({ config.keys.super }, "h", function() awful.util.spawn(config.apps.terminal.." -T htop -e htop") end):add()
 keybinding({ config.keys.super }, "p", function() awful.util.spawn(config.apps.music) end):add()
 keybinding({ config.keys.super }, "k", function() awful.util.spawn("gvim") end):add()
+keybinding({ config.keys.super }, "t", function() awful.titlebar.add(client.focus) end):add()
+keybinding({ config.keys.super, config.keys.shift }, "t", function() awful.titlebar.remove(client.focus) end):add()
 
 -- restart / quit
 keybinding({ config.keys.modkey, config.keys.control }, "r", awesome.restart):add()
@@ -324,11 +326,12 @@ awful.hooks.manage.register(function (c)
     -- awful.client.setslave(c)
 
     -- Honor size hints
-    client.focus = c
     c.honorsizehints = false
     if config.honorsizehints then
         c.honorsizehints = true
     end
+
+    client.focus = c
 end)
 
 -- Hook function to execute when arranging the screen.
