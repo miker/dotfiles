@@ -123,7 +123,7 @@ if !exists("g:snip_elem_delim")
 endif
 
 if !exists("g:snippetsEmu_key")
-  let g:snippetsEmu_key = "<Tab>"
+  let g:snippetsEmu_key = "<s-left>"
 endif
 
 "call s:Debug("", "Set variables")

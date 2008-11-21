@@ -2,9 +2,6 @@
 
 # Set your Default Window Manager
 DEFAULTWM='awesome'
-#DEFAULTWM='startfluxbox'
-#DEFAULTWM='openbox-session'
-
 
 # Set some enviroment varibles
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin
@@ -49,10 +46,10 @@ source ~/.keychain/`hostname`-sh > /dev/null
 # Execute window manager into background
 exec $DEFAULTWM & wmpid=$!
     nitrogen --restore &
-    dbus-launch --exit-with-session  &
+    dbus-launch --exit-with-session &
     conky
     xsetroot -cursor_name arrow &
-    xterm &
+    #xterm &
     xterm -T mutt -e mutt &
     nice -n15 firefox &
     nice -n19 liferea &
