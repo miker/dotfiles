@@ -27,7 +27,9 @@
     me = log --date=local --pretty=short --author=netzdamon@gmail.com --stat
     gp = push origin master:refs/heads/master
     gc = clean -f
+    d = diff
     md = clone git:mideo.git mideo
+    gitosis = clone git:gitosis-admin.git gitosis-admin 
     code = clone git@github.com:gregf/scripts.git bin
     dotfiles = clone git@github.com:gregf/dotfiles.git
     overlay = clone git@github.com:gregf/gregf-overlay.git
@@ -44,6 +46,6 @@
     bare = false
     logallrefupdates = true
     autocrlf = false
-[diff]
-    external = /usr/bin/vimdiff
+;[diff]
+    ;external = /usr/bin/vimdiff
     renames = true

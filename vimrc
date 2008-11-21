@@ -266,9 +266,11 @@ map		:Q :q
 nmap <C-N> :tabn<CR>
 nmap <C-P> :tabp<CR>
 noremap <silent> <C-O> :FuzzyFinderTextMate<CR>
+noremap <silent> <F7> :Tlist<CR>
 noremap <silent> <F8> :FuzzyFinderMruFile<CR>
 noremap <silent> <F9> :NERDTreeToggle<CR>
 noremap <silent> <F10> :call <SID>Restart()<CR>
+noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
 " Spell check
 noremap <silent> <F1> z=
 " Spell Check (Reverse)
@@ -456,6 +458,8 @@ if has("autocmd")
 	"improve autocomplete menu color
 	highlight Pmenu ctermbg=238 gui=bold
 	au BufRead,BufNewFile *.js set ft=javascript.jquery
+    au BufRead,BufNewFile *.js.haml set ft=javascript.jquery
+    au BufRead,BufNewFile *.js.erb set ft=javascript.jquery
     augroup END
 endif
 
@@ -472,12 +476,14 @@ endif
 if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt-unicode'
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
     colorscheme zenburn
+    "colorscheme gigamo
     "colorscheme peaksea
 else
     colorscheme jammy
 endif
 
 if (has("gui_running"))
+    "colorscheme gigamo
     colorscheme darkspectrum 
     "set guifont=Andale\ Mono\ 14
     set guifont=Droid\ Sans\ Mono\ 12
@@ -551,3 +557,18 @@ autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 "improve autocomplete menu color
 highlight Pmenu ctermbg=238 gui=bold
+
+
+let g:SuperTabMappingForward = '<c-right>'
+let g:SuperTabMappingBackward = '<c-left>'
+let g:SuperTabLongestHighlight = 1 
+let g:SuperTabMidWordCompletion = 1
+let g:SuperTabRetainCompletionType = 1 
+
+" Set taglist plugin options
+let Tlist_Use_Right_Window = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_Enable_Fold_Column = 0
+let Tlist_Compact_Format = 1
+let Tlist_File_Fold_Auto_Close = 0
+let Tlist_Inc_Winwidth = 1

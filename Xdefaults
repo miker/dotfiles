@@ -1,31 +1,55 @@
 ! Color Codes
-! *color seems to work for me on my Linux box. I have not tested this well. If
-! you don't think the colors are loading. Add your terminal name in front for
-! example XTerm*color0: #242424
 ! black
-*color0:             #242424
-*color8:             #828282
-! red
-*color1:             #BF7979
-*color9:             #F4A45F
-! green
-*color2:             #97B26B
-*color10:            #C5F779
-! yellow
-*color3:             #cdcda1
-*color11:            #ffffaf
-! blue
-*color4:             #285A8B
-*color12:            #98afd9
-! magenta
-*color5:             #d9b798
-*color13:            #d7d998
-! cyan
-*color6:             #a1b5cd
-*color14:            #a1b5cd
-! white
-*color7:             #ffffff
-*color15:            #dedede
+!*color0:             #242424
+!*color8:             #828282
+!! red
+!*color1:             #BF7979
+!*color9:             #F4A45F
+!! green
+!*color2:             #97B26B
+!*color10:            #C5F779
+!! yellow
+!*color3:             #cdcda1
+!*color11:            #ffffaf
+!! blue
+!*color4:             #285A8B
+!*color12:            #98afd9
+!! magenta
+!*color5:             #d9b798
+!*color13:            #d7d998
+!! cyan
+!*color6:             #a1b5cd
+!*color14:            #a1b5cd
+!! white
+!*color7:             #ffffff
+!*color15:            #dedede
+
+
+! tangoesque scheme
+! Black
+*color0: #000000
+*color8: #555753
+! Red
+*color1: #ff6565
+*color9: #ff8d8d
+! Green
+*color2: #93d44f
+*color10: #c8e7a8
+! Yellow
+*color3: #eab93d
+*color11: #ffc123
+! Blue
+*color4: #204a87
+*color12: #3465a4
+! Mangenta
+*color5: #ce5c00
+*color13: #f57900
+! Cyan
+*color6: #89b6e2
+*color14: #46a4ff
+! White
+*color7: #cccccc
+*color15: #ffffff
 
 !XTerm settings
 XTerm*cursorBlink: false 
