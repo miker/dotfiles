@@ -1,7 +1,7 @@
 " Name:		darkeclipse.vim
 " Maintainer:	Kojo Sugita
-" Last Change:	2008-09-04
-" Revision:	1.0
+" Last Change:	2008-11-22
+" Revision:	1.1
 
 set background=dark
 hi clear
@@ -15,6 +15,7 @@ hi Normal	guifg=#b0b0b0 guibg=#101520
 hi NonText	guifg=#606060 guibg=#202530	gui=none
 hi SpecialKey	guifg=#606060 guibg=#101520
 hi Cursor	guifg=#101520 guibg=#c0c0c0
+hi CursorLine	guibg=#252530
 hi lCursor	guifg=#101520 guibg=#c0c0c0
 hi CursorIM	guifg=#101520 guibg=#c0c0c0
 
