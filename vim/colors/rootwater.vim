@@ -1,7 +1,7 @@
 " Name: rootwater.vim
 " Maintainer:	Kojo Sugita
-" Last Change:  2008-08-26
-" Revision: 1.1
+" Last Change:  2008-11-22
+" Revision: 1.2
 "
 set background=dark
 hi clear
@@ -15,6 +15,7 @@ hi Normal	guifg=#babdb6	guibg=#151b1d
 hi NonText	guifg=#4f5b5d	guibg=#232729	gui=none
 hi SpecialKey	guifg=#4f5b5d	guibg=#2c3032	gui=none
 hi Cursor	guifg=#3a553a	guibg=#77dd88
+hi CursorLine	guibg=#303035
 hi lCursor	guifg=#3a553a	guibg=#77dd88
 hi CursorIM	guifg=#3a553a	guibg=#77dd88
 
@@ -61,7 +62,7 @@ hi Number	guifg=#77dd88
 hi Char		guifg=#77dd88
 hi String	guifg=#77dd88
 hi Boolean	guifg=#77dd88
-hi Comment	guifg=#606060
+hi Comment	guifg=#656565
 hi Constant	guifg=#88ee99			gui=none
 hi Identifier	guifg=white
 hi Statement    guifg=#8fffff			gui=none
