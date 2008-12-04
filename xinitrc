@@ -2,6 +2,8 @@
 
 # Set your Default Window Manager
 DEFAULTWM='awesome'
+# Used to check awesome for memory leaks
+#DEFAULTWM='valgrind --leak-check=full --tool=memcheck --log-file=/home/gregf/.awesome/mem.log /usr/bin/awesome'
 
 # Set some enviroment varibles
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin
@@ -10,7 +12,6 @@ export TMDIR=$TMP
 export TERMCMD=/usr/bin/xterm
 export BROWSER=/usr/bin/firefox
 export TERMINAL=/usr/bin/xterm
-export MOZ_DISABLE_PANGO=1
 
 unclutter -idle 30 -reset -root &
 
@@ -45,13 +46,12 @@ source ~/.keychain/`hostname`-sh > /dev/null
 
 # Execute window manager into background
 exec $DEFAULTWM & wmpid=$!
-    nitrogen --restore &
-    dbus-launch --exit-with-session &
-    conky
-    xsetroot -cursor_name arrow &
-    #xterm &
-    xterm -T mutt -e mutt &
-    nice -n15 firefox &
-    nice -n19 liferea &
-    nice -n19 gpodder &
+   nitrogen --restore &
+   conky
+   xsetroot -cursor_name arrow &
+   #dbus-launch --exit-with-session &
+   xterm -T mutt -e mutt &
+   nice -n15 firefox &
+   nice -n19 liferea &
+   nice -n19 gpodder &
 wait $wmpid
