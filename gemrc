@@ -4,9 +4,9 @@
 - http://gems.github.com
 - http://gems.rubyonrails.org
 :benchmark: false
-:gem: --no-ri --no-rdoc
 :update_sources: true
 :bulk_threshold: 1000
 :backtrace: false
 :verbose: true
 :benchmark: false
+gem: --no-ri --no-rdoc  
