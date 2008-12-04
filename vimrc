@@ -59,6 +59,8 @@ set background=dark
 set winminheight=1
 " Show last command
 set showcmd
+" Nice big viminfo file
+set viminfo='1000,f1,:1000,/1000
 " History size
 set history=900
 " Default fileformat
@@ -97,7 +99,7 @@ set scrolloff=3
 " Don't prompt me for crap
 set shortmess=atI
 " ruler
-"set ruler
+set ruler
 " ignore these in auto complete
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif
 
@@ -301,6 +303,8 @@ noremap <Leader>gp gqap
 noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
 " Delete blank lines
 noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
+" Don't make a # force column zero.
+inoremap # X<BS>#
 
 ""-----------------------------------------------------------------------
 "" Functions
@@ -460,6 +464,7 @@ if has("autocmd")
 	au BufRead,BufNewFile *.js set ft=javascript.jquery
     au BufRead,BufNewFile *.js.haml set ft=javascript.jquery
     au BufRead,BufNewFile *.js.erb set ft=javascript.jquery
+    au BufRead,BufNewFile *.pp set ft=puppet
     augroup END
 endif
 
@@ -484,8 +489,9 @@ endif
 
 if (has("gui_running"))
     "colorscheme gigamo
-    colorscheme darkspectrum 
-    "set guifont=Andale\ Mono\ 14
+    "colorscheme darkspectrum 
+    "colorscheme kellys < friggen awesomeness
+    colorscheme wombat " < friggen awesomeness as well
     set guifont=Droid\ Sans\ Mono\ 12
 	set mousem=popup	" Nice pop-up
 	set selection=exclusive	" Allow one char past EOL
@@ -572,3 +578,5 @@ let Tlist_Enable_Fold_Column = 0
 let Tlist_Compact_Format = 1
 let Tlist_File_Fold_Auto_Close = 0
 let Tlist_Inc_Winwidth = 1
+
+" vim: set shiftwidth=4 softtabstop=4 expandtab tw=120 :
