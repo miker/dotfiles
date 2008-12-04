@@ -1,24 +1,14 @@
 -- awesome 3 configuration file
--- Greg Fitzgerald <netzdamon@gmail.com>
-
--- Include awesome library, with lots of useful function!
 require("awful")
 require("beautiful")
-require("naughty")
+
 -- Load my config settings. Most of everything you'll want to tweak is in
 -- config.lua.
 loadfile(awful.util.getdir("config").."/config.lua")()
 
 -- {{{ Initialization
 -- Initialize theme (colors).
---beautiful.init(config.theme)
 beautiful.init(config.theme)
-
--- Register theme in awful.
--- This allows to not pass plenty of arguments to each function
--- to inform it about colors we want it to draw.
---awful.beautiful.register(beautiful)
--- }}}
 
 -- {{{ Tags
 -- Define tags table.
@@ -170,22 +160,20 @@ keybinding({ config.keys.modkey }, "Left", awful.tag.viewprev):add()
 keybinding({ config.keys.modkey }, "Right", awful.tag.viewnext):add()
 keybinding({ config.keys.modkey }, "Escape", awful.tag.history.restore):add()
 
--- Standard program
+-- Application Launchers
 keybinding({ config.keys.modkey }, "Return", function () awful.util.spawn(config.apps.terminal) end):add()
-
--- added by gregf
 keybinding({ config.keys.modkey }, "p", function() awful.util.spawn("dmenu_run -i -b -nb '#303030' -nf '#CCCCCC' -sb '#97B26B' -sf '#000000'") end):add()
 keybinding({ config.keys.modkey }, "o", function() awful.util.spawn("exec /home/gregf/code/bin/clipboard/clipboard.sh") end):add()
 keybinding({ config.keys.modkey }, "n", function() awful.util.spawn(config.apps.screen) end):add()
 keybinding({ config.keys.modkey }, "g", function() awful.util.spawn("exec /home/gregf/code/bin/google/google.sh") end):add()
--- Application Launchers
 keybinding({ config.keys.super }, "m", function() awful.util.spawn(config.apps.mail) end):add()
 keybinding({ config.keys.super }, "l", function() awful.util.spawn(config.apps.rss) end):add()
 keybinding({ config.keys.super }, "f", function() awful.util.spawn(config.apps.browser) end):add()
+keybinding({ config.keys.super }, "t", function() awful.util.spawn(config.apps.filemanager) end):add()
 keybinding({ config.keys.super }, "h", function() awful.util.spawn(config.apps.terminal.." -T htop -e htop") end):add()
-keybinding({ config.keys.super }, "p", function() awful.util.spawn(config.apps.music) end):add()
+keybinding({ config.keys.super }, "y", function() awful.util.spawn(config.apps.music) end):add()
 keybinding({ config.keys.super }, "k", function() awful.util.spawn("gvim") end):add()
-keybinding({ config.keys.super }, "t", function() awful.titlebar.add(client.focus) end):add()
+--keybinding({ config.keys.super }, "t", function() awful.titlebar.add(client.focus) end):add()
 keybinding({ config.keys.super, config.keys.shift }, "t", function() awful.titlebar.remove(client.focus) end):add()
 
 -- restart / quit
@@ -232,10 +220,6 @@ for i = 1, keynumber do
                        end
                    end):add()
 end
--- }}}
-
--- {{{ Custom functions
--- none just yet
 -- }}}
 
 -- {{{ Hooks
@@ -351,20 +335,6 @@ awful.hooks.arrange.register(function (screen)
         if c then client.focus = c end
     end
 
-    -- Uncomment if you want mouse warping
-    --[[
-    if client.focus then
-        local c_c = client.focus:fullgeometry()
-        local m_c = mouse.coords()
-
-        if m_c.x < c_c.x or m_c.x >= c_c.x + c_c.width or
-            m_c.y < c_c.y or m_c.y >= c_c.y + c_c.height then
-            if table.maxn(m_c.buttons) == 0 then
-                mouse.coords({ x = c_c.x + 5, y = c_c.y + 5})
-            end
-        end
-    end
-    ]]
 end)
 
 -- Hook called every second
