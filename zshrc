@@ -295,6 +295,7 @@ alias d="devtodo -A"
 alias zkbd="zsh /usr/share/zsh/4.3.4/functions/Misc/zkbd"
 alias gnp="git-notpushed"
 alias s="sudo"
+alias ej="eject"
 alias k="killall"
 alias cap='/usr/X11R6/bin/cap'
 alias poweroff='sudo poweroff'
@@ -355,32 +356,32 @@ function clamscan {
     ls
 }
 
-function qemiso {
+function kvmiso {
     kvm -boot d -m 384 -smp 2 -localtime \
     -net nic \
     -net user \
     -no-fd-bootchk -no-acpi -cdrom $1
 }
 
-function qemimg {
-    qemu-img create -f qcow2 $i.qcow 10G
+function kvmimg {
+    kvm-img create -e -f qcow2 $i.qcow 10G
 }
 
-function qeminst {
+function kvminst {
     echo "Supply disk.img and path to iso or drive for installing from"
     kvm -boot d -m 384 -smp 2 -localtime \
     -net nic \
     -net user \
     -no-fd-bootchk -no-acpi \
-    -hda ~/qemu/$1.qcow -cdrom $2
+    -hda ~/kvm/$1.qcow -cdrom $2
 }
 
-function qemrun {
+function kvmrun {
     echo "Supply drive image to boot from"
     kvm -boot c -m 512 -smp 2 -localtime \
     -net nic \
     -net user \
-    -no-fd-bootchk -no-acpi -hda ~/qemu/$1.qcow
+    -no-fd-bootchk -no-acpi -hda ~/kvm/$1.qcow
 }
 
 function pskill {
