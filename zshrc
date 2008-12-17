@@ -295,6 +295,7 @@ alias d="devtodo -A"
 alias zkbd="zsh /usr/share/zsh/4.3.4/functions/Misc/zkbd"
 alias gnp="git-notpushed"
 alias s="sudo"
+alias sx="startx"
 alias ej="eject"
 alias k="killall"
 alias cap='/usr/X11R6/bin/cap'
@@ -314,7 +315,7 @@ alias starcraft=' wine ~/.wine/drive_c/Program\ Files/Starcraft/StarCraft.exe'
 alias ipager='k ipager; sleep 1; ipager &'
 alias devilspie='k devilspie; sleep 1; devilspie &'
 alias gis="git status | grep --color=always '^[^a-z]\+\(new file:\|modified:\)' | cut -d'#' -f2-"
-alias latestkernel='lynx -dump http://kernel.org/kdist/finger_banner'
+alias lk='lynx -dump http://kernel.org/kdist/finger_banner'
 alias update-eix='ionice -c3 update-eix'
 alias dosbox='dosbox -conf ~/.dosbox.conf -fulscreen'
 alias ports='netstat --inet -pln'
@@ -593,6 +594,12 @@ function cdgem {
 
 function keepempty {
     for i in $(find . -type d -regex ``./[^.].*'' -empty); do touch $i"/.gitignore"; done;
+}
+
+function xephyr {
+    Xephyr :1 -ac -screen 1024x768 &
+    sleep 3
+    DISPLAY=:1 $@
 }
 ################################################################################
 # Get keys working
