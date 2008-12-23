@@ -12,6 +12,8 @@ export TMDIR=$TMP
 export TERMCMD=/usr/bin/xterm
 export BROWSER=/usr/bin/firefox
 export TERMINAL=/usr/bin/xterm
+export GTK2_RC_FILES=$HOME/.gtkrc-2.0
+export MOZILLA_NEWTYPE=tab
 
 unclutter -idle 30 -reset -root &
 
