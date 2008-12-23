@@ -141,7 +141,10 @@ actually edit a file from a Rails application.
 			db:migrate in a migration, or your current test).
 			In tests (and specs), giving a line argument runs only
 			the test method (or example) at that line.  Use :.Rake
-			to run the test method at the cursor position.
+			to run the test method at the cursor position.  Use
+			:.Rake inside a self.up or self.down method in a
+			migration to run the db:migrate:up or db:migrate:down
+			task for that particular migration.
 
 						*rails-:Rake!*
 :[range]Rake! {targets}	Called with a bang, :Rake will use an alternate
@@ -663,34 +666,24 @@ place) are also covered in this section.
 			a new project, with appropriate directories (app,
 			etc., but not vendor).
 
-						*rails-:Rproject!*
-:Rproject! [{file}]	Same as :Rproject, only delete existing project if it
-			exists and recreate it.  The logic to delete the old
-			project is convoluted and possibly erroneous; report
-			any problems to the |rails-plugin-author|.  A handy
-			mapping might look something like: >
-		autocmd User Rails map <buffer> <F6> :Rproject!|silent w<CR>
-<			As a bonus, this command organizes views into separate
-			directories for easier navigation.  The downside of
-			this is that you will have to regenerate your project
-			each time you add another view directory (which is why
-			this command recreates your project each time!).
-
 						*rails-:Rdbext* *rails-dbext*
 :Rdbext [{environment}] This command is only provided when the |dbext| plugin
 			is installed.  Loads the {environment} configuration
 			(defaults to $RAILS_ENV or development) from
 			config/database.yml and uses it to configure dbext.
-			The configuration is cached until a different Rails
-			application is edited.  This command is called for you
-			automatically when |g:rails_dbext| is set (default on
-			non-Windows systems).
+			The configuration is cached on a per application
+			basis.  With dbext versions 8.00 and newer, this
+			command is called automatically when needed.  For
+			older versions, it is called automatically when
+			rails.vim loads if |g:rails_dbext| is set (which it is
+			by default).
 
 						*rails-:Rdbext!*
 :Rdbext! [{environment}]
 			Load the database configuration as above, and then
 			attempt a CREATE DATABASE for it.  This is primarily
-			useful for demonstrations.
+			useful for demonstrations, and has been largely
+			superseded by |:Rake| db:create.
 
 						*rails-surround*
 The |surround| plugin available from vim.org enables adding and removing
@@ -798,7 +791,7 @@ Rabbrev pa[ params		pa.inspect		params.inspect
 Rabbrev AR:: ActionRecord	AR::Base		ActiveRecord::Base
 Rabbrev :a :action\ =>\		render :a<Tab>		render :action => 
 
-In short, :: expands on :, ( expands on (, and [ expands on both . and [.
+In short, ( expands on (, :: expands on . and :, and [ expands on . and [.
 These trailing punctuation marks are NOT part of the final abbreviation, and
 you cannot have two mappings that differ only by punctuation.
 
@@ -807,11 +800,11 @@ an abbreviation ending with "(", you may define where to insert the
 parenthesis by splitting the expansion into two parts (divided by an unescaped
 space).
 
-Many abbreviations abbreviations are provided by default: use :Rabbrev to list
-them.  They vary depending on the type of file (models have different
-abbreviations than controllers).  There is one "smart" abbreviation, :c, which
-expands to ":controller => ", ":collection => ", or ":conditions => "
-depending on context.
+Many abbreviations are provided by default: use :Rabbrev to list them.  They
+vary depending on the type of file (models have different abbreviations than
+controllers).  There is one "smart" abbreviation, :c, which expands to
+":controller => ", ":collection => ", or ":conditions => " depending on
+context.
 
 ==============================================================================
 SYNTAX HIGHLIGHTING				*rails-syntax*
