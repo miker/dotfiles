@@ -6,6 +6,7 @@
     diff = auto
     status = auto
     ui = auto
+    pager = true
 [color "branch"]
     current = yellow reverse
     local = yellow
@@ -21,10 +22,12 @@
     untracked = cyan
 [alias]
     ci = commit -v -s
+    commit = !git commit -v -s
     st = status
     pl = pull
     lo = log --date=local --pretty=full --stat
     me = log --date=local --pretty=short --author=netzdamon@gmail.com --stat
+    rlog = log --pretty=format:\"%h %Cblue%cr%Creset %cn %Cgreen%s%Creset\"
     gp = push origin master:refs/heads/master
     gc = clean -f
     d = diff
@@ -37,7 +40,9 @@
     gr = reset
 
 [apply]
-    whitespace = nowarn
+    #whitespace = nowarn
+[merge]
+    tool = vimdiff
 [core]
     excludesfile = /home/gregf/.gitignore
     editor = vim
@@ -46,6 +51,7 @@
     bare = false
     logallrefupdates = true
     autocrlf = false
-;[diff]
+    whitespace = trailing-space,space-before-tab,indent-with-non-tab,cr-at-eol
+[diff]
     ;external = /usr/bin/vimdiff
     renames = true
