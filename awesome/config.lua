@@ -82,6 +82,7 @@ config.layouts = {
 config.float = {
     ["MPlayer"] = true,
     --["gajim.py"] = true,
+    ["Evince"] = true,
     ["gimp"] = true
 }
 
