@@ -13,7 +13,7 @@ beautiful.init(config.theme)
 -- {{{ Tags
 -- Define tags table.
 tags_names	= { "dev", "www", "im", "news", "music", "mail", "irc", "media", "misc" }
-tags_layout	= { "tiletop", "max", "fairv", "max", "max", "max", "tiletop", "tiletop", "tiletop" } 
+tags_layout	= { "tilebottom", "tilebottom", "fairv", "max", "max", "max", "tiletop", "tiletop", "tiletop" } 
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
@@ -172,6 +172,7 @@ keybinding({ config.keys.super }, "f", function() awful.util.spawn(config.apps.b
 keybinding({ config.keys.super }, "t", function() awful.util.spawn(config.apps.filemanager) end):add()
 keybinding({ config.keys.super }, "h", function() awful.util.spawn(config.apps.terminal.." -T htop -e htop") end):add()
 keybinding({ config.keys.super }, "y", function() awful.util.spawn(config.apps.music) end):add()
+keybinding({ config.keys.super }, "v", function() awful.util.spawn(config.apps.editor_cmd) end):add()
 keybinding({ config.keys.super }, "k", function() awful.util.spawn("gvim") end):add()
 --keybinding({ config.keys.super }, "t", function() awful.titlebar.add(client.focus) end):add()
 keybinding({ config.keys.super, config.keys.shift }, "t", function() awful.titlebar.remove(client.focus) end):add()
