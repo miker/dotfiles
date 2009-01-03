@@ -21,7 +21,7 @@ TEXT
 ${color #e0f0aa}System Info: ${hr 1}${color}
  ${color #f2ce94}Uptime:${color}${uptime}
  ${color #f2ce94}Load: ${color}${loadavg}
- ${color #f2ce94}CPU Frequency: ${color}${freq_dyn_g}Ghz
+ ${color #f2ce94}CPU Frequency: ${color}${freq_g}Ghz
  ${color #f2ce94}RAM Usage: ${color}${mem}/${memmax}
  ${color #f2ce94}Processes: ${color}${processes}
  ${color #f2ce94}Disk IO: ${color}${diskio}
