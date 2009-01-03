@@ -79,6 +79,12 @@ case `uname` in
         export LANG="en_US.UTF-8"
         export LC_CTYPE="en_US.UTF-8"
         export LC_ALL="en_US.UTF-8"
+
+        function installkernel {
+            cd /usr/src
+            make buildkernel KERNCONF=$1
+            make installkernel KERNCONF=$1
+        }
    ;;
 	Linux)
 	    #export SSH_ASKPASS="/usr/bin/gtk2-ssh-askpass"
@@ -110,6 +116,22 @@ case `uname` in
 
             function ewww {
                 cat *.ebuild | sed -ne 's-^HOMEPAGE="\(.*\)".*-\1-1p' | sort -u
+            }
+
+            function svcs {
+                sudo /etc/init.d/$1 start
+            }
+
+            function svce {
+                sudo /etc/init.d/$1 stop
+            }
+
+            function svcr {
+                sudo /etc/init.d/$1 restart
+            }
+
+            function svcz {
+                sudo /etc/init.d/$1 zap
             }
 
             function rca {
@@ -145,6 +167,7 @@ case `uname` in
 
 	    #aliases
         alias ls='ls -F --color --human-readable'
+        alias rm='nocorrect /bin/rm -I --preserve-root'
 
         if [ $HOST  = "gila" ]; then
           export RAILS_ENV="production"
@@ -173,8 +196,8 @@ fi
 ## (( ${+*} )) = if variable is set don't try to set it again
 #(( ${+GREP_OPTIONS} )) || export GREP_OPTIONS="--color=auto -nsi"
 (( ${+TZ} )) || export TZ="EST5EDT"
-(( ${+MPD_HOST} )) || export MPD_HOST="127.0.0.1"
-(( ${+MPD_PORT} )) || export MPD_PORT="6600"
+export MPD_HOST="/home/gregf/.mpd/socket"
+#(( ${+MPD_PORT} )) || export MPD_PORT="6600"
 (( ${+GIT_AUTHOR_EMAIL} )) || export GIT_AUTHOR_EMAIL="netzdamon@gmail.com"
 (( ${+GIT_AUTHOR_NAME} )) || export GIT_AUTHOR_NAME="Greg Fitzgerald"
 (( ${+GIT_COMMITTER_EMAIL} )) || export GIT_COMMITTER_EMAIL=$GIT_AUTHOR_EMAIL
@@ -185,7 +208,7 @@ export PAGER="most"
 export EDITOR="vim"
 export VISUAL="vim"
 export NNTPSERVER="news.gwi.net"
-
+export GPG_TTY=`tty` #backticks required
 ################################################################################
 # Resource Limits
 ################################################################################
@@ -234,6 +257,12 @@ esac
 
 # Enable flow control, prevents ^k^s from locking up my screen session.
 stty -ixon
+
+#keychain
+#if [[ -z "${SSH_AGENT_PID}" ]] && type keychain &>/dev/null ; then
+    #eval $(keychain --quiet --eval id_dsa | sed -e 's,;,\n,g' )
+#fi
+
 ################################################################################
 #       Default Aliases
 ################################################################################
@@ -243,7 +272,6 @@ alias sd='export DISPLAY=:0.0'
 alias cpan="perl -MCPAN -e shell"
 alias cup='cvs -z3 update -Pd'
 alias mv='nocorrect /bin/mv'
-alias rm='nocorrect /bin/rm -I --preserve-root'
 alias shred='nocorrect ionice -c3 /usr/bin/shred -fuzv'
 alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l1 -v -r'
 alias man='nocorrect man'
@@ -318,8 +346,9 @@ alias gis="git status | grep --color=always '^[^a-z]\+\(new file:\|modified:\)' 
 alias lk='lynx -dump http://kernel.org/kdist/finger_banner'
 alias update-eix='ionice -c3 update-eix'
 alias dosbox='dosbox -conf ~/.dosbox.conf -fulscreen'
-alias ports='netstat --inet -pln'
+alias ports='lsof -i'
 alias vim="vim -p"
+alias ra3="wine /home/gregf/.wine/drive_c/Program\ Files/Electronic\ Arts/Red\ Alert\ 3/RA3.exe"
 ################################################################################
 # Functions and Completion
 ################################################################################
@@ -348,6 +377,19 @@ fi
 ################################################################################
 # Custom Functions
 ################################################################################
+
+function shutdown {
+    if [ `uname -n` = "gila" ]; then
+        echo -n " * Power down the webserver gila? (yes/no) "
+        read input
+        if [ "$input" = "yes" ]; then
+            echo " ! Powering off Gila"
+            sudo shutdown $@
+        else
+            echo " * Good boy."
+        fi
+    fi
+}
 
 function clamscan {
     mkdir -p /tmp/virus
