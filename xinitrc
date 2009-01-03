@@ -53,7 +53,7 @@ exec $DEFAULTWM & wmpid=$!
    xsetroot -cursor_name arrow &
    #dbus-launch --exit-with-session &
    xterm -T mutt -e mutt &
-   nice -n15 firefox &
+   nice -n19 firefox &
    nice -n19 liferea &
    nice -n19 gpodder &
 wait $wmpid
