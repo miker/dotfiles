@@ -2,8 +2,7 @@
 *.~
 *.old
 .svn
-known_hosts
-ssh/controls/*
 mutt/imap.rc
-irssi/config
-irssi/logs/*
+lftp/transfer_log
+lftp/rl_history
+lftp/cwd_history
