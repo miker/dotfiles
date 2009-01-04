@@ -239,29 +239,36 @@ case $TERM in
   ;;
 esac
 
-case $TERM in
-    xterm*|rxvt|(dt|k|E)term|?rxvt-*)
-        # display user@host and full dir in *term title
-        precmd () { print -Pn  "\033]0;%n@%m %~\007" }
-        # display user@host and name of current process in *term title
-        preexec () { print -Pn "\033]0;%n@%m <$1> %~\007" }
+# format titles for screen and rxvt
+function title() {
+  # escape '%' chars in $1, make nonprintables visible
+  a=${(V)1//\%/\%\%}
+
+  # Truncate command, and join lines.
+  a=$(print -Pn "%40>...>$a" | tr -d "\n")
+
+  case $TERM in
+  screen-*)
+    print -Pn "\ek$a:$3\e\\"      # screen title (in ^A")
     ;;
-    screen-*)
-        # Set screen's window title to the command the user typed.
-        preexec() { print -n '\ek'$1'\e\\' }
-        # Restore a generic title if no program is running.
-        precmd() { print -n '\ek'$HOST:$PWD'\e\\' }
-        PROMPT_COMMAND='echo -ne "\033k$HOSTNAME\033\\"'
+  xterm*|rxvt)
+    print -Pn "\e]2;$2 | $a:$3\a" # plain xterm title
     ;;
-esac
+  esac
+}
+
+# precmd is called just before the prompt is printed
+function precmd() {
+  title "zsh" "$USER@%m" "%55<...<%~"
+}
+
+# preexec is called just before any command line is executed
+function preexec() {
+  title "$1" "$USER@%m" "%35<...<%~"
+}
 
 # Enable flow control, prevents ^k^s from locking up my screen session.
 stty -ixon
-
-#keychain
-#if [[ -z "${SSH_AGENT_PID}" ]] && type keychain &>/dev/null ; then
-    #eval $(keychain --quiet --eval id_dsa | sed -e 's,;,\n,g' )
-#fi
 
 ################################################################################
 #       Default Aliases
@@ -278,13 +285,16 @@ alias man='nocorrect man'
 alias mkdir='nocorrect /bin/mkdir -p'
 alias find='noglob find'
 alias wget="wget -c"
-alias lsd='ls -Fld *(-/DN)'
+alias ll="ls -l"
+alias l.='ls -d .[^.]*'
+alias lsd='ls -ld *(-/DN)'
+alias df='df -hT'
 alias weather="/home/gregf/code/bin/forecast/forecast.rb"
 alias ncmpc="ncmpc -c"
 alias fixdbus="dbus-uuidgen --ensure"
 alias wp="feh --bg-scale"
-alias m="nice -n1 mplayer -af volnorm -stop-xscreensaver"
-alias ml="nice -n1 mplayer -loop 0 -af volnorm -stop-xscreensaver"
+alias m="nice -n1 mplayer -idx -af volnorm -stop-xscreensaver"
+alias ml="nice -n1 mplayer -idx -loop 0 -af volnorm -stop-xscreensaver"
 alias e="gvim"
 alias v="vim"
 alias t="thunar"
@@ -319,7 +329,7 @@ alias pwgen='pwgen -sBnc 10'
 alias la="ls -a"
 alias l="ls"
 alias f-spot='dbus-launch f-spot'
-alias d="devtodo -A"
+alias d="devtodo"
 alias zkbd="zsh /usr/share/zsh/4.3.4/functions/Misc/zkbd"
 alias gnp="git-notpushed"
 alias s="sudo"
@@ -338,7 +348,6 @@ alias deploy='cap deploy:migrations'
 alias lock='alock -auth pam -bg blank:color=black'
 alias lsnoext="ls | grep -v '\.'"
 alias cleanliferea="sqlite3 ~/.liferea_1.4/liferea.db vacuum"
-alias urb='urbanterror +connect 208.43.15.167:27960'
 alias starcraft=' wine ~/.wine/drive_c/Program\ Files/Starcraft/StarCraft.exe'
 alias ipager='k ipager; sleep 1; ipager &'
 alias devilspie='k devilspie; sleep 1; devilspie &'
@@ -349,6 +358,8 @@ alias dosbox='dosbox -conf ~/.dosbox.conf -fulscreen'
 alias ports='lsof -i'
 alias vim="vim -p"
 alias ra3="wine /home/gregf/.wine/drive_c/Program\ Files/Electronic\ Arts/Red\ Alert\ 3/RA3.exe"
+alias grep='grep -Hn --color=always'
+alias cal='cal -3'
 ################################################################################
 # Functions and Completion
 ################################################################################
@@ -440,7 +451,7 @@ function kscreen {
 
 function spell { echo "$@" | aspell -a }
 
-function calc() { echo "$*" | bc; }
+function calc { echo "$*" | bc; }
 
 function date {
     if [ $# = 0 ]; then
@@ -543,7 +554,9 @@ function open {
         fi
 }
 
-function mps { /bin/ps $@ -u $USER -o pid,%cpu,%mem,command ; }
+function mps { /bin/ps $@ -u $USER -o pid,ppid,%cpu,%mem,command ; }
+
+function mpsu { /bin/ps -u $@ -o pid,ppid,%cpu,%mem,command ; }
 
 function ech {
     CHPTH=`eix --only-names -e $1`
@@ -643,6 +656,14 @@ function xephyr {
     sleep 3
     DISPLAY=:1 $@
 }
+
+function cpv {
+    rsync -rPIhb --backup-dir=/tmp/rsync -e /dev/null -- ${@}
+}
+
+function h { 
+    history 0 | grep $1 
+}
 ################################################################################
 # Get keys working
 #
@@ -652,49 +673,11 @@ function xephyr {
 #################################################################################
 
 bindkey -v
-case `echo $TERM` in
-    linux)
-        source ~/.zkbd/linux-pc-linux-gnu
-    ;;
-    xterm-color)
-        source ~/.zkbd/xterm-color-pc-linux-gnu
-    ;;
-    xterm)
-        source ~/.zkbd/xterm-pc-linux-gnu
-    ;;
-    xterm-xfree86)
-        source ~/.zkbd/xterm-xfree86-pc-linux-gnu
-    ;;
-    rxvt-unicode)
-        case `uname` in
-            Linux)
-                source ~/.zkbd/rxvt-unicode-pc-linux-gnu
-            ;;
-            OpenBSD)
-                source ~/.zkbd/rxvt-unicode-unknown-openbsd4.3
-            ;;
-            *)
-                source ~/.zkbd/rxvt-unicode-pc-linux-gnu
-            ;;
-        esac
-    ;;
-    rxvt)
-        source ~/.zkbd/rxvt-pc-linux-gnu
-    ;;
-    screen|screen-*)
-        case `uname` in
-            OpenBSD)
-                source ~/.zkbd/screen-unknown-openbsd4.3
-            ;;
-            Linux)
-                source ~/.zkbd/screen-bce-pc-linux-gnu
-            ;;
-            FreeBSD)
-                source ~/.zkbd/screen-bce-portbld-freebsd7.0
-            ;;
-        esac
-    ;;
-esac
+if [[ -f ~/.zkbd/$TERM-$VENDOR-$OSTYPE ]]; then
+  source ~/.zkbd/$TERM-$VENDOR-$OSTYPE
+else
+  echo "no zkbd file, run zkbd"
+fi
 
 #################################################################################
 # Set some keybindings
@@ -723,22 +706,22 @@ bindkey "^[[1~" beginning-of-line
 # Set prompt based on EUID
 ################################################################################
 if (( EUID == 0 )); then
-    PROMPT=$'%{\e[01;31m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}]$(pc_scm_f)%# '
+    PROMPT=$'%{\e[01;31m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(pc_scm_f)%# '
 else
-    PROMPT=$'%{\e[01;32m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}]$(pc_scm_f)%% '
+    PROMPT=$'%{\e[01;32m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(pc_scm_f)%% '
 fi
 
 ###############################################################################
 # Lots of autocompletion options
 ################################################################################
+zstyle :compinstall filename '$HOME/.zshrc'
+autoload -Uz compinit
+compinit
 
 # Follow GNU LS_COLORS
 zmodload -i zsh/complist
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*:*:kill:*' list-colors '=%*=01;31'
-
-autoload -U compinit
-compinit
 
 compctl -g '*.Z *.gz *.tgz' + -g '*' zcat gunzip tar open
 compctl -g '*.tar.Z *.tar.gz *.tgz *.tar.bz2' + -g '*' tar bzip2 open
@@ -759,8 +742,9 @@ zstyle ':completion:incremental:*' completer _complete _correct
 zstyle ':completion:predict:*' completer _complete
 
 # Completion caching
-zstyle ':completion::complete:*' use-cache 1
-zstyle ':completion::complete:*' cache-path ~/.tmp/zsh/cache/$HOST
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.tmp/zsh/cache
+
 
 # Expand partial paths
 zstyle ':completion:*' expand 'yes'
@@ -788,8 +772,8 @@ zstyle ':completion:*:matches' group 'yes'
 
 # With commands like rm, it's annoying if you keep getting offered the same
 # file multiple times. This fixes it. Also good for cp, et cetera..
-zstyle ':completion:*:rm:*' ignore-line yes
-zstyle ':completion:*:cp:*' ignore-line yes
+#zstyle ':completion:*:rm:*' ignore-line yes
+#zstyle ':completion:*:cp:*' ignore-line yes
 
 # Describe each match group.
 zstyle ':completion:*:descriptions' format "%B---- %d%b"
@@ -823,7 +807,8 @@ glob_complete hist_find_no_dups hist_ignore_all_dups hist_ignore_dups \
 hist_ignore_space hist_no_functions hist_save_no_dups list_ambiguous \
 long_list_jobs menu_complete rm_star_wait zle inc_append_history \
 share_history prompt_subst no_list_beep local_options local_traps \
-hist_verify extended_history hist_reduce_blanks
+hist_verify extended_history hist_reduce_blanks chase_links chase_dots \
+hash_cmds hash_dirs numeric_glob_sort vi print_exit_value cdable_vars
 
 unset beep equals mail_warning
 
