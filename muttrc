@@ -183,5 +183,9 @@ bind pager p sidebar-prev
 bind pager n sidebar-next
 bind pager o sidebar-open
 
+# b toggles sidebar visibility 
+macro index b '<enter-command>toggle sidebar_visible<enter>'
+macro pager b '<enter-command>toggle sidebar_visible<enter>'
+
 # View Special Formats
 auto_view text/html
