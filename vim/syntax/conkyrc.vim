@@ -1,11 +1,9 @@
 " Vim syntax file
-" Language:   conkyrc
-" Author:     Ciaran McCreesh <ciaranm@gentoo.org>
-" Version:    20060307
-" Copyright:  Copyright (c) 2005 Ciaran McCreesh
-" Licence:    You may redistribute this under the same terms as Vim itself
-"
-" $Id: conkyrc.vim 1104 2008-04-13 04:10:35Z brenden1 $
+" Language:	conkyrc
+" Author:	Ciaran McCreesh <ciaranm@gentoo.org>
+" Version:	20050923
+" Copyright:	Copyright (c) 2005 Ciaran McCreesh
+" Licence:	You may redistribute this under the same terms as Vim itself
 
 if exists("b:current_syntax")
   finish
@@ -14,78 +12,16 @@ endif
 syn region ConkyrcComment start=/^\s*#/ end=/$/
 
 syn keyword ConkyrcSetting
-        \ alignment
-        \ background
-        \ border_margin
-        \ border_width
-        \ cpu_avg_samples
-        \ default_color
-        \ default_outline_color
-        \ default_shade_color
-        \ double_buffer
-        \ draw_borders
-        \ draw_graph_borders
-        \ draw_outline
-        \ draw_shades
-        \ font
-        \ gap_x
-        \ gap_y
-        \ imap
-        \ mail_spool
-        \ max_port_monitor_connections
-        \ max_specials
-        \ max_user_text
-        \ maximum_width
-        \ minimum_size
-        \ mpd_host
-        \ mpd_password
-        \ mpd_port
-        \ music_player_interval
-        \ net_avg_samples
-        \ no_buffers
-        \ out_to_console
-        \ override_utf8_locale
-        \ own_window
-        \ own_window_class
-        \ own_window_colour
-        \ own_window_hints
-        \ own_window_title
-        \ own_window_transparent
-        \ own_window_type
-        \ pad_percents
-        \ pop3
-        \ show_graph_scale
-        \ stippled_borders
-        \ total_run_times
-        \ update_interval
-        \ uppercase
-        \ use_spacer
-        \ use_xft
-        \ wm_class_name
-        \ xftalpha
-        \ xftfont
+      \ alignment background on_bottom border_margin border_width cpu_avg_samples
+      \ default_color default_shade_color default_outline_color double_buffer
+      \ draw_borders draw_shades draw_outline font gap_x gap_y no_buffers
+      \ mail_spool maximum_width minimum_size mldonkey_hostname mldonkey_port
+      \ mldonkey_login mldonkey_password mpd_host mpd_port mpd_password
+      \ net_avg_samples override_utf8_locale own_window own_window_transparent
+      \ own_window_colour pad_percents stippled_borders total_run_times
+      \ update_interval uppercase use_spacer use_xft
 
-syn keyword ConkyrcConstant
-        \ above
-        \ below
-        \ bottom_left
-        \ bottom_right
-        \ bottom_middle
-        \ desktop
-        \ no
-        \ none
-        \ normal
-        \ override
-        \ skip_pager
-        \ skip_taskbar
-        \ sticky
-        \ top_left
-        \ top_right
-        \ top_middle
-        \ middle_left
-        \ middle_right
-        \ undecorated
-        \ yes
+syn keyword ConkyrcConstant yes no top_left top_right bottom_left bottom_right none
 
 syn match ConkyrcNumber /\S\@<!\d\+\(\.\d\+\)\?\(\S\@!\|}\@=\)/
       \ nextgroup=ConkyrcNumber,ConkyrcColour skipwhite
@@ -100,176 +36,22 @@ syn region ConkyrcVar start=/\$\w\@=/ end=/\W\@=\|$/ contained contains=ConkyrcV
 syn match ConkyrcVarStuff /{\@<=/ms=s contained nextgroup=ConkyrcVarName
 
 syn keyword ConkyrcVarName contained nextgroup=ConkyrcNumber,ConkyrcColour skipwhite
-        \ acpiacadapter
-        \ acpifan
-        \ acpitemp
-        \ acpitempf
-        \ addr
-        \ adt746xcpu
-        \ adt746xfan
-        \ alignc
-        \ alignr
-        \ apm_adapter
-        \ apm_battery_life
-        \ apm_battery_time
-        \ audacious_bar
-        \ audacious_bitrate
-        \ audacious_channels
-        \ audacious_filename
-        \ audacious_frequency
-        \ audacious_length
-        \ audacious_length_seconds
-        \ audacious_playlist_length
-        \ audacious_playlist_position
-        \ audacious_position
-        \ audacious_position_seconds
-        \ audacious_status
-        \ audacious_title
-        \ battery
-        \ battery_time
-        \ bmpx_album
-        \ bmpx_artist
-        \ bmpx_bitrate
-        \ bmpx_title
-        \ bmpx_track
-        \ bmpx_uri
-        \ buffers
-        \ cached
-        \ color
-        \ colour
-        \ cpu
-        \ cpubar
-        \ cpugraph
-        \ diskio
-        \ diskiograph
-        \ downspeed
-        \ downspeedf
-        \ downspeedgraph
-        \ else
-        \ entropy_avail
-        \ entropy_bar
-        \ entropy_poolsize
-        \ exec
-        \ execbar
-        \ execgraph
-        \ execi
-        \ execibar
-        \ execigraph
-        \ execp
-        \ font
-        \ freq
-        \ freq_dyn
-        \ freq_dyn_g
-        \ freq_g
-        \ fs_bar
-        \ fs_free
-        \ fs_free_perc
-        \ fs_size
-        \ fs_used
-        \ goto
-        \ hddtemp
-        \ head
-        \ hr
-        \ hwmon
-        \ i2c
-        \ i8k_ac_status
-        \ i8k_bios
-        \ i8k_buttons_status
-        \ i8k_cpu_temp
-        \ i8k_cpu_tempf
-        \ i8k_left_fan_rpm
-        \ i8k_left_fan_status
-        \ i8k_right_fan_rpm
-        \ i8k_right_fan_status
-        \ i8k_serial
-        \ i8k_version
-        \ if_existing
-        \ if_mounted
-        \ if_running
-        \ kernel
-        \ linkstatus
-        \ loadavg
-        \ loadgraph
-        \ machine
-        \ mails
-        \ mem
-        \ membar
-        \ memmax
-        \ memperc
-        \ mpd_album
-        \ mpd_artist
-        \ mpd_bar
-        \ mpd_bitrate
-        \ mpd_elapsed
-        \ mpd_file
-        \ mpd_length
-        \ mpd_name
-        \ mpd_percent
-        \ mpd_smart
-        \ mpd_status
-        \ mpd_title
-        \ mpd_vol
-        \ new_mails
-        \ nodename
-        \ offset
-        \ outlinecolor
-        \ platform
-        \ pre_exec
-        \ processes
-        \ running_processes
-        \ shadecolor
-        \ stippled_hr
-        \ swap
-        \ swapbar
-        \ swapmax
-        \ swapperc
-        \ sysname
-        \ tab
-        \ tail
-        \ tcp_portmon
-        \ texeci
-        \ time
-        \ top
-        \ top_mem
-        \ totaldown
-        \ totalup
-        \ tztime
-        \ updates
-        \ upspeed
-        \ upspeedf
-        \ upspeedgraph
-        \ uptime
-        \ uptime_short
-        \ voffset
-        \ voltage_mv
-        \ voltage_v
-	\ wireless_essid
-	\ wireless_mode
-	\ wireless_bitrate
-	\ wireless_ap
-	\ wireless_link_qual
-	\ wireless_link_qual_max
-	\ wireless_link_qual_perc
-	\ wireless_link_bar
-        \ xmms2_artist
-        \ xmms2_album
-        \ xmms2_title
-        \ xmms2_genre
-        \ xmms2_comment
-        \ xmms2_url
-        \ xmms2_tracknr
-        \ xmms2_bitrate
-        \ xmms2_id
-        \ xmms2_duration
-        \ xmms2_elapsed
-        \ xmms2_date
-        \ xmms2_size
-        \ xmms2_percent
-        \ xmms2_status
-        \ xmms2_bar
-        \ xmms2_timesplayed
-        \ xmms2_playlist
-        \ xmms2_smart
+      \ addr acpiacadapter acpifan acpitemp acpitempf adt746xcpu
+      \ adt746xfan alignr alignc apm_adapter apm_battery_life apm_battery_time
+      \ battery buffers cached color cpu cpubar colour diskio downspeed downspeedf
+      \ colour else exec execbar execgraph execi execibar execigraph font freq
+      \ freq_g freq_dyn freq_dyn_g fs_bar fs_free fs_free_perc fs_size fs_used head
+      \ hr i2c i8k_ac_status i8k_bios i8k_buttons_status i8k_cpu_temp i8k_cpu_tempf
+      \ i8k_left_fan_rpm i8k_left_fan_status i8k_right_fan_rpm i8k_right_fan_status
+      \ i8k_serial i8k_version if_running if_existing if_mounted kernel linkstatus loadavg
+      \ machine mails mem membar memmax memperc ml_upload_counter ml_download_counter
+      \ ml_nshared_files ml_shared_counter ml_tcp_upload_rate ml_tcp_download_rate
+      \ ml_udp_upload_rate ml_udp_download_rate ml_ndownloaded_files ml_ndownloading_files
+      \ mpd_artist mpd_album mpd_bar mpd_bitrate mpd_status mpd_title mpd_vol mpd_elapsed
+      \ mpd_length mpd_percent new_mails nodename outlinecolor pre_exec processes
+      \ running_processes shadecolor stippled_hr swapbar swap swapmax swapperc sysname
+      \ texeci offset tail time totaldown top top_mem totalup updates upspeed upspeedf
+      \ upspeedgraph uptime uptime_short seti_prog seti_progbar seti_credit voffset
 
 hi def link ConkyrcComment   Comment
 hi def link ConkyrcSetting   Keyword
@@ -282,3 +64,4 @@ hi def link ConkyrcVar       Identifier
 hi def link ConkyrcVarName   Keyword
 
 let b:current_syntax = "conkyrc"
+
