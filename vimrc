@@ -41,8 +41,8 @@ set ignorecase
 set autoindent
 " No startup messages
 set shm+=Im
-" Smart identing
-set smartindent
+" Use c indenting rules rather than smartindent
+set cindent
 " Show matching brackets
 set showmatch
 " Temporary directory
@@ -88,8 +88,10 @@ set encoding=utf-8
 set wildmenu
 " Smart tab
 set smarttab
-" Lazy Redrew, Helps speed things up.
-"set lazyredraw
+" Buffer updates
+set lazyredraw
+" Faster scrolling updates when on a decent connection. 
+set ttyfast
 " Print line numbers and syntax highlighting
 set printoptions+=syntax:y,number:y
 " improves performance -- let OS decide when to flush disk
@@ -130,16 +132,16 @@ let loaded_matchparen=1
 let g:nickname = "gregf"
 
 let g:secure_modelines_allowed_items = [
-		\ "textwidth",   "tw",
-		\ "softtabstop", "sts",
-		\ "tabstop",     "ts",
-		\ "shiftwidth",  "sw",
-		\ "expandtab",   "et",   "noexpandtab", "noet",
-		\ "filetype",    "ft",
-		\ "foldmethod",  "fdm",
-		\ "readonly",    "ro",   "noreadonly", "noro",
-		\ "rightleft",   "rl",   "norightleft", "norl"
-		\ ]
+            \ "textwidth",   "tw",
+            \ "softtabstop", "sts",
+            \ "tabstop",     "ts",
+            \ "shiftwidth",  "sw",
+            \ "expandtab",   "et",   "noexpandtab", "noet",
+            \ "filetype",    "ft",
+            \ "foldmethod",  "fdm",
+            \ "readonly",    "ro",   "noreadonly", "noro",
+            \ "rightleft",   "rl",   "norightleft", "norl"
+            \ ]
 
 "-----------------------------------------------------------------------
 " Nice statusbar
@@ -152,16 +154,16 @@ set statusline+=%f\                          " file name
 if has("eval")
     let g:scm_cache = {}
     fun! ScmInfo()
-	let l:key = getcwd()
-	if ! has_key(g:scm_cache, l:key)
-	    if (isdirectory(getcwd() . "/.git"))
-		let g:scm_cache[l:key] = "[" . substitute(readfile(getcwd() . "/.git/HEAD", "", 1)[0],
-			    \ "^.*/", "", "") . "] "
-	    else
-		let g:scm_cache[l:key] = ""
-	    endif
-	endif
-	return g:scm_cache[l:key]
+        let l:key = getcwd()
+        if ! has_key(g:scm_cache, l:key)
+            if (isdirectory(getcwd() . "/.git"))
+                let g:scm_cache[l:key] = "[" . substitute(readfile(getcwd() . "/.git/HEAD", "", 1)[0],
+                            \ "^.*/", "", "") . "] "
+            else
+                let g:scm_cache[l:key] = ""
+            endif
+        endif
+        return g:scm_cache[l:key]
     endfun
     set statusline+=%{ScmInfo()}             " scm info
 endif
@@ -185,68 +187,68 @@ endif
 "If possible, try to use a narrow number column.
 if v:version >= 700
     try
-	setlocal numberwidth=3
+        setlocal numberwidth=3
     catch
     endtry
 endif
 
 if (version >= 700)
-	set completeopt=menu,longest,preview
-	map :bn :tabn
-	map :bp :tabp
-	set showtabline=2
-	set tabline=%!MyTabLine()
+    set completeopt=menu,longest,preview
+    map :bn :tabn
+    map :bp :tabp
+    set showtabline=2
+    set tabline=%!MyTabLine()
 
-	function MyTabLabel(n)
-		let buflist = tabpagebuflist(a:n)
-		let winnr = tabpagewinnr(a:n)
-		let bufname = bufname(buflist[winnr - 1])
+    function MyTabLabel(n)
+        let buflist = tabpagebuflist(a:n)
+        let winnr = tabpagewinnr(a:n)
+        let bufname = bufname(buflist[winnr - 1])
 
-		if !strlen(bufname)
-			let bufname = '(nil)'
-		endif
+        if !strlen(bufname)
+            let bufname = '(nil)'
+        endif
 
-		let label = ''
-		" Add '+' if one of the buffers in the tab page is modified
-		let bufnr = 0
-		while bufnr < len(buflist)
-			if getbufvar(buflist[bufnr], "&modified")
-				let label = '+'
-				break
-			endif
-			let bufnr = bufnr + 1
-		endwhile
-		if !strlen(label)
-			let label = ' '
-		endif
-		let label .= bufname
-		return label
-	endfunction
+        let label = ''
+        " Add '+' if one of the buffers in the tab page is modified
+        let bufnr = 0
+        while bufnr < len(buflist)
+            if getbufvar(buflist[bufnr], "&modified")
+                let label = '+'
+                break
+            endif
+            let bufnr = bufnr + 1
+        endwhile
+        if !strlen(label)
+            let label = ' '
+        endif
+        let label .= bufname
+        return label
+    endfunction
 
-	function MyTabLine()
-		let s = ''
-		let i = 1
-		while i <= tabpagenr('$')
-			" select the highlighting
-			if i == tabpagenr()
-				let s .= '%#TabLineSel#'
-			else
-				let s .= '%#TabLine#'
-			endif
+    function MyTabLine()
+        let s = ''
+        let i = 1
+        while i <= tabpagenr('$')
+            " select the highlighting
+            if i == tabpagenr()
+                let s .= '%#TabLineSel#'
+            else
+                let s .= '%#TabLine#'
+            endif
 
-			" set the tab page number (for mouse clicks)
-			let s .= '%' . i . 'T'
+            " set the tab page number (for mouse clicks)
+            let s .= '%' . i . 'T'
 
-			" the label is made by MyTabLabel()
-			let s .= ' %{MyTabLabel(' . i . ')} '
+            " the label is made by MyTabLabel()
+            let s .= ' %{MyTabLabel(' . i . ')} '
 
-			let i = i + 1
-		endwhile
+            let i = i + 1
+        endwhile
 
-		" after the last tab fill with TabLineFill and reset tab page nr
-		let s .= '%#TabLineFill#%T'
-		return s
-	endfunction
+        " after the last tab fill with TabLineFill and reset tab page nr
+        let s .= '%#TabLineFill#%T'
+        return s
+    endfunction
 endif
 
 "Update .*rc header
@@ -273,6 +275,7 @@ noremap <silent> <F8> :FuzzyFinderMruFile<CR>
 noremap <silent> <F9> :NERDTreeToggle<CR>
 noremap <silent> <F10> :call <SID>Restart()<CR>
 noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
+"cmap w! %!sudo tee > /dev/null %
 " Spell check
 noremap <silent> <F1> z=
 " Spell Check (Reverse)
@@ -282,17 +285,13 @@ noremap <silent> <F3> zg
 " Remove word from word list
 noremap <silent> <F4> zug
 " Split Window Movement
-map <F6> :wincmd w<CR>
-imap <F6> <c-[>:wincmd w<CR>
-map <S-F6> :wincmd W<CR>
-imap <S-F6> <c-[>:wincmd W<CR>
+map <F6> :wincmd w<CR> imap <F6> <c-[>:wincmd w<CR> map <S-F6> :wincmd W<CR> imap <S-F6> <c-[>:wincmd W<CR>
 " Setup mini ide for a project of mine
 noremap <silent> <F5> :call Mideo()<CR>
 " Setup a scratch buffer
 noremap <silent> <S-I> :tabe scratch<CR>
 " Refreshing the screen
-map		<C-l>		     :redraw<CR>
-imap	<C-l>		<Esc>:redraw<CR>
+map		<C-l>		     :redraw<CR> imap	<C-l>		<Esc>:redraw<CR>
 " Set map leader to f12
 let mapleader = "\<F12>"
 " Reformat everything
@@ -310,6 +309,16 @@ inoremap # X<BS>#
 "" Functions
 ""-----------------------------------------------------------------------
 
+if version >= 700
+    au TabLeave * let g:MRUtabPage = tabpagenr()
+    fun MRUTab()
+        if exists( "g:MRUtabPage" )
+            exe "tabn " g:MRUtabPage
+        endif
+    endfun
+    noremap <silent> gl :call MRUTab()<Cr>
+endif
+
 function Mideo()
     chdir /home/gregf/mideo/
     open TODO
@@ -323,12 +332,12 @@ endfunction
 " Removes unnecessary whitespace
 if has("eval")
     fun! <SID>StripWhite()
-	%s/[ \t]\+$//ge
-	    %s!^\( \+\)\t!\=StrRepeat("\t", 1 + strlen(submatch(1)) / 8)!ge
+        %s/[ \t]\+$//ge
+        %s!^\( \+\)\t!\=StrRepeat("\t", 1 + strlen(submatch(1)) / 8)!ge
     endfun
 
     fun! <SID>RemoveBlankLines()
-	%s/^[\ \t]*\n//g
+        %s/^[\ \t]*\n//g
     endfun
 endif
 
@@ -337,11 +346,11 @@ endif
 ""-----------------------------------------------------------------------
 
 if isdirectory(expand("$VIMRUNTIME/ftplugin"))
-  if has("eval")
-    filetype on
-    filetype plugin on
-    filetype indent on
-  endif
+    if has("eval")
+        filetype on
+        filetype plugin on
+        filetype indent on
+    endif
 endif
 
 if has("autocmd")
@@ -349,15 +358,15 @@ if has("autocmd")
     autocmd FileType html,xhtml,xml,eruby,mako,ruby,haml,yaml,erb setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2 autoindent
     autocmd FileType css setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
     autocmd FileType javascript setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
-	autocmd FileType xslt,xml,xhtml,html set ts=2
+    autocmd FileType xslt,xml,xhtml,html set ts=2
     autocmd FileType php set ts=4 complete+=k
     autocmd BufReadPost,BufNewFile,BufRead rsnapshot.conf set noet
 
     " When editing a file, jump to the last cursor position
     autocmd BufReadPost *
-    \	if line("'\"") > 0 && line ("'\"") <= line("$")
-    \	|	exe "normal g'\""
-    \	| endif
+                \	if line("'\"") > 0 && line ("'\"") <= line("$")
+                \	|	exe "normal g'\""
+                \	| endif
 
     au BufRead,BufNewFile *.e{build,class} let is_bash=1|setfiletype sh
     au BufRead,BufNewFile *.e{build,class} set ts=4 sw=4 noexpandtab
@@ -365,106 +374,106 @@ if has("autocmd")
     au BufRead,BufNewFile COMMIT_EDITMSG setf git
 
     autocmd BufNewFile,BufRead /tmp/mutt*
-	\ setf mail |
-	\ set spell |
-	\ set spell spelllang=en_us |
-	\ set spellfile=~/.vim/spellfile.add
+                \ setf mail |
+                \ set spell |
+                \ set spell spelllang=en_us |
+                \ set spellfile=~/.vim/spellfile.add
 
     au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,/tmp/mutt* :set ft=mail
     au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,~/.tmp/mutt/mutt* :set ft=mail
     au! BufRead,BufNewFile *.haml :set ft=haml
     au! BufRead,BufNewFile *.sass :set ft=sass
-	autocmd BufNewFile,BufRead *.inc
-  \		  if getline(1) =~ 'php'
-  \		|	setf php
-  \		| else
-  \		|	setf perl
-  \		| endif
+    autocmd BufNewFile,BufRead *.inc
+                \		  if getline(1) =~ 'php'
+                \		|	setf php
+                \		| else
+                    \		|	setf perl
+                    \		| endif
 
-	autocmd BufNewFile *.pl	set noai | execute "normal a
-  \#!/usr/bin/perl -W\<CR>
-  \# $Id\$\<CR>
-  \\<CR>
-  \use strict;\<CR>
-  \use warnings;\<CR>
-  \\<CR>" | set ai
+    autocmd BufNewFile *.pl	set noai | execute "normal a
+                \#!/usr/bin/perl -W\<CR>
+                \# $Id\$\<CR>
+                \\<CR>
+                \use strict;\<CR>
+                \use warnings;\<CR>
+                \\<CR>" | set ai
 
     autocmd BufNewFile *.htm,*.html	set noai | execute "normal a
-  \<!DOCTYPE html PUBLIC \"-//W3C//XHTML 1.0 Transitional//EN\">\<CR>
-  \\<CR>
-  \<html lang=\"en-US\" xml:lang=\"en-US\" xmlns=\"http://www.w3.org/1999/XHTML\">\<CR>
-  \	<head>\<CR>
-  \		<title></title>\<CR>
-  \		<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\<CR>
-  \	</head>\<CR>
-  \	<body>\<CR>
-  \	</body>\<CR>
-  \</html>" | set ai
+                \<!DOCTYPE html PUBLIC \"-//W3C//XHTML 1.0 Transitional//EN\">\<CR>
+                \\<CR>
+                \<html lang=\"en-US\" xml:lang=\"en-US\" xmlns=\"http://www.w3.org/1999/XHTML\">\<CR>
+                \	<head>\<CR>
+                \		<title></title>\<CR>
+                \		<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\<CR>
+                \	</head>\<CR>
+                \	<body>\<CR>
+                \	</body>\<CR>
+                \</html>" | set ai
 endif
 
 if has("autocmd") && has("eval")
     augroup gregf
-	autocmd!
+        autocmd!
 
-	" Automagic line numbers
-	autocmd BufEnter * :call <SID>WindowWidth()
+        " Automagic line numbers
+        autocmd BufEnter * :call <SID>WindowWidth()
 
-	" StripWhite space on save
-	"autocmd FileWritePre * :call <SID>StripWhite()
-	"autocmd FileAppendPre * :call <SID>StripWhite()
-	"autocmd FilterWritePre * :call <SID>StripWhite()
-	"autocmd BufWritePre * :call <SID>StripWhite()
+        " StripWhite space on save
+        "autocmd FileWritePre * :call <SID>StripWhite()
+        "autocmd FileAppendPre * :call <SID>StripWhite()
+        "autocmd FilterWritePre * :call <SID>StripWhite()
+        "autocmd BufWritePre * :call <SID>StripWhite()
 
-	" Update header in .vimrc and .bashrc before saving
-	autocmd BufWritePre *vimrc  :call <SID>UpdateRcHeader()
-	autocmd BufWritePre *zshrc :call <SID>UpdateRcHeader()
+        " Update header in .vimrc and .bashrc before saving
+        autocmd BufWritePre *vimrc  :call <SID>UpdateRcHeader()
+        autocmd BufWritePre *zshrc :call <SID>UpdateRcHeader()
 
-	" Always do a full syntax refresh
-	autocmd BufEnter * syntax sync fromstart
+        " Always do a full syntax refresh
+        autocmd BufEnter * syntax sync fromstart
 
-	" For svn-commit, don't create backups
-	autocmd BufRead svn-commit.tmp :setlocal nobackup
+        " For svn-commit, don't create backups
+        autocmd BufRead svn-commit.tmp :setlocal nobackup
 
-	" m4 matchit support
-	autocmd FileType m4 :let b:match_words="(:),`:',[:],{:}"
+        " m4 matchit support
+        autocmd FileType m4 :let b:match_words="(:),`:',[:],{:}"
     augroup END
 endif
 
 " content creation
 if has("autocmd")
     augroup content
-	autocmd!
+        autocmd!
 
-	autocmd BufNewFile *.rb 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
-		    \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
-		    \ norm G
+        autocmd BufNewFile *.rb 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
+                    \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
+                    \ norm G
 
-	autocmd BufNewFile *.lua 0put ='# vim: set sw=4 sts=4 et tw=80 :' |
-		    \ 0put ='#!/usr/bin/env lua' | set sw=4 sts=4 et tw=80 |
-		    \ norm G
+        autocmd BufNewFile *.lua 0put ='# vim: set sw=4 sts=4 et tw=80 :' |
+                    \ 0put ='#!/usr/bin/env lua' | set sw=4 sts=4 et tw=80 |
+                    \ norm G
 
-	autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
-		    \ 1put ='' | call MakeIncludeGuards() |
-		    \ set sw=4 sts=4 et tw=80 | norm G
+        autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
+                    \ 1put ='' | call MakeIncludeGuards() |
+                    \ set sw=4 sts=4 et tw=80 | norm G
 
-	autocmd BufNewFile *.cc 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
-		    \ 1put ='' | 2put ='' | call setline(3, '#include "' .
-		    \ substitute(expand("%:t"), ".cc$", ".hh", "") . '"') |
-		    \ set sw=4 sts=4 et tw=80 | norm G
-	autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
-	au! BufRead,BufNewFile *.mkd   setfiletype mkd
+        autocmd BufNewFile *.cc 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
+                    \ 1put ='' | 2put ='' | call setline(3, '#include "' .
+                    \ substitute(expand("%:t"), ".cc$", ".hh", "") . '"') |
+                    \ set sw=4 sts=4 et tw=80 | norm G
+        autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
+        au! BufRead,BufNewFile *.mkd   setfiletype mkd
 
-	"ruby
-	autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-	autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-	autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-	autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-	"improve autocomplete menu color
-	highlight Pmenu ctermbg=238 gui=bold
-	au BufRead,BufNewFile *.js set ft=javascript.jquery
-    au BufRead,BufNewFile *.js.haml set ft=javascript.jquery
-    au BufRead,BufNewFile *.js.erb set ft=javascript.jquery
-    au BufRead,BufNewFile *.pp set ft=puppet
+        "ruby
+        autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+        autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+        autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+        autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+        "improve autocomplete menu color
+        highlight Pmenu ctermbg=238 gui=bold
+        au BufRead,BufNewFile *.js set ft=javascript.jquery
+        au BufRead,BufNewFile *.js.haml set ft=javascript.jquery
+        au BufRead,BufNewFile *.js.erb set ft=javascript.jquery
+        au BufRead,BufNewFile *.pp set ft=puppet
     augroup END
 endif
 
@@ -493,9 +502,9 @@ if (has("gui_running"))
     "colorscheme kellys < friggen awesomeness
     colorscheme wombat " < friggen awesomeness as well
     set guifont=Droid\ Sans\ Mono\ 12
-	set mousem=popup	" Nice pop-up
-	set selection=exclusive	" Allow one char past EOL
-	set ttymouse=xterm2	" Terminal type for mouse code recognition
+    set mousem=popup	" Nice pop-up
+    set selection=exclusive	" Allow one char past EOL
+    set ttymouse=xterm2	" Terminal type for mouse code recognition
     set mousehide
 endif
 
@@ -525,11 +534,11 @@ endif
 
 if &term =~ "xterm"
     if has('title')
-	    set title
+        set title
     endif
     if exists('&t_SI')
-	    let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
-    	let &t_EI = "\<Esc>]12;grey80\x7"
+        let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
+        let &t_EI = "\<Esc>]12;grey80\x7"
     endif
 endif
 
@@ -541,13 +550,13 @@ endif
 if has("eval")
     " If we're in a wide window, enable line numbers.
     fun! <SID>WindowWidth()
-	if winwidth(0) > 90
-	    setlocal foldcolumn=2
-	    setlocal number
-	else
-	    setlocal nonumber
-	    setlocal foldcolumn=0
-	endif
+        if winwidth(0) > 90
+            setlocal foldcolumn=2
+            setlocal number
+        else
+            setlocal nonumber
+            setlocal foldcolumn=0
+        endif
     endfun
 endif
 
