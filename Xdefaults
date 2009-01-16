@@ -60,7 +60,6 @@ XTerm*colorMode: 	true
 XTerm*pointerColor:	blue
 XTerm*pointerColor2: 	yellow
 XTerm*borderWidth:	0
-XTerm*transparent:	true
 XTerm*scrollBar:    false
 XTerm*foreground: #ffffff
 XTerm*background: #000000
