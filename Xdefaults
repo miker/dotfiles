@@ -61,7 +61,7 @@ XTerm*pointerColor:	blue
 XTerm*pointerColor2: 	yellow
 XTerm*borderWidth:	0
 XTerm*transparent:	true
-XTerm*scrollBar:	false
+XTerm*scrollBar:    false
 XTerm*foreground: #ffffff
 XTerm*background: #000000
 XTerm*loginShell: true 
@@ -70,6 +70,7 @@ XTerm*hideScrollbar: true
 XTerm*hideTabbar: true
 XTerm*hideButton: true
 XTerm*hideMenubar: true
+XTerm*dynamicColors: true
 XTerm*.multiScroll: true
 XTerm*.showBlinkAsBold: true
 XTerm*.utf8: 1
@@ -78,7 +79,6 @@ XTerm*.visualBell: true
 !XTerm*faceName: terminus:size=13
 XTerm*faceName: droid sans mono:size=12:antialias=true
 !XTerm*faceName: terminus:size=12:antialias=false
-XTerm*shadowColor: #222222
 XTerm*saveLines: 10000
 XTerm*on4Clicks: all
 XTerm*colorBDMode: true
@@ -90,29 +90,10 @@ XTerm*metaSendsEscape: true
 XTerm*locale: utf8
 XTerm*jumpScroll: true
 XTerm*scrollTtyOutput: false
+XTerm*underLine: true
+XTerm*utf8Title: true
 XTerm*scrollKey: true
 XTerm*bellIsUrgent: true
-
-URxvt*cursorColor: #73B8D9 
-URxvt*tintColor: white
-URxvt*geometry: 80x25
-URxvt*foreground: #ffffff
-URxvt*background: #000000
-URxvt*urlLauncher: firefox -new-tab 
-URxvt*shading: 35 
-URxvt*fading: 10
-URxvt*loginShell: true 
-URxvt*scrollBar: false
-URxvt*meta8: false 
-URxvt*mouseWheelScrollPage: true
-URxvt*inheritPixmap: true 
-URxvt*font: xft:droid sans mono:size=12
-URxvt*scrollTtyOutput: false
-URxvt*scrollTtyKeypress: true
-URxvt*scrollWithBuffer: flase
-URxvt*scrollKey: true
-URxvt*urgentOnBell: true
-URxvt*visualBell: true
 
 !Cursors - Choose one
 !Xcursor.theme: Blue
