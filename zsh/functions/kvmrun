@@ -1,7 +1,0 @@
-echo "Supply drive image to boot from"
-kvm -boot c -m 512 -smp 2 -localtime \
--net nic \
--net user \
--no-fd-bootchk -no-acpi -hda ~/kvm/$1.qcow
-
-# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 syn=zsh :

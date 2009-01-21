@@ -1,4 +1,0 @@
-local last_path=`script/generate $@ | awk '/db\/migrate\//{print $NF}'`
-if [ $last_path ]; then $EDITOR $last_path && rake db:migrate; fi
-
-# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 syn=zsh :

@@ -1,3 +1,0 @@
-rsync -rPIhb --backup-dir=/tmp/rsync -e /dev/null -- ${@}
-
-# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 syn=zsh :

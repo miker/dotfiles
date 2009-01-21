@@ -1,3 +1,0 @@
-kvm-img create -e -f qcow2 $i.qcow 10G
-
-# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 syn=zsh :

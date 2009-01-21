@@ -1,5 +1,0 @@
-Xephyr :1 -ac -screen 1024x768 &
-sleep 3
-DISPLAY=:1 $@
-
-# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 syn=zsh :

@@ -1,6 +1,0 @@
-TARFILE=$(basename $1 .lzma)
-unlzma $1
-mkdir -p ${TARFILE}
-tar xvf $TARFILE.tar -C ${TARFILE}
-
-# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 syn=zsh :
