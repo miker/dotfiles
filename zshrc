@@ -14,7 +14,7 @@
 # past this point for scp, and it's important to refrain from
 # outputting anything in those cases.
 ##############################################################################
-for zshrc_snipplet in ~/.zsh.d/S[0-9][0-9]*[^~] ; do
+for zshrc_snipplet in ~/.zsh/prompt/S[0-9][0-9]*[^~] ; do
         source $zshrc_snipplet
 done
 # by default, we want this to get set.
