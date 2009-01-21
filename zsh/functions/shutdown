@@ -1,0 +1,12 @@
+if [ !$SSH_TTY ]; then
+    echo -n " * You are currently using ssh, You sure you want to powerdown this server? (yes/no) "
+    read input
+    if [ "$input" = "yes" ]; then
+        echo " ! Powering off $HOST"
+        sudo shutdown $@
+    else
+        echo " * Good luck with that..."
+    fi
+fi
+
+# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 syn=zsh :

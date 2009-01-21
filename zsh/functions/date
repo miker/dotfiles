@@ -1,0 +1,9 @@
+if [ $# = 0 ]; then
+    # format: saturday, december 21, 2002 06:46:38 pm est
+    command date +"%a, %b %e %Y %I:%M:%S%P %Z"
+else
+    # execute real `date'
+    command date $@
+fi
+
+# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 syn=zsh :

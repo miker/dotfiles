@@ -1,0 +1,6 @@
+FILE=$(basename "$1" .rpm)
+rpm2tar "$1"
+mkdir -p ${FILE}
+tar -xvf ${FILE}.tar -C ${FILE}
+
+# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 syn=zsh :

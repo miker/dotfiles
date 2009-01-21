@@ -1,0 +1,8 @@
+local virusdir="$TMP/virus.$$$"
+mkdir -p $virusdir
+nice -n 19 clamscan --verbose --max-recursion=20 -m -i --detect-pua --move=$virusdir -r
+cd $virusdir
+echo -n "Viruses:"
+ls
+
+# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 syn=zsh :

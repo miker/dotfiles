@@ -1,0 +1,26 @@
+if [[ -f "$1" ]]
+then
+        case "$1" in
+              (*.tar.bz2) tar -xvjf "$1" ;;
+              (*.tar.gz) tar -xvzf "$1" ;;
+              (*.ace) unace e "$1" ;;
+              (*.rar) unrar x "$1" ;;
+              (*.deb) ar -x "$1" ;;
+              (*.bz2) bzip2 -d "$1" ;;
+              (*.lzh) lha x "$1" ;;
+              (*.gz) gunzip -d "$1" ;;
+              (*.tar) tar -xvf "$1" ;;
+              (*.rpm) extractrar "$1" ;;
+              (*.lzma) extractlzma "$1" ;;
+              (*.tgz) gunzip -d "$1" ;;
+              (*.tbz2) tar -jxvf "$1" ;;
+              (*.zip) unzip "$1" ;;
+              (*.Z) uncompress "$1" ;;
+              (*.shar) sh "$1" ;;
+              (*) echo "'"$1"' Error. Please go away" ;;
+        esac
+else
+        echo "'"$1"' is not a valid file"
+fi
+
+# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 syn=zsh :
