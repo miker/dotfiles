@@ -1,6 +1,7 @@
 -- awesome 3 configuration file
 require("awful")
 require("beautiful")
+require("revelation")
 
 -- Load my config settings. Most of everything you'll want to tweak is in
 -- config.lua.
@@ -174,6 +175,7 @@ keybinding({ config.keys.super }, "h", function() awful.util.spawn(config.apps.t
 keybinding({ config.keys.super }, "y", function() awful.util.spawn(config.apps.music) end):add()
 keybinding({ config.keys.super }, "v", function() awful.util.spawn(config.apps.editor_cmd) end):add()
 keybinding({ config.keys.super }, "k", function() awful.util.spawn("gvim") end):add()
+keybinding({ config.keys.modkey }, "Tab", revelation.revelation):add()
 --keybinding({ config.keys.super }, "t", function() awful.titlebar.add(client.focus) end):add()
 keybinding({ config.keys.super, config.keys.shift }, "t", function() awful.titlebar.remove(client.focus) end):add()
 
@@ -193,7 +195,7 @@ keybinding({ config.keys.modkey, config.keys.control }, "k", function () awful.s
 keybinding({ config.keys.modkey, config.keys.control }, "space", awful.client.togglefloating):add()
 keybinding({ config.keys.modkey, config.keys.control }, "Return", function () client.focus:swap(awful.client.master()) end):add()
 --keybinding({ config.keys.modkey }, "o", awful.client.movetoscreen):add()
-keybinding({ config.keys.modkey }, "Tab", awful.client.focus.history.previous):add()
+--keybinding({ config.keys.modkey }, "Tab", awful.client.focus.history.previous):add()
 keybinding({ config.keys.modkey }, "u", awful.client.urgent.jumpto):add()
 keybinding({ config.keys.modkey, config.keys.shift }, "r", function () client.focus:redraw() end):add()
 
