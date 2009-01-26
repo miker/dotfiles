@@ -427,7 +427,7 @@ kvm -boot d -m 256 -localtime \
 }
 
 function kvmimg {
-kvm-img create -f qcow2 $i.qcow 10G
+kvm-img create -f qcow2 /storage/kvm/$i.qcow 10G
 }
 
 function kvminst {
