@@ -38,6 +38,8 @@
     overlay = clone git@github.com:gregf/gregf-overlay.git
     doc = clone git:doc.git doc
     gr = reset
+    rev = revert HEAD
+    count = shortlog -s -n
 
 [apply]
     #whitespace = nowarn
