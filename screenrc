@@ -24,7 +24,7 @@ defscrollback         10000
 silencewait           15
 
 # print wackier status messages
-nethack on
+#nethack on
 
 # restore window contents after using (e.g.) vi
 altscreen on
