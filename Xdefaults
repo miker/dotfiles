@@ -60,6 +60,10 @@ XTerm*colorMode: 	true
 XTerm*pointerColor:	blue
 XTerm*pointerColor2: 	yellow
 XTerm*borderWidth:	0
+<<<<<<< HEAD:Xdefaults
+=======
+XTerm*transparent:	true
+>>>>>>> 583d018... some cleanups:Xdefaults
 XTerm*scrollBar:    false
 XTerm*foreground: #ffffff
 XTerm*background: #000000
