@@ -444,7 +444,10 @@ if has("autocmd")
     augroup content
         autocmd!
 
-        autocmd BufNewFile *.rb 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
+        autocmd BufNewFile *.rb 0put = '' |
+                    \ 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
+                    \ 0put = '# Copyright (c) 2009 Greg Fitzgerald <netzdamon@gmail.com>' |
+                    \ 0put = '# Distributed under the terms of the GNU General Public License v2' |
                     \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
                     \ norm G
 
@@ -474,6 +477,7 @@ if has("autocmd")
         au BufRead,BufNewFile *.js.haml set ft=javascript.jquery
         au BufRead,BufNewFile *.js.erb set ft=javascript.jquery
         au BufRead,BufNewFile *.pp set ft=puppet
+        au BufRead,BufNewFile *.god set ft=ruby
     augroup END
 endif
 
@@ -487,12 +491,12 @@ endif
 " GUI Options plus colorschemes
 "-----------------------------------------------------------------------
 
-if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt-unicode'
+if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt-unicode' || &term == "xterm-256color"
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
     colorscheme zenburn
     "colorscheme gigamo
     "colorscheme peaksea
-else
+    else
     colorscheme jammy
 endif
 
@@ -500,7 +504,8 @@ if (has("gui_running"))
     "colorscheme gigamo
     "colorscheme darkspectrum 
     "colorscheme kellys < friggen awesomeness
-    colorscheme wombat " < friggen awesomeness as well
+    "colorscheme wombat " < friggen awesomeness as well
+    colorscheme xoria256 " < more awesomeness
     set guifont=Droid\ Sans\ Mono\ 12
     set mousem=popup	" Nice pop-up
     set selection=exclusive	" Allow one char past EOL
