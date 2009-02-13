@@ -13,6 +13,7 @@
 # Test for an interactive shell. There is no need to set anything
 # past this point for scp, and it's important to refrain from
 # outputting anything in those cases.
+# hal-disable-polling --device /dev/scd0
 ##############################################################################
 for zshrc_snipplet in ~/.zsh/prompt/S[0-9][0-9]*[^~] ; do
         source $zshrc_snipplet
@@ -52,143 +53,121 @@ trap clear 0
 #############################################################################
 case `uname` in
     OpenBSD)
-    # Enviroment Varibles
-    export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/4.3/packages/`machine -a`/
+        # Enviroment Varibles
+        export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/4.3/packages/`machine -a`/
 
-    # which version of ls should we use?
-    if [ -x /usr/local/bin/gls ]; then
-        alias ls='/usr/local/bin/gls -F --color --human-readable'
-        export LS_COLORS="no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;3:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:"
-    else
-        if [ -x /usr/local/bin/colorls ]; then
-            alias ls='/usr/local/bin/colorls -G -F'
-            export LSCOLORS="ExGxFxDxCxDxDxxbadacad"
+        # which version of ls should we use?
+        if [ -x /usr/local/bin/gls ]; then
+            alias ls='/usr/local/bin/gls -F --color --human-readable'
+            export LS_COLORS="no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;3:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:"
+        else
+            if [ -x /usr/local/bin/colorls ]; then
+                alias ls='/usr/local/bin/colorls -G -F'
+                export LSCOLORS="ExGxFxDxCxDxDxxbadacad"
+            fi
         fi
-    fi
-    # Aliases
-    alias cvsup="cd /usr; cvs -d anoncvs@anoncvs1.usa.openbsd.org:/cvs checkout -P -rOPENBSD_4_3 src"
-    alias cvsrun="sudo cvsup -g -L 2 /etc/cvs-supfile"
-    alias killall="pkill"
-    alias shred="rm -P"
+        # Aliases
+        alias cvsup="cd /usr; cvs -d anoncvs@anoncvs1.usa.openbsd.org:/cvs checkout -P -rOPENBSD_4_3 src"
+        alias cvsrun="sudo cvsup -g -L 2 /etc/cvs-supfile"
+        alias killall="pkill"
+        alias shred="rm -P"
     ;;
     FreeBSD)
-    #SSH_ASKPASS="/usr/local/bin/ssh-askpass-gtk2"
-    LSCOLORS=ExCxFxFxBxGxGxababaeae
-    CLICOLOR=$LSCOLORS
+        SSH_ASKPASS="/usr/local/bin/ssh-askpass-gtk2"
+        LSCOLORS=ExCxFxFxBxGxGxababaeae
+        CLICOLOR=$LSCOLORS
 
-    alias ls='ls -GF'
-    alias portu="sudo csup -L 2 /etc/ports-cvsup"
-    alias srcu="sudo csup -L 2 /etc/src-cvsup"
-    export LANG="en_US.UTF-8"
-    export LC_CTYPE="en_US.UTF-8"
-    export LC_ALL="en_US.UTF-8"
+        alias ls='ls -GF'
+        alias portu="sudo csup -L 2 /etc/ports-cvsup"
+        alias srcu="sudo csup -L 2 /etc/src-cvsup"
+        export LANG="en_US.UTF-8"
+        export LC_CTYPE="en_US.UTF-8"
+        export LC_ALL="en_US.UTF-8"
 
-    function installkernel {
-    cd /usr/src
-    make buildkernel KERNCONF=$1
-    make installkernel KERNCONF=$1
-}
-;;
-Linux)
-#export SSH_ASKPASS="/usr/bin/gtk2-ssh-askpass"
+    ;;
+    Linux)
+        #export SSH_ASKPASS="/usr/bin/gtk2-ssh-askpass"
 
-if [[ -f /etc/gentoo-release ]]; then
-    export RUBYOPT="" #will break gentoo's ebuild for rubygems, if your using it comment this out
-    alias ms="mirrorselect -b10 -s5 -D"
-    alias python-updater="python-updater -P paludis"
-    alias dp="dispatch-conf"
-    alias keywords='sudo vim /etc/paludis/keywords.conf'
-    alias use='sudo vim /etc/paludis/use.conf'
-    alias mask='sudo vim /etc/paludis/package_mask.conf'
-    alias unmask='sudo vim /etc/paludis/package_unmask.conf'
-    alias bashrc='sudo vim /etc/paludis/bashrc'
+        # We Want utf8
+        export LC_CTYPE=en_US.utf8
+        export LC_ALL=en_US.UTF8
 
-    export ECHANGELOG_USER="Greg Fitzgerald <netzdamon@gmail.com>"
-    export PALUDIS_OPTIONS="--show-reasons summary --dl-reinstall-scm weekly --log-level warning --dl-reinstall if-use-changed --show-use-descriptions changed"
+        #aliases
+        alias ls='ls -F --color --human-readable'
+        alias rm='nocorrect /bin/rm -I --preserve-root'
 
-    function paludis-scm {
-    PALUDIS_OPTIONS="--dl-reinstall-scm daily"
-    paludis $@
-    PALUDIS_OPTIONS="--dl-reinstall-scm never"
-}
+        if [ $HOST  = "mail" ]; then
+            export RAILS_ENV="production"
+        fi
 
-function explainuseflag {
-sed -ne "s,^\([^ ]*:\)\?$1 - ,,p" \
-/usr/portage/profiles/use.desc \
-/usr/portage/profiles/use.local.desc
+        #############################################################################
+        # colors for ls, etc.  Prefer ~/.dir_colors
+        #############################################################################
+        if [[ -f ~/.dir_colors ]]; then
+            eval `dircolors -b ~/.dir_colors`
+        else
+            eval `dircolors -b /etc/DIR_COLORS`
+        fi
+
+        if [[ -f /etc/gentoo-release ]]; then
+            export RUBYOPT="" #will break gentoo's ebuild for rubygems, if your using it comment this out
+            alias ms="mirrorselect -b10 -s5 -D"
+            alias python-updater="python-updater -P paludis"
+            alias dp="dispatch-conf"
+            alias keywords='sudo vim /etc/paludis/keywords.conf'
+            alias use='sudo vim /etc/paludis/use.conf'
+            alias mask='sudo vim /etc/paludis/package_mask.conf'
+            alias unmask='sudo vim /etc/paludis/package_unmask.conf'
+            alias bashrc='sudo vim /etc/paludis/bashrc'
+            alias df='df -hT'
+
+            export ECHANGELOG_USER="Greg Fitzgerald <netzdamon@gmail.com>"
+            export PALUDIS_OPTIONS="--show-reasons summary --dl-reinstall-scm weekly --log-level warning --dl-reinstall if-use-changed --show-use-descriptions changed"
+
+            function paludis-scm {
+                PALUDIS_OPTIONS="--dl-reinstall-scm daily"
+                paludis $@
+                PALUDIS_OPTIONS="--dl-reinstall-scm never"
             }
 
+            function explainuseflag {
+                sed -ne "s,^\([^ ]*:\)\?$1 - ,,p" \
+                /usr/portage/profiles/use.desc \
+                /usr/portage/profiles/use.local.desc
+             }
+
             function edesc {
-            cat *.ebuild | sed -ne 's-^DESCRIPTION="\(.*\)".*-\1-1p' | sort -u
-        }
+                cat *.ebuild | sed -ne 's-^DESCRIPTION="\(.*\)".*-\1-1p' | sort -u
+            }
 
-        function ewww {
-        cat *.ebuild | sed -ne 's-^HOMEPAGE="\(.*\)".*-\1-1p' | sort -u
-    }
+            function ewww {
+                cat *.ebuild | sed -ne 's-^HOMEPAGE="\(.*\)".*-\1-1p' | sort -u
+            }
 
-    function svcs {
-    sudo /etc/init.d/$1 start
-}
+            function svcs {
+                sudo /etc/init.d/$1 start
+            }
 
-function svce {
-sudo /etc/init.d/$1 stop
+            function svce {
+                sudo /etc/init.d/$1 stop
             }
 
             function svcr {
-            sudo /etc/init.d/$1 restart
-        }
-
-        function svcz {
-        sudo /etc/init.d/$1 zap
-    }
-
-    function rca {
-    sudo /sbin/rc-update add $1 default
-}
-
-function rcd {
-sudo /sbin/rc-update del $1 default
+                sudo /etc/init.d/$1 restart
             }
 
-            function instkernel {
-            if ![ -f $PWD/.config ]; then
-                echo "Please run make menuconfig first"
-                exit
-            fi
-            if ![ EUID == 0 ]; then
-                echo "You must be root to run this"
-                exit
-            fi
-            mount /boot
-            make clean
-            make -j3 all && make -j3 modules_install && make -j3 install
-            vim /boot/grub/grub.conf
-            umount /boot
-            echo "You are now ready to reboot."
-        }
+            function svcz {
+                sudo /etc/init.d/$1 zap
+            }
 
-    fi
+            function rca {
+                sudo /sbin/rc-update add $1 default
+            }
 
-    # We Want utf8
-    export LC_CTYPE=en_US.utf8
-    export LC_ALL=en_US.UTF8
-
-    #aliases
-    alias ls='ls -F --color --human-readable'
-    alias rm='nocorrect /bin/rm -I --preserve-root'
-
-    if [ $HOST  = "gila" ]; then
-        export RAILS_ENV="production"
-    fi
-
-    #############################################################################
-    # colors for ls, etc.  Prefer ~/.dir_colors
-    #############################################################################
-    if [[ -f ~/.dir_colors ]]; then
-        eval `dircolors -b ~/.dir_colors`
-    else
-        eval `dircolors -b /etc/DIR_COLORS`
-    fi
+            function rcd {
+                sudo /sbin/rc-update del $1 default
+            }
+        fi
     ;;
 esac
 
@@ -201,11 +180,11 @@ if [[ -d /var/tmp/ccache ]]; then
     (( ${+CCACHE_SIZE} )) || export CCACHE_SIZE="2G"
 
 fi
-## (( ${+*} )) = if variable is set don't try to set it again
-#(( ${+GREP_OPTIONS} )) || export GREP_OPTIONS="--color=auto -nsi"
+
+# To many stupid scripts don't unset this so I'm using an alias for now
+#export GREP_OPTIONS="--color=auto -nsi"
 (( ${+TZ} )) || export TZ="EST5EDT"
 export MPD_HOST="/home/gregf/.mpd/socket"
-#(( ${+MPD_PORT} )) || export MPD_PORT="6600"
 export GIT_AUTHOR_EMAIL="netzdamon@gmail.com"
 export GIT_AUTHOR_NAME="Greg Fitzgerald"
 export GIT_COMMITTER_EMAIL=$GIT_AUTHOR_EMAIL
@@ -249,30 +228,30 @@ esac
 
 # format titles for screen and rxvt
 function title() {
-# escape '%' chars in $1, make nonprintables visible
-a=${(V)1//\%/\%\%}
+    # escape '%' chars in $1, make nonprintables visible
+    a=${(V)1//\%/\%\%}
 
-# Truncate command, and join lines.
-a=$(print -Pn "%40>...>$a" | tr -d "\n")
+    # Truncate command, and join lines.
+    a=$(print -Pn "%40>...>$a" | tr -d "\n")
 
-case $TERM in
-    screen-*)
-    print -Pn "\ek$a:$3\e\\"      # screen title (in ^A")
-    ;;
-    xterm*|rxvt)
-    print -Pn "\e]2;$2 | $a:$3\a" # plain xterm title
-    ;;
-esac
+    case $TERM in
+        screen-*)
+        print -Pn "\ek$a:$3\e\\"      # screen title (in ^A")
+        ;;
+        xterm*|rxvt)
+        print -Pn "\e]2;$2 | $a:$3\a" # plain xterm title
+        ;;
+    esac
 }
 
 # precmd is called just before the prompt is printed
 function precmd() {
-title "zsh" "$USER@%m" "%55<...<%~"
+    title "zsh" "$USER@%m" "%55<...<%~"
 }
 
 # preexec is called just before any command line is executed
 function preexec() {
-title "$1" "$USER@%m" "%35<...<%~"
+    title "$1" "$USER@%m" "%35<...<%~"
 }
 
 # Enable flow control, prevents ^k^s from locking up my screen session.
@@ -296,13 +275,14 @@ alias wget="wget -c"
 alias ll="ls -l"
 alias l.='ls -d .[^.]*'
 alias lsd='ls -ld *(-/DN)'
-alias df='df -hT'
-alias weather="/home/gregf/code/bin/forecast/forecast.rb"
+alias weather="~/code/bin/forecast/forecast.rb"
 alias ncmpc="ncmpc -c"
 alias fixdbus="dbus-uuidgen --ensure"
 alias wp="feh --bg-scale"
-alias m="nice -n1 mplayer -idx -af volnorm -stop-xscreensaver"
-alias ml="nice -n1 mplayer -idx -loop 0 -af volnorm -stop-xscreensaver"
+alias wp="~/code/bin/wallpaper/wallpaper.rb"
+alias m="nice -n1 mplayer"
+alias ml="nice -n1 mplayer -loop 0"
+alias mn="nice -n1 mplayer -nosound"
 alias e="gvim"
 alias v="vim"
 alias t="thunar"
@@ -324,7 +304,6 @@ alias migrate='rake db:migrate db:test:clone'
 alias gi='sudo gem install --no-ri --include-dependencies'
 alias giti="vim .gitignore"
 alias gs='gem search -b'
-alias g='gthumb'
 alias vmware='VMWARE_USE_SHIPPED_GTK=yes /opt/vmware/workstation/bin/vmware'
 alias burniso='wodim -v dev=/dev/cdrw'
 alias burndvdiso='growisofs -speed=8 -dvd-compat -Z /dev/dvdrw=$1'
@@ -338,7 +317,6 @@ alias la="ls -a"
 alias l="ls"
 alias f-spot='dbus-launch f-spot'
 alias d="devtodo"
-alias zkbd="zsh /usr/share/zsh/4.3.4/functions/Misc/zkbd"
 alias gnp="git-notpushed"
 alias s="sudo"
 alias sx="startx"
@@ -357,18 +335,18 @@ alias lock='alock -auth pam -bg blank:color=black'
 alias lsnoext="ls | grep -v '\.'"
 alias cleanliferea="sqlite3 ~/.liferea_1.4/liferea.db vacuum"
 alias starcraft=' wine ~/.wine/drive_c/Program\ Files/Starcraft/StarCraft.exe'
-alias ipager='k ipager; sleep 1; ipager &'
-alias devilspie='k devilspie; sleep 1; devilspie &'
 alias gis="git status | grep --color=always '^[^a-z]\+\(new file:\|modified:\)' | cut -d'#' -f2-"
 alias lk='lynx -dump http://kernel.org/kdist/finger_banner'
-alias update-eix='ionice -c3 update-eix'
 alias dosbox='dosbox -conf ~/.dosbox.conf -fulscreen'
 alias ports='lsof -i'
 alias vim="vim -p"
 alias ra3="wine /home/gregf/.wine/drive_c/Program\ Files/Electronic\ Arts/Red\ Alert\ 3/RA3.exe"
 alias nfs="cd /home/gregf/.wine/drive_c/Program\ Files/EA\ Games/Need\ for\ Speed\ Undercover/; wine nfs.exe; cd ~"
-alias grep='grep -Hn --color=always'
+alias wog="cd /home/gregf/.wine/drive_c/Program\ Files/WorldOfGoo/; wine WorldOfGoo.exe; cd ~ && xrandr -s 0"
+alias g='grep -Hn --color=always'
 alias cal='cal -3'
+alias ar="echo 'awful.util.restart()' | awesome-client -"
+alias mutt="TERM=xterm-256color mutt"
 ################################################################################
 # Functions and Completion
 ################################################################################
@@ -398,64 +376,56 @@ fi
 # Custom Functions
 ################################################################################
 
-function shutdown {
-if [ `uname -n` = "gila" ]; then
-    echo -n " * Power down the webserver gila? (yes/no) "
-    read input
-    if [ "$input" = "yes" ]; then
-        echo " ! Powering off Gila"
-        sudo shutdown $@
-    else
-        echo " * Good boy."
-    fi
-fi
+function zkbd {
+    ZVER=(`zsh --version | awk '{print $2}' -`)
+    zsh /usr/share/zsh/${ZVER}/functions/Misc/zkbd
 }
 
 function clamscan {
-mkdir -p /tmp/virus
-nice -n 19 clamscan --verbose --max-recursion=20 -m -i --detect-pua --move=/tmp/virus -r
-cd /tmp/virus
-echo -n "Viruses:"
-ls
+    mkdir -p /tmp/virus
+    nice -n 19 clamscan --verbose --max-recursion=20 -m -i --detect-pua --move=/tmp/virus -r
+    cd /tmp/virus
+    echo -n "Viruses:"
+    ls
 }
 
 function kvmiso {
-kvm -boot d -m 256 -localtime \
--net nic \
--net user \
--no-fd-bootchk -no-acpi -cdrom $1
+    kvm -boot d -m 256 -localtime \
+    -net nic \
+    -net user \
+    -no-fd-bootchk -no-acpi -cdrom $1
 }
 
 function kvmimg {
-kvm-img create -f qcow2 /storage/kvm/$i.qcow 10G
+    kvm-img create -f qcow2 /storage/kvm/$i.qcow 10G
 }
 
 function kvminst {
-echo "Supply disk.img and path to iso or drive for installing from"
-kvm -boot d -m 256 -localtime \
--net nic \
--net user \
--no-fd-bootchk -no-acpi \
--hda /storage/kvm/$1.qcow -cdrom $2
+    echo "Supply disk.img and path to iso or drive for installing from"
+    kvm -boot d -m 256 -localtime \
+    -net nic \
+    -net user \
+    -no-fd-bootchk -no-acpi \
+    -hda /storage/kvm/$1.qcow -cdrom $2
 }
 
 function kvmrun {
-echo "Supply drive image to boot from"
-kvm -boot c -m 256 -localtime \
--net nic \
--net user \
--no-fd-bootchk -no-acpi -hda /storage/kvm/$1.qcow
+    echo "Supply drive image to boot from"
+    kvm -boot c -m 256 -localtime \
+    -net nic \
+    -net user \
+    -no-fd-bootchk -no-acpi -hda /storage/kvm/$1.qcow
 }
 
 function pskill {
-kill -9 `pgrep $1`
-echo "slaughtered."
+    kill -9 `pgrep $1`
+    echo "slaughtered."
 }
 
 
 function kscreen {
-echo -ne "\017"
-reset
+    echo -ne "\017"
+    reset
 }
 
 function spell { echo "$@" | aspell -a }
@@ -463,104 +433,104 @@ function spell { echo "$@" | aspell -a }
 function calc { echo "$*" | bc; }
 
 function date {
-if [ $# = 0 ]; then
-    # format: saturday, december 21, 2002 06:46:38 pm est
-    command date +"%a, %b %e %Y %I:%M:%S%P %Z"
-else
-    # execute real `date'
-    command date $@
-fi
+    if [ $# = 0 ]; then
+        # format: saturday, december 21, 2002 06:46:38 pm est
+        command date +"%a, %b %e %Y %I:%M:%S%P %Z"
+    else
+        # execute real `date'
+        command date $@
+    fi
 }
 
 #function to clean up web permissions.
 # TODO Move this to a script
 function fixwww {
-DIRPERM="0755"
-FILEPERM="0644"
-USER="gregf"
-GROUP="gregf"
-echo " * Are you in the correct directory? (yes/no)"
-pwd
-read input
-if [ "$input" = "yes" ]; then
-    echo " ! Fixing up WWW Permissions"
-    echo "   Fixing File Permissions"
-    find . -type f -print0 | xargs -0 chmod $FILEPERM
-    find . -type f -print0 | xargs -0 chown $USER:$GROUP
-    echo "   Fixing Directory Permissions"
-    find . -type d -print0 | xargs -0 chmod $DIRPERM
-    find . -type d -print0 | xargs -0 chown $USER:$GROUP
-    echo " * done."
-else
-    echo " ! Invalid response."
-fi
+    DIRPERM="0755"
+    FILEPERM="0644"
+    USER="gregf"
+    GROUP="gregf"
+    echo " * Are you in the correct directory? (yes/no)"
+    pwd
+    read input
+    if [ "$input" = "yes" ]; then
+        echo " ! Fixing up WWW Permissions"
+        echo "   Fixing File Permissions"
+        find . -type f -print0 | xargs -0 chmod $FILEPERM
+        find . -type f -print0 | xargs -0 chown $USER:$GROUP
+        echo "   Fixing Directory Permissions"
+        find . -type d -print0 | xargs -0 chmod $DIRPERM
+        find . -type d -print0 | xargs -0 chown $USER:$GROUP
+        echo " * done."
+    else
+        echo " ! Invalid response."
+    fi
 }
 
 function mcdrom {
-local mounted
-local cpwd
-mounted=$(grep cdrom /etc/mtab)
-if [[ $mounted = "" ]];then
-    mount /cdrom
-    echo "-- mounted cdrom --"
-    cd /cdrom ; ls
-else
-    cpwd=$(pwd|grep cdrom)
-    if [[ $cpwd = "" ]];then
-        umount /cdrom
-        echo "-- umounted cdrom --"
+    local mounted
+    local cpwd
+    mounted=$(grep cdrom /etc/mtab)
+    if [[ $mounted = "" ]];then
+        mount /cdrom
+        echo "-- mounted cdrom --"
+        cd /cdrom ; ls
     else
-        cd;umount /cdrom
-        echo "-- umounted cdrom --"
-        pwd
-        eject
+        cpwd=$(pwd|grep cdrom)
+        if [[ $cpwd = "" ]];then
+            umount /cdrom
+            echo "-- umounted cdrom --"
+        else
+            cd;umount /cdrom
+            echo "-- umounted cdrom --"
+            pwd
+            eject
+        fi
     fi
-fi
 }
 
 function extractrar {
-FILE=$(basename "$1" .rpm)
-rpm2tar "$1"
-mkdir -p ${FILE}
-tar -xvf ${FILE}.tar -C ${FILE}
+    FILE=$(basename "$1" .rpm)
+    rpm2tar "$1"
+    mkdir -p ${FILE}
+    tar -xvf ${FILE}.tar -C ${FILE}
 }
 
 function createlzma {
-lzma -q -9 $1
+    lzma -q -9 $1
 }
 
 function extractlzma {
-TARFILE=$(basename $1 .lzma)
-unlzma $1
-mkdir -p ${TARFILE}
-tar xvf $TARFILE.tar -C ${TARFILE}
+    TARFILE=$(basename $1 .lzma)
+    unlzma $1
+    mkdir -p ${TARFILE}
+    tar xvf $TARFILE.tar -C ${TARFILE}
 }
 
 function open {
-if [[ -f "$1" ]]
-then
-    case "$1" in
-        (*.tar.bz2) tar -xvjf "$1" ;;
-        (*.tar.gz) tar -xvzf "$1" ;;
-        (*.ace) unace e "$1" ;;
-        (*.rar) unrar x "$1" ;;
-        (*.deb) ar -x "$1" ;;
-        (*.bz2) bzip2 -d "$1" ;;
-        (*.lzh) lha x "$1" ;;
-        (*.gz) gunzip -d "$1" ;;
-        (*.tar) tar -xvf "$1" ;;
-        (*.rpm) extractrar "$1" ;;
-        (*.lzma) extractlzma "$1" ;;
-        (*.tgz) gunzip -d "$1" ;;
-        (*.tbz2) tar -jxvf "$1" ;;
-        (*.zip) unzip "$1" ;;
-        (*.Z) uncompress "$1" ;;
-        (*.shar) sh "$1" ;;
-        (*) echo "'"$1"' Error. Please go away" ;;
-    esac
-else
-    echo "'"$1"' is not a valid file"
-fi
+    if [[ -f "$1" ]]
+    then
+        case "$1" in
+            (*.tar.bz2) tar -xvjf "$1" ;;
+            (*.tar.gz) tar -xvzf "$1" ;;
+            (*.ace) unace e "$1" ;;
+            (*.rar) unrar x "$1" ;;
+            (*.deb) ar -x "$1" ;;
+            (*.bz2) bzip2 -d "$1" ;;
+            (*.lzh) lha x "$1" ;;
+            (*.gz) gunzip -d "$1" ;;
+            (*.tar) tar -xvf "$1" ;;
+            (*.rpm) extractrar "$1" ;;
+            (*.lzma) extractlzma "$1" ;;
+            (*.tgz) gunzip -d "$1" ;;
+            (*.tbz2) tar -jxvf "$1" ;;
+            (*.zip) unzip "$1" ;;
+            (*.Z) uncompress "$1" ;;
+            (*.shar) sh "$1" ;;
+            (*) echo "'"$1"' Error. Please go away" ;;
+        esac
+    else
+        echo "'"$1"' is not a valid file"
+    fi
 }
 
 function mps { /bin/ps $@ -u $USER -o pid,ppid,%cpu,%mem,command ; }
@@ -568,73 +538,73 @@ function mps { /bin/ps $@ -u $USER -o pid,ppid,%cpu,%mem,command ; }
 function mpsu { /bin/ps -u $@ -o pid,ppid,%cpu,%mem,command ; }
 
 function ech {
-CHPTH=`eix --only-names -e $1`
-most /usr/portage/$CHPTH/ChangeLog
+    CHPTH=`eix --only-names -e $1`
+    most /usr/portage/$CHPTH/ChangeLog
 }
 
 function junk {
-scp -r $* web:~/www/stuff/
+    scp -r $* web:~/www/stuff/
 }
 
 function dotfile {
-scp -r $* web:~/blog/shared/dotfiles/
+    scp -r $* web:~/blog/shared/dotfiles/
 }
 
 function pcache {
-paludis --regenerate-installable-cache
-paludis --regenerate-installed-cache
+    paludis --regenerate-installable-cache
+    paludis --regenerate-installed-cache
 }
 
 function isocdrom {
-dd if=/dev/cdrom of=$1 bs=2048
+    dd if=/dev/cdrom of=$1 bs=2048
 }
 
 function fix-paludis-perms {
-mkdirs=(/usr/portage/.cache/names /usr/portage/distfiles /var/tmp/paludis /etc/paludis)
-fixdirs=(/usr/portage /var/tmp/paludis /etc/paludis)
-repodir="/var/paludis/repositories"
-for dir in $mkdirs;
-do
-    mkdir -p $dir
-done
-for dir in $fixdirs;
-do
-    chgrp -R paludisbuild $dir
-    find $dir -type d -exec chmod g+wrx {} \;
-done
-cd $repodir
-if [ $? == 0 ]; then
-    for repo in `ls --color=never -Fd *(-/DN)`;
+    mkdirs=(/usr/portage/.cache/names /usr/portage/distfiles /var/tmp/paludis /etc/paludis)
+    fixdirs=(/usr/portage /var/tmp/paludis /etc/paludis)
+    repodir="/var/paludis/repositories"
+    for dir in $mkdirs;
     do
-        mkdir -p $repo/.cache/names
-        chgrp -R paludisbuild $repo
-        find $repo -type d -exec chmod g+wrx {} \;
+        mkdir -p $dir
     done
-fi
-pcache # see function above
+    for dir in $fixdirs;
+    do
+        chgrp -R paludisbuild $dir
+        find $dir -type d -exec chmod g+wrx {} \;
+    done
+    cd $repodir
+    if [ $? == 0 ]; then
+        for repo in `ls --color=never -Fd *(-/DN)`;
+        do
+            mkdir -p $repo/.cache/names
+            chgrp -R paludisbuild $repo
+            find $repo -type d -exec chmod g+wrx {} \;
+        done
+    fi
+    pcache # see function above
 }
 
 function confcat {
-grep -vh '^[[:space:]]*#' "$@" | grep -v '^$'
+    grep -vh '^[[:space:]]*#' "$@" | grep -v '^$'
 }
 
 function sg {
-local last_path=`script/generate $@ | awk '/db\/migrate\//{print $NF}'`
-if [ $last_path ]; then $EDITOR $last_path && rake db:migrate; fi
+    local last_path=`script/generate $@ | awk '/db\/migrate\//{print $NF}'`
+    if [ $last_path ]; then $EDITOR $last_path && rake db:migrate; fi
 }
 
 function http_headers {
-curl='whence curl'
-curl -I -L $@
+    curl='whence curl'
+    curl -I -L $@
 }
 
 function mktar {
-tar jcvf "${1%%/}.tar.bz2" "${1%%/}/"
+    tar jcvf "${1%%/}.tar.bz2" "${1%%/}/"
 }
 
 function sanitize {
-chmod -R u=rwX,go=rX "$@"
-chown -R ${USER}:users "$@"
+    chmod -R u=rwX,go=rX "$@"
+    chown -R ${USER}:users "$@"
 }
 
 # Stolen:
@@ -644,34 +614,34 @@ chown -R ${USER}:users "$@"
 # usage: remindme <time> <text>
 # e.g.: remindme 10m "omg, the pizza"
 function remindme {
-sleep $1 && zenity --info --text "$2" &
+    sleep $1 && zenity --info --text "$2" &
 }
 
 function background {
-nohup $1 &> /dev/null &    
+    nohup $1 &> /dev/null &    
 }
 
 function cdgem {
-cd `gem env gemdir`/gems
-cd `ls --color=never | grep $1 | sort | tail -1`
+    cd `gem env gemdir`/gems
+    cd `ls --color=never | grep --color=never $1 | sort | tail -1`
 }
 
 function keepempty {
-for i in $(find . -type d -regex ``./[^.].*'' -empty); do touch $i"/.gitignore"; done;
+    for i in $(find . -type d -regex ``./[^.].*'' -empty); do touch $i"/.gitignore"; done;
 }
 
 function xephyr {
-Xephyr :1 -ac -screen 1024x768 &
-sleep 5
-DISPLAY=:1 $1
+    Xephyr :1 -ac -screen 1024x768 &
+    sleep 5
+    DISPLAY=:1 $1
 }
 
 function cpv {
-rsync -rPIhb --backup-dir=/tmp/rsync -e /dev/null -- ${@}
+    rsync -rPIhb --backup-dir=/tmp/rsync -e /dev/null -- ${@}
 }
 
 function h { 
-history 0 | grep $1 
+    history 0 | grep $1 
 }
 ################################################################################
 # Get keys working
@@ -691,25 +661,27 @@ fi
 #################################################################################
 # Set some keybindings
 #################################################################################
-
+# bindkey '\022'
 [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
-[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" up-history
+#[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" history-incremental-search-backward
+#[[ -n ${key[Down]} ]] && bindkey "${key[Down]}"  history-incremental-search-forward
+[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" up-history 
 [[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-history
 [[ -n ${key[Home]} ]] && bindkey "${key[Home]}" beginning-of-line
 [[ -n ${key[End]} ]] && bindkey "${key[End]}" end-of-line
 [[ -n ${key[Delete]} ]] && bindkey "${key[Delete]}" delete-char
 
-bindkey "^[[2~" yank
-bindkey "^[[3~" delete-char
-bindkey "^[[5~" up-line-or-history ## PageUp
-bindkey "^[[6~" down-line-or-history ## PageDown
-bindkey "^[[4~" end-of-line
-bindkey "^[e" expand-cmd-path
-bindkey "^[[A" up-line-or-search ## up arrow for back-history-search
-bindkey "^[[B" down-line-or-search ## down arrow for fwd-history-search
-bindkey " " magic-space ## do history expansion on space
-bindkey "^[[1~" beginning-of-line
+#bindkey "^[[2~" yank
+#bindkey "^[[3~" delete-char
+#bindkey "^[[5~" up-line-or-history ## PageUp
+#bindkey "^[[6~" down-line-or-history ## PageDown
+#bindkey "^[[4~" end-of-line
+#bindkey "^[e" expand-cmd-path
+#bindkey "^[[A" up-line-or-search ## up arrow for back-history-search
+#bindkey "^[[B" down-line-or-search ## down arrow for fwd-history-search
+#bindkey " " magic-space ## do history expansion on space
+#bindkey "^[[1~" beginning-of-line
 
 ###############################################################################
 # Set prompt based on EUID
@@ -817,7 +789,7 @@ hist_ignore_space hist_no_functions hist_save_no_dups list_ambiguous \
 long_list_jobs menu_complete rm_star_wait zle inc_append_history \
 share_history prompt_subst no_list_beep local_options local_traps \
 hist_verify extended_history hist_reduce_blanks chase_links chase_dots \
-hash_cmds hash_dirs numeric_glob_sort vi print_exit_value cdable_vars
+hash_cmds hash_dirs numeric_glob_sort vi print_exit_value
 
 unset beep equals mail_warning
 
@@ -828,7 +800,7 @@ script_path=(~/code/bin/conky ~/code/bin/clipboard)
 path=($path /usr/local/bin /usr/bin /bin /usr/X11R6/bin ${HOME}/code/bin /opt/virtualbox /usr/share/texmf/bin /usr/lib/jre1.5.0_10/bin /usr/games/bin /usr/libexec/git-core $script_path)
 fpath=(~/.zsh/functions $fpath)
 autoload -U ~/.zsh/functions/*(:t)
-#cdpath=($cdpath ~/code)
+cdpath=($cdpath ~/code ~/code/bin/)
 if (( EUID == 0 )); then
     rootpath=(/sbin /usr/sbin /usr/local/sbin)
     # hack to fix "Can not write to history" after leaving sudo or su
