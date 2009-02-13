@@ -36,6 +36,7 @@
     code = clone git@github.com:gregf/scripts.git bin
     dotfiles = clone git@github.com:gregf/dotfiles.git
     overlay = clone git@github.com:gregf/gregf-overlay.git
+    initramfs = clone git@github.com:gregf/initramfs.git
     doc = clone git:doc.git doc
     gr = reset
     rev = revert HEAD
