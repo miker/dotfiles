@@ -122,7 +122,7 @@ case `uname` in
             alias df='df -hT'
 
             export ECHANGELOG_USER="Greg Fitzgerald <netzdamon@gmail.com>"
-            export PALUDIS_OPTIONS="--show-reasons summary --dl-reinstall-scm weekly --log-level warning --dl-reinstall if-use-changed --show-use-descriptions changed"
+            export PALUDIS_OPTIONS="--continue-on-failure if-satisfied --show-reasons summary --dl-reinstall-scm weekly --log-level warning --dl-reinstall if-use-changed --show-use-descriptions changed"
 
             function paludis-scm {
                 PALUDIS_OPTIONS="--dl-reinstall-scm daily"
@@ -543,7 +543,7 @@ function ech {
 }
 
 function junk {
-    scp -r $* web:~/www/stuff/
+    scp -r $* norush:~/www/stuff/
 }
 
 function dotfile {
@@ -631,9 +631,9 @@ function keepempty {
 }
 
 function xephyr {
-    Xephyr :1 -ac -screen 1024x768 &
+    Xephyr -ac -br -noreset -screen 1024x768 :1 &
     sleep 5
-    DISPLAY=:1 $1
+    DISPLAY=:1.0 $@
 }
 
 function cpv {
@@ -666,8 +666,10 @@ fi
 [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
 #[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" history-incremental-search-backward
 #[[ -n ${key[Down]} ]] && bindkey "${key[Down]}"  history-incremental-search-forward
-[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" up-history 
-[[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-history
+#[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" up-history 
+#[[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-history
+[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" history-search-backward
+[[ -n ${key[Down]} ]] && bindkey "${key[Down]}" history-search-forward
 [[ -n ${key[Home]} ]] && bindkey "${key[Home]}" beginning-of-line
 [[ -n ${key[End]} ]] && bindkey "${key[End]}" end-of-line
 [[ -n ${key[Delete]} ]] && bindkey "${key[Delete]}" delete-char
