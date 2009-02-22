@@ -506,7 +506,8 @@ if (has("gui_running"))
     "colorscheme kellys < friggen awesomeness
     "colorscheme wombat " < friggen awesomeness as well
     colorscheme xoria256 " < more awesomeness
-    set guifont=Droid\ Sans\ Mono\ 12
+    "set guifont=Droid\ Sans\ Mono\ 12
+    set guifont=inconsolata\ 14
     set mousem=popup	" Nice pop-up
     set selection=exclusive	" Allow one char past EOL
     set ttymouse=xterm2	" Terminal type for mouse code recognition
