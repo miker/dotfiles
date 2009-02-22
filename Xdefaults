@@ -76,7 +76,8 @@ XTerm*.utf8: 1
 XTerm*.visualBell: true
 !XTerm*faceName: andale mono
 !XTerm*faceName: terminus:size=13
-XTerm*faceName: droid sans mono:size=12:antialias=true
+!XTerm*faceName: droid sans mono:size=12:antialias=true
+XTerm*faceName: inconsolata:size:12:antialias=true
 !XTerm*faceName: terminus:size=12:antialias=false
 XTerm*saveLines: 10000
 XTerm*on4Clicks: all
