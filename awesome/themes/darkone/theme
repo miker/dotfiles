@@ -19,31 +19,49 @@ border_marked = #CCCCCC
 titlebar_close_button = true
 taglist_squares = true
 
+# IMAGES
+layout_dwindle = /usr/share/awesome/themes/sky/layouts/dwindle.png
+layout_fairh = /usr/share/awesome/themes/sky/layouts/fairh.png
+layout_fairv = /usr/share/awesome/themes/sky/layouts/fairv.png
+layout_floating = /usr/share/awesome/themes/sky/layouts/floating.png
+layout_magnifier = /usr/share/awesome/themes/sky/layouts/magnifier.png
+layout_max = /usr/share/awesome/themes/sky/layouts/max.png
+layout_fullscreen = /usr/share/awesome/themes/sky/layouts/fullscreen.png
+layout_spiral = /usr/share/awesome/themes/sky/layouts/spiral.png
+layout_tilebottom = /usr/share/awesome/themes/sky/layouts/tilebottom.png
+layout_tileleft = /usr/share/awesome/themes/sky/layouts/tileleft.png
+layout_tile = /usr/share/awesome/themes/sky/layouts/tile.png
+layout_tiletop = /usr/share/awesome/themes/sky/layouts/tiletop.png
+ 
+awesome_icon = /usr/share/awesome/themes/sky/awesome-icon.png
+tasklist_floating_icon = /usr/share/awesome/themes/sky/layouts/floating.png
+ 
+# from default for now...
+menu_submenu_icon = /usr/share/awesome/themes/default/submenu.png
+taglist_squares_sel = /usr/share/awesome/themes/default/taglist/squarefw.png
+taglist_squares_unsel = /usr/share/awesome/themes/default/taglist/squarew.png
+#######
+
 titlebar_close_button_img_normal = /usr/share/awesome/icons/titlebar/close.png
 titlebar_close_button_img_focus = /usr/share/awesome/icons/titlebar/close.png
 
-taglist_squares_sel = /usr/share/awesome/themes/default/taglist/squarefw.png
-taglist_squares_unsel = /usr/share/awesome/themes/default/taglist/squarew.png
-
-tasklist_floating_icon = /usr/share/awesome/themes/default/tasklist/floatingw.png
-
 # You can use your own layout icons like this:
-layout_dwindle = /usr/share/awesome/themes/default/layouts/dwindlew.png
-layout_fairh = /usr/share/awesome/themes/default/layouts/fairhw.png
-layout_fairv = /usr/share/awesome/themes/default/layouts/fairvw.png
-layout_floating = /usr/share/awesome/themes/default/layouts/floatingw.png
-layout_magnifier = /usr/share/awesome/themes/default/layouts/magnifierw.png
-layout_max = /usr/share/awesome/themes/default/layouts/maxw.png
-layout_spiral = /usr/share/awesome/themes/default/layouts/spiralw.png
-layout_tilebottom = /usr/share/awesome/themes/default/layouts/tilebottomw.png
-layout_tileleft = /usr/share/awesome/themes/default/layouts/tileleftw.png
-layout_tile = /usr/share/awesome/themes/default/layouts/tilew.png
-layout_tiletop = /usr/share/awesome/themes/default/layouts/tiletopw.png
+#layout_dwindle = /usr/share/awesome/themes/default/layouts/dwindlew.png
+#layout_fairh = /usr/share/awesome/themes/default/layouts/fairhw.png
+#layout_fairv = /usr/share/awesome/themes/default/layouts/fairvw.png
+#layout_floating = /usr/share/awesome/themes/default/layouts/floatingw.png
+#layout_magnifier = /usr/share/awesome/themes/default/layouts/magnifierw.png
+#layout_max = /usr/share/awesome/themes/default/layouts/maxw.png
+#layout_spiral = /usr/share/awesome/themes/default/layouts/spiralw.png
+#layout_tilebottom = /usr/share/awesome/themes/default/layouts/tilebottomw.png
+#layout_tileleft = /usr/share/awesome/themes/default/layouts/tileleftw.png
+#layout_tile = /usr/share/awesome/themes/default/layouts/tilew.png
+#layout_tiletop = /usr/share/awesome/themes/default/layouts/tiletopw.png
 
-awesome_icon = /usr/share/awesome/icons/awesome16.png
+#awesome_icon = /usr/share/awesome/icons/awesome16.png
 
 menu_submenu_icon = /usr/share/awesome/themes/default/submenu.png
 menu_height   = 15
-menu_width    = 250
+menu_width    = 200
  
-wallpaper_cmd = nitrogen --restore
+#wallpaper_cmd = nitrogen --restore
