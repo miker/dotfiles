@@ -1,3 +1,9 @@
+# ----------------------------------------------------------------------------
+# File:     ~/.screenrc
+# Author:   Greg Fitzgerald <netzdamon@gmail.com>
+# Modified: Tue 24 Feb 2009 10:08:04 PM EST
+# ----------------------------------------------------------------------------
+
 setenv LC_CTYPE en_US.UTF-8
 defutf8 on
 utf8 on
