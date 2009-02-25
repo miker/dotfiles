@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/libs/config.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Tue 24 Feb 2009 10:10:24 PM EST
+-- Modified: Wed 25 Feb 2009 10:23:51 AM EST
 --  ----------------------------------------------------------------------------
 
 -- {{{ TODO
@@ -58,9 +58,8 @@ config.titlebar = false
 -- Display the systray applets
 config.systray = true 
 
--- set time_t to true if you would rather use that over date_format
-config.time_t = false 
-config.date_format = "%A %B %d %I:%M:%S%P"
+--config.date_format = "%A %B %d %I:%M:%S%P"
+config.date_format = " %a %b %d, %H:%M "
 
 config.iconbox = false 
 -- honorsizehints when set to true leaves a gap between client windows.
