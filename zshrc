@@ -1,20 +1,8 @@
-###############################################################################
-# Zsh settings file for Greg Fitzgerald <netzdamon@gmail.com>
-#
-# Most recent update: Wed Oct  8 15:24:37 2008
-###############################################################################
-# TODO
-# . ~/.zsh/config
-# . ~/.zsh/aliases
-# . ~/.zsh/complete
-# [[ -f ~/.localrc ]] && . ~/.localrc
-# Split functions into ~/.zsh/functions/functioname
-##############################################################################
-# Test for an interactive shell. There is no need to set anything
-# past this point for scp, and it's important to refrain from
-# outputting anything in those cases.
-# hal-disable-polling --device /dev/scd0
-##############################################################################
+# ----------------------------------------------------------------------------
+# File:     ~/.zshrc
+# Author:   Greg Fitzgerald <netzdamon@gmail.com>
+# Modified: Tue 24 Feb 2009 09:57:45 PM EST
+# ----------------------------------------------------------------------------
 for zshrc_snipplet in ~/.zsh/prompt/S[0-9][0-9]*[^~] ; do
         source $zshrc_snipplet
 done
@@ -26,10 +14,11 @@ else
     umask 022
 fi
 
-if [[ $- != *i* ]]; then
-    # Shell is non-interactive.  Be done now
-    return
+# Shell is non-interactive.  Be done now
+if [[ ! -o interactive ]]; then
+        return
 fi
+
 #################################################################################
 # Create some default files/directories if they don't exist.
 ################################################################################
@@ -347,6 +336,7 @@ alias g='grep -Hn --color=always'
 alias cal='cal -3'
 alias ar="echo 'awful.util.restart()' | awesome-client -"
 alias mutt="TERM=xterm-256color mutt"
+
 ################################################################################
 # Functions and Completion
 ################################################################################
@@ -643,6 +633,17 @@ function cpv {
 function h { 
     history 0 | grep $1 
 }
+
+# Recompiles .zshrc
+src () {
+    autoload -U zrecompile
+    [ -f ~/.zshrc ] && zrecompile -p ~/.zshrc
+    [ -f ~/.zcompdump ] && zrecompile -p ~/.zcompdump
+    [ -f ~/.zshrc.zwc.old ] && rm -f ~/.zshrc.zwc.old
+    [ -f ~/.zcompdump.zwc.old ] && rm -f ~/.zcompdump.zwc.old
+    source ~/.zshrc
+}
+
 ################################################################################
 # Get keys working
 #
@@ -661,38 +662,27 @@ fi
 #################################################################################
 # Set some keybindings
 #################################################################################
-# bindkey '\022'
-[[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
-[[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
-#[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" history-incremental-search-backward
-#[[ -n ${key[Down]} ]] && bindkey "${key[Down]}"  history-incremental-search-forward
-#[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" up-history 
-#[[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-history
-[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" history-search-backward
-[[ -n ${key[Down]} ]] && bindkey "${key[Down]}" history-search-forward
-[[ -n ${key[Home]} ]] && bindkey "${key[Home]}" beginning-of-line
-[[ -n ${key[End]} ]] && bindkey "${key[End]}" end-of-line
-[[ -n ${key[Delete]} ]] && bindkey "${key[Delete]}" delete-char
-
-#bindkey "^[[2~" yank
-#bindkey "^[[3~" delete-char
-#bindkey "^[[5~" up-line-or-history ## PageUp
-#bindkey "^[[6~" down-line-or-history ## PageDown
-#bindkey "^[[4~" end-of-line
-#bindkey "^[e" expand-cmd-path
-#bindkey "^[[A" up-line-or-search ## up arrow for back-history-search
-#bindkey "^[[B" down-line-or-search ## down arrow for fwd-history-search
-#bindkey " " magic-space ## do history expansion on space
-#bindkey "^[[1~" beginning-of-line
+# Bind the keys that zkbd set up to some widgets
+[[ -n ${key[Home]} ]]      && bindkey "${key[Home]}"      beginning-of-line
+[[ -n ${key[PageUp]} ]]    && bindkey "${key[PageUp]}"    up-line-or-history
+[[ -n ${key[Delete]} ]]    && bindkey "${key[Delete]}"    delete-char
+[[ -n ${key[End]} ]]       && bindkey "${key[End]}"       end-of-line
+[[ -n ${key[PageDown]} ]]  && bindkey "${key[PageDown]}"  down-line-or-history
+[[ -n ${key[Up]} ]]        && bindkey "${key[Up]}"        up-line-or-search
+[[ -n ${key[Left]} ]]      && bindkey "${key[Left]}"      backward-char
+[[ -n ${key[Down]} ]]      && bindkey "${key[Down]}"      down-line-or-search
+[[ -n ${key[Right]} ]]     && bindkey "${key[Right]}"     forward-char
+[[ -n ${key[PageUp]} ]]    && bindkey "${key[PageUp]}"    history-incremental-search-backward
+[[ -n ${key[PageDown]} ]]  && bindkey "${key[PageDown]}"  history-incremental-search-forward
 
 ###############################################################################
 # Set prompt based on EUID
 ################################################################################
-if (( EUID == 0 )); then
+#if (( EUID == 0 )); then
     #PROMPT=$'%{\e[01;31m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%# '
-else
+#else
     #PROMPT=$'%{\e[01;32m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%% '
-fi
+#fi
 
 ###############################################################################
 # Lots of autocompletion options
@@ -726,7 +716,7 @@ zstyle ':completion:predict:*' completer _complete
 
 # Completion caching
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.tmp/zsh/cache
+#zstyle ':completion:*' cache-path ~/.tmp/zsh/cache
 
 
 # Expand partial paths
@@ -791,7 +781,7 @@ hist_ignore_space hist_no_functions hist_save_no_dups list_ambiguous \
 long_list_jobs menu_complete rm_star_wait zle inc_append_history \
 share_history prompt_subst no_list_beep local_options local_traps \
 hist_verify extended_history hist_reduce_blanks chase_links chase_dots \
-hash_cmds hash_dirs numeric_glob_sort vi print_exit_value
+hash_cmds hash_dirs numeric_glob_sort vi
 
 unset beep equals mail_warning
 
