@@ -1,12 +1,16 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.muttrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Tue 24 Feb 2009 10:06:54 PM EST
+# Modified: Wed 25 Feb 2009 01:24:30 PM EST
 # ----------------------------------------------------------------------------
-###############################################################################
+
+# {{{ Imap Settings
+
+#-----------------------------------------------------------------------------
 # I do not include this for the sake it has some passwords.
 # Basic idea though.
-###############################################################################
+# ----------------------------------------------------------------------------
+
 #set imap_user = 'you@gmail.com'
 #set imap_pass = 'password'
 #set spoolfile = imaps://imap.gmail.com:993/INBOX
@@ -27,7 +31,9 @@ set use_from
 set use_envelope_from
 set mbox=!
 source ~/.mutt/imap.rc
+# }}}
 
+# {{{ Include Files
 # Setup some colors
 source ~/.mutt/colors.rc
 #source ~/.mutt/inkpot.theme
@@ -35,28 +41,34 @@ source ~/.mutt/colors.rc
 source ~/.mutt/mutt.gpg
 # Mailboxes
 source ~/.mutt/mailboxes
+# }}}
 
-#My email address, and some alternatives I use.
+# {{{ Name/Email address
 set realname="Greg Fitzgerald"
 set from="Greg Fitzgerald <netzdamon@gmail.com>"
 alternates (gregf@gregf.org|netzdamon@gmail.com|greg.fitzgerald@gmail.com|gregf@lizardhost.co.uk|gregf@feoc-uk.com|fgreg@ibiblio.org)
+# }}}
 
+# {{{ Autoviews
 # Prefer plaintext over html
 auto_view text/html
 alternative_order text/plain text/html
+# }}}
 
+# {{{ Folder hooks
 folder-hook   "."   push "<collapse-all>"
+# }}}
 
-
-#Set some paths
+# {{{ Common Paths
 set signature=~/.mutt/signature
 set header_cache="~/.tmp/mutt/hcache"
 set message_cachedir="~/.tmp/mutt/msgcache/"
 set certificate_file="~/.tmp/mutt/certs"
 set mailcap_path="~/.mailcap"
 set tmpdir=$HOME/.tmp/mutt
+# }}}
 
-#Set some basic settings
+# {{{ Set some basic settings
 set net_inc=5
 set sleep_time = 0
 set ascii_chars=yes
@@ -125,27 +137,32 @@ set mime_forward=ask-yes
 set mime_forward_rest=ask-yes
 set send_charset="us-ascii:utf-8"
 set charset=utf-8
+# }}}
 
-# Mailing lists
+# {{{ Mailing lists
 unset metoo
 set followup_to
 set honor_followup_to=yes
 source ~/.mutt/mailinglists
+# }}}
 
-# Some index formats
+# {{{ Some index formats
 set status_on_top
 set index_format="[%Z]-[%[!%Y-%m-%d %I:%M%P]]-[%-20.20F] %s %> %y[%4c]"
 set folder_format="%f"
 set attach_format="[%t][%1n][%4s] %T%d %> %m %M"
+# }}}
 
+# {{{ Header Info
 # Ignore all headers by default
 # Unigore ones I care to see
 ignore *
 unignore from: date subject to cc reply-to bcc
 unignore organization x-mailer: x-newsreader: user-agent:
 hdr_order From Date: From: To: Cc: Subject:
+# }}}
 
-# Set some keybindings
+# {{{ Keybindings
 bind  pager /   search
 bind  pager L   list-reply
 bind  pager b   bounce-message
@@ -186,7 +203,7 @@ macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 
 macro index,pager a "<pipe-message>abook --add-email-quiet<return>"
 
-# Settings for sidebar patch
+# {{{ Settings for sidebar patch
 # http://www.lunar-linux.org/index.php?option=com_content&task=view&id=44
 set sidebar_width=25
 set sidebar_visible=yes
@@ -201,6 +218,5 @@ bind pager o sidebar-open
 # b toggles sidebar visibility 
 macro index b '<enter-command>toggle sidebar_visible<enter>'
 macro pager b '<enter-command>toggle sidebar_visible<enter>'
-
-# View Special Formats
-auto_view text/html
+# }}}
+# }}}
