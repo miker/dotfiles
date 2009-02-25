@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/libs/config.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Wed 25 Feb 2009 10:23:51 AM EST
+-- Modified: Wed 25 Feb 2009 01:17:23 PM EST
 --  ----------------------------------------------------------------------------
 
 -- {{{ TODO
@@ -59,7 +59,7 @@ config.titlebar = false
 config.systray = true 
 
 --config.date_format = "%A %B %d %I:%M:%S%P"
-config.date_format = " %a %b %d, %H:%M "
+config.date_format = " %a %b %d, %I:%M "
 
 config.iconbox = false 
 -- honorsizehints when set to true leaves a gap between client windows.
