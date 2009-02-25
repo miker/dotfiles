@@ -1,18 +1,20 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/rc.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Wed 25 Feb 2009 10:34:52 AM EST
+-- Modified: Wed 25 Feb 2009 01:15:46 PM EST
 --  ----------------------------------------------------------------------------
 
--- Standard awesome library
+-- {{{ Standard awesome library
 require("awful")
 require("beautiful")
 require("libs/naughty")
 require("libs/config")
-
+require("libs/revelation")
+-- }}}
 
 beautiful.init(config.theme)
 
+-- {{{ Layouts
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
@@ -27,8 +29,9 @@ layouts =
     awful.layout.suit.magnifier, --9
     awful.layout.suit.floating --10
 }
+-- }}}
 
--- Application specific behaviour
+-- {{{ Application Behavior
 apprules = {
     -- Class                Instance       Name                Screen          Tag   Floating
     { 'Gajim.py',           nil,           nil,                screen.count(),   3,  false },
@@ -53,9 +56,7 @@ apprules = {
 }
 -- }}}
 
-
 -- {{{ Tags
--- 
 -- Define tags table
 tags = {}
 tags.settings = {
@@ -86,6 +87,7 @@ for s = 1, screen.count() do
     end
     tags[s][1].selected = true
 end
+-- }}}
 
 -- {{{ Wibox
 -- Create a textbox widget
@@ -151,6 +153,7 @@ for s = 1, screen.count() do
     mywibox[s].screen = s
 end
 -- }}}
+
 -- {{{ Mouse bindings
 root.buttons({
     button({ }, 3, function () mymainmenu:toggle() end),
@@ -197,32 +200,17 @@ globalkeys =
     key({ config.keys.modkey,           }, "g", function () awful.util.spawn("/home/gregf/code/bin/google/google.sh") end),
     key({ config.keys.modkey,           }, "m", function () awful.util.spawn(config.apps.mail) end),
     key({ config.keys.modkey,           }, "y", function () awful.util.spawn(config.apps.music) end),
-    key({ config.keys.modkey,           }, "y", function () awful.util.spawn("gvim") end),
+    key({ config.keys.modkey,           }, "k", function () awful.util.spawn("gvim") end),
     key({ config.keys.modkey,           }, "y", function () awful.util.spawn("xlock") end),
+    key({ config.keys.modkey,           }, "e", revelation.revelation ),
 
-    -- Prompt
-    key({ config.keys.modkey }, "F1",
-        function ()
-            awful.prompt.run({ prompt = "Run: " },
-            mypromptbox[mouse.screen],
-            awful.util.spawn, awful.completion.bash,
-            awful.util.getdir("cache") .. "/history")
-        end),
-
-    key({ config.keys.modkey }, "F4",
-        function ()
-            awful.prompt.run({ prompt = "Run Lua code: " },
-            mypromptbox[mouse.screen],
-            awful.util.eval, awful.prompt.bash,
-            awful.util.getdir("cache") .. "/history_eval")
-        end),
 }
 
 -- Client awful tagging: this is useful to tag some clients and then do stuff like move to tag on them
 clientkeys =
 {
     key({ config.keys.modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-    key({ config.keys.modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
+    key({ config.keys.modkey,   }, "c",      function (c) c:kill()                         end),
     key({ config.keys.modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     key({ config.keys.modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     key({ config.keys.modkey,           }, "o",      awful.client.movetoscreen                        ),
