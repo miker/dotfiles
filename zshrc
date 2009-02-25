@@ -1,27 +1,28 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Tue 24 Feb 2009 09:57:45 PM EST
+# Modified: Wed 25 Feb 2009 01:36:14 PM EST
 # ----------------------------------------------------------------------------
-for zshrc_snipplet in ~/.zsh/prompt/S[0-9][0-9]*[^~] ; do
-        source $zshrc_snipplet
-done
-# by default, we want this to get set.
-# Even for non-interactive, non-login shells.
+
+# {{{ Clear screen on logout
+trap clear 0
+# }}}
+
+# {{{ unmask
 if [ "`id -gn`" = "`id -un`" -a `id -u` -gt 99 ]; then
     umask 002
 else
     umask 022
 fi
+# }}}
 
-# Shell is non-interactive.  Be done now
+# {{{ Return if non-interactive
 if [[ ! -o interactive ]]; then
         return
 fi
+# }}}
 
-#################################################################################
-# Create some default files/directories if they don't exist.
-################################################################################
+# {{{ Create some default files/directories if they don't exist.
 if ! [ -d ~/.ssh ]; then
     mkdir -p ~/.ssh
 fi
@@ -33,13 +34,9 @@ fi
 if ! [ -f ~/.viminfo ]; then
     touch ~/.viminfo
 fi
-##############################################################################
-#       Clear screen on logout
-##############################################################################
-trap clear 0
-#############################################################################
-#       OS specific settings
-#############################################################################
+# }}}
+
+# {{{ OS specific settings
 case `uname` in
     OpenBSD)
         # Enviroment Varibles
@@ -159,10 +156,9 @@ case `uname` in
         fi
     ;;
 esac
+# }}}
 
-################################################################################
-#      Enviroment Variables
-################################################################################
+# {{{ Enviroment Variables
 unset MAILCHECK
 if [[ -d /var/tmp/ccache ]]; then
     (( ${+CCACHE_DIR} )) || export CCACHE_DIR="/var/tmp/ccache"
@@ -185,23 +181,23 @@ export EDITOR="vim"
 export VISUAL="vim"
 export NNTPSERVER="news.gwi.net"
 export GPG_TTY=`tty` #backticks required
-################################################################################
-# Resource Limits
-################################################################################
+# }}}
+
+# {{{ Resource Limits
 limit stack 8192
 #limit core unlimited
 limit core 0
 limit -s
-###############################################################################
-# Setup History Options
-################################################################################
+# }}}
+
+# {{{ Setup History Options
 HISTSIZE=10000
 HISTFILE=${HOME}/.history_zsh
 SAVEHIST=10000
 DIRSTACKSIZE=16
-################################################################################
-# Term Settings
-################################################################################
+# }}}
+
+# {{{ Term Settings
 #auto logout after timeout in seconds
 
 if [[ $TERM == "linux" ]]; then
@@ -245,10 +241,9 @@ function preexec() {
 
 # Enable flow control, prevents ^k^s from locking up my screen session.
 stty -ixon
+# }}}
 
-################################################################################
-#       Default Aliases
-################################################################################
+# {{{ Default Aliases
 alias xlog="sudo grep --binary-files=without-match --color -nsie '(EE)' -e '(WW)' /var/log/Xorg.0.log"
 alias which="whence"
 alias sd='export DISPLAY=:0.0'
@@ -336,10 +331,96 @@ alias g='grep -Hn --color=always'
 alias cal='cal -3'
 alias ar="echo 'awful.util.restart()' | awesome-client -"
 alias mutt="TERM=xterm-256color mutt"
+# }}}
 
+# {{{ Completion
+###############################################################################
+# Lots of autocompletion options
 ################################################################################
-# Functions and Completion
-################################################################################
+zstyle :compinstall filename '$HOME/.zshrc'
+autoload -Uz compinit zrecompile
+compinit
+
+# Follow GNU LS_COLORS
+zmodload -i zsh/complist
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*:*:kill:*' list-colors '=%*=01;31'
+
+compctl -g '*.Z *.gz *.tgz' + -g '*' zcat gunzip tar open
+compctl -g '*.tar.Z *.tar.gz *.tgz *.tar.bz2' + -g '*' tar bzip2 open
+compctl -g '*.zip *.ZIP' + -g '*' unzip zip open
+compctl -g '*.rar *.RAR' + -g '*' rar unrar open
+compctl -g '*.(mp3|MP3|ogg|OGG|WAV|wav|ogv|OGV)' + -g '*(-/)'  ogg123 mpg123 audacious wma123 mplayer vlc
+compctl -g '*.(divx|DIVX|m4v|M4V|wmv|WMV|avi|AVI|mpg|mpeg|MPG|MPEG|WMV|wmv|mov|MOV|wma|WMA|w4a|W4A|part|PART)' + -g '*(-/)'  xine mplayer kmplayer gmplayer vlc
+compctl -g '*.(pdf|PDF|ps|PS|tiff|TIFF)' + -g '*(-/)' evince acroread xpdf epdfview
+compctl -g '*.(jpg|JPG|jpeg|JPEG|gif|GIF|tiff|TIFF|png|PNG|tga|TGA)' + -g '*(-/)' feh gthumb xv f-spot gqview
+
+# Select Prompt
+zstyle ':completion:*' menu select=1
+
+# Expansion options
+zstyle ':completion:*' completer _complete _prefix
+zstyle ':completion::prefix-1:*' completer _complete
+zstyle ':completion:incremental:*' completer _complete _correct
+zstyle ':completion:predict:*' completer _complete
+
+# Completion caching
+zstyle ':completion:*' use-cache on
+#zstyle ':completion:*' cache-path ~/.tmp/zsh/cache
+
+
+# Expand partial paths
+zstyle ':completion:*' expand 'yes'
+zstyle ':completion:*' squeeze-slashes 'yes'
+
+# Include non-hidden directories in globbed file completions
+# for certain commands
+
+zstyle ':completion::complete:*' '\'
+
+# Use menuselection for pid completion
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+zstyle ':completion:*:processes' command 'ps -au$USER'
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;32'
+
+#  tag-order 'globbed-files directories' all-files
+zstyle ':completion::complete:*:tar:directories' file-patterns '*~.*(-/)'
+
+# Don't complete backup files as executables
+zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
+
+# Separate matches into groups
+zstyle ':completion:*:matches' group 'yes'
+
+# With commands like rm, it's annoying if you keep getting offered the same
+# file multiple times. This fixes it. Also good for cp, et cetera..
+#zstyle ':completion:*:rm:*' ignore-line yes
+#zstyle ':completion:*:cp:*' ignore-line yes
+
+# Describe each match group.
+zstyle ':completion:*:descriptions' format "%B---- %d%b"
+
+# Messages/warnings format
+zstyle ':completion:*:messages' format '%B%U---- %d%u%b'
+zstyle ':completion:*:warnings' format '%B%U---- no match for: %d%u%b'
+
+# Describe options in full
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+
+#  tag-order 'globbed-files directories' all-files
+zstyle ':completion::complete:*:tar:directories' file-patterns '*~.*(-/)'
+
+# Don't complete backup files as executables
+zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
+
+# pasting with tabs doesn't perform completion
+zstyle ':completion:*' insert-tab pending
+
+# matches case insensitive for lowercase
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
 # Magically quote urls
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
@@ -362,9 +443,22 @@ if [ -f ~/.ssh/known_hosts ]; then
     zstyle ':completion:*' hosts $_myhosts
 fi
 
-################################################################################
-# Custom Functions
-################################################################################
+# Set some default options
+# http://zsh.sourceforge.net/Doc/Release/zsh_15.html#SEC81
+setopt always_to_end append_history auto_continue auto_list auto_menu \
+auto_param_slash auto_remove_slash auto_resume bg_nice no_check_jobs no_hup \
+complete_in_word csh_junkie_history extended_glob \
+glob_complete hist_find_no_dups hist_ignore_all_dups hist_ignore_dups \
+hist_ignore_space hist_no_functions hist_save_no_dups list_ambiguous \
+long_list_jobs menu_complete rm_star_wait zle inc_append_history \
+share_history prompt_subst no_list_beep local_options local_traps \
+hist_verify extended_history hist_reduce_blanks chase_links chase_dots \
+hash_cmds hash_dirs numeric_glob_sort vi
+
+unset beep equals mail_warning
+# }}}
+
+# {{{ Functions
 
 function zkbd {
     ZVER=(`zsh --version | awk '{print $2}' -`)
@@ -643,7 +737,9 @@ src () {
     [ -f ~/.zcompdump.zwc.old ] && rm -f ~/.zcompdump.zwc.old
     source ~/.zshrc
 }
+# }}}
 
+# {{{ zkbd (keybindings)
 ################################################################################
 # Get keys working
 #
@@ -674,120 +770,20 @@ fi
 [[ -n ${key[Right]} ]]     && bindkey "${key[Right]}"     forward-char
 [[ -n ${key[PageUp]} ]]    && bindkey "${key[PageUp]}"    history-incremental-search-backward
 [[ -n ${key[PageDown]} ]]  && bindkey "${key[PageDown]}"  history-incremental-search-forward
+# }}} 
 
-###############################################################################
-# Set prompt based on EUID
-################################################################################
+# {{{ Prompt
+for zshrc_snipplet in ~/.zsh/prompt/S[0-9][0-9]*[^~] ; do
+        source $zshrc_snipplet
+done
 #if (( EUID == 0 )); then
     #PROMPT=$'%{\e[01;31m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%# '
 #else
     #PROMPT=$'%{\e[01;32m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%% '
 #fi
+# }}}
 
-###############################################################################
-# Lots of autocompletion options
-################################################################################
-zstyle :compinstall filename '$HOME/.zshrc'
-autoload -Uz compinit zrecompile
-compinit
-
-# Follow GNU LS_COLORS
-zmodload -i zsh/complist
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*:*:kill:*' list-colors '=%*=01;31'
-
-compctl -g '*.Z *.gz *.tgz' + -g '*' zcat gunzip tar open
-compctl -g '*.tar.Z *.tar.gz *.tgz *.tar.bz2' + -g '*' tar bzip2 open
-compctl -g '*.zip *.ZIP' + -g '*' unzip zip open
-compctl -g '*.rar *.RAR' + -g '*' rar unrar open
-compctl -g '*.(mp3|MP3|ogg|OGG|WAV|wav|ogv|OGV)' + -g '*(-/)'  ogg123 mpg123 audacious wma123 mplayer vlc
-compctl -g '*.(divx|DIVX|m4v|M4V|wmv|WMV|avi|AVI|mpg|mpeg|MPG|MPEG|WMV|wmv|mov|MOV|wma|WMA|w4a|W4A|part|PART)' + -g '*(-/)'  xine mplayer kmplayer gmplayer vlc
-compctl -g '*.(pdf|PDF|ps|PS|tiff|TIFF)' + -g '*(-/)' evince acroread xpdf epdfview
-compctl -g '*.(jpg|JPG|jpeg|JPEG|gif|GIF|tiff|TIFF|png|PNG|tga|TGA)' + -g '*(-/)' feh gthumb xv f-spot gqview
-
-# Select Prompt
-zstyle ':completion:*' menu select=1
-
-# Expansion options
-zstyle ':completion:*' completer _complete _prefix
-zstyle ':completion::prefix-1:*' completer _complete
-zstyle ':completion:incremental:*' completer _complete _correct
-zstyle ':completion:predict:*' completer _complete
-
-# Completion caching
-zstyle ':completion:*' use-cache on
-#zstyle ':completion:*' cache-path ~/.tmp/zsh/cache
-
-
-# Expand partial paths
-zstyle ':completion:*' expand 'yes'
-zstyle ':completion:*' squeeze-slashes 'yes'
-
-# Include non-hidden directories in globbed file completions
-# for certain commands
-
-zstyle ':completion::complete:*' '\'
-
-# Use menuselection for pid completion
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*' force-list always
-zstyle ':completion:*:processes' command 'ps -au$USER'
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;32'
-
-#  tag-order 'globbed-files directories' all-files
-zstyle ':completion::complete:*:tar:directories' file-patterns '*~.*(-/)'
-
-# Don't complete backup files as executables
-zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
-
-# Separate matches into groups
-zstyle ':completion:*:matches' group 'yes'
-
-# With commands like rm, it's annoying if you keep getting offered the same
-# file multiple times. This fixes it. Also good for cp, et cetera..
-#zstyle ':completion:*:rm:*' ignore-line yes
-#zstyle ':completion:*:cp:*' ignore-line yes
-
-# Describe each match group.
-zstyle ':completion:*:descriptions' format "%B---- %d%b"
-
-# Messages/warnings format
-zstyle ':completion:*:messages' format '%B%U---- %d%u%b'
-zstyle ':completion:*:warnings' format '%B%U---- no match for: %d%u%b'
-
-# Describe options in full
-zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:options' auto-description '%d'
-
-#  tag-order 'globbed-files directories' all-files
-zstyle ':completion::complete:*:tar:directories' file-patterns '*~.*(-/)'
-
-# Don't complete backup files as executables
-zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
-
-# pasting with tabs doesn't perform completion
-zstyle ':completion:*' insert-tab pending
-
-# matches case insensitive for lowercase
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
-# Set some default options
-# http://zsh.sourceforge.net/Doc/Release/zsh_15.html#SEC81
-setopt always_to_end append_history auto_continue auto_list auto_menu \
-auto_param_slash auto_remove_slash auto_resume bg_nice no_check_jobs no_hup \
-complete_in_word csh_junkie_history extended_glob \
-glob_complete hist_find_no_dups hist_ignore_all_dups hist_ignore_dups \
-hist_ignore_space hist_no_functions hist_save_no_dups list_ambiguous \
-long_list_jobs menu_complete rm_star_wait zle inc_append_history \
-share_history prompt_subst no_list_beep local_options local_traps \
-hist_verify extended_history hist_reduce_blanks chase_links chase_dots \
-hash_cmds hash_dirs numeric_glob_sort vi
-
-unset beep equals mail_warning
-
-################################################################################
-# Setup Path
-################################################################################
+# {{{ Path
 script_path=(~/code/bin/conky ~/code/bin/clipboard)
 path=($path /usr/local/bin /usr/bin /bin /usr/X11R6/bin ${HOME}/code/bin /opt/virtualbox /usr/share/texmf/bin /usr/lib/jre1.5.0_10/bin /usr/games/bin /usr/libexec/git-core $script_path)
 fpath=(~/.zsh/functions $fpath)
@@ -802,15 +798,15 @@ if (( EUID == 0 )); then
     HISTSIZE=1000
     #HOME=/root
 fi
+# }}}
 
-################################################################################
-# Run devtodo != root
-################################################################################
+# {{{ Run devtodo != root
 
 if [ -x /usr/bin/devtodo ]; then
     if (( EUID != 0 )); then
         /usr/bin/devtodo
     fi
 fi
+# }}}
 
 # vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 :
