@@ -1,4 +1,9 @@
 #!/bin/sh
+# ----------------------------------------------------------------------------
+# File:     ~/.xinitrc
+# Author:   Greg Fitzgerald <netzdamon@gmail.com>
+# Modified: Tue 24 Feb 2009 10:05:46 PM EST
+# ----------------------------------------------------------------------------
 
 # Set your Default Window Manager
 DEFAULTWM='awesome'
@@ -11,6 +16,8 @@ export TMP=$HOME/.tmp
 export TMDIR=$TMP
 export TERMCMD=/usr/bin/xterm
 export BROWSER=/usr/bin/firefox
+#export BROWSER="/usr/bin/epiphany -n"
+#export BROWSER=/usr/bin/opera
 export TERMINAL=/usr/bin/xterm
 export GTK2_RC_FILES=$HOME/.gtkrc-2.0
 export MOZILLA_NEWTYPE=tab
@@ -35,7 +42,7 @@ xset -r 129 -r 231 -r 198 -r 236 -r 160
 #xmodmap -e "keysym Caps_Lock = Escape"
 
 # Not needed with 180.06 and above.
-#nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1
+nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1
 
 xsetroot -solid black &
 
@@ -49,11 +56,11 @@ source ~/.keychain/`hostname`-sh > /dev/null
 # Execute window manager into background
 exec $DEFAULTWM & wmpid=$!
    nitrogen --restore &
-   conky
+   #~/code/bin/wallpaper/wallpaper.rb &
+   #~/gmail.rb start &
+   conky &
    xsetroot -cursor_name arrow &
-   #dbus-launch --exit-with-session &
-   xterm -T mutt -e mutt &
-   nice -n19 firefox &
-   nice -n19 liferea &
+   dbus-launch --exit-with-session &
+   nice -n19 ${BROWSER} 
    nice -n19 gpodder &
 wait $wmpid

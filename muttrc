@@ -1,9 +1,8 @@
-###############################################################################
-# Mutt settings file for Greg Fitzgerald <netzdamon@gmail.com>
-#
-# Most recent update: Sun 25 May 2008 02:54:39 PM EDT
-#
-###############################################################################
+# ----------------------------------------------------------------------------
+# File:     ~/.muttrc
+# Author:   Greg Fitzgerald <netzdamon@gmail.com>
+# Modified: Tue 24 Feb 2009 10:06:54 PM EST
+# ----------------------------------------------------------------------------
 ###############################################################################
 # I do not include this for the sake it has some passwords.
 # Basic idea though.
@@ -16,10 +15,22 @@
 #set postponed="imaps://imap.gmail.com/[Gmail]/Drafts"
 #set mbox="imaps://imap.gmail.com[Gmail]/All Mail"
 #set smtp_url="smtps://you:password@smtp.gmail.com"
+
+unset imap_passive
+set forward_format="fwd: %s"
+set attribution="On %d, %n wrote:"
+set imap_list_subscribed=no
+set imap_check_subscribed=no
+set imap_peek=yes
+set imap_servernoise=yes
+set use_from
+set use_envelope_from
+set mbox=!
 source ~/.mutt/imap.rc
 
 # Setup some colors
 source ~/.mutt/colors.rc
+#source ~/.mutt/inkpot.theme
 # Setup gnupg bindings
 source ~/.mutt/mutt.gpg
 # Mailboxes
@@ -45,8 +56,8 @@ set certificate_file="~/.tmp/mutt/certs"
 set mailcap_path="~/.mailcap"
 set tmpdir=$HOME/.tmp/mutt
 
-
 #Set some basic settings
+set net_inc=5
 set sleep_time = 0
 set ascii_chars=yes
 set thorough_search
@@ -60,7 +71,6 @@ set edit_headers=no
 set envelope_from=yes
 set fast_reply=yes
 set nouse_domain
-set metoo
 set include=yes
 set copy=yes
 set imap_keepalive = 5
@@ -68,6 +78,7 @@ set timeout = 600 # or 600
 set wrap_search=yes
 set use_idn=yes
 set mail_check = 5
+set delete=yes
 set check_new
 set mark_old=no
 set markers=no
@@ -77,7 +88,6 @@ set menu_scroll
 set metoo=no
 set pager_context=10
 set pager_index_lines=10
-set pager_stop=no
 set postpone=yes
 set quote_regexp="^([ \t]*[|>:])+"
 set read_inc=50
@@ -85,11 +95,16 @@ set recall=no
 set resolve=no
 set smart_wrap
 set wrapmargin
+set collapse_unread
+set pager_index_lines=10
+set pager_stop=yes
+set reverse_alias=yes
+set auto_tag
+set wrap_search
 set sort=threads
-set check_mbox_size=yes
-set sort_aux=date
-unset strict_threads
-set sort_browser=reverse-date
+set sort_aux=date-received
+set strict_threads
+set sort_browser=alpha
 set sort_alias=alias
 set suspend=no
 set tilde=yes
@@ -100,28 +115,28 @@ unset beep
 unset beep_new
 unset askbcc
 unset askcc
-unset collapse_unread
 set quit=ask-yes
 set write_bcc=no
 set move=no
 set editor="vim +/^$ ++1 +':setf mail' +':set spell spelllang=en' +'set tw=72'"
 set query_command="abook --mutt-query '%s'"
 set mask = '!(^\.)|(\.log$)|(\.lst$)|(\.cache$)' # Ignore these file types when browsing folders
-# I want attachments to stay with the email If I forward one
-set mime_forward=yes
-set mime_forward_rest=yes
-# My system is using utf8
+set mime_forward=ask-yes
+set mime_forward_rest=ask-yes
 set send_charset="us-ascii:utf-8"
 set charset=utf-8
+
+# Mailing lists
+unset metoo
 set followup_to
 set honor_followup_to=yes
+source ~/.mutt/mailinglists
 
 # Some index formats
-#set status_format=" %r %b %f %n      Del %d      Msgs %m %l %> (%P)"
-#set pager_format="%-10.10i %[!%a %b %d %R]"
-set date_format="%I:%M%P %m/%d/%y  "
-set index_format="%d %-15.15L [%Z] %s"
-#set folder_format="%2C %t %8s %d %N %f"
+set status_on_top
+set index_format="[%Z]-[%[!%Y-%m-%d %I:%M%P]]-[%-20.20F] %s %> %y[%4c]"
+set folder_format="%f"
+set attach_format="[%t][%1n][%4s] %T%d %> %m %M"
 
 # Ignore all headers by default
 # Unigore ones I care to see

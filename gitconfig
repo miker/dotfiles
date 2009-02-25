@@ -1,3 +1,9 @@
+# ----------------------------------------------------------------------------
+# File:     ~/.gitconfig
+# Author:   Greg Fitzgerald <netzdamon@gmail.com>
+# Modified: Tue 24 Feb 2009 10:06:21 PM EST
+# ----------------------------------------------------------------------------
+
 [user]
     name = Greg Fitzgerald
     email = netzdamon@gmail.com
