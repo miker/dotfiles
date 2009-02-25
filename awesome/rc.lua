@@ -1,3 +1,9 @@
+--  ----------------------------------------------------------------------------
+-- File:     ~/.config/awesome/rc.lua
+-- Author:   Greg Fitzgerald <netzdamon@gmail.com>
+-- Modified: Tue 24 Feb 2009 10:10:28 PM EST
+--  ----------------------------------------------------------------------------
+
 -- Standard awesome library
 require("awful")
 require("beautiful")

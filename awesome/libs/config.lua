@@ -1,4 +1,8 @@
--- configuration
+--  ----------------------------------------------------------------------------
+-- File:     ~/.config/awesome/libs/config.lua
+-- Author:   Greg Fitzgerald <netzdamon@gmail.com>
+-- Modified: Tue 24 Feb 2009 10:10:24 PM EST
+--  ----------------------------------------------------------------------------
 
 -- {{{ TODO
 -- dmenu front end to mpc
