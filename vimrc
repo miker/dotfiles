@@ -2,12 +2,10 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Tue 24 Feb 2009 10:02:45 PM EST
+" Modified: Wed 25 Feb 2009 01:47:12 PM EST
 " ----------------------------------------------------------------------------
 
-"-----------------------------------------------------------------------
-" Settings
-"-----------------------------------------------------------------------
+" {{{ Settings
 
 " Turn Off word-wrapping
 set wrap
@@ -109,22 +107,45 @@ set gdefault
 set showcmd
 set cmdheight=1
 
-" ----------------------------------------------------------------------------
-" Enable folding by default
-" ----------------------------------------------------------------------------
+
+"Include $HOME in cdpath
+if has("file_in_path")
+    let &cdpath=','.expand("$HOME").','.expand("$HOME").'/code'
+endif
+
+" Enable fancy % matching
+if has("eval")
+    runtime! macros/matchit.vim
+endif
+
+" enable syntax highlightning (must come after autocmd!)
+" vim-tiny doesn't support syntax
+if has("syntax")
+    syntax on
+endif
+" }}}
+
+" {{{ Enable folding
 set foldenable
 set foldmethod=marker
 set foldlevelstart=0
+" }}}
 
-" always edit new files in tabs
-if has('tabe')
-    cab e tabe
-endif
+" {{{ Plugin settings
 
-"-----------------------------------------------------------------------
-" Plugin settings
-"-----------------------------------------------------------------------
+let g:SuperTabMappingForward = '<c-right>'
+let g:SuperTabMappingBackward = '<c-left>'
+let g:SuperTabLongestHighlight = 1 
+let g:SuperTabMidWordCompletion = 1
+let g:SuperTabRetainCompletionType = 1 
 
+" Set taglist plugin options
+let Tlist_Use_Right_Window = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_Enable_Fold_Column = 0
+let Tlist_Compact_Format = 1
+let Tlist_File_Fold_Auto_Close = 0
+let Tlist_Inc_Winwidth = 1
 "Settings for HiMTCHBrkt
 let g:HiMtchBrkt_surround= 1
 let g:HiMtchBrktOn= 1
@@ -158,10 +179,9 @@ let g:secure_modelines_allowed_items = [
             \ "readonly",    "ro",   "noreadonly", "noro",
             \ "rightleft",   "rl",   "norightleft", "norl"
             \ ]
+" }}} 
 
-"-----------------------------------------------------------------------
-" Nice statusbar
-"-----------------------------------------------------------------------
+" {{{ Nice statusbar
 
 set laststatus=2
 set statusline=
@@ -190,8 +210,9 @@ set statusline+=%{&fileformat}]              " file format
 set statusline+=%=                           " right align
 set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 
+" }}}
 
-" Nice window title
+" {{{ Window title
 if has('title') && (has('gui_running') || &title)
     set titlestring=
     set titlestring+=%f\                                              " file name
@@ -199,6 +220,49 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=\ -\ %{v:progname}                               " program name
     set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
 endif
+
+" }}}
+
+" {{{ Key maps
+
+nmap <C-N> :tabn<CR>
+nmap <C-P> :tabp<CR>
+noremap <silent> <C-O> :FuzzyFinderTextMate<CR>
+noremap <silent> <F7> :Tlist<CR>
+noremap <silent> <F8> :FuzzyFinderMruFile<CR>
+noremap <silent> <F9> :NERDTreeToggle<CR>
+noremap <silent> <F10> :call <SID>Restart()<CR>
+noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
+"cmap w! %!sudo tee > /dev/null %
+" Spell check
+noremap <silent> <F1> z=
+" Spell Check (Reverse)
+noremap <silent> <F2> zw
+" Add word to word list
+noremap <silent> <F3> zg
+" Remove word from word list
+noremap <silent> <F4> zug
+" Split Window Movement
+map <F6> :wincmd w<CR> imap <F6> <c-[>:wincmd w<CR> map <S-F6> :wincmd W<CR> imap <S-F6> <c-[>:wincmd W<CR>
+" Setup mini ide for a project of mine
+noremap <silent> <F5> :call Mideo()<CR>
+" Refreshing the screen
+map		<C-l>		     :redraw<CR> imap	<C-l>		<Esc>:redraw<CR>
+" Set map leader to f12
+let mapleader = "\<F12>"
+" Reformat everything
+noremap <Leader>gq gggqG
+" Reformat paragraph
+noremap <Leader>gp gqap
+" Clear lines
+noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
+" Delete blank lines
+noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
+" Don't make a # force column zero.
+inoremap # X<BS>#
+" }}}
+
+" {{{ Functions
 
 "If possible, try to use a narrow number column.
 if v:version >= 700
@@ -267,53 +331,26 @@ if (version >= 700)
     endfunction
 endif
 
-""-----------------------------------------------------------------------
-"" Key maps
-""-----------------------------------------------------------------------
+" Update header
+fun! <SID>UpdateRcHeader()
+    let l:c=col(".")
+    let l:l=line(".")
+    silent 1,10 s/\(Modified:\).*/\="Modified: ".strftime("%c")/
+    call cursor(l:l, l:c)
+endfun
 
-"map		:W :w
-"map		:WQ :wq
-"map		:wQ :wq
-"map		:Q :q
-nmap <C-N> :tabn<CR>
-nmap <C-P> :tabp<CR>
-noremap <silent> <C-O> :FuzzyFinderTextMate<CR>
-noremap <silent> <F7> :Tlist<CR>
-noremap <silent> <F8> :FuzzyFinderMruFile<CR>
-noremap <silent> <F9> :NERDTreeToggle<CR>
-noremap <silent> <F10> :call <SID>Restart()<CR>
-noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
-"cmap w! %!sudo tee > /dev/null %
-" Spell check
-noremap <silent> <F1> z=
-" Spell Check (Reverse)
-noremap <silent> <F2> zw
-" Add word to word list
-noremap <silent> <F3> zg
-" Remove word from word list
-noremap <silent> <F4> zug
-" Split Window Movement
-map <F6> :wincmd w<CR> imap <F6> <c-[>:wincmd w<CR> map <S-F6> :wincmd W<CR> imap <S-F6> <c-[>:wincmd W<CR>
-" Setup mini ide for a project of mine
-noremap <silent> <F5> :call Mideo()<CR>
-" Refreshing the screen
-map		<C-l>		     :redraw<CR> imap	<C-l>		<Esc>:redraw<CR>
-" Set map leader to f12
-let mapleader = "\<F12>"
-" Reformat everything
-noremap <Leader>gq gggqG
-" Reformat paragraph
-noremap <Leader>gp gqap
-" Clear lines
-noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
-" Delete blank lines
-noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
-" Don't make a # force column zero.
-inoremap # X<BS>#
-
-""-----------------------------------------------------------------------
-"" Functions
-""-----------------------------------------------------------------------
+if has("eval")
+    " If we're in a wide window, enable line numbers.
+    fun! <SID>WindowWidth()
+        if winwidth(0) > 90
+            setlocal foldcolumn=2
+            setlocal number
+        else
+            setlocal nonumber
+            setlocal foldcolumn=0
+        endif
+    endfun
+endif
 
 if version >= 700
     au TabLeave * let g:MRUtabPage = tabpagenr()
@@ -347,9 +384,9 @@ if has("eval")
     endfun
 endif
 
-""-----------------------------------------------------------------------
-"" auto commands
-""-----------------------------------------------------------------------
+" }}}
+
+" {{{ auto commands
 
 if isdirectory(expand("$VIMRUNTIME/ftplugin"))
     if has("eval")
@@ -357,6 +394,12 @@ if isdirectory(expand("$VIMRUNTIME/ftplugin"))
         filetype plugin on
         filetype indent on
     endif
+endif
+
+" turn off any existing search and spell checking
+if has("autocmd")
+    au VimEnter * nohls
+    au VimLeave * set nospell
 endif
 
 if has("autocmd")
@@ -416,6 +459,11 @@ if has("autocmd")
                 \	</body>\<CR>
                 \</html>" | set ai
 
+    "ruby
+    autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+    autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+    autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+    autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 endif
 
 if has("autocmd") && has("eval")
@@ -486,21 +534,12 @@ if has("autocmd")
     augroup END
 endif
 
-" turn off any existing search and spell checking
-if has("autocmd")
-    au VimEnter * nohls
-    au VimLeave * set nospell
-endif
+" }}}
 
-" enable syntax highlightning (must come after autocmd!)
-" vim-tiny doesn't support syntax
-if has("syntax")
-    syntax on
-endif
+" {{{ GUI Options & Colorschemes
 
-"-----------------------------------------------------------------------
-" GUI Options plus colorschemes
-"-----------------------------------------------------------------------
+"improve autocomplete menu color
+highlight pmenu ctermbg=238 gui=bold
 
 if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt-unicode' || &term == "xterm-256color"
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
@@ -558,59 +597,6 @@ if &term =~ "xterm"
         let &t_EI = "\<Esc>]12;grey80\x7"
     endif
 endif
-
-"Include $HOME in cdpath
-if has("file_in_path")
-    let &cdpath=','.expand("$HOME").','.expand("$HOME").'/code'
-endif
-
-if has("eval")
-    " If we're in a wide window, enable line numbers.
-    fun! <SID>WindowWidth()
-        if winwidth(0) > 90
-            setlocal foldcolumn=2
-            setlocal number
-        else
-            setlocal nonumber
-            setlocal foldcolumn=0
-        endif
-    endfun
-endif
-
-" Enable fancy % matching
-if has("eval")
-    runtime! macros/matchit.vim
-endif
-
-"ruby
-autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-"improve autocomplete menu color
-highlight Pmenu ctermbg=238 gui=bold
-
-
-let g:SuperTabMappingForward = '<c-right>'
-let g:SuperTabMappingBackward = '<c-left>'
-let g:SuperTabLongestHighlight = 1 
-let g:SuperTabMidWordCompletion = 1
-let g:SuperTabRetainCompletionType = 1 
-
-" Set taglist plugin options
-let Tlist_Use_Right_Window = 1
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_Enable_Fold_Column = 0
-let Tlist_Compact_Format = 1
-let Tlist_File_Fold_Auto_Close = 0
-let Tlist_Inc_Winwidth = 1
-
- " Update .*rc header
-fun! <SID>UpdateRcHeader()
-    let l:c=col(".")
-    let l:l=line(".")
-    silent 1,10 s/\(Modified:\).*/\="Modified: ".strftime("%c")/
-    call cursor(l:l, l:c)
-endfun
+" }}}
 
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=120 :
