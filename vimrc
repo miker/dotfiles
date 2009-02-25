@@ -1,8 +1,9 @@
 scriptencoding utf-8
-"-----------------------------------------------------------------------
-" Vim settings file for Greg Fitzgerald
-" Most recent update: Fri 10 Oct 2008 05:24:41 PM EDT
-"-----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
+" File:     ~/.vimrc
+" Author:   Greg Fitzgerald <netzdamon@gmail.com>
+" Modified: Tue 24 Feb 2009 10:02:45 PM EST
+" ----------------------------------------------------------------------------
 
 "-----------------------------------------------------------------------
 " Settings
@@ -104,6 +105,21 @@ set shortmess=atI
 set ruler
 " ignore these in auto complete
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif
+set gdefault
+set showcmd
+set cmdheight=1
+
+" ----------------------------------------------------------------------------
+" Enable folding by default
+" ----------------------------------------------------------------------------
+set foldenable
+set foldmethod=marker
+set foldlevelstart=0
+
+" always edit new files in tabs
+if has('tabe')
+    cab e tabe
+endif
 
 "-----------------------------------------------------------------------
 " Plugin settings
@@ -251,22 +267,14 @@ if (version >= 700)
     endfunction
 endif
 
-"Update .*rc header
-fun! <SID>UpdateRcHeader()
-    let l:c=col(".")
-    let l:l=line(".")
-    silent 1,10s-\(Most recent update:\).*-\="Most recent update: ".strftime("%c")-e
-    call cursor(l:l, l:c)
-endfun
-
 ""-----------------------------------------------------------------------
 "" Key maps
 ""-----------------------------------------------------------------------
 
-map		:W :w
-map		:WQ :wq
-map		:wQ :wq
-map		:Q :q
+"map		:W :w
+"map		:WQ :wq
+"map		:wQ :wq
+"map		:Q :q
 nmap <C-N> :tabn<CR>
 nmap <C-P> :tabp<CR>
 noremap <silent> <C-O> :FuzzyFinderTextMate<CR>
@@ -288,8 +296,6 @@ noremap <silent> <F4> zug
 map <F6> :wincmd w<CR> imap <F6> <c-[>:wincmd w<CR> map <S-F6> :wincmd W<CR> imap <S-F6> <c-[>:wincmd W<CR>
 " Setup mini ide for a project of mine
 noremap <silent> <F5> :call Mideo()<CR>
-" Setup a scratch buffer
-noremap <silent> <S-I> :tabe scratch<CR>
 " Refreshing the screen
 map		<C-l>		     :redraw<CR> imap	<C-l>		<Esc>:redraw<CR>
 " Set map leader to f12
@@ -409,6 +415,7 @@ if has("autocmd")
                 \	<body>\<CR>
                 \	</body>\<CR>
                 \</html>" | set ai
+
 endif
 
 if has("autocmd") && has("eval")
@@ -422,14 +429,12 @@ if has("autocmd") && has("eval")
         "autocmd FileWritePre * :call <SID>StripWhite()
         "autocmd FileAppendPre * :call <SID>StripWhite()
         "autocmd FilterWritePre * :call <SID>StripWhite()
-        "autocmd BufWritePre * :call <SID>StripWhite()
-
         " Update header in .vimrc and .bashrc before saving
-        autocmd BufWritePre *vimrc  :call <SID>UpdateRcHeader()
-        autocmd BufWritePre *zshrc :call <SID>UpdateRcHeader()
 
         " Always do a full syntax refresh
         autocmd BufEnter * syntax sync fromstart
+
+        autocmd BufWritePre *  :call <SID>UpdateRcHeader()
 
         " For svn-commit, don't create backups
         autocmd BufRead svn-commit.tmp :setlocal nobackup
@@ -485,6 +490,12 @@ endif
 if has("autocmd")
     au VimEnter * nohls
     au VimLeave * set nospell
+endif
+
+" enable syntax highlightning (must come after autocmd!)
+" vim-tiny doesn't support syntax
+if has("syntax")
+    syntax on
 endif
 
 "-----------------------------------------------------------------------
@@ -593,5 +604,13 @@ let Tlist_Enable_Fold_Column = 0
 let Tlist_Compact_Format = 1
 let Tlist_File_Fold_Auto_Close = 0
 let Tlist_Inc_Winwidth = 1
+
+ " Update .*rc header
+fun! <SID>UpdateRcHeader()
+    let l:c=col(".")
+    let l:l=line(".")
+    silent 1,10 s/\(Modified:\).*/\="Modified: ".strftime("%c")/
+    call cursor(l:l, l:c)
+endfun
 
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=120 :
