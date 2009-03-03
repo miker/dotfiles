@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Wed 25 Feb 2009 01:47:12 PM EST
+" Modified: Mon 02 Mar 2009 10:07:21 PM EST
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -260,6 +260,9 @@ noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
 noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
 " Don't make a # force column zero.
 inoremap # X<BS>#
+
+" Quick sudo saving from tpope
+command! -bar -nargs=0 SudoW :silent exe "write !sudo tee % >/dev/null" | silent edit!
 " }}}
 
 " {{{ Functions
@@ -555,7 +558,8 @@ if (has("gui_running"))
     "colorscheme darkspectrum 
     "colorscheme kellys < friggen awesomeness
     "colorscheme wombat " < friggen awesomeness as well
-    colorscheme xoria256 " < more awesomeness
+    "colorscheme xoria256 " < more awesomeness
+    colorscheme jellybeans
     "set guifont=Droid\ Sans\ Mono\ 12
     set guifont=inconsolata\ 14
     set mousem=popup	" Nice pop-up
