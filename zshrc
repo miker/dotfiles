@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Wed 25 Feb 2009 01:36:14 PM EST
+# Modified: Mon 02 Mar 2009 10:12:35 PM EST
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -329,8 +329,9 @@ alias nfs="cd /home/gregf/.wine/drive_c/Program\ Files/EA\ Games/Need\ for\ Spee
 alias wog="cd /home/gregf/.wine/drive_c/Program\ Files/WorldOfGoo/; wine WorldOfGoo.exe; cd ~ && xrandr -s 0"
 alias g='grep -Hn --color=always'
 alias cal='cal -3'
-alias ar="echo 'awful.util.restart()' | awesome-client -"
+alias ra="echo 'awful.util.restart()' | awesome-client -"
 alias mutt="TERM=xterm-256color mutt"
+alias sv="gvim --remote-tab-silent"
 # }}}
 
 # {{{ Completion
