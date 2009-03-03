@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/rc.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Wed 25 Feb 2009 01:15:46 PM EST
+-- Modified: Mon 02 Mar 2009 10:40:36 PM EST
 --  ----------------------------------------------------------------------------
 
 -- {{{ Standard awesome library
@@ -42,15 +42,10 @@ apprules = {
     { 'Deluge',             nil,           nil,                screen.count(),   7,  false },
     { 'K3b',                nil,           nil,                screen.count(),   9,  false },
     {  'DTA',               nil,           '.*DownThemAll!',   screen.count(),   7,  false },
-    { 'Firefox',            nil,           nil,                screen.count(),   2,  false },
+    { 'Firefox',            nil,           'Mozilla Firefox',                screen.count(),   2,  false },
+    { 'Navigator',          nil,           'Mozilla Firefox',                screen.count(),   2,  false },
     {  nil,                 nil,           'mutt',             screen.count(),   4,  false },
-    { 'Firefox',            'Download',    nil,                nil,            nil,  true  },
-    { 'Firefox',            'Places',      nil,                nil,            nil,  true  },
-    { 'Firefox',            'Greasemonkey',nil,                nil,            nil,  true  },
-    { 'Firefox',            'Extension',   nil,                nil,            nil,  true  },
-    { 'Firefox',            'Preferences', nil,                nil,            nil,  true  },
     { 'MPlayer',            nil,           nil,                nil,            nil,  true  },
-    {  nil,                 nil,           'VLC media player', nil,            nil,  true  },
     { 'Gimp',               nil,           nil,                nil,            nil,  true  },
     { 'Xmessage',           'xmessage',    nil,                nil,            nil,  true  },
 }
@@ -61,7 +56,7 @@ apprules = {
 tags = {}
 tags.settings = {
     { name="dev",       layout=layouts[3]   },
-    { name="www",       layout=layouts[3]   },
+    { name="www",       layout=layouts[7]   },
     { name="im",        layout=layouts[5]   },
     { name="mail",      layout=layouts[7]   },
     { name="irc",       layout=layouts[3]   },
@@ -351,9 +346,11 @@ awful.hooks.manage.register(function (c, startup)
             if rule[5] ~= nil then   target_tag    = rule[5] end
         end
     end
+    
     if target_float then
         awful.client.floating.set(c, target_float)
     end
+    
     if target_screen then
         c.screen = target_screen
         awful.client.movetotag(tags[target_screen][target_tag], c)
@@ -364,18 +361,6 @@ awful.hooks.manage.register(function (c, startup)
     -- 
     -- Set key bindings
     c:keys(clientkeys)
-    -- 
-    -- Put windows at the end of others instead of setting them as a master
-    awful.client.setslave(c)
-    -- ...or do it selectively for certain tags
-    if awful.tag.getproperty(awful.tag.selected(mouse.screen), "setslave") then
-        awful.client.setslave(c)
-    end
-    -- 
-    -- New floating windows don't cover the statusbar and don't overlap until it's unavoidable
-    awful.placement.no_offscreen(c)
-    --awful.placement.no_overlap(c)
-
 
     if c.name == "glxgears" then 
         awful.client.floating.set( c,true )
@@ -385,26 +370,6 @@ awful.hooks.manage.register(function (c, startup)
     if ( string.find(c.name, "MPlayer") ) == nil then
         awful.titlebar.remove( c, { modkey = config.keys.modkey } )
     end
-    -- Do this after tag mapping, so you don't see it on the wrong tag for a split second.
-    client.focus = c
-
-    -- Set key bindings
-    c:keys(clientkeys)
-
-    if not settings.new_become_master then
-        awful.client.setslave(c)
-    end
-
-    -- Honor size hints: for all but terminals
-    if c.class == "xterm" or c.class == "xterm" then
-        c.size_hints_honor = false
-    else
-        c.size_hints_honor = true
-    end
-    
-    --Set the windows at the slave,
-    -- i.e. put it at the end of others instead of setting it master.
-   -- awful.client.setslave(c)
 
 end)
 
