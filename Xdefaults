@@ -1,63 +1,10 @@
 ! ----------------------------------------------------------------------------
 ! File:     ~/.Xdefaults
 ! Author:   Greg Fitzgerald <netzdamon@gmail.com>
-! Modified: Tue 24 Feb 2009 10:06:22 PM EST
+! Modified: Tue 03 Mar 2009 09:57:22 PM EST
 ! ----------------------------------------------------------------------------
 
-! Color Codes
-! black
-*color0:             #242424
-*color8:             #828282
-! red
-*color1:             #BF7979
-*color9:             #F4A45F
-! green
-*color2:             #97B26B
-*color10:            #C5F779
-! yellow
-*color3:             #cdcda1
-*color11:            #ffffaf
-! blue
-*color4:             #285A8B
-*color12:            #98afd9
-! magenta
-*color5:             #d9b798
-*color13:            #d7d998
-! cyan
-*color6:             #a1b5cd
-*color14:            #a1b5cd
-! white
-*color7:             #ffffff
-*color15:            #dedede
-
-
-! tangoesque scheme
-! Black
-!*color0: #000000
-!*color8: #555753
-!! Red
-!*color1: #ff6565
-!*color9: #ff8d8d
-!! Green
-!*color2: #93d44f
-!*color10: #c8e7a8
-!! Yellow
-!*color3: #eab93d
-!*color11: #ffc123
-!! Blue
-!*color4: #204a87
-!*color12: #3465a4
-!! Mangenta
-!*color5: #ce5c00
-!*color13: #f57900
-!! Cyan
-!*color6: #89b6e2
-!*color14: #46a4ff
-!! White
-!*color7: #cccccc
-!*color15: #ffffff
-
-!XTerm settings
+!{{{ XTerm
 XTerm*cursorBlink: false 
 XTerm*showBlinkAsBold: true
 XTerm*multiScroll: true
@@ -100,7 +47,88 @@ XTerm*underLine: true
 XTerm*utf8Title: true
 XTerm*scrollKey: true
 XTerm*bellIsUrgent: true
+!}}}
 
+!{{{ URxvt
+!URxvt*termName:         rxvt-256color
+URxvt*loginShell:       false
+URxvt*saveLines:        5500
+URxvt*geometry:         180x25
+! URxvt*meta8:            true   /* teh fail w/vim and irssi+screen */
+!URxvt*cutchars:         `"()'*<>[]{|}
+/* match left-mouse-button */
+URxvt*matcher.button:   1                   
+URxvt*urlLauncher:      firefox
+/* places a hardcopy in home dir when print is pressed */
+URxvt.print-pipe: cat > $(TMPDIR=$HOME mktemp urxvt.XXXXX)
+
+!{{{ mark-and-yank
+URxvt.keysym.M-u: perl:mark-yank-urls:activate_mark_mode
+URxvt.underlineURLs: true
+URxvt.perl-ext: selection,mark-yank-urls
+URxvt.urlLauncher: firefox
+!}}}
+
+!{{{ appearance
+URxvt*transparent:        false 
+URxvt.cursorBlink:        false 
+URxvt.cursorOnTime:       400
+URxvt.cursorOffTime:      140
+URxvt*font:         xft:inconsolata:pixelsize=24:antialias=true
+URxvt*boldfont:     xft:inconsolata:pixelsize=24:bold:antialias=true
+!URxvt*internalBorder:     3
+URxvt*jumpScroll:         true
+URxvt*scrollTtyOutput:      false
+URxvt*scrollBar:          False
+!}}}
+
+!{{{ colors
+! black
+*background:         #000000
+*foreground:         #ffffff
+*colorBD:            lightyellow
+*colorUL:            yellow
+*cursorColor:        #07A5FF
+ 
+*color0:             #242424
+*color8:             #828282
+! red 
+*color1:             #BF7979
+*color9:             #F4A45F
+! green
+*color2:             #97B26B
+*color10:            #C5F779
+! yellow
+*color3:             #cdcda1
+*color11:            #ffffaf
+! blue
+*color4:             #285A8B
+*color12:            #98afd9
+! magenta
+*color5:             #d9b798
+*color13:            #d7d998
+! cyan
+*color6:             #a1b5cd
+*color14:            #a1b5cd
+! white
+*color7:             #ffffff
+*color15:            #dedede
+
+
+!}}}
+
+!}}}
+
+!{{{ Font handling
+Xft.dpi: 120
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.rgba: rgb
+!Xft.lcdfilter:  lcddefault
+Xft.hintstyle: hintfull
+! }}}
+
+!{{{ Cursor
 !Cursors - Choose one
 !Xcursor.theme: Blue
 !Xcursor.theme: Grounation
@@ -117,22 +145,19 @@ Xcursor.theme: PolarCursorTheme
 !Xcursor.theme: PolarCursorTheme-Blue
 !Xcursor.theme: Polar
 !Xcursor.theme: PolarCursorTheme-Green
-
 Xcursor.size: 18 
+! }}}
 
-!Xft settings
-Xft.dpi:                120
-Xft.hinting:            1 
-Xft.hintstyle:          hintfull
-Xft.antialias:          1 
-Xft.rgba:               rgb
+!{{{ irssi
+!   -- also: set 'vbell on' in screen
+!   --       set 'bell_msg' "\a in window!"
+urxvt*urgentOnBell: true 
+irssi*urgentOnBell:true
+!}}}
 
-!Xautolock
-Xautolock.time: 45 
-Xautolock.locker: xlock
-
-!Xlock
-xlock.mode: blank
-
+!{{{ VT100
 *VT100.Translations: #override  \
 	Alt<Key>;:       dabbrev-expand()
+!}}}
+
+! vim: set fdm=marker tabstop=4 shiftwidth=4 expandtab smarttab autoindent smartindent nu:
