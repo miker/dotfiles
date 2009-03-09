@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Mon 02 Mar 2009 10:12:35 PM EST
+# Modified: Mon 09 Mar 2009 06:19:47 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -106,6 +106,7 @@ case `uname` in
             alias unmask='sudo vim /etc/paludis/package_unmask.conf'
             alias bashrc='sudo vim /etc/paludis/bashrc'
             alias df='df -hT'
+            alias pq='paludis -q'
 
             export ECHANGELOG_USER="Greg Fitzgerald <netzdamon@gmail.com>"
             export PALUDIS_OPTIONS="--continue-on-failure if-satisfied --show-reasons summary --dl-reinstall-scm weekly --log-level warning --dl-reinstall if-use-changed --show-use-descriptions changed"
@@ -223,7 +224,7 @@ function title() {
         screen-*)
         print -Pn "\ek$a:$3\e\\"      # screen title (in ^A")
         ;;
-        xterm*|rxvt)
+        xterm*|rxvt-*)
         print -Pn "\e]2;$2 | $a:$3\a" # plain xterm title
         ;;
     esac
@@ -330,7 +331,6 @@ alias wog="cd /home/gregf/.wine/drive_c/Program\ Files/WorldOfGoo/; wine WorldOf
 alias g='grep -Hn --color=always'
 alias cal='cal -3'
 alias ra="echo 'awful.util.restart()' | awesome-client -"
-alias mutt="TERM=xterm-256color mutt"
 alias sv="gvim --remote-tab-silent"
 # }}}
 
@@ -357,7 +357,7 @@ compctl -g '*.(pdf|PDF|ps|PS|tiff|TIFF)' + -g '*(-/)' evince acroread xpdf epdfv
 compctl -g '*.(jpg|JPG|jpeg|JPEG|gif|GIF|tiff|TIFF|png|PNG|tga|TGA)' + -g '*(-/)' feh gthumb xv f-spot gqview
 
 # Select Prompt
-zstyle ':completion:*' menu select=1
+zstyle ':completion:*' menu select=2
 
 # Expansion options
 zstyle ':completion:*' completer _complete _prefix
@@ -761,22 +761,26 @@ fi
 #################################################################################
 # Bind the keys that zkbd set up to some widgets
 [[ -n ${key[Home]} ]]      && bindkey "${key[Home]}"      beginning-of-line
-[[ -n ${key[PageUp]} ]]    && bindkey "${key[PageUp]}"    up-line-or-history
 [[ -n ${key[Delete]} ]]    && bindkey "${key[Delete]}"    delete-char
 [[ -n ${key[End]} ]]       && bindkey "${key[End]}"       end-of-line
-[[ -n ${key[PageDown]} ]]  && bindkey "${key[PageDown]}"  down-line-or-history
-[[ -n ${key[Up]} ]]        && bindkey "${key[Up]}"        up-line-or-search
+[[ -n ${key[Up]} ]]        && bindkey "${key[Up]}"        history-search-backward 
 [[ -n ${key[Left]} ]]      && bindkey "${key[Left]}"      backward-char
-[[ -n ${key[Down]} ]]      && bindkey "${key[Down]}"      down-line-or-search
+[[ -n ${key[Down]} ]]      && bindkey "${key[Down]}"      history-search-forward
 [[ -n ${key[Right]} ]]     && bindkey "${key[Right]}"     forward-char
 [[ -n ${key[PageUp]} ]]    && bindkey "${key[PageUp]}"    history-incremental-search-backward
 [[ -n ${key[PageDown]} ]]  && bindkey "${key[PageDown]}"  history-incremental-search-forward
+bindkey '^xh' run-help
+autoload edit-command-line
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^xx' execute-named-cmd
+
 # }}} 
 
 # {{{ Prompt
-for zshrc_snipplet in ~/.zsh/prompt/S[0-9][0-9]*[^~] ; do
-        source $zshrc_snipplet
-done
+#for zshrc_snipplet in ~/.zsh/prompt/S[0-9][0-9]*[^~] ; do
+#        source $zshrc_snipplet
+#done
 #if (( EUID == 0 )); then
     #PROMPT=$'%{\e[01;31m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%# '
 #else
@@ -789,7 +793,7 @@ script_path=(~/code/bin/conky ~/code/bin/clipboard)
 path=($path /usr/local/bin /usr/bin /bin /usr/X11R6/bin ${HOME}/code/bin /opt/virtualbox /usr/share/texmf/bin /usr/lib/jre1.5.0_10/bin /usr/games/bin /usr/libexec/git-core $script_path)
 fpath=(~/.zsh/functions $fpath)
 autoload -U ~/.zsh/functions/*(:t)
-cdpath=($cdpath ~/code ~/code/bin/)
+#cdpath=($cdpath ~/code/bin/)
 if (( EUID == 0 )); then
     rootpath=(/sbin /usr/sbin /usr/local/sbin)
     # hack to fix "Can not write to history" after leaving sudo or su
@@ -800,6 +804,11 @@ if (( EUID == 0 )); then
     #HOME=/root
 fi
 # }}}
+
+setopt promptsubst
+autoload -U promptinit
+promptinit
+prompt wunjo
 
 # {{{ Run devtodo != root
 
