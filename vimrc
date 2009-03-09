@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Mon 02 Mar 2009 10:07:21 PM EST
+" Modified: Sun 08 Mar 2009 11:55:36 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -106,7 +106,13 @@ set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.
 set gdefault
 set showcmd
 set cmdheight=1
+set winminheight=0              " let windows shrink to filenames only
+set showtabline=0               " display tabbar 
 
+if has("unix")
+  set clipboard=autoselect
+  set shell=/bin/bash
+endif
 
 "Include $HOME in cdpath
 if has("file_in_path")
@@ -132,6 +138,18 @@ set foldlevelstart=0
 " }}}
 
 " {{{ Plugin settings
+
+" rails.vim
+
+let g:rails_dbext=1
+let g:rails_default_database='sqlite3'
+let g:rails_gnu_screen=1
+let g:rails_mappings=1
+let g:rails_statusline=1
+let g:rails_subversion=0
+let g:rails_syntax=1
+
+let g:browser = 'firefox -new-tab '
 
 let g:SuperTabMappingForward = '<c-right>'
 let g:SuperTabMappingBackward = '<c-left>'
@@ -270,7 +288,7 @@ command! -bar -nargs=0 SudoW :silent exe "write !sudo tee % >/dev/null" | silent
 "If possible, try to use a narrow number column.
 if v:version >= 700
     try
-        setlocal numberwidth=3
+        setlocal numberwidth=1
     catch
     endtry
 endif
@@ -563,6 +581,7 @@ if (has("gui_running"))
     "set guifont=Droid\ Sans\ Mono\ 12
     set guifont=inconsolata\ 14
     set mousem=popup	" Nice pop-up
+    set toolbariconsize=tiny
     set selection=exclusive	" Allow one char past EOL
     set ttymouse=xterm2	" Terminal type for mouse code recognition
     set mousehide
@@ -601,6 +620,10 @@ if &term =~ "xterm"
         let &t_EI = "\<Esc>]12;grey80\x7"
     endif
 endif
+
+" set vim to chdir for each file
+au BufEnter * if &ft != 'help' | silent! cd %:p:h | endif
+set autochdir
 " }}}
 
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=120 :
