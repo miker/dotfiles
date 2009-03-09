@@ -2,30 +2,25 @@
 fs="yes"
 vo="xv"
 ao="alsa"
+idx="yes"
 #ao="null" # start mplayer muted
 #nosound="yes" # or instead of null we could use this
 #channels=2
+subtitles="no"
 lang=en
 monitoraspect = "16:9"
 af=volnorm
-vf=denoise3d,pp
-#framedrop=1
+#vf=denoise3d,pp
+#framedrop="yes"
 #hardframedrop=0
-double="yes"
-#srate="48000"
 #mixer-channel="Master"
-#ffactor="10"
-#sub-bg-alpha="0"
-#sub-bg-color="0"
-#subfont-text-scale="3.7"
-#subfont-blur="1"
 #autoq=100
 ontop="1"
 stop-xscreensaver="yes"
 #heartbeat-cmd="/usr/bin/xscreensaver-command -deactivate > /dev/null"
-#a52drc=1
-#mc=0.2
-#autosync=30
+cache = 8192
+cache-min = 2.0
+cache-seek-min = 50
 
 [xvmc]
 vo=xvmc
