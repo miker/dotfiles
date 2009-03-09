@@ -2,10 +2,11 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.xinitrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Tue 24 Feb 2009 10:05:46 PM EST
+# Modified: Sat 07 Mar 2009 11:27:06 AM EST
 # ----------------------------------------------------------------------------
 
 # Set your Default Window Manager
+#DEFAULTWM='awesome --config /home/gregf/.awesome/rcshifty.lua'
 DEFAULTWM='awesome'
 # Used to check awesome for memory leaks
 #DEFAULTWM='valgrind --leak-check=full --tool=memcheck --log-file=/home/gregf/.awesome/mem.log /usr/bin/awesome'
@@ -24,43 +25,50 @@ export MOZILLA_NEWTYPE=tab
 
 unclutter -idle 30 -reset -root &
 
-#xmodmap ~/.Xmodmap
-xset -b -bc +dpms r rate 250 50
-xrdb -load ~/.Xdefaults
-
-# Load multimedia keys
-xmodmap ~/.Xmodmap
+xset -b -bc +dpms r rate 250 50 &
 
 # Load Xdefaults
-xrdb -load ~/.Xdefaults
+xrdb -load ~/.Xdefaults &
+xmodmap ~/.Xmodmap &
 
 # Disable repeat for multimediakeys
-xset -r 129 -r 231 -r 198 -r 236 -r 160
+xset -r 129 -r 231 -r 198 -r 236 -r 160 &
 
 # Make capslock key equal to escape
 #xmodmap -e "remove lock = Caps_Lock"
 #xmodmap -e "keysym Caps_Lock = Escape"
 
 # Not needed with 180.06 and above.
-nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1
+nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1 &
 
 xsetroot -solid black &
 
 # Turn on numlock
-numlockx on
+numlockx on &
 
 # Ask for keychain password
 keychain --clear -q ~/.ssh/id_dsa
 source ~/.keychain/`hostname`-sh > /dev/null
 
+if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+  eval `dbus-launch --sh-syntax --exit-with-session`
+fi
+
+#sync PRIMARY with clipboard 
+autocutsel -s PRIMARY -buttonup -fork &
+
+xsetroot -cursor_name arrow &
+
+RXVT_SOCKET="$HOME/.tmp/rxvt-unicode"
+urxvtd -q -o -f &
+
 # Execute window manager into background
 exec $DEFAULTWM & wmpid=$!
-   nitrogen --restore &
-   #~/code/bin/wallpaper/wallpaper.rb &
-   #~/gmail.rb start &
-   conky &
-   xsetroot -cursor_name arrow &
-   dbus-launch --exit-with-session &
-   nice -n19 ${BROWSER} 
-   nice -n19 gpodder &
+    nitrogen --restore &
+    #~/code/bin/wallpaper/wallpaper.rb &
+    #~/gmail.rb start &
+    conky &
+    nice -n19 ${BROWSER} 
+    nice -n19 gpodder &
+    xsetroot -cursor_name arrow &
 wait $wmpid
