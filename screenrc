@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.screenrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Mon 02 Mar 2009 04:27:26 PM EST
+# Modified: Tue 03 Mar 2009 09:49:17 PM EST
 # ----------------------------------------------------------------------------
 
 setenv LC_CTYPE en_US.UTF-8
@@ -106,7 +106,7 @@ focus
 select 0
 
 # erase background with current bg color
-defbce "on"
+#defbce "on"
 
 # disable Ctrl-S/Ctrl-Q "flow control"
 defflow off
