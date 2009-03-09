@@ -1,7 +1,7 @@
 ! ----------------------------------------------------------------------------
 ! File:     ~/.Xdefaults
 ! Author:   Greg Fitzgerald <netzdamon@gmail.com>
-! Modified: Tue 03 Mar 2009 09:57:22 PM EST
+! Modified: Mon 09 Mar 2009 03:52:46 PM EDT
 ! ----------------------------------------------------------------------------
 
 !{{{ XTerm
@@ -50,24 +50,23 @@ XTerm*bellIsUrgent: true
 !}}}
 
 !{{{ URxvt
-!URxvt*termName:         rxvt-256color
 URxvt*loginShell:       false
 URxvt*saveLines:        5500
-URxvt*geometry:         180x25
-! URxvt*meta8:            true   /* teh fail w/vim and irssi+screen */
-!URxvt*cutchars:         `"()'*<>[]{|}
-/* match left-mouse-button */
-URxvt*matcher.button:   1                   
-URxvt*urlLauncher:      firefox
-/* places a hardcopy in home dir when print is pressed */
-URxvt.print-pipe: cat > $(TMPDIR=$HOME mktemp urxvt.XXXXX)
-
-!{{{ mark-and-yank
-URxvt.keysym.M-u: perl:mark-yank-urls:activate_mark_mode
-URxvt.underlineURLs: true
-URxvt.perl-ext: selection,mark-yank-urls
-URxvt.urlLauncher: firefox
-!}}}
+URxvt*geometry:         100x25
+URxvt.depth:        32
+URxvt.modifier:         alt
+Rxvt.scrollstyle:   plain
+URxvt.scrollColor:  #444444
+URxvt*scrollTtyKeypress: true
+URxvt.scrollWithBuffer: true
+URxvt.scrollTtyOutput:  false
+URxvt.inheritPixmap:    false
+URxvt.urgentOnBell:     true
+URxvt.perl-ext-common:  default,matcher
+URxvt.urlLauncher:  firefox
+URxvt.matcher.button:   1
+URxvt*keysym.M-u: perl:mark-yank-urls:activate_mark_mode
+URxvt*underlineURLs: true
 
 !{{{ appearance
 URxvt*transparent:        false 
@@ -76,16 +75,15 @@ URxvt.cursorOnTime:       400
 URxvt.cursorOffTime:      140
 URxvt*font:         xft:inconsolata:pixelsize=24:antialias=true
 URxvt*boldfont:     xft:inconsolata:pixelsize=24:bold:antialias=true
-!URxvt*internalBorder:     3
 URxvt*jumpScroll:         true
-URxvt*scrollTtyOutput:      false
-URxvt*scrollBar:          False
+URxvt*scrollTtyOutput:    false
+URxvt*scrollBar:          false
 !}}}
 
 !{{{ colors
 ! black
-*background:         #000000
-*foreground:         #ffffff
+URxvt*background:         #000000
+URxvt*foreground:         #ffffff
 *colorBD:            lightyellow
 *colorUL:            yellow
 *cursorColor:        #07A5FF
@@ -113,7 +111,6 @@ URxvt*scrollBar:          False
 ! white
 *color7:             #ffffff
 *color15:            #dedede
-
 
 !}}}
 
