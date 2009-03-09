@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/libs/config.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Wed 25 Feb 2009 01:17:23 PM EST
+-- Modified: Tue 03 Mar 2009 09:51:50 PM EST
 --  ----------------------------------------------------------------------------
 
 -- {{{ TODO
@@ -33,13 +33,15 @@ config.keys.modkey = config.keys.alt
 -- }}}
 
 -- {{{ Apps
-config.apps.terminal = "xterm"
+--config.apps.terminal = "xterm"
+config.apps.terminal = "urxvt"
 config.apps.browser = "epiphany -n"
 config.apps.editor = os.getenv("EDITOR") or "vim"
 config.apps.editor_cmd = config.apps.terminal .. " -e " .. config.apps.editor
 config.apps.rss = "liferea"
 config.apps.music = "gmpc"
-config.apps.mail = config.apps.terminal.." -T mutt -n mutt -e 'TERM=xterm-256color mutt'"
+--config.apps.mail = config.apps.terminal.." -T mutt -n mutt -e 'TERM=xterm-256color mutt'"
+config.apps.mail = config.apps.terminal.." -name mutt -e mutt"
 config.apps.chat = "gajim"
 config.apps.burn = "k3b"
 config.apps.screen = config.apps.terminal.." -e screen"
