@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.muttrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Wed 25 Feb 2009 01:24:30 PM EST
+# Modified: Mon 09 Mar 2009 04:31:11 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Imap Settings
@@ -60,12 +60,12 @@ folder-hook   "."   push "<collapse-all>"
 # }}}
 
 # {{{ Common Paths
-set signature=~/.mutt/signature
-set header_cache="~/.tmp/mutt/hcache"
-set message_cachedir="~/.tmp/mutt/msgcache/"
-set certificate_file="~/.tmp/mutt/certs"
-set mailcap_path="~/.mailcap"
-set tmpdir=$HOME/.tmp/mutt
+set signature="$HOME/.mutt/signature"
+set header_cache="$HOME/.tmp/mutt/hcache"
+set message_cachedir="$HOME/.tmp/mutt/msgcache/"
+set certificate_file="$HOME/.tmp/mutt/certs"
+set mailcap_path="$HOME/.mailcap"
+set tmpdir="$HOME/.tmp/mutt"
 # }}}
 
 # {{{ Set some basic settings
