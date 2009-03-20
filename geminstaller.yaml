@@ -12,6 +12,7 @@ gems:
   version: '>= 2.0.1'
 - name: unicode
 - name: syntax
+- name: what_methods
 - name: harukizaemon-stripper
 - name: authlogic
   version: '>= 1.4.3'
@@ -63,3 +64,4 @@ gems:
 - name: colored
 - name: color
 - name: cheat
+- name: sinatra
