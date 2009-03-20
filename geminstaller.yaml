@@ -2,7 +2,7 @@
 defaults:
   install_options: --no-ri --no-rdoc
   check_for_upgrade: true
-  fix_dependencies: true
+  fix_dependencies: false 
 gems:
 - name: rails
   version: '>= 2.3.2'
