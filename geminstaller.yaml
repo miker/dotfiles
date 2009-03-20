@@ -1,0 +1,63 @@
+---
+defaults:
+  install_options: --no-ri --no-rdoc
+gems:
+- name: rails
+  version: '>= 2.3.2'
+- name: coderay
+- name: rdiscount
+- name: haml
+  version: '>= 2.0.1'
+- name: unicode
+- name: syntax
+- name: harukizaemon-stripper
+- name: authlogic
+  version: '>= 1.4.3'
+- name: ZenTest
+- name: xml-simple
+- name: will_paginate
+- name: wirble
+- name: vlad
+- name: thoughtbot-shoulda
+- name: thoughtbot-factory_girl
+- name: sqlite3-ruby
+- name: paperclip
+- name: webrat
+- name: technicalpickles-jeweler
+- name: schacon-git
+- name: rubyweather
+- name: ruby-openid
+- name: ruby-mp3info
+- name: reek
+- name: roodi
+- name: rspec
+- name: rspec-rails
+- name: ruby-debug
+- name: rake
+- name: rack
+- name: passenger
+- name: open4
+- name: mongrel
+- name: mini_magick
+- name: mime-types
+- name: mechanize
+- name: capistrano
+- name: jeremylightsmith-piston
+- name: image_science
+- name: jamis-fuzzy_file_finder
+- name: git_remote_branch
+- name: giraffesoft-is_taggable
+- name: getopt-declare
+- name: getopt
+- name: flog
+- name: flay
+- name: exifr
+- name: eventmachine
+- name: escape
+- name: defunkt-github
+- name: daemons
+- name: cucumber
+- name: configatron
+- name: colored
+- name: color
+- name: cheat
