@@ -65,3 +65,6 @@ gems:
 - name: color
 - name: cheat
 - name: sinatra
+- name: puppet
+- name: bcrypt-ruby
+- name: visionmedia-commander
