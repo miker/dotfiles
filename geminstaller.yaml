@@ -68,3 +68,7 @@ gems:
 - name: puppet
 - name: bcrypt-ruby
 - name: visionmedia-commander
+- name: dom-id
+- name: norman-friendly_id
+- name: gemedit
+- name: visionmedia-css
