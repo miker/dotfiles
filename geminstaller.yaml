@@ -27,6 +27,12 @@ gems:
 - name: paperclip
 - name: webrat
 - name: technicalpickles-jeweler
+- name: oniguruma
+- name: ultraviolet
+- name: jnunemaker-google-weather
+- name: httparty
+- name: stephencelis-haddock
+- name: flapcore
 - name: schacon-git
 - name: rubyweather
 - name: ruby-openid
