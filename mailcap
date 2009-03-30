@@ -3,4 +3,3 @@ application/pdf; /usr/bin/evince %s
 image/jpeg; /usr/bin/feh -w %s
 image/gif; /usr/bin/feh -w %s
 image/png; /usr/bin/feh -w %s
-
