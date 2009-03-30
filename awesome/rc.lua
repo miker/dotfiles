@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/rc.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Mon 02 Mar 2009 10:40:36 PM EST
+-- Modified: Sun 29 Mar 2009 08:24:25 PM EDT
 --  ----------------------------------------------------------------------------
 
 -- {{{ Standard awesome library
@@ -13,6 +13,7 @@ require("libs/revelation")
 -- }}}
 
 beautiful.init(config.theme)
+modkey = config.keys.modkey
 
 -- {{{ Layouts
 -- Table of layouts to cover with awful.layout.inc, order matters.
@@ -30,58 +31,90 @@ layouts =
     awful.layout.suit.floating --10
 }
 -- }}}
-
--- {{{ Application Behavior
-apprules = {
-    -- Class                Instance       Name                Screen          Tag   Floating
-    { 'Gajim.py',           nil,           nil,                screen.count(),   3,  false },
-    { 'Mutt',               nil,           nil,                screen.count(),   4,  false },
-    { 'Xchat',              nil,           nil,                screen.count(),   5,  false },
-    { 'Gmpc',               nil,           nil,                screen.count(),   6,  false },
-    {  nil,                 nil,           'gPodder',          screen.count(),   9,  false },
-    { 'Deluge',             nil,           nil,                screen.count(),   7,  false },
-    { 'K3b',                nil,           nil,                screen.count(),   9,  false },
-    {  'DTA',               nil,           '.*DownThemAll!',   screen.count(),   7,  false },
-    { 'Firefox',            nil,           'Mozilla Firefox',                screen.count(),   2,  false },
-    { 'Navigator',          nil,           'Mozilla Firefox',                screen.count(),   2,  false },
-    {  nil,                 nil,           'mutt',             screen.count(),   4,  false },
-    { 'MPlayer',            nil,           nil,                nil,            nil,  true  },
-    { 'Gimp',               nil,           nil,                nil,            nil,  true  },
-    { 'Xmessage',           'xmessage',    nil,                nil,            nil,  true  },
+-- Table of clients that should be set floating.
+floatapps =
+{
+    ["gimp"] = true,
+    ["Saved Passwords"] = true,
+    ["Cookies"] = true,
+    ["Browser"] = true,
+    ["Downloads"] = true,
+    ["Download"] = true,
+    ["Library"] = true,
+    ["Places"] = true,
+    ["Greasemonkey"] = true,
+    ["MPlayer"] = true,
+    ["Evince"] = true,
+    ["Xmessage"] = true,
 }
+
+-- Applications to be moved to a pre-defined tag by class or instance.
+-- Use the screen and tags indices.
+apptags =
+{
+    ["Firefox"] = { screen = 1, tag = 2 },
+    ["Xchat"] = { screen = 1, tag = 5 },
+    ["mutt"] = { screen = 1, tag = 4 },
+    ["gPodder"] = { screen = 1, tag = 9 },
+    ["Gmpc"] = { screen = 1, tag = 6 },
+    ["K3b"] = { screen = 1, tag = 9 },
+    ["DTA"] = { screen = 1, tag = 7 },
+    ["Gajim.py"] = { screen = 1, tag = 3 },
+    ["Deluge"] = { screen = 1, tag = 7 },
+    ["Gimp"] = { screen = 1, tag = 9 },
+}
+
+-- Define if we want to use titlebar on all applications.
+use_titlebar = false
+
 -- }}}
-
+-------------------------------------------------------------------------------------
 -- {{{ Tags
--- Define tags table
+
+tag_properties = { { name = "dev"
+                   , layout = layouts[4]
+                   }
+                 , { name = "www"
+                   , layout = layouts[4]
+                   }
+                 , { name = "im"
+                   , layout = layouts[1]
+                   }
+                 , { name = "mail"
+                   , layout = layouts[1]
+                   }
+                 , { name = "irc"
+                   , layout = layouts[3]
+                   }
+                 , { name = "music"
+                   , layout = layouts[7]
+                   }
+                 , { name = "downloads"
+                   , layout = layouts[3]
+                   }
+                 , { name = "vbox"
+                   , layout = layouts[7]
+                   }
+                 , { name = "media"
+                   , layout = layouts[3]
+                   }
+                 }
+
+-- Define tags table.
 tags = {}
-tags.settings = {
-    { name="dev",       layout=layouts[3]   },
-    { name="www",       layout=layouts[7]   },
-    { name="im",        layout=layouts[5]   },
-    { name="mail",      layout=layouts[7]   },
-    { name="irc",       layout=layouts[3]   },
-    { name="music",     layout=layouts[7]   },
-    { name="downloads", layout=layouts[4]   },
-    { name="vbox",      layout=layouts[7]   },
-    { name="media",     layout=layouts[4]   },
-}
-
-
--- Initialize tags
 for s = 1, screen.count() do
-    tags[s] = {}
-    for i, v in ipairs(tags.settings) do
+    tags[s] = { }
+    for i, v in ipairs(tag_properties) do
         tags[s][i] = tag(v.name)
         tags[s][i].screen = s
-        awful.tag.setproperty(tags[s][i], "layout",   v.layout)
-        awful.tag.setproperty(tags[s][i], "setslave", v.setslave)
-        awful.tag.setproperty(tags[s][i], "mwfact",   v.mwfact)
-        awful.tag.setproperty(tags[s][i], "nmaster",  v.nmaster)
-        awful.tag.setproperty(tags[s][i], "ncols",    v.ncols)
-        awful.tag.setproperty(tags[s][i], "icon",     v.icon)
+        awful.tag.setproperty(tags[s][i], "layout", v.layout)
+        awful.tag.setproperty(tags[s][i], "mwfact", v.mwfact)
+        awful.tag.setproperty(tags[s][i], "nmaster", v.nmaster)
+        awful.tag.setproperty(tags[s][i], "ncols", v.ncols)
     end
     tags[s][1].selected = true
 end
+
 -- }}}
 
 -- {{{ Wibox
@@ -205,11 +238,11 @@ globalkeys =
 clientkeys =
 {
     key({ config.keys.modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-    key({ config.keys.modkey,   }, "c",      function (c) c:kill()                         end),
+    key({ config.keys.modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     key({ config.keys.modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     key({ config.keys.modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     key({ config.keys.modkey,           }, "o",      awful.client.movetoscreen                        ),
-    key({ config.keys.modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
+    key({ config.keys.modkey,           }, "r",      function (c) c:redraw()                       end),
     key({ config.keys.modkey }, "t", awful.client.togglemarked),
     key({ config.keys.modkey,}, "m",
         function (c)
@@ -275,10 +308,12 @@ root.keys(globalkeys)
 -- }}}
 
 -- {{{ Hooks
+
 -- Hook function to execute when focusing a client.
 awful.hooks.focus.register(function (c)
     if not awful.client.ismarked(c) then
         c.border_color = beautiful.border_focus
+        c.opacity = 1
     end
 end)
 
@@ -286,6 +321,7 @@ end)
 awful.hooks.unfocus.register(function (c)
     if not awful.client.ismarked(c) then
         c.border_color = beautiful.border_normal
+        c.opacity = 0.6
     end
 end)
 
@@ -317,62 +353,55 @@ awful.hooks.manage.register(function (c, startup)
         c.screen = mouse.screen
     end
 
-    if config.titlebar then
+    if use_titlebar then
         -- Add a titlebar
-        awful.titlebar.add(c, { modkey = config.keys.modkey })
+        awful.titlebar.add(c, { modkey = modkey })
     end
     -- Add mouse bindings
     c:buttons({
         button({ }, 1, function (c) client.focus = c; c:raise() end),
-        button({ config.keys.modkey }, 1, awful.mouse.client.move),
-        button({ config.keys.modkey }, 3, awful.mouse.client.resize)
+        button({ modkey }, 1, awful.mouse.client.move),
+        button({ modkey }, 3, awful.mouse.client.resize)
     })
     -- New client may not receive focus
     -- if they're not focusable, so set border anyway.
     c.border_width = beautiful.border_width
     c.border_color = beautiful.border_normal
-    
-    -- Check application->screen/tag mappings and floating state
-    local target_screen
-    local target_float = false
-    local target_tag   = awful.tag.selected(mouse.screen)
-    -- 1 = class, 2 = instance, 3 = title, 4 = screen, 5 = tag, 6 = [is] floating
-    for index, rule in pairs(apprules) do
-        if  (((rule[1] == nil) or (c.class    and c.class    == rule[1]))
-        and  ((rule[2] == nil) or (c.instance and c.instance == rule[2]))
-        and  ((rule[3] == nil) or string.find(c.name, rule[3], 1, true))) then
-            target_float = rule[6]
-            if rule[4] ~= nil then   target_screen = rule[4] end
-            if rule[5] ~= nil then   target_tag    = rule[5] end
-        end
+
+    -- Check if the application should be floating.
+    local cls = c.class
+    local inst = c.instance
+    if floatapps[cls] then
+        awful.client.floating.set(c, floatapps[cls])
+    elseif floatapps[inst] then
+        awful.client.floating.set(c, floatapps[inst])
     end
-    
-    if target_float then
-        awful.client.floating.set(c, target_float)
+
+    -- Check application->screen/tag mappings.
+    local target
+    if apptags[cls] then
+        target = apptags[cls]
+    elseif apptags[inst] then
+        target = apptags[inst]
     end
-    
-    if target_screen then
-        c.screen = target_screen
-        awful.client.movetotag(tags[target_screen][target_tag], c)
+    if target then
+        c.screen = target.screen
+        awful.client.movetotag(tags[target.screen][target.tag], c)
     end
-    -- 
-    -- Focus after tag mapping
+
+    -- Do this after tag mapping, so you don't see it on the wrong tag for a split second.
     client.focus = c
-    -- 
+    
     -- Set key bindings
     c:keys(clientkeys)
 
-    if c.name == "glxgears" then 
-        awful.client.floating.set( c,true )
-        awful.titlebar.add( c, { modkey = config.keys.modkey } )
-    end
+    -- Set the windows at the slave,
+    -- i.e. put it at the end of others instead of setting it master.
+    --awful.client.setslave(c)
 
-    if ( string.find(c.name, "MPlayer") ) == nil then
-        awful.titlebar.remove( c, { modkey = config.keys.modkey } )
-    end
-
+    -- Honor size hints: if you want to drop the gaps between windows, set this to false.
+    c.size_hints_honor = false
 end)
-
 -- Hook function to execute when arranging the screen.
 -- (tag switch, new client, etc)
 awful.hooks.arrange.register(function (screen)
