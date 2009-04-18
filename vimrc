@@ -2,8 +2,10 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sun 08 Mar 2009 11:55:36 PM EDT
+" Modified: Thu 16 Apr 2009 11:31:22 PM EDT
 " ----------------------------------------------------------------------------
+
+" Autocmd for xrdb
 
 " {{{ Settings
 
@@ -138,7 +140,12 @@ set foldlevelstart=0
 " }}}
 
 " {{{ Plugin settings
+" Autoclose
+let g:loaded_AutoClose = 0 
 
+" gist
+let g:github_user="gregf"
+let g:github_token="c063595c9d2dca14f8115509cce8a228"
 " rails.vim
 
 let g:rails_dbext=1
@@ -246,6 +253,7 @@ endif
 nmap <C-N> :tabn<CR>
 nmap <C-P> :tabp<CR>
 noremap <silent> <C-O> :FuzzyFinderTextMate<CR>
+noremap <silent> <C-z> :undo<CR>
 noremap <silent> <F7> :Tlist<CR>
 noremap <silent> <F8> :FuzzyFinderMruFile<CR>
 noremap <silent> <F9> :NERDTreeToggle<CR>
@@ -267,7 +275,7 @@ noremap <silent> <F5> :call Mideo()<CR>
 " Refreshing the screen
 map		<C-l>		     :redraw<CR> imap	<C-l>		<Esc>:redraw<CR>
 " Set map leader to f12
-let mapleader = "\<F12>"
+let mapleader = ","
 " Reformat everything
 noremap <Leader>gq gggqG
 " Reformat paragraph
@@ -278,12 +286,24 @@ noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
 noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
 " Don't make a # force column zero.
 inoremap # X<BS>#
-
+noremap <Leader>rr :w\|!ruby %<cr>
+noremap <Leader>p :set paste<CR>
+noremap <Leader>nu :set nonumber<CR>
+noremap <Leader>pp :s/:/ /g<CR>
+noremap :close :bd!<CR>
 " Quick sudo saving from tpope
 command! -bar -nargs=0 SudoW :silent exe "write !sudo tee % >/dev/null" | silent edit!
 " }}}
 
 " {{{ Functions
+
+command! -nargs=0 RDocPreview call RDocRenderBufferToPreview()
+
+function! RDocRenderBufferToPreview()
+  let rdocoutput = "/tmp/vimrdoc/"
+  call system("rdoc " . bufname("%") . " --op " . rdocoutput)
+  call system("fireofx ". rdocoutput . "index.html")
+endfunction
 
 "If possible, try to use a narrow number column.
 if v:version >= 700
@@ -431,6 +451,8 @@ if has("autocmd")
     autocmd FileType xslt,xml,xhtml,html set ts=2
     autocmd FileType php set ts=4 complete+=k
     autocmd BufReadPost,BufNewFile,BufRead rsnapshot.conf set noet
+    autocmd BufReadPost,BufNewFile,BufRead nginx.conf set syntax=nginx
+    autocmd BufReadPost,BufNewFile,BufRead TODO set syntax=todolist
 
     " When editing a file, jump to the last cursor position
     autocmd BufReadPost *
@@ -562,7 +584,7 @@ endif
 "improve autocomplete menu color
 highlight pmenu ctermbg=238 gui=bold
 
-if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt-unicode' || &term == "xterm-256color"
+if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt' || &term == "xterm-256color"
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
     colorscheme zenburn
     "colorscheme gigamo
@@ -574,10 +596,10 @@ endif
 if (has("gui_running"))
     "colorscheme gigamo
     "colorscheme darkspectrum 
-    "colorscheme kellys < friggen awesomeness
+    colorscheme kellys "< friggen awesomeness
     "colorscheme wombat " < friggen awesomeness as well
     "colorscheme xoria256 " < more awesomeness
-    colorscheme jellybeans
+    "colorscheme jellybeans
     "set guifont=Droid\ Sans\ Mono\ 12
     set guifont=inconsolata\ 14
     set mousem=popup	" Nice pop-up
@@ -586,6 +608,19 @@ if (has("gui_running"))
     set ttymouse=xterm2	" Terminal type for mouse code recognition
     set mousehide
 endif
+
+" Refactor all terminal shit into a block like this much cleaner
+"if (&term =~ 'linux')
+    "set t_Co=16
+    "set termencoding=utf-8
+    "set nocursorline
+    "colorscheme desert
+"else
+    "set t_Co=256
+    "set mouse=a
+    "colorscheme jellybeans
+    "set termencoding=utf-8
+"endif
 
 if has('gui')
     set guioptions-=m
@@ -607,11 +642,11 @@ if has('title') && (has('gui_running') || &title)
 endif
 
 "Extra terminal things
-if (&term =~ "xterm") && (&termencoding == "")
+if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt' || &term == "xterm-256color" && (&termencoding == "")
     set termencoding=utf-8
 endif
 
-if &term =~ "xterm"
+if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt' || &term == "xterm-256color"
     if has('title')
         set title
     endif
