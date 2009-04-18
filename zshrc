@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Sat 18 Apr 2009 04:05:53 PM EDT
+# Modified: Sat 18 Apr 2009 04:58:23 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -727,10 +727,16 @@ function sanitize {
     chown -R ${USER}:users "$@"
 }
 
-# TODO: Catch ctrl+c from tail and stop nginx
+# Start nginx and tail the logfile
+# catch ^C and kill nginx
 function ss {
-    svcr nginx
+    TRAPINT() {
+        print "Caught Control C, shutting down nginx"
+        sudo /etc/init.d/nginx stop
+    }
+    sudo /etc/init.d/nginx start
     tail -f log/development.log
+
 }
 
 # Stolen:
