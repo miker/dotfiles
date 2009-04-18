@@ -1,0 +1,8 @@
+(if
+    (is (window_name) "Azureus ")
+    (begin
+       (set_workspace 7)
+       (geometry "980x968+5+25")
+    )
+)
+

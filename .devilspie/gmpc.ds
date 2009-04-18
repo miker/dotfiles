@@ -1,0 +1,8 @@
+(if
+    (is (window_name) "GMPC")
+    (begin
+        (set_workspace 6)
+        (maximize)
+    )
+)
+

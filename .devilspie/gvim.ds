@@ -1,0 +1,6 @@
+(if
+    (is (window_name) "Vim")
+    (begin
+        (maximize)
+    )
+)
