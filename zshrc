@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Mon 09 Mar 2009 06:19:47 PM EDT
+# Modified: Sat 18 Apr 2009 03:51:35 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -96,7 +96,7 @@ case `uname` in
         fi
 
         if [[ -f /etc/gentoo-release ]]; then
-            export RUBYOPT="" #will break gentoo's ebuild for rubygems, if your using it comment this out
+            #export RUBYOPT="" #will break gentoo's ebuild for rubygems, if your using it comment this out
             alias ms="mirrorselect -b10 -s5 -D"
             alias python-updater="python-updater -P paludis"
             alias dp="dispatch-conf"
@@ -109,7 +109,12 @@ case `uname` in
             alias pq='paludis -q'
 
             export ECHANGELOG_USER="Greg Fitzgerald <netzdamon@gmail.com>"
-            export PALUDIS_OPTIONS="--continue-on-failure if-satisfied --show-reasons summary --dl-reinstall-scm weekly --log-level warning --dl-reinstall if-use-changed --show-use-descriptions changed"
+            export PALUDIS_OPTIONS="--continue-on-failure if-satisfied --show-reasons summary --dl-reinstall-scm weekly --log-level warning --dl-reinstall if-use-changed --show-use-descriptions all"
+
+            function p {
+            export PALUDIS_OPTIONS="--continue-on-failure if-satisfied --show-reasons summary --dl-reinstall-scm weekly --log-level warning --dl-reinstall if-use-changed --show-use-descriptions all"
+            paludis $@
+            }
 
             function paludis-scm {
                 PALUDIS_OPTIONS="--dl-reinstall-scm daily"
@@ -174,6 +179,10 @@ export MPD_HOST="/home/gregf/.mpd/socket"
 export GIT_AUTHOR_EMAIL="netzdamon@gmail.com"
 export GIT_AUTHOR_NAME="Greg Fitzgerald"
 export GIT_COMMITTER_EMAIL=$GIT_AUTHOR_EMAIL
+
+# Some settings for autotest
+export AUTOFEATURE=true" 
+export RSPEC=true"
 
 # Some things we want set regardless
 export MANPAGER="most"
@@ -275,7 +284,7 @@ alias repo='cd /var/paludis/repositories'
 alias scm='cd /home/gregf/code/scm/'
 alias ov='cd /home/gregf/code/scm/gregf-overlay'
 alias sc='script/console'
-alias ss='script/server'
+alias ss='sudo script/server -u -p 80'
 alias sp='script/plugin'
 alias db='script/dbconsole'
 alias sgmo="sg model $@"
@@ -295,7 +304,6 @@ alias burndvdiso='growisofs -speed=8 -dvd-compat -Z /dev/dvdrw=$1'
 alias usepretend='sudo paludis -ip --dl-reinstall if-use-changed'
 alias usedo='sudo paludis -i --dl-reinstall if-use-changed'
 alias ketchup='ketchup -G'
-alias installed="eix -I --nocolor -c > /tmp/installed.txt && most /tmp/installed.txt && rm /tmp/installed.txt"
 alias biosinfo='sudo dmidecode'
 alias pwgen='pwgen -sBnc 10'
 alias la="ls -a"
@@ -332,6 +340,12 @@ alias g='grep -Hn --color=always'
 alias cal='cal -3'
 alias ra="echo 'awful.util.restart()' | awesome-client -"
 alias sv="gvim --remote-tab-silent"
+alias lvim="vim -c \"normal '0\""
+alias geminstaller='geminstaller -s -c $HOME/.geminstaller.yaml'
+alias c="clear"
+alias yuicompressor='jar ~/bin/yuicompressor-2.4.2.jar'
+alias smv="sudo mv"
+alias installed='qlist -I | most'
 # }}}
 
 # {{{ Completion
@@ -454,12 +468,20 @@ hist_ignore_space hist_no_functions hist_save_no_dups list_ambiguous \
 long_list_jobs menu_complete rm_star_wait zle inc_append_history \
 share_history prompt_subst no_list_beep local_options local_traps \
 hist_verify extended_history hist_reduce_blanks chase_links chase_dots \
-hash_cmds hash_dirs numeric_glob_sort vi
+hash_cmds hash_dirs numeric_glob_sort vi rmstarwait
 
 unset beep equals mail_warning
 # }}}
 
 # {{{ Functions
+#
+
+function install_dotfiles {
+    git clone git://github.com/gregf/dotfiles.git $HOME/.dotfiles
+    cd $HOME/.dotfiles
+    rake install
+    cd
+}
 
 function zkbd {
     ZVER=(`zsh --version | awk '{print $2}' -`)
@@ -611,6 +633,7 @@ function open {
             (*.zip) unzip "$1" ;;
             (*.Z) uncompress "$1" ;;
             (*.shar) sh "$1" ;;
+            (*.7z) 7z x "$1" ;;
             (*) echo "'"$1"' Error. Please go away" ;;
         esac
     else
@@ -631,6 +654,10 @@ function junk {
     scp -r $* norush:~/www/stuff/
 }
 
+function torrent {
+    scp -r $* quad:~/.torrents/
+}
+
 function dotfile {
     scp -r $* web:~/blog/shared/dotfiles/
 }
@@ -638,6 +665,14 @@ function dotfile {
 function pcache {
     paludis --regenerate-installable-cache
     paludis --regenerate-installed-cache
+}
+
+function manifest {
+    appareo --log-level warning --master-repository-name gentoo --extra-repository-dir /usr/portage --extra-repository-dir ~/code/scm/gregf-overlay $1 -m
+}
+
+function gitsearch {
+    git grep $* $(git log -g --pretty=format:%h)
 }
 
 function isocdrom {
@@ -790,7 +825,7 @@ bindkey '^xx' execute-named-cmd
 
 # {{{ Path
 script_path=(~/code/bin/conky ~/code/bin/clipboard)
-path=($path /usr/local/bin /usr/bin /bin /usr/X11R6/bin ${HOME}/code/bin /opt/virtualbox /usr/share/texmf/bin /usr/lib/jre1.5.0_10/bin /usr/games/bin /usr/libexec/git-core $script_path)
+path=($path /usr/local/bin /usr/bin /bin /usr/X11R6/bin ${HOME}/code/bin /opt/virtualbox /usr/share/texmf/bin /usr/lib/jre1.5.0_10/bin /usr/games/bin /usr/libexec/git-core $script_path ~/bin)
 fpath=(~/.zsh/functions $fpath)
 autoload -U ~/.zsh/functions/*(:t)
 #cdpath=($cdpath ~/code/bin/)
