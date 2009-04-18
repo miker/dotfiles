@@ -1,7 +1,7 @@
 ! ----------------------------------------------------------------------------
 ! File:     ~/.Xdefaults
 ! Author:   Greg Fitzgerald <netzdamon@gmail.com>
-! Modified: Mon 09 Mar 2009 03:52:46 PM EDT
+! Modified: Tue 10 Mar 2009 01:27:05 PM EDT
 ! ----------------------------------------------------------------------------
 
 !{{{ XTerm
@@ -67,6 +67,7 @@ URxvt.urlLauncher:  firefox
 URxvt.matcher.button:   1
 URxvt*keysym.M-u: perl:mark-yank-urls:activate_mark_mode
 URxvt*underlineURLs: true
+URxvt*termName: rxvt
 
 !{{{ appearance
 URxvt*transparent:        false 
