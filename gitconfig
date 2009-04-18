@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.gitconfig
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Tue 24 Feb 2009 10:06:21 PM EST
+# Modified: Wed 15 Apr 2009 10:29:31 AM EDT
 # ----------------------------------------------------------------------------
 
 [user]
@@ -30,13 +30,17 @@
     ci = commit -v -s
     commit = !git commit -v -s
     st = status
+    p = push
+    psh = push
     pl = pull
     lo = log --date=local --pretty=full --stat
     me = log --date=local --pretty=short --author=netzdamon@gmail.com --stat
     rlog = log --pretty=format:\"%h %Cblue%cr%Creset %cn %Cgreen%s%Creset\"
+    restart = checkout -f
     gp = push origin master:refs/heads/master
     gc = clean -f
     d = diff
+    pu = !"git fetch origin -v; git fetch upstream -v; git merge upstream/master"
     md = clone git:mideo.git mideo
     gitosis = clone git:gitosis-admin.git gitosis-admin 
     code = clone git@github.com:gregf/scripts.git bin
@@ -70,3 +74,6 @@
 	history-view-vpane-position = 526
 	main-window-view = FileView
 	file-view-vpane-position = 398
+[github]
+	user = gregf
+	token = c063595c9d2dca14f8115509cce8a228
