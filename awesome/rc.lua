@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/rc.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Sun 29 Mar 2009 08:24:25 PM EDT
+-- Modified: Thu 16 Apr 2009 01:09:49 PM EDT
 --  ----------------------------------------------------------------------------
 
 -- {{{ Standard awesome library
@@ -62,6 +62,7 @@ apptags =
     ["Gajim.py"] = { screen = 1, tag = 3 },
     ["Deluge"] = { screen = 1, tag = 7 },
     ["Gimp"] = { screen = 1, tag = 9 },
+    ["Gpodder"] = { screen = 1, tag = 9},
 }
 
 -- Define if we want to use titlebar on all applications.
@@ -196,9 +197,17 @@ globalkeys =
     key({ config.keys.modkey,           }, "Left",   awful.tag.viewprev       ),
     key({ config.keys.modkey,           }, "Right",  awful.tag.viewnext       ),
     key({ config.keys.modkey,           }, "Escape", awful.tag.history.restore),
-
-    key({ config.keys.modkey,           }, "j", function () awful.client.focus.byidx( 1) end),
-    key({ config.keys.modkey,           }, "k", function () awful.client.focus.byidx(-1) end),
+    key({ config.keys.modkey,           }, "j",
+        function ()
+            awful.client.focus.byidx( 1)
+            if client.focus then client.focus:raise() end
+        end),
+    key({ config.keys.modkey,           }, "k",
+        function ()
+            awful.client.focus.byidx(-1)
+            if client.focus then client.focus:raise() end
+        end),
+    key({ config.keys.modkey,           }, "w", function () mymainmenu:show(true)        end),
 
     -- Layout manipulation
     key({ config.keys.modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1) end),
@@ -206,7 +215,13 @@ globalkeys =
     key({ config.keys.modkey, "Control" }, "j", function () awful.screen.focus( 1)       end),
     key({ config.keys.modkey, "Control" }, "k", function () awful.screen.focus(-1)       end),
     key({ config.keys.modkey,           }, "u", awful.client.urgent.jumpto),
-    key({ config.keys.modkey,           }, "Tab", function () awful.client.focus.history.previous() end),
+    key({ config.keys.modkey,           }, "Tab",
+        function ()
+            awful.client.focus.history.previous()
+            if client.focus then
+                client.focus:raise()
+            end
+        end),
 
     -- Standard program
     key({ config.keys.modkey,           }, "Return", function () awful.util.spawn(config.apps.terminal) end),
@@ -238,13 +253,13 @@ globalkeys =
 clientkeys =
 {
     key({ config.keys.modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-    key({ config.keys.modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
+    key({ config.keys.modkey,           }, "c",      function (c) c:kill()                         end),
     key({ config.keys.modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     key({ config.keys.modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     key({ config.keys.modkey,           }, "o",      awful.client.movetoscreen                        ),
     key({ config.keys.modkey,           }, "r",      function (c) c:redraw()                       end),
     key({ config.keys.modkey }, "t", awful.client.togglemarked),
-    key({ config.keys.modkey,}, "m",
+    key({ config.keys.modkey, "Shift" }, "m",
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
@@ -418,10 +433,13 @@ awful.hooks.arrange.register(function (screen)
         local c = awful.client.focus.history.get(screen, 0)
         if c then client.focus = c end
     end
+
+   awful.placement.centered(c, c.transient_for)
+   awful.placement.no_offscreen(c)
 end)
 
 -- Hook called every minute
-awful.hooks.timer.register(1, function ()
+awful.hooks.timer.register(10, function ()
     mytextbox.text = os.date(config.date_format)
 end)
 -- }}}
