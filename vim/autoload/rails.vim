@@ -13,7 +13,7 @@
 if &cp || exists("g:autoloaded_rails")
   finish
 endif
-let g:autoloaded_rails = '3.3'
+let g:autoloaded_rails = '3.4'
 
 let s:cpo_save = &cpo
 set cpo&vim
@@ -977,7 +977,8 @@ let s:efm_backtrace='%D(in\ %f),'
       \.'%\\s%#from\ %f:%l:%m,'
       \.'%\\s#{RAILS_ROOT}/%f:%l:\ %#%m,'
       \.'%\\s%#[%f:%l:\ %#%m,'
-      \.'%\\s%#%f:%l:\ %#%m'
+      \.'%\\s%#%f:%l:\ %#%m,'
+      \.'%\\s%#%f:%l:%\='
 
 function! s:makewithruby(arg,bang,...)
   if &efm == s:efm
@@ -1731,7 +1732,8 @@ function! s:RailsFind()
   if res != ""|return res."\n".s:findview(res)|endif
   let res = s:findamethod('render\s*:\%(template\|action\)\s\+=>\s*','\1.'.format.'\n\1')
   if res != ""|return res|endif
-  let res = s:sub(s:sub(s:findfromview('render','\1'),'^/',''),'\k+$','_&')
+  let res = s:sub(s:findamethod('render','\1'),'^/','')
+  if RailsFileType() =~ '^view\>' | let res = s:sub(res,'[^/]+$','_&') | endif
   if res != ""|return res."\n".s:findview(res)|endif
   let res = s:findamethod('redirect_to\s*(\=\s*:action\s\+=>\s*','\1')
   if res != ""|return res|endif
@@ -2458,7 +2460,7 @@ function! s:unittestEdit(bang,cmd,...)
       return s:findedit(cmd,prefix.f.suffix.jump)
     endif
   endfor
-  return s:findedit(cmd,tests[0][0].f.tests[0][1].jump)
+  return s:EditSimpleRb(a:bang,a:cmd,"unittest",f.jump,tests[0][0],tests[0][1],1)
 endfunction
 
 function! s:functionaltestEdit(bang,cmd,...)
@@ -2483,7 +2485,7 @@ function! s:functionaltestEdit(bang,cmd,...)
       return s:findedit(cmd,prefix.f.'_api'.suffix.jump)
     endif
   endfor
-  return s:findedit(cmd,tests[0][0].f.tests[0][1].jump)
+  return s:EditSimpleRb(a:bang,a:cmd,"functionaltest",f.jump,tests[0][0],tests[0][1],1)
 endfunction
 
 function! s:integrationtestEdit(bang,cmd,...)
@@ -2513,7 +2515,7 @@ function! s:integrationtestEdit(bang,cmd,...)
       return s:findedit(cmd,prefix.rails#underscore(f).suffix.jump)
     endif
   endfor
-  return s:findedit(cmd,tests[0][0].f.tests[0][1].jump)
+  return s:EditSimpleRb(a:bang,a:cmd,"integrationtest",f.jump,tests[0][0],tests[0][1],1)
 endfunction
 
 function! s:specEdit(bang,cmd,...)
@@ -3801,6 +3803,7 @@ function! s:app_dbext_settings(environment) dict
         let dict['dbname'] = self.path(dict['dbname'])
       endif
       let dict['profile'] = ''
+      let dict['srvname'] = s:extractdbvar(out,'host')
       let dict['host'] = s:extractdbvar(out,'host')
       let dict['port'] = s:extractdbvar(out,'port')
       let dict['dsnname'] = s:extractdbvar(out,'dsn')
@@ -3836,7 +3839,7 @@ function! s:BufDatabase(...)
     return
   endif
   let dict = self.dbext_settings(env)
-  for key in ['type', 'profile', 'bin', 'user', 'passwd', 'dbname', 'host', 'port', 'dsnname', 'extra', 'integratedlogin']
+  for key in ['type', 'profile', 'bin', 'user', 'passwd', 'dbname', 'srvname', 'host', 'port', 'dsnname', 'extra', 'integratedlogin']
     let b:dbext_{key} = get(dict,key,'')
   endfor
   if b:dbext_type == 'PGSQL'
@@ -4383,7 +4386,7 @@ function! s:SetBasePath()
   endif
   let path += ['app/*', 'vendor', 'vendor/plugins/*/lib', 'vendor/plugins/*/test', 'vendor/rails/*/lib', 'vendor/rails/*/test']
   call map(path,'rails#app().path(v:val)')
-  let &l:path = s:pathjoin('.',rails#app().path(),path,old_path)
+  let &l:path = s:pathjoin('.',[rails#app().path()],path,old_path)
 endfunction
 
 function! s:BufSettings()
