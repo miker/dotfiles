@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
-# File:     ~/.screenrc
+# File:     /home/gregf/.screenrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Tue 03 Mar 2009 09:49:17 PM EST
+# Modified: Thu 26 Mar 2009 09:31:17 PM EDT
 # ----------------------------------------------------------------------------
 
 setenv LC_CTYPE en_US.UTF-8
@@ -75,18 +75,6 @@ bind h screen -t 'miker' ssh miker
 bind q screen -t 'quad' ssh quad
 bind y screen -t 'ncmpc' ncmpc -c
 bind s screen -t 'root' sudo -s
-
-# binding the F1 - F8 keys to the first 8 screens, F11 = previous | F12 = next
-#bindkey -k k1 select 0
-#bindkey -k k2 select 1
-#bindkey -k k3 select 2
-#bindkey -k k4 select 3
-#bindkey -k k5 select 4
-#bindkey -k k6 select 5
-#bindkey -k k7 select 6
-#bindkey -k k8 select 7
-#bindkey -k F2 next
-#bindkey -k F1 prev
 
 # Launch some default programs
 screen zsh
