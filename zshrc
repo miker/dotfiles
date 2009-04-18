@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Sat 18 Apr 2009 03:51:35 PM EDT
+# Modified: Sat 18 Apr 2009 04:05:53 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -284,7 +284,7 @@ alias repo='cd /var/paludis/repositories'
 alias scm='cd /home/gregf/code/scm/'
 alias ov='cd /home/gregf/code/scm/gregf-overlay'
 alias sc='script/console'
-alias ss='sudo script/server -u -p 80'
+#alias ss='sudo script/server -u -p 80' #Using the ss function below...
 alias sp='script/plugin'
 alias db='script/dbconsole'
 alias sgmo="sg model $@"
@@ -725,6 +725,12 @@ function mktar {
 function sanitize {
     chmod -R u=rwX,go=rX "$@"
     chown -R ${USER}:users "$@"
+}
+
+# TODO: Catch ctrl+c from tail and stop nginx
+function ss {
+    svcr nginx
+    tail -f log/development.log
 }
 
 # Stolen:
