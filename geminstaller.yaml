@@ -8,6 +8,8 @@ gems:
   version: '>= 2.3.2'
 - name: coderay
 - name: rdiscount
+- name: thor
+- name: mojombo-jekyll
 - name: haml
   version: '>= 2.0.1'
 - name: unicode
@@ -16,6 +18,7 @@ gems:
 - name: harukizaemon-stripper
 - name: authlogic
   version: '>= 1.4.3'
+- name: authlogic-oid
 - name: ZenTest
 - name: xml-simple
 - name: will_paginate
@@ -74,8 +77,8 @@ gems:
 - name: puppet
 - name: bcrypt-ruby
 - name: visionmedia-commander
-- name: dom-id
-- name: norman-friendly_id
+- name: friendly_id
+- name: dom_id
 - name: gemedit
 - name: visionmedia-css
 - name: settingslogic
