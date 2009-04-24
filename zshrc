@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Sat 18 Apr 2009 04:58:23 PM EDT
+# Modified: Fri 24 Apr 2009 11:06:25 AM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -345,6 +345,7 @@ alias geminstaller='geminstaller -s -c $HOME/.geminstaller.yaml'
 alias c="clear"
 alias yuicompressor='jar ~/bin/yuicompressor-2.4.2.jar'
 alias smv="sudo mv"
+alias srm="sudo rm"
 alias installed='qlist -I | most'
 # }}}
 
@@ -646,8 +647,12 @@ function mps { /bin/ps $@ -u $USER -o pid,ppid,%cpu,%mem,command ; }
 function mpsu { /bin/ps -u $@ -o pid,ppid,%cpu,%mem,command ; }
 
 function ech {
-    CHPTH=`eix --only-names -e $1`
-    most /usr/portage/$CHPTH/ChangeLog
+    chpth=`qlist -C -I -e $1`
+    if [[ -n $chpth ]]; then
+        $PAGER /usr/portage/$chpth/ChangeLog
+    else
+        echo "No such package named $1"
+    fi
 }
 
 function junk {
