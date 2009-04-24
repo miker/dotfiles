@@ -16,6 +16,7 @@ gems:
 - name: syntax
 - name: what_methods
 - name: harukizaemon-stripper
+- name: josevalim-easy_http_cache
 - name: authlogic
   version: '>= 1.4.3'
 - name: authlogic-oid
