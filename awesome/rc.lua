@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/rc.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Thu 16 Apr 2009 01:09:49 PM EDT
+-- Modified: Mon 20 Apr 2009 09:05:01 PM EDT
 --  ----------------------------------------------------------------------------
 
 -- {{{ Standard awesome library
@@ -323,12 +323,10 @@ root.keys(globalkeys)
 -- }}}
 
 -- {{{ Hooks
-
 -- Hook function to execute when focusing a client.
 awful.hooks.focus.register(function (c)
     if not awful.client.ismarked(c) then
         c.border_color = beautiful.border_focus
-        c.opacity = 1
     end
 end)
 
@@ -336,7 +334,6 @@ end)
 awful.hooks.unfocus.register(function (c)
     if not awful.client.ismarked(c) then
         c.border_color = beautiful.border_normal
-        c.opacity = 0.6
     end
 end)
 
@@ -417,6 +414,7 @@ awful.hooks.manage.register(function (c, startup)
     -- Honor size hints: if you want to drop the gaps between windows, set this to false.
     c.size_hints_honor = false
 end)
+
 -- Hook function to execute when arranging the screen.
 -- (tag switch, new client, etc)
 awful.hooks.arrange.register(function (screen)
@@ -433,9 +431,6 @@ awful.hooks.arrange.register(function (screen)
         local c = awful.client.focus.history.get(screen, 0)
         if c then client.focus = c end
     end
-
-   awful.placement.centered(c, c.transient_for)
-   awful.placement.no_offscreen(c)
 end)
 
 -- Hook called every minute
