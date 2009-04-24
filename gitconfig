@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.gitconfig
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Wed 15 Apr 2009 10:29:31 AM EDT
+# Modified: Fri 24 Apr 2009 10:47:55 AM EDT
 # ----------------------------------------------------------------------------
 
 [user]
@@ -27,6 +27,7 @@
     changed = green
     untracked = cyan
 [alias]
+    co = clone
     ci = commit -v -s
     commit = !git commit -v -s
     st = status
