@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/rc.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Sun 24 May 2009 11:46:37 PM EDT
+-- Modified: Mon 25 May 2009 12:09:17 AM EDT
 --  ----------------------------------------------------------------------------
 
 -- {{{ Standard awesome library
@@ -56,6 +56,10 @@ shifty.config.apps = {
     { match = { "VirtualBox", "VBox.*","VirtualBox.*"                               } , tag = "vbox", float = false,            } ,
     { match = { "XDosEmu", "MPlayer", "gimp", "Gnuplot", "galculator" } , float = true                           } ,
     { match = { "About gmpc", "Server Information", "unnamed", "About", "Dialog", "Extension", "Add-ons", "VirtualBox","glxgears",                              } , float = true,                           } ,
+     { match = { "" }, buttons = {
+                             button({ }, 1, function (c) client.focus = c; c:raise() end),
+                             button({ modkey }, 1, function (c) awful.mouse.client.move() end),
+                             button({ modkey }, 3, awful.mouse.client.resize ), }, },
 }
 
 shifty.config.defaults = {
@@ -64,10 +68,12 @@ shifty.config.defaults = {
   screen = 1,
   floatBars = true,
   nopopup = true,
-  guess = true,
-  guess_name = true,
-  layouts = true,
 }
+
+shifty.config.guess_name = true
+shifty.config.guess_position = true
+shifty.config.remember_index = true
+shifty.config.layouts = true
 
 -- {{{ Wibox
 -- Create a textbox widget
@@ -261,7 +267,6 @@ clientkeys = awful.util.table.join(
 
 -- Compute the maximum number of digit we need, limited to 9
 for i=1,9 do
-  
   globalkeys = awful.util.table.join(globalkeys, awful.key({ modkey }, i,
   function ()
     local t = awful.tag.viewonly(shifty.getpos(i))
@@ -330,7 +335,7 @@ end)
 
 -- Hook function to execute when a new client appears.
 awful.hooks.manage.register(function (c, startup)
-    if true then return end
+    if true then return end -- this disables the manage hook for shifty
     -- If we are not managing this application at startup,
     -- move it to the screen where the mouse is.
     -- We only do it for filtered windows (i.e. no dock, etc).
