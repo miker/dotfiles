@@ -7,11 +7,18 @@ gems:
 - name: rails
   version: '>= 2.3.2'
 - name: coderay
+- name: passenger
+  version: '>= 2.2.2'
+- name: chriseppstein-compass
 - name: rdiscount
 - name: thor
 - name: mojombo-jekyll
 - name: haml
   version: '>= 2.0.1'
+- name: haml-edge,
+  version: '>= 2.1.7'
+- name: justinfrench-formtastic,
+  version: '>= 0.1.7'
 - name: unicode
 - name: syntax
 - name: what_methods
@@ -27,6 +34,8 @@ gems:
 - name: vlad
 - name: thoughtbot-shoulda
 - name: thoughtbot-factory_girl
+- name: notahat-machinist
+- name: faker
 - name: sqlite3-ruby
 - name: paperclip
 - name: webrat
