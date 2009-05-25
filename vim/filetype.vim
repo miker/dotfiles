@@ -72,6 +72,9 @@ au BufNewFile,BufRead *.abl			setf abel
 " AceDB
 au BufNewFile,BufRead *.wrm			setf acedb
 
+" Spam assassin
+au BufRead,BufNewFile user_prefs,*.cf,*.pre setf spamassassin 
+
 " Ada (83, 9X, 95)
 au BufNewFile,BufRead *.adb,*.ads,*.ada		setf ada
 
