@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/rc.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Mon 25 May 2009 12:09:17 AM EDT
+-- Modified: Mon 25 May 2009 12:39:09 AM EDT
 --  ----------------------------------------------------------------------------
 
 -- {{{ Standard awesome library
@@ -9,6 +9,7 @@ require("awful")
 require("beautiful")
 require("naughty")
 require("libs/shifty")
+require("libs/revelation")
 require("libs/config")
 -- }}}
 
@@ -45,7 +46,7 @@ shifty.config.tags = {
 }
 
 shifty.config.apps = {
-    { match = { "xterm", "XTerm", "urxvt"}, intrusive = true, },
+    { match = { "xterm", "XTerm", "urxvt"}, intrusive = true, honorsizehints = false, },
     { match = { "epiphany", "Firefox"                              } , tag = "www"                            } ,
     { match = { "gajim"                                          } , tag = "im",                          } ,
     { match = { "xchat"                                          } , tag = "irc",                          } ,
@@ -64,6 +65,8 @@ shifty.config.apps = {
 
 shifty.config.defaults = {
   layout = awful.layout.suit.max,
+  ncol = 1,
+  mwfact = 0.60,
   leave_kills = true, 
   screen = 1,
   floatBars = true,
@@ -74,6 +77,15 @@ shifty.config.guess_name = true
 shifty.config.guess_position = true
 shifty.config.remember_index = true
 shifty.config.layouts = true
+
+-- {{{ Custom Functions
+function run_once(prg)
+    if not prg then
+        do return nil end
+    end
+    os.execute("x=" .. prg .. "; pgrep -u $USERNAME -x " .. prg .. " || (" .. prg .. " &)")
+end
+-- }}}
 
 -- {{{ Wibox
 -- Create a textbox widget
@@ -229,15 +241,18 @@ globalkeys = awful.util.table.join(
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
-    -- Shifty
-    awful.key({                   }, "XF86Back",    awful.tag.viewprev),
-    awful.key({                   }, "XF86Forward", awful.tag.viewnext),
-    awful.key({  modkey           }, "XF86Back",    shifty.shift_prev),
-    awful.key({  modkey           }, "XF86Forward", shifty.shift_next),
-    awful.key({ modkey            }, "t",           function() shifty.add({ rel_index = 1 }) end),
-    awful.key({ modkey, "Control" }, "t",           function() shifty.add({ rel_index = 1, nopopup = true }) end),
-    awful.key({ modkey            }, "r",           shifty.rename),
-    awful.key({ modkey            }, "w",           shifty.del),
+    -- Revelation
+    awful.key({ modkey }, "e", revelation.revelation ),
+
+--[[    -- Shifty]]
+    --awful.key({                   }, "XF86Back",    awful.tag.viewprev),
+    --awful.key({                   }, "XF86Forward", awful.tag.viewnext),
+    --awful.key({  modkey           }, "XF86Back",    shifty.shift_prev),
+    --awful.key({  modkey           }, "XF86Forward", shifty.shift_next),
+    --awful.key({ modkey            }, "t",           function() shifty.add({ rel_index = 1 }) end),
+    --awful.key({ modkey, "Control" }, "t",           function() shifty.add({ rel_index = 1, nopopup = true }) end),
+    --awful.key({ modkey            }, "r",           shifty.rename),
+    --[[awful.key({ modkey            }, "w",           shifty.del),]]
 
     -- Application Launchers
     awful.key({ config.keys.modkey,           }, "p", function () awful.util.spawn("dmenu_run -i -b -nb '#303030' -nf '#CCCCCC' -sb '#97B26B' -sf '#000000'") end),
