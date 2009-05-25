@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.muttrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Mon 09 Mar 2009 04:31:11 PM EDT
+# Modified: Wed 20 May 2009 11:51:33 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Imap Settings
@@ -200,6 +200,7 @@ macro attach E <save-entry><kill-line>/home/gregf/downloads/attachments/<enter>
 
 macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
 macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
+macro index,pager \cD <delete-thread><down>
 
 macro index,pager a "<pipe-message>abook --add-email-quiet<return>"
 
