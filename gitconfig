@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.gitconfig
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Fri 24 Apr 2009 10:47:55 AM EDT
+# Modified: Sun 24 May 2009 11:54:29 PM EDT
 # ----------------------------------------------------------------------------
 
 [user]
@@ -71,10 +71,12 @@
     renames = true
 [giggle]
 	main-window-maximized = false
-	main-window-geometry = 1674x873+0+28
-	history-view-vpane-position = 526
-	main-window-view = FileView
-	file-view-vpane-position = 398
+	main-window-geometry = 1674x911+0+133
+	history-view-vpane-position = 571
+	main-window-view = HistoryView
+	file-view-vpane-position = 804
 [github]
 	user = gregf
 	token = c063595c9d2dca14f8115509cce8a228
+[push]
+	default = matching
