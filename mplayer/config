@@ -3,12 +3,11 @@ fs="yes"
 vo="xv"
 ao="alsa"
 idx="yes"
-#ao="null" # start mplayer muted
-#nosound="yes" # or instead of null we could use this
-#channels=2
-subtitles="no"
+#nosound="yes" 
+channels=2
 lang=en
 monitoraspect = "16:9"
+#monitoraspect = "4:3"
 af=volnorm
 #vf=denoise3d,pp
 #framedrop="yes"
@@ -18,9 +17,6 @@ af=volnorm
 ontop="1"
 stop-xscreensaver="yes"
 #heartbeat-cmd="/usr/bin/xscreensaver-command -deactivate > /dev/null"
-cache = 8192
-cache-min = 2.0
-cache-seek-min = 50
 
 [xvmc]
 vo=xvmc
