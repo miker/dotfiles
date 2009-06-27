@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Fri 24 Apr 2009 11:06:25 AM EDT
+# Modified: Sat 27 Jun 2009 07:40:00 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -40,7 +40,7 @@ fi
 case `uname` in
     OpenBSD)
         # Enviroment Varibles
-        export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/4.3/packages/`machine -a`/
+        export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/`uname -r`/packages/`machine -a`/
 
         # which version of ls should we use?
         if [ -x /usr/local/bin/gls ]; then
@@ -53,7 +53,9 @@ case `uname` in
             fi
         fi
         # Aliases
-        alias cvsup="cd /usr; cvs -d anoncvs@anoncvs1.usa.openbsd.org:/cvs checkout -P -rOPENBSD_4_3 src"
+        alias cvsup="cd /usr && cvs -qd anoncvs@anoncvs1.usa.openbsd.org:/cvs checkout -P -rOPENBSD_4_5 src"
+        alias srcup="cd /usr/src && cvs -q up -rOPENBSD_4_5 -Pd"
+        alias portsup="cd /usr &&  cvs -qd anoncvs@anoncvs1.usa.openbsd.org:/cvs get -rOPENBSD_4_5 -P ports"
         alias cvsrun="sudo cvsup -g -L 2 /etc/cvs-supfile"
         alias killall="pkill"
         alias shred="rm -P"
@@ -99,6 +101,7 @@ case `uname` in
             #export RUBYOPT="" #will break gentoo's ebuild for rubygems, if your using it comment this out
             alias ms="mirrorselect -b10 -s5 -D"
             alias python-updater="python-updater -P paludis"
+            alias module-rebuild="module-rebuild -P paludis $@"
             alias dp="dispatch-conf"
             alias keywords='sudo vim /etc/paludis/keywords.conf'
             alias use='sudo vim /etc/paludis/use.conf'
@@ -108,18 +111,14 @@ case `uname` in
             alias df='df -hT'
             alias pq='paludis -q'
 
-            export ECHANGELOG_USER="Greg Fitzgerald <netzdamon@gmail.com>"
-            export PALUDIS_OPTIONS="--continue-on-failure if-satisfied --show-reasons summary --dl-reinstall-scm weekly --log-level warning --dl-reinstall if-use-changed --show-use-descriptions all"
-
-            function p {
-            export PALUDIS_OPTIONS="--continue-on-failure if-satisfied --show-reasons summary --dl-reinstall-scm weekly --log-level warning --dl-reinstall if-use-changed --show-use-descriptions all"
-            paludis $@
-            }
+            export PALUDIS_RESUME_DIR="${HOME}"/.resume-paludis
+            export PALUDIS_OPTIONS="--resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX --show-reasons summary
+            --log-level warning --show-use-descriptions all --continue-on-failure if-satisfied --dl-reinstall if-use-changed --dl-reinstall-scm weekly --multitask"
+            export RECONCILIO_OPTIONS="--continue-on-failure if-satisfied --multitask"
 
             function paludis-scm {
                 PALUDIS_OPTIONS="--dl-reinstall-scm daily"
                 paludis $@
-                PALUDIS_OPTIONS="--dl-reinstall-scm never"
             }
 
             function explainuseflag {
@@ -175,10 +174,18 @@ fi
 # To many stupid scripts don't unset this so I'm using an alias for now
 #export GREP_OPTIONS="--color=auto -nsi"
 (( ${+TZ} )) || export TZ="EST5EDT"
-export MPD_HOST="/home/gregf/.mpd/socket"
+#export MPD_HOST="/home/gregf/.mpd/socket"
+export MPD_HOST="localhost"
+export MPD_PORT="6600"
 export GIT_AUTHOR_EMAIL="netzdamon@gmail.com"
 export GIT_AUTHOR_NAME="Greg Fitzgerald"
 export GIT_COMMITTER_EMAIL=$GIT_AUTHOR_EMAIL
+
+# Set by rip
+RIPDIR=/home/gregf/.rip
+RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
+PATH="$PATH:$RIPDIR/active/bin"
+export RIPDIR RUBYLIB PATH
 
 # Some settings for autotest
 export AUTOFEATURE=true" 
@@ -191,6 +198,15 @@ export EDITOR="vim"
 export VISUAL="vim"
 export NNTPSERVER="news.gwi.net"
 export GPG_TTY=`tty` #backticks required
+
+#custom exports for coloured less
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;47;34m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
 # }}}
 
 # {{{ Resource Limits
@@ -281,8 +297,7 @@ alias e="gvim"
 alias v="vim"
 alias t="thunar"
 alias repo='cd /var/paludis/repositories'
-alias scm='cd /home/gregf/code/scm/'
-alias ov='cd /home/gregf/code/scm/gregf-overlay'
+alias ov='cd /home/gregf/code/active/gregf-overlay'
 alias sc='script/console'
 #alias ss='sudo script/server -u -p 80' #Using the ss function below...
 alias sp='script/plugin'
@@ -326,8 +341,6 @@ alias dropcache='sudo echo 3 > /proc/sys/vm/drop_caches'
 alias deploy='cap deploy:migrations'
 alias lock='alock -auth pam -bg blank:color=black'
 alias lsnoext="ls | grep -v '\.'"
-alias cleanliferea="sqlite3 ~/.liferea_1.4/liferea.db vacuum"
-alias starcraft=' wine ~/.wine/drive_c/Program\ Files/Starcraft/StarCraft.exe'
 alias gis="git status | grep --color=always '^[^a-z]\+\(new file:\|modified:\)' | cut -d'#' -f2-"
 alias lk='lynx -dump http://kernel.org/kdist/finger_banner'
 alias dosbox='dosbox -conf ~/.dosbox.conf -fulscreen'
@@ -337,7 +350,6 @@ alias ra3="wine /home/gregf/.wine/drive_c/Program\ Files/Electronic\ Arts/Red\ A
 alias nfs="cd /home/gregf/.wine/drive_c/Program\ Files/EA\ Games/Need\ for\ Speed\ Undercover/; wine nfs.exe; cd ~"
 alias wog="cd /home/gregf/.wine/drive_c/Program\ Files/WorldOfGoo/; wine WorldOfGoo.exe; cd ~ && xrandr -s 0"
 alias g='grep -Hn --color=always'
-alias cal='cal -3'
 alias ra="echo 'awful.util.restart()' | awesome-client -"
 alias sv="gvim --remote-tab-silent"
 alias lvim="vim -c \"normal '0\""
@@ -347,6 +359,10 @@ alias yuicompressor='jar ~/bin/yuicompressor-2.4.2.jar'
 alias smv="sudo mv"
 alias srm="sudo rm"
 alias installed='qlist -I | most'
+alias lg='ls | grep -i $1'
+alias n="nitrogen ~/media/images/wallpaper/"
+alias grm='git rm $(git ls-files --deleted)'
+
 # }}}
 
 # {{{ Completion
@@ -356,6 +372,9 @@ alias installed='qlist -I | most'
 zstyle :compinstall filename '$HOME/.zshrc'
 autoload -Uz compinit zrecompile
 compinit
+
+# Eat it bc
+autoload -z zcalc
 
 # Follow GNU LS_COLORS
 zmodload -i zsh/complist
@@ -367,7 +386,7 @@ compctl -g '*.tar.Z *.tar.gz *.tgz *.tar.bz2' + -g '*' tar bzip2 open
 compctl -g '*.zip *.ZIP' + -g '*' unzip zip open
 compctl -g '*.rar *.RAR' + -g '*' rar unrar open
 compctl -g '*.(mp3|MP3|ogg|OGG|WAV|wav|ogv|OGV)' + -g '*(-/)'  ogg123 mpg123 audacious wma123 mplayer vlc
-compctl -g '*.(divx|DIVX|m4v|M4V|wmv|WMV|avi|AVI|mpg|mpeg|MPG|MPEG|WMV|wmv|mov|MOV|wma|WMA|w4a|W4A|part|PART)' + -g '*(-/)'  xine mplayer kmplayer gmplayer vlc
+compctl -g '*.(divx|DIVX|m4v|M4V|wmv|WMV|avi|AVI|mpg|mpeg|MPG|MPEG|WMV|wmv|mov|MOV|wma|WMA|w4a|W4A|part|PART|rmvb|RMVB)' + -g '*(-/)'  xine mplayer kmplayer gmplayer vlc
 compctl -g '*.(pdf|PDF|ps|PS|tiff|TIFF)' + -g '*(-/)' evince acroread xpdf epdfview
 compctl -g '*.(jpg|JPG|jpeg|JPEG|gif|GIF|tiff|TIFF|png|PNG|tga|TGA)' + -g '*(-/)' feh gthumb xv f-spot gqview
 
@@ -477,6 +496,12 @@ unset beep equals mail_warning
 # {{{ Functions
 #
 
+
+## find all suid files
+function suidfind {
+    ls -l /**/*(su0x) 
+}
+
 function install_dotfiles {
     git clone git://github.com/gregf/dotfiles.git $HOME/.dotfiles
     cd $HOME/.dotfiles
@@ -549,6 +574,15 @@ function date {
         command date $@
     fi
 }
+
+function cal {
+    if [ $# = 0 ]; then
+        command cal -3
+    else
+        command cal $@
+    fi
+}
+
 
 #function to clean up web permissions.
 # TODO Move this to a script
@@ -680,6 +714,31 @@ function gitsearch {
     git grep $* $(git log -g --pretty=format:%h)
 }
 
+# http://polatel.wordpress.com/2009/05/05/paludis-resume-files/
+function plast {
+    local index
+    local lastfile
+    local cmd
+ 
+    # Sanity check
+    if [[ -z "${PALUDIS_RESUME_DIR}" ]]; then
+        echo "PALUDIS_RESUME_DIR not set" >&2
+        return 1
+    elif [[ ! -d "${PALUDIS_RESUME_DIR}" ]]; then
+        echo "${PALUDIS_RESUME_DIR} is not a directory" >&2
+        return 1
+    fi
+ 
+    index=${1:-1}
+    lastfile=$(print "${PALUDIS_RESUME_DIR}"/*(om[${index}]))
+    if [[ ! -f "${lastfile}" ]]; then
+        echo "no file at index ${index}" >&2
+        return 1
+    fi
+ 
+    eval sudo $(< "${lastfile}")
+}
+ 
 function isocdrom {
     dd if=/dev/cdrom of=$1 bs=2048
 }
@@ -694,15 +753,14 @@ function fix-paludis-perms {
     done
     for dir in $fixdirs;
     do
-        chgrp -R paludisbuild $dir
+        chown -R paludisbuild:paludisbuild $dir
         find $dir -type d -exec chmod g+wrx {} \;
     done
-    cd $repodir
-    if [ $? == 0 ]; then
+    if [ -d $repodir ]; then
         for repo in `ls --color=never -Fd *(-/DN)`;
         do
             mkdir -p $repo/.cache/names
-            chgrp -R paludisbuild $repo
+            chown -R paludisbuild:paludisbuild $repo
             find $repo -type d -exec chmod g+wrx {} \;
         done
     fi
@@ -830,14 +888,14 @@ bindkey '^xx' execute-named-cmd
 # }}} 
 
 # {{{ Prompt
-#for zshrc_snipplet in ~/.zsh/prompt/S[0-9][0-9]*[^~] ; do
-#        source $zshrc_snipplet
-#done
-#if (( EUID == 0 )); then
-    #PROMPT=$'%{\e[01;31m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%# '
-#else
-    #PROMPT=$'%{\e[01;32m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%% '
-#fi
+for zshrc_snipplet in ~/.zsh/prompt/S[0-9][0-9]*[^~] ; do
+       source $zshrc_snipplet
+done
+if (( EUID == 0 )); then
+    PROMPT=$'%{\e[01;31m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%# '
+else
+    PROMPT=$'%{\e[01;32m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%% '
+fi
 # }}}
 
 # {{{ Path
@@ -858,9 +916,9 @@ fi
 # }}}
 
 setopt promptsubst
-autoload -U promptinit
-promptinit
-prompt wunjo
+#autoload -U promptinit
+#promptinit
+#prompt wunjo
 
 # {{{ Run devtodo != root
 
@@ -871,4 +929,4 @@ if [ -x /usr/bin/devtodo ]; then
 fi
 # }}}
 
-# vim: set et fenc=utf-8 ff=unix sts=4 sw=4 ts=4 tw=80 :
+# vim: set et sw=4 sts=4 ts=4 ft=zsh :
