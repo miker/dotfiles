@@ -1,17 +1,17 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.gitconfig
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Tue 02 Jun 2009 01:09:04 AM EDT
+# Modified: Sat 27 Jun 2009 07:46:35 PM EDT
 # ----------------------------------------------------------------------------
 
 [user]
-	name = Greg Fitzgerald
+    name = Greg Fitzgerald
 	email = netzdamon@gmail.com
     signingkey = "14E80EF0"
 [sendemail]
-  smtpserver = /usr/sbin/sendmail
-  envelope-sender = Greg Fitzgerald <netzdamon@gmail.com>
-  suppressfrom = true
+    smtpserver = /usr/sbin/sendmail
+    envelope-sender = Greg Fitzgerald <netzdamon@gmail.com>
+    suppressfrom = true
 [color]
     branch = auto
     diff = auto
@@ -57,11 +57,9 @@
     dotfiles = clone git@github.com:gregf/dotfiles.git
     overlay = clone git@github.com:gregf/gregf-overlay.git
     initramfs = clone git@github.com:gregf/initramfs.git
-    doc = clone git:doc.git doc
     gr = reset
     rev = revert HEAD
     count = shortlog -s -n
-
 [apply]
     #whitespace = nowarn
 [merge]
