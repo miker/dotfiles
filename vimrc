@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sat 27 Jun 2009 07:05:54 PM EDT
+" Modified: Sat 27 Jun 2009 07:34:14 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -99,7 +99,7 @@ set showtabline=1               " display tabbar
 
 if has("unix")
   set clipboard=autoselect
-  set shell=bash
+  set shell=zsh
 endif
 
 "Include $HOME in cdpath
@@ -548,8 +548,6 @@ highlight pmenu ctermbg=238 gui=bold
 if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt' || &term == "xterm-256color"
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
     colorscheme mustang 
-    "colorscheme gigamo
-    "colorscheme peaksea
     else
     colorscheme jammy
 endif
