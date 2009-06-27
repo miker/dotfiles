@@ -4,28 +4,22 @@ defaults:
   check_for_upgrade: true
   fix_dependencies: false 
 gems:
+- name: giraffesoft-trample
 - name: rails
-  version: '>= 2.3.2'
 - name: coderay
 - name: passenger
-  version: '>= 2.2.2'
-- name: chriseppstein-compass
 - name: rdiscount
 - name: thor
 - name: mojombo-jekyll
 - name: haml
-  version: '>= 2.0.1'
 - name: haml-edge,
-  version: '>= 2.1.7'
 - name: justinfrench-formtastic,
-  version: '>= 0.1.7'
 - name: unicode
 - name: syntax
 - name: what_methods
 - name: harukizaemon-stripper
 - name: josevalim-easy_http_cache
 - name: authlogic
-  version: '>= 1.4.3'
 - name: authlogic-oid
 - name: ZenTest
 - name: xml-simple
