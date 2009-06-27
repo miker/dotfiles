@@ -1,7 +1,7 @@
 "
 " Git branch info
-" Last change: July 13 2008
-" Version> 0.1.0
+" Last change: June 01 2009
+" Version> 0.1.3
 " Maintainer: Eustáquio 'TaQ' Rangel
 " License: GPL
 " URL: git://github.com/taq/vim-git-branch-info.git
@@ -45,6 +45,10 @@
 " Ignore the remote branches. If you don't want information about them, this can
 " make things works faster.
 "
+" let g:git_branch_check_write=<something>
+" Check the current branch if it's the same branch where the file was loaded, 
+" before saving the file.
+"
 " If you want to make your own customizations, you can use the GitBranchInfoTokens()
 " function. It returns an array with the current branch as the first element and
 " another array with the other branches as the second element, like:
@@ -67,7 +71,10 @@ let b:git_dir	= ""
 let b:git_load_branch = ""
 
 autocmd BufEnter * call GitBranchInfoInit()
-"autocmd BufWriteCmd * call GitBranchInfoWriteCheck()
+
+if exists("g:git_branch_check_write")
+	autocmd BufWriteCmd * call GitBranchInfoWriteCheck()
+endif	
 
 function GitBranchInfoCheckGitDir()
 	return exists("b:git_dir") && !empty(b:git_dir)
@@ -132,18 +139,18 @@ function GitBranchInfoInit()
 endfunction
 
 function GitBranchInfoFindDir()
-	let l:bufname	= getcwd()."/".bufname("%")
+	let l:bufname	= getcwd()."/".expand("%:t")
 	let l:buflist	= strlen(l:bufname)>0 ? split(l:bufname,"/") : [""]
 	let l:prefix	= l:bufname =~ "^/" ? "/" : ""
 	let b:git_dir	= ""
-	for l:item in l:buflist
-		call remove(l:buflist,-1)
+	while len(l:buflist) > 0
 		let l:path = l:prefix.join(l:buflist,"/").l:prefix.".git"
 		if !empty(finddir(l:path))
 			let b:git_dir = l:path
 			break
 		endif
-	endfor
+		call remove(l:buflist,-1)
+	endwhile
 	return b:git_dir
 endfunction
 

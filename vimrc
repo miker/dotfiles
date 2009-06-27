@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Thu 16 Apr 2009 11:31:22 PM EDT
+" Modified: Tue 23 Jun 2009 03:15:48 PM EDT
 " ----------------------------------------------------------------------------
 
 " Autocmd for xrdb
@@ -250,6 +250,11 @@ endif
 
 " {{{ Key maps
 
+" Set map leader to ,
+let mapleader = ","
+
+imap <C-l> <Space>=><Space>
+
 nmap <C-N> :tabn<CR>
 nmap <C-P> :tabp<CR>
 noremap <silent> <C-O> :FuzzyFinderTextMate<CR>
@@ -272,10 +277,9 @@ noremap <silent> <F4> zug
 map <F6> :wincmd w<CR> imap <F6> <c-[>:wincmd w<CR> map <S-F6> :wincmd W<CR> imap <S-F6> <c-[>:wincmd W<CR>
 " Setup mini ide for a project of mine
 noremap <silent> <F5> :call Mideo()<CR>
+noremap <Leader>s :call Sass()<CR>
 " Refreshing the screen
 map		<C-l>		     :redraw<CR> imap	<C-l>		<Esc>:redraw<CR>
-" Set map leader to f12
-let mapleader = ","
 " Reformat everything
 noremap <Leader>gq gggqG
 " Reformat paragraph
@@ -290,6 +294,7 @@ noremap <Leader>rr :w\|!ruby %<cr>
 noremap <Leader>p :set paste<CR>
 noremap <Leader>nu :set nonumber<CR>
 noremap <Leader>pp :s/:/ /g<CR>
+noremap <Leader>cache :call ClearCache()<CR>
 noremap :close :bd!<CR>
 " Quick sudo saving from tpope
 command! -bar -nargs=0 SudoW :silent exe "write !sudo tee % >/dev/null" | silent edit!
@@ -404,9 +409,18 @@ if version >= 700
 endif
 
 function Mideo()
-    chdir /home/gregf/mideo/
+    chdir /home/gregf/code/active/mideo/
     open TODO
     NERDTreeFromBookmark mideo
+endfunction
+
+function Sass()
+    chdir /home/gregf/rewrite/blueprint/
+    NERDTree
+endfunction
+
+function ClearCache()
+    !rm -rf public/cache/*
 endfunction
 
 function <SID>Restart()
@@ -586,7 +600,7 @@ highlight pmenu ctermbg=238 gui=bold
 
 if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt' || &term == "xterm-256color"
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
-    colorscheme zenburn
+    colorscheme mustang 
     "colorscheme gigamo
     "colorscheme peaksea
     else
@@ -596,17 +610,21 @@ endif
 if (has("gui_running"))
     "colorscheme gigamo
     "colorscheme darkspectrum 
-    colorscheme kellys "< friggen awesomeness
+    ""colorscheme kellys "< friggen awesomeness
+    colorscheme mustang
     "colorscheme wombat " < friggen awesomeness as well
     "colorscheme xoria256 " < more awesomeness
     "colorscheme jellybeans
-    "set guifont=Droid\ Sans\ Mono\ 12
+    ""set guifont=Droid\ Sans\ Mono\ 12
     set guifont=inconsolata\ 14
     set mousem=popup	" Nice pop-up
     set toolbariconsize=tiny
     set selection=exclusive	" Allow one char past EOL
     set ttymouse=xterm2	" Terminal type for mouse code recognition
     set mousehide
+    " Make shift-insert work like in xterm
+    map <S-Insert> <MiddleMouse>
+    map! <S-Insert> <MiddleMouse>
 endif
 
 " Refactor all terminal shit into a block like this much cleaner
@@ -623,13 +641,8 @@ endif
 "endif
 
 if has('gui')
-    set guioptions-=m
-    set guioptions-=T
-    set guioptions-=l
-    set guioptions-=L
-    set guioptions-=r
-    set guioptions-=R
-    set guioptions+=a
+    set guioptions=a
+    set mouse=a
 endif
 
 " Nice window title
@@ -657,8 +670,11 @@ if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'r
 endif
 
 " set vim to chdir for each file
-au BufEnter * if &ft != 'help' | silent! cd %:p:h | endif
-set autochdir
+let os = substitute(system('uname'), "\n", "", "")
+if os == "Linux"
+    au BufEnter * if &ft != 'help' | silent! cd %:p:h | endif
+    set autochdir
+endif
 " }}}
 
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=120 :

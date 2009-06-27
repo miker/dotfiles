@@ -1,5 +1,5 @@
 " Name: gnupg.vim
-" Version:  $Id: gnupg.vim 2276 2008-08-15 12:50:33Z mbr $
+" Version:  $Id: gnupg.vim 2782 2009-06-08 12:32:13Z mbr $
 " Author:   Markus Braun <markus.braun@krawel.de>
 " Summary:  Vim plugin for transparent editing of gpg encrypted files.
 " Licence:  This program is free software; you can redistribute it and/or
@@ -7,7 +7,7 @@
 "           See http://www.gnu.org/copyleft/gpl.txt
 " Section: Documentation {{{1
 " Description:
-"   
+"
 "   This script implements transparent editing of gpg encrypted files. The
 "   filename must have a ".gpg", ".pgp" or ".asc" suffix. When opening such
 "   a file the content is decrypted, when opening a new file the script will
@@ -15,7 +15,7 @@
 "   encrypted to all recipients before it is written. The script turns off
 "   viminfo and swapfile to increase security.
 "
-" Installation: 
+" Installation:
 "
 "   Copy the gnupg.vim file to the $HOME/.vim/plugin directory.
 "   Refer to ':help add-plugin', ':help add-global-plugin' and ':help
@@ -27,7 +27,7 @@
 "   You should always add the following lines to your .bashrc or whatever
 "   initialization file is used for all shell invocations:
 "
-"        GPG_TTY=‘tty‘
+"        GPG_TTY=`tty`
 "        export GPG_TTY
 "
 "   It is important that this environment variable always reflects the out‐
@@ -68,22 +68,49 @@
 "   g:GPGPreferArmor
 "     If set to 1 armored data is preferred for new files. Defaults to 0.
 "
+"   g:GPGPreferSign
+"     If set to 1 signed data is preferred for new files. Defaults to 0.
+"
 "   g:GPGDefaultRecipients
 "     If set, these recipients are used as defaults when no other recipient is
 "     defined. This variable is a Vim list. Default is unset.
 "
+" Known Issues:
+"
+"   In some cases gvim can't decryt files
+
+"   This is caused by the fact that a running gvim has no TTY and thus gpg is
+"   not able to ask for the passphrase by itself. This is a problem for Windows
+"   and Linux versions of gvim and could not be solved unless a "terminal
+"   emulation" is implemented for gvim. To circumvent this you have to use any
+"   combination of gpg-agent and a graphical pinentry program:
+"
+"     - gpg-agent only:
+"         you need to provide the passphrase for the needed key to gpg-agent
+"         in a terminal before you open files with gvim which require this key.
+"
+"     - pinentry only:
+"         you will get a popup window every time you open a file that needs to
+"         be decrypted.
+"
+"     - gpgagent and pinentry:
+"         you will get a popup window the first time you open a file that
+"         needs to be decrypted.
+"
 " Credits:
-" - Mathieu Clabaut for inspirations through his vimspell.vim script.
-" - Richard Bronosky for patch to enable ".pgp" suffix.
-" - Erik Remmelzwaal for patch to enable windows support and patient beta
-"   testing.
-" - Lars Becker for patch to make gpg2 working.
-" - Thomas Arendsen Hein for patch to convert encoding of gpg output
-" - Karl-Heinz Ruskowski for patch to fix unknown recipients and trust model
-"   and patient beta testing.
-" - Giel van Schijndel for patch to get GPG_TTY dynamically.
-" - Sebastian Luettich for patch to fix issue with symmetric encryption an set
-"   recipients.
+"
+"   - Mathieu Clabaut for inspirations through his vimspell.vim script.
+"   - Richard Bronosky for patch to enable ".pgp" suffix.
+"   - Erik Remmelzwaal for patch to enable windows support and patient beta
+"     testing.
+"   - Lars Becker for patch to make gpg2 working.
+"   - Thomas Arendsen Hein for patch to convert encoding of gpg output
+"   - Karl-Heinz Ruskowski for patch to fix unknown recipients and trust model
+"     and patient beta testing.
+"   - Giel van Schijndel for patch to get GPG_TTY dynamically.
+"   - Sebastian Luettich for patch to fix issue with symmetric encryption an set
+"     recipients.
+"   - Tim Swast for patch to generate signed files
 "
 " Section: Plugin header {{{1
 if (v:version < 700)
@@ -95,7 +122,7 @@ if (exists("g:loaded_gnupg") || &cp || exists("#BufReadPre#*.\(gpg\|asc\|pgp\)")
   finish
 endif
 
-let g:loaded_gnupg = "$Revision: 2276 $"
+let g:loaded_gnupg = "$Revision: 2782 $"
 
 " Section: Autocmd setup {{{1
 augroup GnuPG
@@ -119,6 +146,9 @@ augroup GnuPG
   autocmd VimLeave                               *.\(gpg\|asc\|pgp\) call s:GPGCleanup()
 augroup END
 
+" Section: Constants {{{1
+let s:GPGMagicString = "\t \t"
+
 " Section: Highlight setup {{{1
 highlight default link GPGWarning WarningMsg
 highlight default link GPGError ErrorMsg
@@ -132,7 +162,7 @@ highlight default link GPGHighlightUnknownRecipient ErrorMsg
 function s:GPGInit()
   " first make sure nothing is written to ~/.viminfo while editing
   " an encrypted file.
-  set viminfo= 
+  set viminfo=
 
   " we don't want a swap file, as it writes unencrypted data to disk
   set noswapfile
@@ -155,6 +185,11 @@ function s:GPGInit()
   " check if armored files are preferred
   if (!exists("g:GPGPreferArmor"))
     let g:GPGPreferArmor = 0
+  endif
+
+  " check if signed files are preferred
+  if (!exists("g:GPGPreferSign"))
+    let g:GPGPreferSign = 0
   endif
 
   " check if debugging is turned on
@@ -197,17 +232,17 @@ function s:GPGInit()
   " setup shell environment for unix and windows
   let s:shellredirsave = &shellredir
   let s:shellsave = &shell
-  if (match(&shell,"\\(cmd\\|command\\).execute") >= 0)
-    " windows specific settings
-    let s:shellredir = '>%s'
-    let s:shell = &shell
-    let s:stderrredirnull = '2>nul'
-  else
+  if (has("unix"))
     " unix specific settings
     let s:shellredir = &shellredir
     let s:shell = 'sh'
     let s:stderrredirnull = '2>/dev/null'
     let s:GPGCommand = "LANG=C LC_ALL=C " . s:GPGCommand
+  else
+    " windows specific settings
+    let s:shellredir = '>%s'
+    let s:shell = &shell
+    let s:stderrredirnull = '2>nul'
   endif
 
   " find the supported algorithms
@@ -389,6 +424,9 @@ function s:GPGEncrypt()
     endif
     if (exists("g:GPGPreferArmor") && g:GPGPreferArmor == 1)
       let b:GPGOptions += ["armor"]
+    endif
+    if (exists("g:GPGPreferSign") && g:GPGPreferSign == 1)
+      let b:GPGOptions += ["sign"]
     endif
     call s:GPGDebug(1, "no options set, so using default options: " . string(b:GPGOptions))
   endif
@@ -572,10 +610,11 @@ function s:GPGEditRecipients()
 
     " put some comments to the scratch buffer
     silent put ='GPG: ----------------------------------------------------------------------'
-    silent put ='GPG: Please edit the list of recipients, one recipient per line'
-    silent put ='GPG: Unknown recipients have a prepended \"!\"'
-    silent put ='GPG: Lines beginning with \"GPG:\" are removed automatically'
-    silent put ='GPG: Closing this buffer commits changes'
+    silent put ='GPG: Please edit the list of recipients, one recipient per line.'
+    silent put ='GPG: Unknown recipients have a prepended \"!\".'
+    silent put ='GPG: Lines beginning with \"GPG:\" are removed automatically.'
+    silent put ='GPG: Data after recipients between and including \"(\" and \")\" is ignored.'
+    silent put ='GPG: Closing this buffer commits changes.'
     silent put ='GPG: ----------------------------------------------------------------------'
 
     " get the recipients
@@ -614,6 +653,7 @@ function s:GPGEditRecipients()
       highlight link GPGUnknownRecipient  GPGHighlightUnknownRecipient
 
       syntax match GPGComment "^GPG:.*$"
+      exec 'syntax match GPGComment "' . s:GPGMagicString . '.*$"'
       highlight clear GPGComment
       highlight link GPGComment Comment
     endif
@@ -653,9 +693,13 @@ function s:GPGFinishRecipientsBuffer()
   let recipients = []
   let lines = getline(1,"$")
   for recipient in lines
+    " delete all text after magic string
+    let recipient = substitute(recipient, s:GPGMagicString . ".*$", "", "")
+
     " delete all spaces at beginning and end of the recipient
     " also delete a '!' at the beginning of the recipient
     let recipient = substitute(recipient, "^[[:space:]!]*\\(.\\{-}\\)[[:space:]]*$", "\\1", "")
+
     " delete comment lines
     let recipient = substitute(recipient, "^GPG:.*$", "", "")
 
@@ -773,11 +817,11 @@ function s:GPGEditOptions()
     silent put ='GPG: ----------------------------------------------------------------------'
     silent put ='GPG: THERE IS NO CHECK OF THE ENTERED OPTIONS!'
     silent put ='GPG: YOU NEED TO KNOW WHAT YOU ARE DOING!'
-    silent put ='GPG: IF IN DOUBT, QUICKLY EXIT USING :x OR :bd'
-    silent put ='GPG: Please edit the list of options, one option per line'
-    silent put ='GPG: Please refer to the gpg documentation for valid options'
-    silent put ='GPG: Lines beginning with \"GPG:\" are removed automatically'
-    silent put ='GPG: Closing this buffer commits changes'
+    silent put ='GPG: IF IN DOUBT, QUICKLY EXIT USING :x OR :bd.'
+    silent put ='GPG: Please edit the list of options, one option per line.'
+    silent put ='GPG: Please refer to the gpg documentation for valid options.'
+    silent put ='GPG: Lines beginning with \"GPG:\" are removed automatically.'
+    silent put ='GPG: Closing this buffer commits changes.'
     silent put ='GPG: ----------------------------------------------------------------------'
 
     " put the options in the scratch buffer
@@ -904,7 +948,6 @@ function s:GPGNameToID(name)
 
   " parse the output of gpg
   let pubseen = 0
-  let uidseen = 0
   let counter = 0
   let gpgids = []
   let choices = "The name \"" . a:name . "\" is ambiguous. Please select the correct key:\n"
@@ -913,15 +956,8 @@ function s:GPGNameToID(name)
     " search for the next uid
     if (pubseen == 1)
       if (fields[0] == "uid")
-        if (uidseen == 0)
-          let choices = choices . counter . ": " . fields[9] . "\n"
-          let counter = counter+1
-          let uidseen = 1
-        else
-          let choices = choices . "   " . fields[9] . "\n"
-        endif
+        let choices = choices . "   " . fields[9] . "\n"
       else
-        let uidseen = 0
         let pubseen = 0
       endif
     endif
@@ -929,7 +965,14 @@ function s:GPGNameToID(name)
     " search for the next pub
     if (pubseen == 0)
       if (fields[0] == "pub")
-        let gpgids += [fields[4]]
+        let identity = fields[4]
+        let gpgids += [identity]
+        if exists("*strftime")
+          let choices = choices . counter . ": ID: 0x" . identity . " created at " . strftime("%c", fields[5]) . "\n"
+        else
+          let choices = choices . counter . ": ID: 0x" . identity . "\n"
+        endif
+        let counter = counter+1
         let pubseen = 1
       endif
     endif
@@ -982,7 +1025,11 @@ function s:GPGIDToName(identity)
     else " search for the next uid
       if (fields[0] == "uid")
         let pubseen = 0
-        let uid = fields[9]
+        if exists("*strftime")
+          let uid = fields[9] . s:GPGMagicString . "(ID: 0x" . a:identity . " created at " . strftime("%c", fields[5]) . ")"
+        else
+          let uid = fields[9] . s:GPGMagicString . "(ID: 0x" . a:identity . ")"
+        endif
         break
       endif
     endif
@@ -1012,4 +1059,5 @@ if (has("menu"))
   amenu <silent> Plugin.GnuPG.View\ Options :GPGViewOptions<CR>
   amenu <silent> Plugin.GnuPG.Edit\ Options :GPGEditOptions<CR>
 endif
-" vim600: foldmethod=marker:foldlevel=0
+
+" vim600: set foldmethod=marker foldlevel=0 :
