@@ -1,12 +1,17 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.gitconfig
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Sun 24 May 2009 11:54:29 PM EDT
+# Modified: Tue 02 Jun 2009 01:09:04 AM EDT
 # ----------------------------------------------------------------------------
 
 [user]
 	name = Greg Fitzgerald
 	email = netzdamon@gmail.com
+    signingkey = "14E80EF0"
+[sendemail]
+  smtpserver = /usr/sbin/sendmail
+  envelope-sender = Greg Fitzgerald <netzdamon@gmail.com>
+  suppressfrom = true
 [color]
     branch = auto
     diff = auto
@@ -26,6 +31,10 @@
     added = yellow
     changed = green
     untracked = cyan
+[format]
+  check = true
+  numbered = auto
+  thread = true
 [alias]
     co = clone
     ci = commit -v -s
