@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/libs/config.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Tue 03 Mar 2009 09:51:50 PM EST
+-- Modified: Sun 21 Jun 2009 03:06:27 PM EDT
 --  ----------------------------------------------------------------------------
 
 -- {{{ TODO

@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/rc.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Mon 25 May 2009 12:39:09 AM EDT
+-- Modified: Sat 06 Jun 2009 03:37:43 PM EDT
 --  ----------------------------------------------------------------------------
 
 -- {{{ Standard awesome library
@@ -55,12 +55,8 @@ shifty.config.apps = {
     { match = { "gthumb", "gpodder", "gqview", "k3b", "gphoto2", "xfburn"}, tag = "media", },
     { match = { "deluge", "dta", "DTA", ".*DownThemAll!",}, tag = "downloads", },
     { match = { "VirtualBox", "VBox.*","VirtualBox.*"                               } , tag = "vbox", float = false,            } ,
-    { match = { "XDosEmu", "MPlayer", "gimp", "Gnuplot", "galculator" } , float = true                           } ,
+    { match = { "XDosEmu", "MPlayer", "gimp", "Gnuplot", "galculator", "ristretto" } , float = true                           } ,
     { match = { "About gmpc", "Server Information", "unnamed", "About", "Dialog", "Extension", "Add-ons", "VirtualBox","glxgears",                              } , float = true,                           } ,
-     { match = { "" }, buttons = {
-                             button({ }, 1, function (c) client.focus = c; c:raise() end),
-                             button({ modkey }, 1, function (c) awful.mouse.client.move() end),
-                             button({ modkey }, 3, awful.mouse.client.resize ), }, },
 }
 
 shifty.config.defaults = {
@@ -362,6 +358,7 @@ awful.hooks.manage.register(function (c, startup)
         -- Add a titlebar
         awful.titlebar.add(c, { modkey = modkey })
     end
+
     -- Add mouse bindings
     c:buttons(awful.util.table.join(
         awful.button({ }, 1, function (c) client.focus = c; c:raise() end),

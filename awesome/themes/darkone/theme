@@ -50,8 +50,8 @@ theme.menu_height           = "15"
 theme.menu_width            = "100"
 
 -- Define the image to load
-theme.titlebar_close_button_normal = "/usr/share/awesome/themes/default/titlebar/close.png"
-theme.titlebar_close_button_focus  = "/usr/share/awesome/themes/default/titlebar/closer.png"
+theme.titlebar_close_button_normal = "/usr/share/awesome/themes/default/titlebar/close_normal.png"
+theme.titlebar_close_button_focus  = "/usr/share/awesome/themes/default/titlebar/close_focus.png"
 
 return theme
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80
