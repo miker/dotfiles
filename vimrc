@@ -2,10 +2,8 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Tue 23 Jun 2009 03:15:48 PM EDT
+" Modified: Sat 27 Jun 2009 07:05:54 PM EDT
 " ----------------------------------------------------------------------------
-
-" Autocmd for xrdb
 
 " {{{ Settings
 
@@ -42,8 +40,6 @@ set ignorecase
 set autoindent
 " No startup messages
 set shm+=Im
-" Use c indenting rules rather than smartindent
-set cindent
 " Show matching brackets
 set showmatch
 " Temporary directory
@@ -53,7 +49,7 @@ set clipboard=unnamed
 " Movement keys for wrapping
 set ww+=<,>,[,]
 " Allow unsaved hidden buffers
-set hidden
+set nohidden
 " I like darkbackgrounds with light colors
 set background=dark
 " Never let a window be less than 1px
@@ -72,15 +68,6 @@ set wildmode=list:longest	" Display list of matching files for completion
 set noeol
 " Characters to break at for line wrapping
 set breakat=\ \	!@*-+;:,.?
-" Number of lines to jump when cursor reaches bottom
-"set scrolloff=5
-" Same thing for horizontal
-"set sidescroll=5
-" Override ignorecase if search has capital letters
-"set smartcase
-" No visual/audio bells
-"set vb t_vb=
-set visualbell
 " Do not stay vi compatible
 set nocompatible
 " Default encoding
@@ -105,15 +92,14 @@ set shortmess=atI
 set ruler
 " ignore these in auto complete
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif
-set gdefault
 set showcmd
-set cmdheight=1
+set cmdheight=2
 set winminheight=0              " let windows shrink to filenames only
-set showtabline=0               " display tabbar 
+set showtabline=1               " display tabbar 
 
 if has("unix")
   set clipboard=autoselect
-  set shell=/bin/bash
+  set shell=bash
 endif
 
 "Include $HOME in cdpath
@@ -126,11 +112,7 @@ if has("eval")
     runtime! macros/matchit.vim
 endif
 
-" enable syntax highlightning (must come after autocmd!)
-" vim-tiny doesn't support syntax
-if has("syntax")
-    syntax on
-endif
+syntax on
 " }}}
 
 " {{{ Enable folding
@@ -140,8 +122,6 @@ set foldlevelstart=0
 " }}}
 
 " {{{ Plugin settings
-" Autoclose
-let g:loaded_AutoClose = 0 
 
 " gist
 let g:github_user="gregf"
@@ -164,16 +144,6 @@ let g:SuperTabLongestHighlight = 1
 let g:SuperTabMidWordCompletion = 1
 let g:SuperTabRetainCompletionType = 1 
 
-" Set taglist plugin options
-let Tlist_Use_Right_Window = 1
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_Enable_Fold_Column = 0
-let Tlist_Compact_Format = 1
-let Tlist_File_Fold_Auto_Close = 0
-let Tlist_Inc_Winwidth = 1
-"Settings for HiMTCHBrkt
-let g:HiMtchBrkt_surround= 1
-let g:HiMtchBrktOn= 1
 " Settings for NERDCommenter
 let g:NERDShutUp=1
 " Settings for git status bar plugin
@@ -254,17 +224,13 @@ endif
 let mapleader = ","
 
 imap <C-l> <Space>=><Space>
-
-nmap <C-N> :tabn<CR>
 nmap <C-P> :tabp<CR>
 noremap <silent> <C-O> :FuzzyFinderTextMate<CR>
 noremap <silent> <C-z> :undo<CR>
-noremap <silent> <F7> :Tlist<CR>
 noremap <silent> <F8> :FuzzyFinderMruFile<CR>
 noremap <silent> <F9> :NERDTreeToggle<CR>
 noremap <silent> <F10> :call <SID>Restart()<CR>
 noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
-"cmap w! %!sudo tee > /dev/null %
 " Spell check
 noremap <silent> <F1> z=
 " Spell Check (Reverse)
@@ -291,6 +257,7 @@ noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
 " Don't make a # force column zero.
 inoremap # X<BS>#
 noremap <Leader>rr :w\|!ruby %<cr>
+noremap <Leader>xd :w\|!xrdb -load ~/.Xdefaults %<cr>
 noremap <Leader>p :set paste<CR>
 noremap <Leader>nu :set nonumber<CR>
 noremap <Leader>pp :s/:/ /g<CR>
@@ -313,7 +280,7 @@ endfunction
 "If possible, try to use a narrow number column.
 if v:version >= 700
     try
-        setlocal numberwidth=1
+        setlocal numberwidth=3
     catch
     endtry
 endif
@@ -451,13 +418,23 @@ if isdirectory(expand("$VIMRUNTIME/ftplugin"))
     endif
 endif
 
-" turn off any existing search and spell checking
 if has("autocmd")
+    
     au VimEnter * nohls
     au VimLeave * set nospell
-endif
 
-if has("autocmd")
+    " Automagic line numbers
+    autocmd BufEnter * :call <SID>WindowWidth()
+
+    " Always do a full syntax refresh
+    autocmd BufEnter * syntax sync fromstart
+
+    autocmd BufWritePre *  :call <SID>UpdateRcHeader()
+
+    autocmd BufWritePre .Xdefaults :!xrdb -load ~/.Xdefaults
+
+    " For svn-commit, don't create backups
+    autocmd BufRead svn-commit.tmp :setlocal nobackup
 
     autocmd FileType html,xhtml,xml,eruby,mako,ruby,haml,yaml,erb setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2 autoindent
     autocmd FileType css setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
@@ -479,13 +456,12 @@ if has("autocmd")
 
     au BufRead,BufNewFile COMMIT_EDITMSG setf git
 
-    autocmd BufNewFile,BufRead /tmp/mutt*
+    autocmd BufNewFile,BufRead /tmp/mutt/mutt*
                 \ setf mail |
                 \ set spell |
                 \ set spell spelllang=en_us |
                 \ set spellfile=~/.vim/spellfile.add
 
-    au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,/tmp/mutt* :set ft=mail
     au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,~/.tmp/mutt/mutt* :set ft=mail
     au! BufRead,BufNewFile *.haml :set ft=haml
     au! BufRead,BufNewFile *.sass :set ft=sass
@@ -523,32 +499,6 @@ if has("autocmd")
     autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 endif
 
-if has("autocmd") && has("eval")
-    augroup gregf
-        autocmd!
-
-        " Automagic line numbers
-        autocmd BufEnter * :call <SID>WindowWidth()
-
-        " StripWhite space on save
-        "autocmd FileWritePre * :call <SID>StripWhite()
-        "autocmd FileAppendPre * :call <SID>StripWhite()
-        "autocmd FilterWritePre * :call <SID>StripWhite()
-        " Update header in .vimrc and .bashrc before saving
-
-        " Always do a full syntax refresh
-        autocmd BufEnter * syntax sync fromstart
-
-        autocmd BufWritePre *  :call <SID>UpdateRcHeader()
-
-        " For svn-commit, don't create backups
-        autocmd BufRead svn-commit.tmp :setlocal nobackup
-
-        " m4 matchit support
-        autocmd FileType m4 :let b:match_words="(:),`:',[:],{:}"
-    augroup END
-endif
-
 " content creation
 if has("autocmd")
     augroup content
@@ -573,16 +523,13 @@ if has("autocmd")
                     \ 1put ='' | 2put ='' | call setline(3, '#include "' .
                     \ substitute(expand("%:t"), ".cc$", ".hh", "") . '"') |
                     \ set sw=4 sts=4 et tw=80 | norm G
-        autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
-        au! BufRead,BufNewFile *.mkd   setfiletype mkd
 
         "ruby
         autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
         autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
         autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
         autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-        "improve autocomplete menu color
-        highlight Pmenu ctermbg=238 gui=bold
+        
         au BufRead,BufNewFile *.js set ft=javascript.jquery
         au BufRead,BufNewFile *.js.haml set ft=javascript.jquery
         au BufRead,BufNewFile *.js.erb set ft=javascript.jquery
@@ -608,39 +555,17 @@ if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'r
 endif
 
 if (has("gui_running"))
-    "colorscheme gigamo
-    "colorscheme darkspectrum 
-    ""colorscheme kellys "< friggen awesomeness
     colorscheme mustang
-    "colorscheme wombat " < friggen awesomeness as well
-    "colorscheme xoria256 " < more awesomeness
-    "colorscheme jellybeans
     ""set guifont=Droid\ Sans\ Mono\ 12
     set guifont=inconsolata\ 14
     set mousem=popup	" Nice pop-up
-    set toolbariconsize=tiny
     set selection=exclusive	" Allow one char past EOL
     set ttymouse=xterm2	" Terminal type for mouse code recognition
     set mousehide
     " Make shift-insert work like in xterm
     map <S-Insert> <MiddleMouse>
     map! <S-Insert> <MiddleMouse>
-endif
-
-" Refactor all terminal shit into a block like this much cleaner
-"if (&term =~ 'linux')
-    "set t_Co=16
-    "set termencoding=utf-8
-    "set nocursorline
-    "colorscheme desert
-"else
-    "set t_Co=256
-    "set mouse=a
-    "colorscheme jellybeans
-    "set termencoding=utf-8
-"endif
-
-if has('gui')
+    " set some gui options
     set guioptions=a
     set mouse=a
 endif
