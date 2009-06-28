@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sat 27 Jun 2009 08:28:50 PM EDT
+" Modified: Sat 27 Jun 2009 08:41:49 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -70,8 +70,6 @@ set noeol
 set breakat=\ \	!@*-+;:,.?
 " Do not stay vi compatible
 set nocompatible
-" Default encoding
-set encoding=utf-8
 " Enable wild menu
 set wildmenu
 " Smart tab
@@ -91,16 +89,33 @@ set shortmess=atI
 " ruler
 set ruler
 " ignore these in auto complete
-set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.git
+set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.git,.info,.aux,.log,.dvi,.bbl,.out
 set showcmd
 set cmdheight=2
 set winminheight=0              " let windows shrink to filenames only
 set showtabline=1               " display tabbar 
 
+" {{{ Set a shell
 if has("unix")
   set clipboard=autoselect
-  set shell=zsh
+    if "" == &shell
+      if executable("zsh")
+        set shell=zsh
+      elseif executable("bash")
+        set shell=bash
+      elseif executable("sh")
+        set shell=sh
+      endif
+    endif
 endif
+" }}}
+
+" {{{ Our default /bin/sh is bash, not ksh, so syntax highlighting for .sh
+" files should default to bash. See :help sh-syntax and bug #101819.
+if has("eval")
+  let is_bash=1
+endif
+" }}}
 
 "Include $HOME in cdpath
 if has("file_in_path")
@@ -213,6 +228,20 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=%h%m%r%w                                         " flags
     set titlestring+=\ -\ %{v:progname}                               " program name
     set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
+endif
+
+" Always check for UTF-8 when trying to determine encodings.
+if &fileencodings !~? "utf-8"
+    set fileencodings+=utf-8
+else
+    set fileencodings+=default
+endif
+
+" {{{ Terminal fixes
+if &term ==? "xterm" || &term  ==? "rxvt"
+  set t_Sb=^[4%dm
+  set t_Sf=^[3%dm
+  set ttymouse=xterm2
 endif
 
 " }}}
@@ -444,15 +473,6 @@ if has("autocmd")
     autocmd BufReadPost,BufNewFile,BufRead nginx.conf set syntax=nginx
     autocmd BufReadPost,BufNewFile,BufRead TODO set syntax=todolist
 
-    " When editing a file, jump to the last cursor position
-    autocmd BufReadPost *
-                \	if line("'\"") > 0 && line ("'\"") <= line("$")
-                \	|	exe "normal g'\""
-                \	| endif
-
-    au BufRead,BufNewFile *.e{build,class} let is_bash=1|setfiletype sh
-    au BufRead,BufNewFile *.e{build,class} set ts=4 sw=4 noexpandtab
-
     au BufRead,BufNewFile COMMIT_EDITMSG setf git
 
     autocmd BufNewFile,BufRead /tmp/mutt/mutt*
@@ -497,6 +517,39 @@ if has("autocmd")
     autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
     autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 endif
+
+augroup gentoo
+  au!
+
+  " Gentoo-specific settings for ebuilds.  These are the federally-mandated
+  " required tab settings.  See the following for more information:
+  " http://www.gentoo.org/proj/en/devrel/handbook/handbook.xml
+  " Note that the rules below are very minimal and don't cover everything.
+  " Better to emerge app-vim/gentoo-syntax, which provides full syntax,
+  " filetype and indent settings for all things Gentoo.
+  au BufRead,BufNewFile *.e{build,class} let is_bash=1|setfiletype sh
+  au BufRead,BufNewFile *.e{build,class} set ts=4 sw=4 noexpandtab
+
+  " In text files, limit the width of text to 78 characters, but be careful
+  " that we don't override the user's setting.
+  autocmd BufNewFile,BufRead *.txt
+        \ if &tw == 0 && ! exists("g:leave_my_textwidth_alone") |
+        \     setlocal textwidth=78 |
+        \ endif
+
+  " When editing a file, always jump to the last cursor position
+  autocmd BufReadPost *
+        \ if ! exists("g:leave_my_cursor_position_alone") |
+        \     if line("'\"") > 0 && line ("'\"") <= line("$") |
+        \         exe "normal g'\"" |
+        \     endif |
+        \ endif
+
+  " When editing a crontab file, set backupcopy to yes rather than auto. See
+  " :help crontab and bug #53437.
+  autocmd FileType crontab set backupcopy=yes
+
+augroup END
 
 " content creation
 if has("autocmd")
