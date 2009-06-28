@@ -1,15 +1,17 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.muttrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Sat 27 Jun 2009 10:25:05 PM EDT
+# Modified: Sat 27 Jun 2009 11:56:22 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Imap Settings
 
 #-----------------------------------------------------------------------------
-# I do not include this for the sake it has some passwords.
+# I do not include this because it has some passwords.
 # Basic idea though.
 # ----------------------------------------------------------------------------
+
+source ~/.mutt/imap.rc
 
 #set imap_user = 'you@gmail.com'
 #set imap_pass = 'password'
@@ -30,7 +32,6 @@ set imap_servernoise=yes
 set use_from
 set use_envelope_from
 set mbox=!
-source ~/.mutt/imap.rc
 # }}}
 
 # {{{ Include Files
@@ -208,8 +209,6 @@ macro index,pager,attach,compose \cb "\
 <enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" \
 "call urlview to extract URLs out of a message"
 
-#macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
-#macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 macro index,pager \cD <delete-thread><down>
 
 macro index,pager a "<pipe-message>abook --add-email-quiet<return>"
