@@ -1,7 +1,7 @@
 ! ----------------------------------------------------------------------------
 ! File:     ~/.Xdefaults
 ! Author:   Greg Fitzgerald <netzdamon@gmail.com>
-! Modified: Tue 10 Mar 2009 01:27:05 PM EDT
+! Modified: Sat 27 Jun 2009 09:19:51 PM EDT
 ! ----------------------------------------------------------------------------
 
 !{{{ XTerm
@@ -50,7 +50,7 @@ XTerm*bellIsUrgent: true
 !}}}
 
 !{{{ URxvt
-URxvt*loginShell:       false
+URxvt*loginShell:       true 
 URxvt*saveLines:        5500
 URxvt*geometry:         100x25
 URxvt.depth:        32
@@ -82,36 +82,34 @@ URxvt*scrollBar:          false
 !}}}
 
 !{{{ colors
-! black
-URxvt*background:         #000000
-URxvt*foreground:         #ffffff
-*colorBD:            lightyellow
-*colorUL:            yellow
-*cursorColor:        #07A5FF
- 
-*color0:             #242424
-*color8:             #828282
-! red 
-*color1:             #BF7979
-*color9:             #F4A45F
-! green
-*color2:             #97B26B
-*color10:            #C5F779
-! yellow
-*color3:             #cdcda1
-*color11:            #ffffaf
-! blue
-*color4:             #285A8B
-*color12:            #98afd9
-! magenta
-*color5:             #d9b798
-*color13:            #d7d998
-! cyan
-*color6:             #a1b5cd
-*color14:            #a1b5cd
-! white
-*color7:             #ffffff
-*color15:            #dedede
+*background: #202020
+*foreground: #ffffff
+! Black + DarkGrey
+*color0: #242424
+*color8: #82828
+! DarkRed + Red
+*color1: #963C59
+*color9: #CF6171
+! DarkGreen + Green
+*color2: #73862F
+*color10: #b1d631
+! DarkYellow + Yellow
+*color3: #fff796
+*color11: #faf4c6
+! DarkBlue + Blue
+*color4: #515c71
+*color12: #7e8aa2
+! DarkMangenta + Mangenta
+*color5: #cf7c00
+*color13: #ff9800
+! DarkCyan + Cyan
+*color6: #b4eeb4
+*color14: #71bebe
+! LightGrey + White
+*color7: #ffffff
+*color15: #dedede
+! Cursor
+*cursorColor: #07A5FF
 
 !}}}
 
@@ -122,27 +120,12 @@ Xft.dpi: 120
 Xft.antialias: 1
 Xft.hinting: 1
 Xft.rgba: rgb
-!Xft.lcdfilter:  lcddefault
+Xft.lcdfilter:  lcddefault
 Xft.hintstyle: hintfull
 ! }}}
 
 !{{{ Cursor
-!Cursors - Choose one
-!Xcursor.theme: Blue
-!Xcursor.theme: Grounation
-!Xcursor.theme: gentoo-silver
-!Xcursor.theme: gentoo-blue
-!Xcursor.theme: gentoo
-!Xcursor.theme: handhelds
-!Xcursor.theme: neutral 
-!Xcursor.theme: redglass
-!Xcursor.theme: Silver
-!Xcursor.theme: lil-polar
-!Xcursor.theme: whiteglass
 Xcursor.theme: PolarCursorTheme
-!Xcursor.theme: PolarCursorTheme-Blue
-!Xcursor.theme: Polar
-!Xcursor.theme: PolarCursorTheme-Green
 Xcursor.size: 18 
 ! }}}
 
