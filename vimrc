@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sat 27 Jun 2009 09:03:15 PM EDT
+" Modified: Sat 27 Jun 2009 09:06:47 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -93,9 +93,9 @@ set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*
 set showcmd
 set cmdheight=2
 set winminheight=0              " let windows shrink to filenames only
-set showtabline=1               " display tabbar 
+set showtabline=1               " display tabbar
 " Set some global options for spell check
-set spell spelllang=en_us
+set spelllang=en_us
 set spellfile=~/.vim/spellfile.add
 
 
@@ -478,7 +478,7 @@ if has("autocmd")
 
     autocmd BufNewFile,BufRead /tmp/mutt/mutt*
                 \ setf mail |
-                \ set spell 
+                \ set spell | 
 
     au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,~/.tmp/mutt/mutt* :set ft=mail
     au! BufRead,BufNewFile *.haml :set ft=haml
