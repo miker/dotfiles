@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sat 27 Jun 2009 07:34:14 PM EDT
+" Modified: Sat 27 Jun 2009 08:21:53 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -91,7 +91,7 @@ set shortmess=atI
 " ruler
 set ruler
 " ignore these in auto complete
-set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif
+set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.git
 set showcmd
 set cmdheight=2
 set winminheight=0              " let windows shrink to filenames only
@@ -112,7 +112,11 @@ if has("eval")
     runtime! macros/matchit.vim
 endif
 
-syntax on
+" enable syntax highlightning (must come after autocmd!)
+" vim-tiny doesn't support syntax
+if has("syntax")
+    syntax on
+endif
 " }}}
 
 " {{{ Enable folding
@@ -126,6 +130,7 @@ set foldlevelstart=0
 " gist
 let g:github_user="gregf"
 let g:github_token="c063595c9d2dca14f8115509cce8a228"
+
 " rails.vim
 
 let g:rails_dbext=1
@@ -135,11 +140,10 @@ let g:rails_mappings=1
 let g:rails_statusline=1
 let g:rails_subversion=0
 let g:rails_syntax=1
-
 let g:browser = 'firefox -new-tab '
 
-let g:SuperTabMappingForward = '<c-right>'
-let g:SuperTabMappingBackward = '<c-left>'
+" Supertab
+let g:SuperTabMappingForward = '<S-Tab>'
 let g:SuperTabLongestHighlight = 1 
 let g:SuperTabMidWordCompletion = 1
 let g:SuperTabRetainCompletionType = 1 
@@ -157,11 +161,6 @@ match     RedundantSpaces /\s\+$\| \+\ze\t/
 set nomodeline
 let g:secure_modelines_verbose = 0
 let g:secure_modelines_modelines = 15
-
-let loaded_matchparen=1
-
-" http://vim.sourceforge.net/scripts/script.php?script_id=2328
-let g:nickname = "gregf"
 
 let g:secure_modelines_allowed_items = [
             \ "textwidth",   "tw",
@@ -594,7 +593,7 @@ endif
 
 " set vim to chdir for each file
 let os = substitute(system('uname'), "\n", "", "")
-if os == "Linux"
+if os == "Linux" || os == "OpenBSD"
     au BufEnter * if &ft != 'help' | silent! cd %:p:h | endif
     set autochdir
 endif
