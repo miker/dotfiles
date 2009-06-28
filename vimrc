@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sat 27 Jun 2009 09:06:47 PM EDT
+" Modified: Sat 27 Jun 2009 09:43:54 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -642,7 +642,7 @@ endif
 
 " set vim to chdir for each file
 let os = substitute(system('uname'), "\n", "", "")
-if os ==? "Linux" || os ==? "OpenBSD"
+if os ==? "Linux" 
     au BufEnter * if &ft != 'help' | silent! cd %:p:h | endif
     set autochdir
 endif
