@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sat 27 Jun 2009 08:41:49 PM EDT
+" Modified: Sat 27 Jun 2009 08:53:15 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -253,11 +253,10 @@ let mapleader = ","
 
 imap <C-l> <Space>=><Space>
 nmap <C-P> :tabp<CR>
-noremap <silent> <C-O> :FuzzyFinderTextMate<CR>
 noremap <silent> <C-z> :undo<CR>
-noremap <silent> <F8> :FuzzyFinderMruFile<CR>
+noremap <silent> <C-O> :FuzzyFinderMruFile<CR>
 noremap <silent> <F9> :NERDTreeToggle<CR>
-noremap <silent> <F10> :call <SID>Restart()<CR>
+noremap <Leader>res :call <SID>Restart()<CR>
 noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
 " Spell check
 noremap <silent> <F1> z=
@@ -272,8 +271,6 @@ map <F6> :wincmd w<CR> imap <F6> <c-[>:wincmd w<CR> map <S-F6> :wincmd W<CR> ima
 " Setup mini ide for a project of mine
 noremap <silent> <F5> :call Mideo()<CR>
 noremap <Leader>s :call Sass()<CR>
-" Refreshing the screen
-map		<C-l>		     :redraw<CR> imap	<C-l>		<Esc>:redraw<CR>
 " Reformat everything
 noremap <Leader>gq gggqG
 " Reformat paragraph
