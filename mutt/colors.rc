@@ -7,7 +7,7 @@ color	quoted2		brightred	black
 color	quoted3		brightyellow	black
 color	quoted4		brightcyan	black
 color	signature	cyan		black
-#color	indicator   white       blue
+color	indicator   white       blue
 color   indicator   black white
 color	error		brightred	black
 color	status		yellow black
@@ -30,13 +30,18 @@ color	index		brightyellow	black	"~N !~T !~F !~p !~P"
 color	index		brightgreen		black	"~F !~p !~P"
 color   index       brightyellow    black ~N
 
+color   index       white brightred ~D
+color   index       white brightred ~F
+color   index       white brightred ~T
+
 # message view
 color	header		brightred	black "[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.-]+"
 color	header		brightgreen	black "^[a-zA-Z-]+:"
 color	body		brightred	black "[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.-]+"
 color	body		brightblue	black "((ftp|http|https)://|(file|news):|www\\.)[-a-z0-9_.:]*[a-z0-9](/[^][{} \t\n\r\"<>()]*[^][{} \t\n\r\"<>().,:!])?/?"
+color   body        brightblue  black "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
+color   body        brightblue  black "[;:=][-][)/(|]"
 
 # attribution lines
 color	body		magenta		black ".* [^<]+ <[^>]+> wrote:"
 color	body		magenta		black "(^|[^[:alnum:]])[Oo]n [a-z0-9 ,]+( at [a-z0-9:,. +-]+)? wrote:"
-#color	body		blue		black "( *[-+=#*~_]){3,}.*"
