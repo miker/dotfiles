@@ -34,6 +34,7 @@ TERM aterm
 TERM urxvt
 TERM urxvt-ml
 TERM rxvt-unicode
+TERM rxvt-256color
 
 # Below are the color init strings for the basic file types. A color init
 # string consists of one or more of the following numeric codes:
