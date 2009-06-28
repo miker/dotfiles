@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Sat 27 Jun 2009 09:42:54 PM EDT
+# Modified: Sat 27 Jun 2009 11:29:54 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -165,11 +165,22 @@ esac
 
 # {{{ Enviroment Variables
 unset MAILCHECK
+
+watch=(notme)  ## watch for everybody but me
+LOGCHECK=60  ## check every ... seconds for login/logout activity
+WATCHFMT='%n %a %l from %m at %t.'
+
+
 if [[ -d /var/tmp/ccache ]]; then
     (( ${+CCACHE_DIR} )) || export CCACHE_DIR="/var/tmp/ccache"
     (( ${+CCACHE_SIZE} )) || export CCACHE_SIZE="2G"
 
 fi
+
+## If nonnegative, commands whose combined user and system execution times
+## (measured in seconds) are greater than this value have timing
+## statistics printed for them.
+REPORTTIME=2
 
 # To many stupid scripts don't unset this so I'm using an alias for now
 #export GREP_OPTIONS="--color=auto -nsi"
@@ -188,8 +199,8 @@ PATH="$PATH:$RIPDIR/active/bin"
 export RIPDIR RUBYLIB PATH
 
 # Some settings for autotest
-export AUTOFEATURE=true" 
-export RSPEC=true"
+export AUTOFEATURE="true" 
+export RSPEC="true"
 
 # Some things we want set regardless
 export MANPAGER="most"
@@ -272,6 +283,7 @@ stty -ixon
 # {{{ Default Aliases
 alias xlog="sudo grep --binary-files=without-match --color -nsie '(EE)' -e '(WW)' /var/log/Xorg.0.log"
 alias which="whence"
+alias z='vim ~/.zshrc;src'
 alias sd='export DISPLAY=:0.0'
 alias cpan="perl -MCPAN -e shell"
 alias cup='cvs -z3 update -Pd'
@@ -299,7 +311,6 @@ alias t="thunar"
 alias repo='cd /var/paludis/repositories'
 alias ov='cd /home/gregf/code/active/gregf-overlay'
 alias sc='script/console'
-#alias ss='sudo script/server -u -p 80' #Using the ss function below...
 alias sp='script/plugin'
 alias db='script/dbconsole'
 alias sgmo="sg model $@"
@@ -311,9 +322,7 @@ alias rst='touch tmp/restart.txt'
 alias scaffold='script/generate shoulda_scaffold'
 alias migrate='rake db:migrate db:test:clone'
 alias gi='sudo gem install --no-ri --include-dependencies'
-alias giti="vim .gitignore"
 alias gs='gem search -b'
-alias vmware='VMWARE_USE_SHIPPED_GTK=yes /opt/vmware/workstation/bin/vmware'
 alias burniso='wodim -v dev=/dev/cdrw'
 alias burndvdiso='growisofs -speed=8 -dvd-compat -Z /dev/dvdrw=$1'
 alias usepretend='sudo paludis -ip --dl-reinstall if-use-changed'
@@ -323,22 +332,17 @@ alias biosinfo='sudo dmidecode'
 alias pwgen='pwgen -sBnc 10'
 alias la="ls -a"
 alias l="ls"
-alias f-spot='dbus-launch f-spot'
 alias d="devtodo"
 alias gnp="git-notpushed"
 alias s="sudo"
-alias sx="startx"
 alias ej="eject"
 alias k="killall"
-alias cap='/usr/X11R6/bin/cap'
 alias poweroff='sudo poweroff'
 alias reboot='sudo reboot'
-alias oa='openarena'
 alias savage="~/code/bin/savage/savage.sh"
 alias wcyy="mplayer http://68.142.81.164:80/citadelcc_WCYY_FM\?MSWMExt\=.asf"
 alias wkit="mplayer http://64.92.199.73/WKIT-FM"
 alias dropcache='sudo echo 3 > /proc/sys/vm/drop_caches'
-alias deploy='cap deploy:migrations'
 alias lock='alock -auth pam -bg blank:color=black'
 alias lsnoext="ls | grep -v '\.'"
 alias gis="git status | grep --color=always '^[^a-z]\+\(new file:\|modified:\)' | cut -d'#' -f2-"
@@ -346,16 +350,12 @@ alias lk='lynx -dump http://kernel.org/kdist/finger_banner'
 alias dosbox='dosbox -conf ~/.dosbox.conf -fulscreen'
 alias ports='lsof -i'
 alias vim="vim -p"
-alias ra3="wine /home/gregf/.wine/drive_c/Program\ Files/Electronic\ Arts/Red\ Alert\ 3/RA3.exe"
-alias nfs="cd /home/gregf/.wine/drive_c/Program\ Files/EA\ Games/Need\ for\ Speed\ Undercover/; wine nfs.exe; cd ~"
-alias wog="cd /home/gregf/.wine/drive_c/Program\ Files/WorldOfGoo/; wine WorldOfGoo.exe; cd ~ && xrandr -s 0"
 alias g='grep -Hn --color=always'
 alias ra="echo 'awful.util.restart()' | awesome-client -"
 alias sv="gvim --remote-tab-silent"
 alias lvim="vim -c \"normal '0\""
-alias geminstaller='geminstaller -s -c $HOME/.geminstaller.yaml'
+alias geminstaller='sudo geminstaller -s -c $HOME/.geminstaller.yaml'
 alias c="clear"
-alias yuicompressor='jar ~/bin/yuicompressor-2.4.2.jar'
 alias smv="sudo mv"
 alias srm="sudo rm"
 alias installed='qlist -I | most'
@@ -375,6 +375,7 @@ compinit
 
 # Eat it bc
 autoload -z zcalc
+autoload -U zmv
 
 # Follow GNU LS_COLORS
 zmodload -i zsh/complist
@@ -394,15 +395,15 @@ compctl -g '*.(jpg|JPG|jpeg|JPEG|gif|GIF|tiff|TIFF|png|PNG|tga|TGA)' + -g '*(-/)
 zstyle ':completion:*' menu select=2
 
 # Expansion options
-zstyle ':completion:*' completer _complete _prefix
+zstyle ':completion:*' completer _complete _list _oldlist _expand _ignored _match _correct _approximate _prefix
+#zstyle ':completion:*' completer _complete _prefix
 zstyle ':completion::prefix-1:*' completer _complete
 zstyle ':completion:incremental:*' completer _complete _correct
 zstyle ':completion:predict:*' completer _complete
 
 # Completion caching
-zstyle ':completion:*' use-cache on
-#zstyle ':completion:*' cache-path ~/.tmp/zsh/cache
-
+zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' cache-path ~/.zcompcache/$HOST
 
 # Expand partial paths
 zstyle ':completion:*' expand 'yes'
@@ -707,7 +708,7 @@ function pcache {
 }
 
 function manifest {
-    appareo --log-level warning --master-repository-name gentoo --extra-repository-dir /usr/portage --extra-repository-dir ~/code/scm/gregf-overlay $1 -m
+    appareo --log-level warning --master-repository-name gentoo --extra-repository-dir /usr/portage --extra-repository-dir $PWD $1 -m
 }
 
 function gitsearch {
@@ -777,7 +778,6 @@ function sg {
 }
 
 function http_headers {
-    curl='whence curl'
     curl -I -L $@
 }
 
@@ -860,8 +860,8 @@ src () {
 #################################################################################
 
 bindkey -v
-if [[ -f ~/.zkbd/$TERM-$VENDOR-$OSTYPE ]]; then
-    source ~/.zkbd/$TERM-$VENDOR-$OSTYPE
+if [[ -f ~/.zkbd/$TERM-${DISPLAY:-$VENDOR-$OSTYPE} ]]; then
+    source ~/.zkbd/$TERM-${DISPLAY:-$VENDOR-$OSTYPE}
 else
     echo "no zkbd file, run zkbd"
 fi
@@ -908,17 +908,15 @@ if (( EUID == 0 )); then
     rootpath=(/sbin /usr/sbin /usr/local/sbin)
     # hack to fix "Can not write to history" after leaving sudo or su
     # sudo does not export enviroment vars
-    SAVEHIST=1000
-    HISTFILE=~root/.history_zsh
-    HISTSIZE=1000
+    #SAVEHIST=1000
+    #HISTFILE=~root/.history_zsh
+    #HISTSIZE=1000
     #HOME=/root
 fi
-# }}}
 
-setopt promptsubst
-#autoload -U promptinit
-#promptinit
-#prompt wunjo
+# remove duplicate entries from path,cdpath,manpath & fpath
+typeset -gU path cdpath manpath fpath
+# }}}
 
 # {{{ Run devtodo != root
 
