@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sat 27 Jun 2009 08:21:53 PM EDT
+" Modified: Sat 27 Jun 2009 08:28:50 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -273,7 +273,7 @@ command! -nargs=0 RDocPreview call RDocRenderBufferToPreview()
 function! RDocRenderBufferToPreview()
   let rdocoutput = "/tmp/vimrdoc/"
   call system("rdoc " . bufname("%") . " --op " . rdocoutput)
-  call system("fireofx ". rdocoutput . "index.html")
+  call system("firefox ". rdocoutput . "index.html")
 endfunction
 
 "If possible, try to use a narrow number column.
