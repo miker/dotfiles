@@ -9,7 +9,7 @@ color	quoted4		brightcyan	black
 color	signature	cyan		black
 color	indicator   white       blue
 color	error		brightred	black
-color	status		yellow black
+color	status		yellow blue 
 color	tree		brightmagenta	black
 color	tilde		brightyellow		black
 color	attachment	brightyellow	black
