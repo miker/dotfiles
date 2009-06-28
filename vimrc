@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sat 27 Jun 2009 09:43:54 PM EDT
+" Modified: Sun 28 Jun 2009 11:58:36 AM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -147,6 +147,9 @@ set foldlevelstart=0
 " {{{ Plugin settings
 
 " gist
+
+let g:loaded_AutoClose = 0 
+
 let g:github_user="gregf"
 let g:github_token="c063595c9d2dca14f8115509cce8a228"
 
@@ -291,6 +294,7 @@ noremap <Leader>p :set paste<CR>
 noremap <Leader>nu :set nonumber<CR>
 noremap <Leader>pp :s/:/ /g<CR>
 noremap <Leader>cache :call ClearCache()<CR>
+noremap <Leader>ac :AutoCloseToggle<CR>
 noremap :close :bd!<CR>
 " Quick sudo saving from tpope
 command! -bar -nargs=0 SudoW :silent exe "write !sudo tee % >/dev/null" | silent edit!
@@ -450,6 +454,7 @@ endif
 if has("autocmd")
     
     au VimEnter * nohls
+    au VimEnter * AutoCloseOff
     au VimLeave * set nospell
 
     " Automagic line numbers
