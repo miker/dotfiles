@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sat 27 Jun 2009 08:53:15 PM EDT
+" Modified: Sat 27 Jun 2009 09:00:39 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -594,7 +594,7 @@ endif
 "improve autocomplete menu color
 highlight pmenu ctermbg=238 gui=bold
 
-if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt' || &term == "xterm-256color"
+if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt'
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
     colorscheme mustang 
     else
@@ -627,11 +627,8 @@ if has('title') && (has('gui_running') || &title)
 endif
 
 "Extra terminal things
-if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt' || &term == "xterm-256color" && (&termencoding == "")
+if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt' && (&termencoding == "")
     set termencoding=utf-8
-endif
-
-if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt' || &term == "xterm-256color"
     if has('title')
         set title
     endif
@@ -643,7 +640,7 @@ endif
 
 " set vim to chdir for each file
 let os = substitute(system('uname'), "\n", "", "")
-if os == "Linux" || os == "OpenBSD"
+if os ==? "Linux" || os ==? "OpenBSD"
     au BufEnter * if &ft != 'help' | silent! cd %:p:h | endif
     set autochdir
 endif
