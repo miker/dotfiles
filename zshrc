@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Sat 27 Jun 2009 11:29:54 PM EDT
+# Modified: Sun 28 Jun 2009 12:07:19 AM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -512,7 +512,13 @@ function install_dotfiles {
 
 function zkbd {
     ZVER=(`zsh --version | awk '{print $2}' -`)
-    zsh /usr/share/zsh/${ZVER}/functions/Misc/zkbd
+    if [[ -f /usr/share/zsh/${ZVER}/functions/Misc/zkbd ]]; then
+        zsh /usr/share/zsh/${ZVER}/functions/Misc/zkbd
+    elif [[ -f /usr/local/share/zsh/${ZVER}/functions/Misc/zkbd ]]; then
+        zsh /usr/local/share/zsh/${ZVER}/functions/Misc/zkbd
+    elif [[ -f /usr/local/share/zsh/${ZVER}/functions/zkbd ]]; then
+        zsh /usr/local/share/zsh/${ZVER}/functions/zkbd
+    fi
 }
 
 function clamscan {
