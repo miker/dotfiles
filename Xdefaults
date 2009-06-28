@@ -1,7 +1,7 @@
 ! ----------------------------------------------------------------------------
 ! File:     ~/.Xdefaults
 ! Author:   Greg Fitzgerald <netzdamon@gmail.com>
-! Modified: Sat 27 Jun 2009 09:19:51 PM EDT
+! Modified: Sat 27 Jun 2009 10:52:24 PM EDT
 ! ----------------------------------------------------------------------------
 
 !{{{ XTerm
@@ -69,7 +69,7 @@ URxvt*keysym.M-u: perl:mark-yank-urls:activate_mark_mode
 URxvt*underlineURLs: true
 URxvt*termName: rxvt
 
-!{{{ appearance
+! appearance
 URxvt*transparent:        false 
 URxvt.cursorBlink:        false 
 URxvt.cursorOnTime:       400
@@ -79,6 +79,7 @@ URxvt*boldfont:     xft:inconsolata:pixelsize=24:bold:antialias=true
 URxvt*jumpScroll:         true
 URxvt*scrollTtyOutput:    false
 URxvt*scrollBar:          false
+
 !}}}
 
 !{{{ colors
@@ -110,8 +111,6 @@ URxvt*scrollBar:          false
 *color15: #dedede
 ! Cursor
 *cursorColor: #07A5FF
-
-!}}}
 
 !}}}
 
