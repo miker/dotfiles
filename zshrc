@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Sun 28 Jun 2009 12:07:19 AM EDT
+# Modified: Mon 29 Jun 2009 10:31:27 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -98,7 +98,6 @@ case `uname` in
         fi
 
         if [[ -f /etc/gentoo-release ]]; then
-            #export RUBYOPT="" #will break gentoo's ebuild for rubygems, if your using it comment this out
             alias ms="mirrorselect -b10 -s5 -D"
             alias python-updater="python-updater -P paludis"
             alias module-rebuild="module-rebuild -P paludis $@"
@@ -114,7 +113,7 @@ case `uname` in
             export PALUDIS_RESUME_DIR="${HOME}"/.resume-paludis
             export PALUDIS_OPTIONS="--resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX --show-reasons summary
             --log-level warning --show-use-descriptions all --continue-on-failure if-satisfied --dl-reinstall if-use-changed --dl-reinstall-scm weekly --multitask"
-            export RECONCILIO_OPTIONS="--continue-on-failure if-satisfied --multitask"
+            export RECONCILIO_OPTIONS="--continue-on-failure if-satisfied"
 
             function paludis-scm {
                 PALUDIS_OPTIONS="--dl-reinstall-scm daily"
@@ -319,7 +318,6 @@ alias setmid='rm -f db/*.sqlite3 ; rake db:migrate && rake admin:create'
 alias a='autotest -rails'
 alias tlog='tail -f log/development.log'
 alias rst='touch tmp/restart.txt'
-alias scaffold='script/generate shoulda_scaffold'
 alias migrate='rake db:migrate db:test:clone'
 alias gi='sudo gem install --no-ri --include-dependencies'
 alias gs='gem search -b'
@@ -715,6 +713,10 @@ function pcache {
 
 function manifest {
     appareo --log-level warning --master-repository-name gentoo --extra-repository-dir /usr/portage --extra-repository-dir $PWD $1 -m
+}
+
+function qa {
+    qualudis --log-level warning --master-repository-name gentoo --extra-repository-dir /usr/portage --extra-repository-dir $PWD $1 
 }
 
 function gitsearch {
