@@ -6,6 +6,7 @@ defaults:
 gems:
 - name: giraffesoft-trample
 - name: rails
+- name: patron
 - name: coderay
 - name: passenger
 - name: rdiscount
@@ -86,3 +87,4 @@ gems:
 - name: gemedit
 - name: visionmedia-css
 - name: settingslogic
+- name: ichverstehe-isaac
