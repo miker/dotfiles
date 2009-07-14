@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sun 28 Jun 2009 11:58:36 AM EDT
+" Modified: Mon 13 Jul 2009 09:06:34 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -19,9 +19,8 @@ set sw=4
 set sts=4
 " Tab stop
 set ts=4
-" wrapping
-set wm=4
-set tw=80
+" Show mode
+set showmode
 " Expand tabs to spaces
 set expandtab
 " Highlight search
@@ -64,8 +63,6 @@ set history=900
 set fileformat=unix
 " Display list of matching files for completion
 set wildmode=list:longest	" Display list of matching files for completion
-" Do not require end-of-line
-set noeol
 " Characters to break at for line wrapping
 set breakat=\ \	!@*-+;:,.?
 " Do not stay vi compatible
@@ -92,12 +89,13 @@ set ruler
 set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.git,.info,.aux,.log,.dvi,.bbl,.out
 set showcmd
 set cmdheight=2
-set winminheight=0              " let windows shrink to filenames only
 set showtabline=1               " display tabbar
 " Set some global options for spell check
 set spelllang=en_us
 set spellfile=~/.vim/spellfile.add
-
+"display tabs and trailing spaces
+"set list
+"set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
 
 " {{{ Set a shell
 if has("unix")
@@ -141,12 +139,15 @@ endif
 " {{{ Enable folding
 set foldenable
 set foldmethod=marker
-set foldlevelstart=0
+"set foldlevelstart=0
+set foldnestmax=3       "deepest fold is 3 levels
 " }}}
 
 " {{{ Plugin settings
 
 " gist
+
+let g:NeoComplCache_EnableAtStartup = 0 
 
 let g:loaded_AutoClose = 0 
 
@@ -174,6 +175,13 @@ let g:SuperTabRetainCompletionType = 1
 let g:NERDShutUp=1
 " Settings for git status bar plugin
 let g:git_branch_status_head_current=1
+" NERDTree settings
+let NERDChristmasTree = 1
+let NERDTreeQuitOnOpen=1
+let NERDTreeHighlightCursorline = 1
+let NERDTreeMapActivateNode='<CR>'
+let NERDTreeIgnore=['\.git','\.DS_Store']
+
 
 " Hightlight redundent spaces
 highlight RedundantSpaces ctermbg=red guibg=red
@@ -198,33 +206,48 @@ let g:secure_modelines_allowed_items = [
 " }}} 
 
 " {{{ Nice statusbar
+"statusline setup
+set statusline=%f       "tail of the filename
 
+"display a warning if fileformat isnt unix
+set statusline+=%#warningmsg#
+set statusline+=%{&ff!='unix'?'['.&ff.']':''}
+set statusline+=%*
+
+"display a warning if file encoding isnt utf-8
+set statusline+=%#warningmsg#
+set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'['.&fenc.']':''}
+set statusline+=%*
+
+set statusline+=%h      "help file flag
+set statusline+=%y      "filetype
+set statusline+=%r      "read only flag
+set statusline+=%m      "modified flag
+
+set statusline+=%{StatuslineGitBranch()}
+
+"display a warning if &et is wrong, or we have mixed-indenting
+set statusline+=%#error#
+set statusline+=%{StatuslineTabWarning()}
+set statusline+=%*
+
+set statusline+=%{StatuslineTrailingSpaceWarning()}
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+"display a warning if &paste is set
+set statusline+=%#error#
+set statusline+=%{&paste?'[paste]':''}
+set statusline+=%*
+
+set statusline+=%=      "left/right separator
+set statusline+=%{StatuslineCurrentHighlight()}\ \ "current highlight
+set statusline+=%c,     "cursor column
+set statusline+=%l/%L   "cursor line/total lines
+set statusline+=\ %P    "percent through file
 set laststatus=2
-set statusline=
-set statusline+=%2*%-3.3n%0*\                " buffer number
-set statusline+=%f\                          " file name
-if has("eval")
-    let g:scm_cache = {}
-    fun! ScmInfo()
-        let l:key = getcwd()
-        if ! has_key(g:scm_cache, l:key)
-            if (isdirectory(getcwd() . "/.git"))
-                let g:scm_cache[l:key] = "[" . substitute(readfile(getcwd() . "/.git/HEAD", "", 1)[0],
-                            \ "^.*/", "", "") . "] "
-            else
-                let g:scm_cache[l:key] = ""
-            endif
-        endif
-        return g:scm_cache[l:key]
-    endfun
-    set statusline+=%{ScmInfo()}             " scm info
-endif
-set statusline+=%h%1*%m%r%w%0*               " flags
-set statusline+=\[%{strlen(&ft)?&ft:'none'}, " filetype
-set statusline+=%{&encoding},                " encoding
-set statusline+=%{&fileformat}]              " file format
-set statusline+=%=                           " right align
-set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 
 " }}}
 
@@ -258,26 +281,22 @@ endif
 " Set map leader to ,
 let mapleader = ","
 
-imap <C-l> <Space>=><Space>
+"imap <C-l> <Space>=><Space>
 nmap <C-P> :tabp<CR>
+nmap <C-N> :tabn<CR>
 noremap <silent> <C-z> :undo<CR>
 noremap <silent> <C-O> :FuzzyFinderMruFile<CR>
 noremap <silent> <F9> :NERDTreeToggle<CR>
+noremap <Leader>n :NERDTreeToggle<CR>
+map <leader>nh :nohls <CR>
 noremap <Leader>res :call <SID>Restart()<CR>
 noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
-" Spell check
-noremap <silent> <F1> z=
-" Spell Check (Reverse)
-noremap <silent> <F2> zw
-" Add word to word list
-noremap <silent> <F3> zg
-" Remove word from word list
-noremap <silent> <F4> zug
 " Split Window Movement
 map <F6> :wincmd w<CR> imap <F6> <c-[>:wincmd w<CR> map <S-F6> :wincmd W<CR> imap <S-F6> <c-[>:wincmd W<CR>
 " Setup mini ide for a project of mine
 noremap <silent> <F5> :call Mideo()<CR>
-noremap <Leader>s :call Sass()<CR>
+noremap <Leader>st :call Stage5()<CR>
+noremap <Leader>sa :call Sass()<CR>
 " Reformat everything
 noremap <Leader>gq gggqG
 " Reformat paragraph
@@ -289,18 +308,148 @@ noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
 " Don't make a # force column zero.
 inoremap # X<BS>#
 noremap <Leader>rr :w\|!ruby %<cr>
+noremap <Leader>rb :w\|!bash %<cr>
 noremap <Leader>xd :w\|!xrdb -load ~/.Xdefaults %<cr>
 noremap <Leader>p :set paste<CR>
 noremap <Leader>nu :set nonumber<CR>
+noremap <Leader>sp :set spell<CR>
+noremap <Leader>nsp :set nospell<CR>
 noremap <Leader>pp :s/:/ /g<CR>
 noremap <Leader>cache :call ClearCache()<CR>
 noremap <Leader>ac :AutoCloseToggle<CR>
+noremap <Leader>ne :NeoComplCacheEnable<CR>
 noremap :close :bd!<CR>
 " Quick sudo saving from tpope
 command! -bar -nargs=0 SudoW :silent exe "write !sudo tee % >/dev/null" | silent edit!
+noremap <Leader>su :SudoW<CR>
+
+" Plugin key-mappings.
+imap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
+smap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
+nmap <silent><C-e>     <Plug>(neocomplcache_keyword_caching)
+imap <expr><silent><C-e>     pumvisible() ? "\<C-e>" : "\<Plug>(neocomplcache_keyword_caching)"
 " }}}
 
 " {{{ Functions
+function! StatuslineGitBranch()
+    if has("eval")
+        let g:scm_cache = {}
+        fun! ScmInfo()
+            let l:key = getcwd()
+            if ! has_key(g:scm_cache, l:key)
+                if (isdirectory(getcwd() . "/.git"))
+                    let g:scm_cache[l:key] = "[" . substitute(readfile(getcwd() . "/.git/HEAD", "", 1)[0],
+                                \ "^.*/", "", "") . "] "
+                else
+                    let g:scm_cache[l:key] = ""
+                endif
+            endif
+            return g:scm_cache[l:key]
+        endfun
+        let b:statusline_git_branch = ScmInfo() 
+    endif
+    return b:statusline_git_branch 
+endfunction
+
+"return the syntax highlight group under the cursor ''
+function! StatuslineCurrentHighlight()
+    let name = synIDattr(synID(line('.'),col('.'),1),'name')
+    if name == ''
+        return ''
+    else
+        return '[' . name . ']'
+    endif
+endfunction
+
+"recalculate the trailing whitespace warning when idle, and after saving
+autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
+
+"return '[\s]' if trailing white space is detected
+"return '' otherwise
+function! StatuslineTrailingSpaceWarning()
+    if !exists("b:statusline_trailing_space_warning")
+        if search('\s\+$', 'nw') != 0
+            let b:statusline_trailing_space_warning = '[\s]'
+        else
+            let b:statusline_trailing_space_warning = ''
+        endif
+    endif
+    return b:statusline_trailing_space_warning
+endfunction
+
+"return '[&et]' if &et is set wrong
+"return '[mixed-indenting]' if spaces and tabs are used to indent
+"return an empty string if everything is fine
+function! StatuslineTabWarning()
+    if !exists("b:statusline_tab_warning")
+        let tabs = search('^\t', 'nw') != 0
+        let spaces = search('^ ', 'nw') != 0
+
+        if tabs && spaces
+            let b:statusline_tab_warning =  '[mixed-indenting]'
+        elseif (spaces && !&et) || (tabs && &et)
+            let b:statusline_tab_warning = '[&et]'
+        else
+            let b:statusline_tab_warning = ''
+        endif
+    endif
+    return b:statusline_tab_warning
+endfunction
+
+"return a warning for "long lines" where "long" is either &textwidth or 80 (if
+"no &textwidth is set)
+"
+"return '' if no long lines
+"return '[#x,my,$z] if long lines are found, were x is the number of long
+"lines, y is the median length of the long lines and z is the length of the
+"longest line
+function! StatuslineLongLineWarning()
+    if !exists("b:statusline_long_line_warning")
+        let long_line_lens = s:LongLines()
+
+        if len(long_line_lens) > 0
+            let b:statusline_long_line_warning = "[" .
+                        \ '#' . len(long_line_lens) . "," .
+                        \ 'm' . s:Median(long_line_lens) . "," .
+                        \ '$' . max(long_line_lens) . "]"
+        else
+            let b:statusline_long_line_warning = ""
+        endif
+    endif
+    return b:statusline_long_line_warning
+endfunction
+
+"return a list containing the lengths of the long lines in this buffer
+function! s:LongLines()
+    let threshold = (&tw ? &tw : 80)
+    let spaces = repeat(" ", &ts)
+
+    let long_line_lens = []
+
+    let i = 1
+    while i <= line("$")
+        let len = strlen(substitute(getline(i), '\t', spaces, 'g'))
+        if len > threshold
+            call add(long_line_lens, len)
+        endif
+        let i += 1
+    endwhile
+
+    return long_line_lens
+endfunction
+
+"find the median of the given array of numbers
+function! s:Median(nums)
+    let nums = sort(a:nums)
+    let l = len(nums)
+
+    if l % 2 == 1
+        let i = (l-1) / 2
+        return nums[i]
+    else
+        return (nums[l/2] + nums[(l/2)-1]) / 2
+    endif
+endfunction
 
 command! -nargs=0 RDocPreview call RDocRenderBufferToPreview()
 
@@ -408,6 +557,12 @@ if version >= 700
     noremap <silent> gl :call MRUTab()<Cr>
 endif
 
+function Stage5()
+    chdir /home/gregf/code/active/athenry/
+    open TODO
+    NERDTreeFromBookmark athenry
+endfunction
+
 function Mideo()
     chdir /home/gregf/code/active/mideo/
     open TODO
@@ -464,6 +619,9 @@ if has("autocmd")
     autocmd BufEnter * syntax sync fromstart
 
     autocmd BufWritePre *  :call <SID>UpdateRcHeader()
+    
+    "recalculate the tab warning flag when idle and after writing
+    autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
 
     autocmd BufWritePre .Xdefaults :!xrdb -load ~/.Xdefaults
 
@@ -495,7 +653,7 @@ if has("autocmd")
                     \		|	setf perl
                     \		| endif
 
-    autocmd BufNewFile *.pl	set noai | execute "normal a
+    autocmd BufNewFile *.pl,*.plx set noai | execute "normal a
                 \#!/usr/bin/perl -W\<CR>
                 \# $Id\$\<CR>
                 \\<CR>
@@ -507,12 +665,12 @@ if has("autocmd")
                 \<!DOCTYPE html PUBLIC \"-//W3C//XHTML 1.0 Transitional//EN\">\<CR>
                 \\<CR>
                 \<html lang=\"en-US\" xml:lang=\"en-US\" xmlns=\"http://www.w3.org/1999/XHTML\">\<CR>
-                \	<head>\<CR>
-                \		<title></title>\<CR>
-                \		<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\<CR>
-                \	</head>\<CR>
-                \	<body>\<CR>
-                \	</body>\<CR>
+                \<head>\<CR>
+                \<title></title>\<CR>
+                \<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\<CR>
+                \</head>\<CR>
+                \<body>\<CR>
+                \</body>\<CR>
                 \</html>" | set ai
 
     "ruby

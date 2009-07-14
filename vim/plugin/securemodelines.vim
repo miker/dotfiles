@@ -1,8 +1,7 @@
 " vim: set sw=4 sts=4 et ft=vim :
 " Script:           securemodelines.vim
-" Version:          20070518
-" Author:           Ciaran McCreesh <ciaranm@ciaranm.org>
-" Homepage:         http://ciaranm.org/tag/securemodelines
+" Author:           Ciaran McCreesh <ciaran.mccreesh at googlemail.com>
+" Homepage:         http://github.com/ciaranm/securemodelines
 " Requires:         Vim 7
 " License:          Redistribute under the same terms as Vim itself
 " Purpose:          A secure alternative to modelines
@@ -40,7 +39,7 @@ if (! exists("g:secure_modelines_leave_modeline"))
         set nomodeline
         if g:secure_modelines_verbose
             echohl WarningMsg
-            echomsg "Forcibly disabling internal modelines for securemodelines.vim"
+            echo "Forcibly disabling internal modelines for securemodelines.vim"
             echohl None
         endif
     endif
@@ -62,7 +61,7 @@ fun! <SID>DoOne(item) abort
             exec "setlocal " . a:item
         elseif g:secure_modelines_verbose
             echohl WarningMsg
-            echomsg "Ignoring '" . a:item . "' in modeline"
+            echo "Ignoring '" . a:item . "' in modeline"
             echohl None
         endif
     endif
@@ -93,7 +92,7 @@ fun! <SID>CheckVersion(op, ver) abort
 endfun
 
 fun! <SID>DoModeline(line) abort
-    let l:matches = matchlist(a:line, '\%(\S\@<!\%(vi\|vim\([<>=]\?\)\([0-9]\+\)\?\)\|\sex\):\s*set\?\s\+\([^:]\+\):\S\@!')
+    let l:matches = matchlist(a:line, '\%(\S\@<!\%(vi\|vim\([<>=]\?\)\([0-9]\+\)\?\)\|\sex\):\s\+set\?\s\+\([^:]\+\):\S\@!')
     if len(l:matches) > 0
         let l:operator = ">"
         if len(l:matches[1]) > 0
