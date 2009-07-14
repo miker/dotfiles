@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Mon 29 Jun 2009 10:31:27 PM EDT
+# Modified: Sun 12 Jul 2009 07:30:15 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -109,10 +109,11 @@ case `uname` in
             alias bashrc='sudo vim /etc/paludis/bashrc'
             alias df='df -hT'
             alias pq='paludis -q'
+            alias lf='paludis --contents'
+            alias ex='paludis --executables'
 
             export PALUDIS_RESUME_DIR="${HOME}"/.resume-paludis
-            export PALUDIS_OPTIONS="--resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX --show-reasons summary
-            --log-level warning --show-use-descriptions all --continue-on-failure if-satisfied --dl-reinstall if-use-changed --dl-reinstall-scm weekly --multitask"
+            export PALUDIS_OPTIONS="--resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX --show-reasons summary --log-level warning --show-use-descriptions all --continue-on-failure if-satisfied --dl-reinstall if-use-changed --dl-reinstall-scm weekly"
             export RECONCILIO_OPTIONS="--continue-on-failure if-satisfied"
 
             function paludis-scm {
@@ -360,6 +361,11 @@ alias installed='qlist -I | most'
 alias lg='ls | grep -i $1'
 alias n="nitrogen ~/media/images/wallpaper/"
 alias grm='git rm $(git ls-files --deleted)'
+alias encrypt="gpg -e -r Greg"
+alias decrypt="gpg -d -r Greg"
+alias tmux="tmux -2"
+alias tmr="tmux attach-session"
+
 
 # }}}
 
