@@ -1,0 +1,8 @@
+(if
+    (is (window_name) "K3b - The CD and DVD Kreator")
+    (begin
+       (set_workspace 8)
+       (maximize)
+    )
+)
+

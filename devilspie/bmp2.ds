@@ -1,0 +1,8 @@
+(if
+    (is (window_name) "BMP")
+    (begin
+       (set_workspace 6)
+       (geometry "980x968+5+25")
+    )
+)
+

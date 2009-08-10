@@ -1,0 +1,8 @@
+(if
+    (is (window_name) "Miro")
+    (begin
+       (set_workspace 7)
+       (maximize)
+    )
+)
+

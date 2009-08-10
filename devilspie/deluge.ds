@@ -1,0 +1,8 @@
+(if
+    (is (window_name) "Deluge")
+    (begin
+        (set_workspace 6)
+        (maximize)
+    )
+)
+

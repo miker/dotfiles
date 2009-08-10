@@ -1,0 +1,6 @@
+(if
+        (is (application_name) "Kopete")
+    (begin
+        (set_workspace 3)
+    )
+)

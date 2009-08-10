@@ -1,0 +1,8 @@
+(if
+    (and
+       (matches (window_name) "Run program")
+    )
+    (begin
+      (geometry "+290+809")
+    )
+)

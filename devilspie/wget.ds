@@ -1,0 +1,8 @@
+(if
+    (is (window_name) "wget")
+    (begin
+       (set_workspace 9)
+       (geometry "500x200+300+300")
+
+    )
+)

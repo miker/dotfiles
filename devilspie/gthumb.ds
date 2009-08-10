@@ -1,0 +1,9 @@
+(if
+    (and
+        (is (window_name) "gthumb")
+    )
+    (begin
+        (set_workspace 4)
+        (maximize)
+    )
+)
