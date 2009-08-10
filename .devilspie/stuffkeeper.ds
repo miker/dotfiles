@@ -1,8 +1,0 @@
-(if
-    (is (window_name) "StuffKeeper")
-    (begin
-       (set_workspace 10)
-       (maximize)
-    )
-)
-

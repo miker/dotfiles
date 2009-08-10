@@ -1,8 +1,0 @@
-(if
-    (is (window_name) "KTorrent")
-    (begin
-       (set_workspace 8)
-       (maximize)
-    )
-)
-

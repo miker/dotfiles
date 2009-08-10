@@ -1,9 +1,0 @@
-(if
-    (and
-        (matches (window_name) ".?Iceweasel")
-    )
-    (begin
-       (set_workspace 2)
-       (maximize)
-    )
-)

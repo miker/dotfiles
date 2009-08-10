@@ -1,9 +1,0 @@
-(if
-    (and
-        (matches (window_name) ".DownThemAll!")
-    )
-    (begin
-        (set_workspace 9)
-        (maximize)
-    )
-)

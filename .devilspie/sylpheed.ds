@@ -1,9 +1,0 @@
-(if
-    (and
-        (matches (window_name) "Sylpheed-Claws?.")
-    )
-    (begin
-        (set_workspace 3)
-	(center)
-    )
-)

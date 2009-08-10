@@ -1,8 +1,0 @@
-(if
-    (and
-        (matches (window_name) "screen")
-    )
-    (begin
-        (maximize)
-    )
-)

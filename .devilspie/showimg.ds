@@ -1,9 +1,0 @@
-(if
-    (and
-        (is (window_name) "showimg")
-    )
-    (begin
-        (set_workspace 4)
-	(center)
-    )
-)

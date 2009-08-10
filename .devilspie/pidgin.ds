@@ -1,8 +1,0 @@
-(if
-    (and
-        (matches (window_name) "Buddy List")
-    )
-    (begin
-      (set_workspace 3)
-    )
-)

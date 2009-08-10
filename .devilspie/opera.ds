@@ -1,9 +1,0 @@
-(if
-    (and
-        (matches (window_name) ".?Opera")
-    )
-    (begin
-       (set_workspace 2)
-       (geometry "980x968+5+25")
-    )
-)
