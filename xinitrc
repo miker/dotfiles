@@ -2,21 +2,26 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.xinitrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Sat 27 Jun 2009 08:02:06 PM EDT
+# Modified: Fri 07 Aug 2009 10:07:29 PM EDT
 # ----------------------------------------------------------------------------
 
 # Set your Default Window Manager
 DEFAULTWM='awesome'
+#DEFAULTWM='subtle -c ~/.config/subtle/subtle.rb'
+
 
 # Set some enviroment varibles
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin
 export TMP=$HOME/.tmp
 export TMDIR=$TMP
-export TERMCMD=/usr/bin/xterm
+export TERMCMD=/usr/bin/urxvt
 export BROWSER=/usr/bin/firefox
-export TERMINAL=/usr/bin/xterm
+export TERMINAL=$TERMCMD
 export GTK2_RC_FILES=$HOME/.gtkrc-2.0
 export MOZILLA_NEWTYPE=tab
+RXVT_SOCKET="$HOME/.tmp/rxvt-unicode"
+userresources=$HOME/.Xresources
+usermodmap=$HOME/.Xmodmap
 
 unclutter -idle 30 -reset -root &
 
@@ -26,8 +31,17 @@ xset -b -bc +dpms r rate 250 50 &
 setxkbmap -option terminate:ctrl_alt_bksp
 
 # Load Xdefaults
-xrdb -load ~/.Xdefaults &
-xmodmap ~/.Xmodmap &
+if [ -f "$userresources" ]; then
+if [ -x /usr/bin/cpp ] ; then
+xrdb -merge "$userresources"
+  else
+xrdb -nocpp -merge "$userresources"
+  fi
+fi
+ 
+if [ -f "$usermodmap" ]; then
+    xmodmap "$usermodmap"
+fi
 
 # Disable repeat for multimediakeys
 xset -r 129 -r 231 -r 198 -r 236 -r 160 &
@@ -58,14 +72,13 @@ autocutsel -s PRIMARY -buttonup -fork &
 
 xsetroot -cursor_name arrow &
 
-RXVT_SOCKET="$HOME/.tmp/rxvt-unicode"
 urxvtd -q -o -f &
 
 # Execute window manager into background
 exec $DEFAULTWM & wmpid=$!
     nitrogen --restore &
-    conky &
-    nice -n19 ${BROWSER} 
+    conky -d &
+    nice -n19 ${BROWSER} & 
     nice -n19 gpodder &
-    xsetroot -cursor_name arrow &
+    orage &
 wait $wmpid
