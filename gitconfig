@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.gitconfig
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Sat 27 Jun 2009 07:46:35 PM EDT
+# Modified: Fri 07 Aug 2009 09:37:00 PM EDT
 # ----------------------------------------------------------------------------
 
 [user]
@@ -51,7 +51,8 @@
     gc = clean -f
     d = diff
     pu = !"git fetch origin -v; git fetch upstream -v; git merge upstream/master"
-    md = clone git:mideo.git mideo
+    mideo = clone git:mideo.git mideo
+    athenry = clone git:athenry.git athenry
     gitosis = clone git:gitosis-admin.git gitosis-admin 
     code = clone git@github.com:gregf/scripts.git bin
     dotfiles = clone git@github.com:gregf/dotfiles.git
@@ -60,6 +61,7 @@
     gr = reset
     rev = revert HEAD
     count = shortlog -s -n
+    tar = !"git-archive --format tar master --output"
 [apply]
     #whitespace = nowarn
 [merge]
@@ -67,7 +69,7 @@
 [core]
     excludesfile = /home/gregf/.gitignore
     editor = vim
-    pager = most
+    pager = most +s +u +'/---'
     filemode = true
     bare = false
     logallrefupdates = true
