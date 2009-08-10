@@ -6,3 +6,6 @@ mutt/imap.rc
 lftp/transfer_log
 lftp/rl_history
 lftp/cwd_history
+vim/spellfile.add
+vim/spellfile.add.spl
+zsh/cache/*
