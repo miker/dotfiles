@@ -1,5 +1,5 @@
 "============================================================================
-"File:        ruby.vim
+"File:        php.vim
 "Description: Syntax checking plugin for syntastic.vim
 "Maintainer:  Martin Grenfell <martin_grenfell at msn dot com>
 "License:     This program is free software. It comes without any warranty,
@@ -9,19 +9,18 @@
 "             See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 "============================================================================
-if exists("loaded_ruby_syntax_checker")
+if exists("loaded_php_syntax_checker")
     finish
 endif
-let loaded_ruby_syntax_checker = 1
+let loaded_php_syntax_checker = 1
 
-"bail if the user doesnt have ruby installed
-if !executable("ruby")
+"bail if the user doesnt have php installed
+if !executable("php")
     finish
 endif
 
-function! SyntaxCheckers_ruby_GetLocList()
-    let makeprg = 'ruby -w -c %'
-    let errorformat =  '%-GSyntax OK,%E%f:%l: syntax error\, %m,%Z%p^,%W%f:%l: warning: %m,%Z%p^,%-C%.%#'
-
+function! SyntaxCheckers_php_GetLocList()
+    let makeprg = "php -l %"
+    let errorformat='%-GNo syntax errors detected in%.%#,%-GErrors parsing %.%#,%-G\s%#,%EParse error: syntax error\, %m in %f on line %l'
     return SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
 endfunction
