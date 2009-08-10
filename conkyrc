@@ -38,8 +38,6 @@ ${color #e0f0aa}File Systems: ${hr 1}${color}
  ${color}${fs_used /storage/} ${color #f2ce94}Used Of ${color}${fs_size /storage/}
 ${color #e0f0aa}Temperatures: ${hr 1}${color}
  ${color #f2ce94}CPU: ${color}${hwmon temp 2} ${color}- ${color #f2ce94}MB: ${color}${hwmon temp 1} ${color}- ${color #f2ce94}GPU: ${color}${nvidia temp}
-${color #e0f0aa}Weather: ${hr 1}${color}
-${color}${execi 900 ~/code/bin/forecast/forecast.rb}
 ${color #e0f0aa}Top Processes: ${hr 1}${color}
 ${color #f2ce94} Name            PID    CPU%   MEM%
 ${color} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
