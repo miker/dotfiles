@@ -6,6 +6,8 @@ defaults:
 gems:
 - name: giraffesoft-trample
 - name: rails
+- name: chriseppstein-compass-validator
+- name: chriseppstein-compass
 - name: patron
 - name: coderay
 - name: passenger
@@ -13,8 +15,8 @@ gems:
 - name: thor
 - name: mojombo-jekyll
 - name: haml
-- name: haml-edge,
-- name: justinfrench-formtastic,
+- name: haml-edge
+- name: justinfrench-formtastic
 - name: unicode
 - name: syntax
 - name: what_methods
@@ -27,6 +29,7 @@ gems:
 - name: will_paginate
 - name: wirble
 - name: vlad
+- name: yui-compressor
 - name: thoughtbot-shoulda
 - name: thoughtbot-factory_girl
 - name: notahat-machinist
