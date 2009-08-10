@@ -2,13 +2,15 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Mon 13 Jul 2009 09:06:34 PM EDT
+" Modified: Sun 26 Jul 2009 03:45:59 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
 
 " Turn Off word-wrapping
 set wrap
+" autoident
+set autoindent
 " Turn off backups
 set nobackup
 " Turn off swapfile
@@ -38,7 +40,7 @@ set ignorecase
 " Auto indent
 set autoindent
 " No startup messages
-set shm+=Im
+set shm+=atmI
 " Show matching brackets
 set showmatch
 " Temporary directory
@@ -58,7 +60,7 @@ set showcmd
 " Nice big viminfo file
 set viminfo='1000,f1,:1000,/1000
 " History size
-set history=900
+set history=1000
 " Default fileformat
 set fileformat=unix
 " Display list of matching files for completion
@@ -81,18 +83,15 @@ set printoptions+=syntax:y,number:y
 set nofsync
 " start the scrolling three lines before the border
 set scrolloff=3
-" Don't prompt me for crap
-set shortmess=atI
 " ruler
 set ruler
 " ignore these in auto complete
 set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.git,.info,.aux,.log,.dvi,.bbl,.out
-set showcmd
 set cmdheight=2
 set showtabline=1               " display tabbar
 " Set some global options for spell check
 set spelllang=en_us
-set spellfile=~/.vim/spellfile.add
+set spellfile=~/.vim/spell/spellfile.add
 "display tabs and trailing spaces
 "set list
 "set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
@@ -137,7 +136,7 @@ endif
 " }}}
 
 " {{{ Enable folding
-set foldenable
+set nofoldenable
 set foldmethod=marker
 "set foldlevelstart=0
 set foldnestmax=3       "deepest fold is 3 levels
@@ -224,6 +223,7 @@ set statusline+=%y      "filetype
 set statusline+=%r      "read only flag
 set statusline+=%m      "modified flag
 
+" display current git branch
 set statusline+=%{StatuslineGitBranch()}
 
 "display a warning if &et is wrong, or we have mixed-indenting
