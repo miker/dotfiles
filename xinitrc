@@ -2,7 +2,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.xinitrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Fri 07 Aug 2009 10:07:29 PM EDT
+# Modified: Mon 17 Aug 2009 01:54:04 PM EDT
 # ----------------------------------------------------------------------------
 
 # Set your Default Window Manager
@@ -77,8 +77,8 @@ urxvtd -q -o -f &
 # Execute window manager into background
 exec $DEFAULTWM & wmpid=$!
     nitrogen --restore &
-    conky -d &
-    nice -n19 ${BROWSER} & 
+    nice -n10 ${BROWSER} & 
     nice -n19 gpodder &
     orage &
+    conky -d &
 wait $wmpid
