@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-%w{rubygems irb/completion irb/ext/save-history wirble open-uri color hpricot what_methods find bond bond/completion}.each { |lib| require lib }
+%w{rubygems irb/completion irb/ext/save-history hirb wirble open-uri color hpricot what_methods find bond bond/completion}.each { |lib| require lib }
 
 Wirble.init
 Wirble.colorize

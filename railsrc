@@ -1,3 +1,4 @@
+Hirb::View.enable
 rails_env = ENV['RAILS_ENV']
 project = File.basename(Dir.pwd)
  
