@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.zshrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Sun 12 Jul 2009 07:30:15 PM EDT
+# Modified: Mon 24 Aug 2009 07:12:08 PM EDT
 # ----------------------------------------------------------------------------
 
 # {{{ Clear screen on logout
@@ -111,6 +111,7 @@ case `uname` in
             alias pq='paludis -q'
             alias lf='paludis --contents'
             alias ex='paludis --executables'
+            alias puu='paludis --permit-unsafe-uninstalls -u'
 
             export PALUDIS_RESUME_DIR="${HOME}"/.resume-paludis
             export PALUDIS_OPTIONS="--resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX --show-reasons summary --log-level warning --show-use-descriptions all --continue-on-failure if-satisfied --dl-reinstall if-use-changed --dl-reinstall-scm weekly"
@@ -191,12 +192,6 @@ export MPD_PORT="6600"
 export GIT_AUTHOR_EMAIL="netzdamon@gmail.com"
 export GIT_AUTHOR_NAME="Greg Fitzgerald"
 export GIT_COMMITTER_EMAIL=$GIT_AUTHOR_EMAIL
-
-# Set by rip
-RIPDIR=/home/gregf/.rip
-RUBYLIB="$RUBYLIB:$RIPDIR/active/lib"
-PATH="$PATH:$RIPDIR/active/bin"
-export RIPDIR RUBYLIB PATH
 
 # Some settings for autotest
 export AUTOFEATURE="true" 
@@ -304,6 +299,7 @@ alias wp="feh --bg-scale"
 alias wp="~/code/bin/wallpaper/wallpaper.rb"
 alias m="nice -n1 mplayer"
 alias ml="nice -n1 mplayer -loop 0"
+alias mls="nice -n1 mplayer -loop 0 -shuffle"
 alias mn="nice -n1 mplayer -nosound"
 alias e="gvim"
 alias v="vim"
@@ -347,7 +343,6 @@ alias lsnoext="ls | grep -v '\.'"
 alias gis="git status | grep --color=always '^[^a-z]\+\(new file:\|modified:\)' | cut -d'#' -f2-"
 alias lk='lynx -dump http://kernel.org/kdist/finger_banner'
 alias dosbox='dosbox -conf ~/.dosbox.conf -fulscreen'
-alias ports='lsof -i'
 alias vim="vim -p"
 alias g='grep -Hn --color=always'
 alias ra="echo 'awful.util.restart()' | awesome-client -"
@@ -365,6 +360,8 @@ alias encrypt="gpg -e -r Greg"
 alias decrypt="gpg -d -r Greg"
 alias tmux="tmux -2"
 alias tmr="tmux attach-session"
+alias most="most +s +u"
+alias ri="ri -Tf ansi"
 
 
 # }}}
@@ -383,8 +380,10 @@ autoload -U zmv
 
 # Follow GNU LS_COLORS
 zmodload -i zsh/complist
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*:*:kill:*' list-colors '=%*=01;31'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# insert all expansions for expand completer
+zstyle ':completion:*:expand:*' keep-prefix true tag-order all-expansions
 
 compctl -g '*.Z *.gz *.tgz' + -g '*' zcat gunzip tar open
 compctl -g '*.tar.Z *.tar.gz *.tgz *.tar.bz2' + -g '*' tar bzip2 open
@@ -395,19 +394,57 @@ compctl -g '*.(divx|DIVX|m4v|M4V|wmv|WMV|avi|AVI|mpg|mpeg|MPG|MPEG|WMV|wmv|mov|M
 compctl -g '*.(pdf|PDF|ps|PS|tiff|TIFF)' + -g '*(-/)' evince acroread xpdf epdfview
 compctl -g '*.(jpg|JPG|jpeg|JPEG|gif|GIF|tiff|TIFF|png|PNG|tga|TGA)' + -g '*(-/)' feh gthumb xv f-spot gqview
 
+# SSH Completion
+zstyle ':completion:*:scp:*' tag-order files 'hosts:-domain:domain'
+zstyle ':completion:*:scp:*' group-order files all-files users hosts-domain hosts-host hosts-ipaddr
+zstyle ':completion:*:ssh:*' tag-order 'hosts:-domain:domain'
+zstyle ':completion:*:ssh:*' group-order hosts-domain hosts-host users hosts-ipaddr
+
+# highlight parameters with uncommon names
+zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
+ 
+# highlight aliases
+zstyle ':completion:*:aliases' list-colors "=*=$color[green]"
+ 
+# highlight the original input.
+zstyle ':completion:*:original' list-colors "=*=$color[red];$color[bold]"
+ 
+# highlight words like 'esac' or 'end'
+zstyle ':completion:*:reserved-words' list-colors "=*=$color[red]"
+
+# With commands like `rm' it's annoying if one gets offered the same filename
+# again even if it is already on the command line. To avoid that:
+zstyle ':completion:*:rm:*' ignore-line yes
+
+# Manpages, ho!
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
+
+# This makes rake autocomplete happy
+zstyle ':completion:*' matcher-list 'r:|[:]=*'
+
+## add colors to processes for kill completion
+zstyle ':completion:*:*:kill:*' verbose yes
+zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#) #([^ ]#)*=$color[cyan]=$color[yellow]=$color[green]"
+
+# Make the nice with git completion and others
+zstyle ':completion::*:(git|less|rm|vim|most)' ignore-line true
+
 # Select Prompt
-zstyle ':completion:*' menu select=2
+zstyle ':completion:*' menu select
 
 # Expansion options
 zstyle ':completion:*' completer _complete _list _oldlist _expand _ignored _match _correct _approximate _prefix
-#zstyle ':completion:*' completer _complete _prefix
+zstyle ':completion:*' completer _complete _prefix
 zstyle ':completion::prefix-1:*' completer _complete
 zstyle ':completion:incremental:*' completer _complete _correct
 zstyle ':completion:predict:*' completer _complete
 
 # Completion caching
-zstyle ':completion::complete:*' use-cache 1
-zstyle ':completion::complete:*' cache-path ~/.zcompcache/$HOST
+# Cache
+#zstyle ':completion:*' use-cache off
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
 
 # Expand partial paths
 zstyle ':completion:*' expand 'yes'
@@ -420,7 +457,7 @@ zstyle ':completion::complete:*' '\'
 
 # Use menuselection for pid completion
 zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*' force-list always
+#zstyle ':completion:*:kill:*' force-list always
 zstyle ':completion:*:processes' command 'ps -au$USER'
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;32'
 
@@ -430,22 +467,25 @@ zstyle ':completion::complete:*:tar:directories' file-patterns '*~.*(-/)'
 # Don't complete backup files as executables
 zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
 
+# formatting and messages
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:descriptions' format "- %{${fg[yellow]}%}%d%{${reset_color}%} -"
+zstyle ':completion:*:messages' format '%d'
+zstyle ':completion:*:warnings' format 'No matches for: %d'
+zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' list-separator '#'
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*:prefix:*' add-space true
+
 # Separate matches into groups
 zstyle ':completion:*:matches' group 'yes'
 
-# With commands like rm, it's annoying if you keep getting offered the same
-# file multiple times. This fixes it. Also good for cp, et cetera..
-#zstyle ':completion:*:rm:*' ignore-line yes
-#zstyle ':completion:*:cp:*' ignore-line yes
-
-# Describe each match group.
+## Describe each match group.
 zstyle ':completion:*:descriptions' format "%B---- %d%b"
 
-# Messages/warnings format
-zstyle ':completion:*:messages' format '%B%U---- %d%u%b'
-zstyle ':completion:*:warnings' format '%B%U---- no match for: %d%u%b'
-
-# Describe options in full
+## Describe options in full
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:options' auto-description '%d'
 
@@ -581,7 +621,7 @@ function date {
         # format: saturday, december 21, 2002 06:46:38 pm est
         command date +"%a, %b %e %Y %I:%M:%S%P %Z"
     else
-        # execute real `date'
+        # execute real `date`
         command date $@
     fi
 }
@@ -691,6 +731,9 @@ function mps { /bin/ps $@ -u $USER -o pid,ppid,%cpu,%mem,command ; }
 
 function mpsu { /bin/ps -u $@ -o pid,ppid,%cpu,%mem,command ; }
 
+# $1 should be something like /dev/sdb1
+function deviceinfo { udevinfo -a -p $(udevinfo -q path -n $1) }
+
 function ech {
     chpth=`qlist -C -I -e $1`
     if [[ -n $chpth ]]; then
@@ -782,8 +825,16 @@ function fix-paludis-perms {
     pcache # see function above
 }
 
+function remove_all_gems {
+    gem list --no-versions | sed -r '/^(\*|$)/d' | xargs sudo gem uninstall 
+}
+
 function confcat {
     grep -vh '^[[:space:]]*#' "$@" | grep -v '^$'
+}
+
+function pgrep {
+    ps aux | grep $@ | grep -v grep | grep -v "pgrep" | column -t
 }
 
 function sg {
@@ -853,6 +904,23 @@ function h {
     history 0 | grep $1 
 }
 
+function ports {
+case `uname` in
+    OpenBSD)
+        sudo netstat -at | grep LISTEN
+    ;;
+    FreeBSD)
+        sudo sockstat -4 -l
+    ;;
+    Linux)
+        sudo netstat -lptu
+    ;;
+    *)
+        nmap -sT -O localhost
+    ;;
+esac
+}
+
 # Recompiles .zshrc
 src () {
     autoload -U zrecompile
@@ -898,12 +966,16 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey '^xe' edit-command-line
 bindkey '^xx' execute-named-cmd
+bindkey "^K"      kill-whole-line                      # ctrl-k
+bindkey "^A"      beginning-of-line                    # ctrl-a  
+bindkey "^E"      end-of-line                          # ctrl-e
+bindkey "^R"      history-incremental-search-backward  # ctrl-r
 
 # }}} 
 
 # {{{ Prompt
 for zshrc_snipplet in ~/.zsh/prompt/S[0-9][0-9]*[^~] ; do
-       source $zshrc_snipplet
+   source $zshrc_snipplet
 done
 if (( EUID == 0 )); then
     PROMPT=$'%{\e[01;31m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%# '
@@ -914,12 +986,13 @@ fi
 
 # {{{ Path
 script_path=(~/code/bin/conky ~/code/bin/clipboard)
-path=($path /usr/local/bin /usr/bin /bin /usr/local/bin /usr/local/sbin /usr/X11R6/bin ${HOME}/code/bin /opt/virtualbox /usr/share/texmf/bin /usr/lib/jre1.5.0_10/bin /usr/games/bin /usr/libexec/git-core $script_path ~/bin)
+path=($path /usr/local/bin /usr/bin /bin /usr/local/bin /usr/local/sbin /usr/X11R6/bin ${HOME}/code/bin /opt/virtualbox /usr/share/texmf/bin /usr/lib/jre1.5.0_10/bin /usr/games/bin /usr/libexec/git-core /opt/icedtea6-bin-1.4.1/bin /opt/sun-jre-bin-1.6.0.14/bin /opt/VirtualBox $script_path ~/bin)
 fpath=(~/.zsh/functions $fpath)
 autoload -U ~/.zsh/functions/*(:t)
-#cdpath=($cdpath ~/code/bin/)
+cdpath=($cdpath ~/code/bin/)
 if (( EUID == 0 )); then
     rootpath=(/sbin /usr/sbin /usr/local/sbin)
+    # Don't think this is an issue any longer but waiting to find out...
     # hack to fix "Can not write to history" after leaving sudo or su
     # sudo does not export enviroment vars
     #SAVEHIST=1000
