@@ -2,12 +2,13 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Sun 26 Jul 2009 03:45:59 PM EDT
+" Modified: Mon 24 Aug 2009 07:08:35 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
-
-" Turn Off word-wrapping
+" Set encoding
+set encoding=utf-8 nobomb    " BOM often causes trouble
+" Turn On word-wrapping
 set wrap
 " autoident
 set autoindent
@@ -25,8 +26,8 @@ set ts=4
 set showmode
 " Expand tabs to spaces
 set expandtab
-" Highlight search
-set hlsearch
+" highlight search matches
+set incsearch hlsearch 
 " Backup extension if on
 set backupext=.bak
 " Backups directory if on
@@ -65,14 +66,18 @@ set history=1000
 set fileformat=unix
 " Display list of matching files for completion
 set wildmode=list:longest	" Display list of matching files for completion
+" character to show that a line is wrapped
+set showbreak=> 
 " Characters to break at for line wrapping
-set breakat=\ \	!@*-+;:,.?
+set breakat=\ ^I!@*-+;:,./? 
 " Do not stay vi compatible
 set nocompatible
 " Enable wild menu
 set wildmenu
 " Smart tab
 set smarttab
+" override ignorecase when there are uppercase characters
+set smartcase 
 " Buffer updates
 set lazyredraw
 " Faster scrolling updates when on a decent connection. 
@@ -81,8 +86,6 @@ set ttyfast
 set printoptions+=syntax:y,number:y
 " improves performance -- let OS decide when to flush disk
 set nofsync
-" start the scrolling three lines before the border
-set scrolloff=3
 " ruler
 set ruler
 " ignore these in auto complete
@@ -95,6 +98,9 @@ set spellfile=~/.vim/spell/spellfile.add
 "display tabs and trailing spaces
 "set list
 "set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
+set switchbuf=usetab
+set scrolloff=2 " minlines to show around cursor
+set sidescrolloff=4 " minchars to show around cursor
 
 " {{{ Set a shell
 if has("unix")
@@ -150,8 +156,7 @@ let g:NeoComplCache_EnableAtStartup = 0
 
 let g:loaded_AutoClose = 0 
 
-let g:github_user="gregf"
-let g:github_token="c063595c9d2dca14f8115509cce8a228"
+source ~/.vim/vimrc.local
 
 " rails.vim
 
@@ -180,7 +185,6 @@ let NERDTreeQuitOnOpen=1
 let NERDTreeHighlightCursorline = 1
 let NERDTreeMapActivateNode='<CR>'
 let NERDTreeIgnore=['\.git','\.DS_Store']
-
 
 " Hightlight redundent spaces
 highlight RedundantSpaces ctermbg=red guibg=red
@@ -280,8 +284,6 @@ endif
 
 " Set map leader to ,
 let mapleader = ","
-
-"imap <C-l> <Space>=><Space>
 nmap <C-P> :tabp<CR>
 nmap <C-N> :tabn<CR>
 noremap <silent> <C-z> :undo<CR>
@@ -289,6 +291,7 @@ noremap <silent> <C-O> :FuzzyFinderMruFile<CR>
 noremap <silent> <F9> :NERDTreeToggle<CR>
 noremap <Leader>n :NERDTreeToggle<CR>
 map <leader>nh :nohls <CR>
+nmap <silent> <C-H> :silent noh<CR>
 noremap <Leader>res :call <SID>Restart()<CR>
 noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
 " Split Window Movement
@@ -328,9 +331,68 @@ imap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
 smap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
 nmap <silent><C-e>     <Plug>(neocomplcache_keyword_caching)
 imap <expr><silent><C-e>     pumvisible() ? "\<C-e>" : "\<Plug>(neocomplcache_keyword_caching)"
+
+" This group is stolen from mislav's vimrc
+" http://github.com/mislav/dotfiles/blob/master/vimrc
+
+" Format the current paragraph according to
+" the current 'textwidth' with CTRL-J:
+nmap <C-J> gqap
+vmap <C-J> gq
+imap <C-J> <C-O>gqap
+ 
+" Delete line with CTRL-K
+map <C-K> dd
+imap <C-K> <C-O>dd
+ 
+" Use CTRL-S for saving, also in Insert mode
+noremap <C-S> :update<CR>
+vnoremap <C-S> <C-C>:update<CR>
+inoremap <C-S> <C-O>:update<CR>
+ 
+" CTRL-A is Select all
+noremap <C-A> gggH<C-O>G
+inoremap <C-A> <C-O>gg<C-O>gH<C-O>G
+cnoremap <C-A> <C-C>gggH<C-O>G
+onoremap <C-A> <C-C>gggH<C-O>G
+snoremap <C-A> <C-C>gggH<C-O>G
+xnoremap <C-A> <C-C>ggVG
 " }}}
 
+
 " {{{ Functions
+
+function UseRubyIndent ()
+    setlocal tabstop=2
+    setlocal softtabstop=2
+    setlocal shiftwidth=2
+    setlocal expandtab
+    setlocal autoindent
+
+    imap <buffer> <CR> <C-R>=PMADE_RubyEndToken()<CR>
+endfunction
+
+" Shift-Enter inserts 'end' for ruby scripts
+" Copyright (C) 2005-2007 pmade inc. (Peter Jones pjones@pmade.com)
+function PMADE_RubyEndToken ()
+    let current_line = getline('.')
+    let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?\(\s*#.*\)\?$'
+    let stuff_without_do = '^\s*\<\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)\>'
+    let with_do = '\<do\>\s*\(|\(,\|\s\|\w\)*|\s*\)\?\(\s*#.*\)\?$'
+ 
+    if getpos('.')[2] < len(current_line)
+        return "\<CR>"
+    elseif match(current_line, braces_at_end) >= 0
+        return "\<CR>}\<C-O>O"
+    elseif match(current_line, stuff_without_do) >= 0
+        return "\<CR>end\<C-O>O"
+    elseif match(current_line, with_do) >= 0
+        return "\<CR>end\<C-O>O"
+    else
+        return "\<CR>"
+    endif
+endfunction
+ 
 function! StatuslineGitBranch()
     if has("eval")
         let g:scm_cache = {}
@@ -619,6 +681,9 @@ if has("autocmd")
     autocmd BufEnter * syntax sync fromstart
 
     autocmd BufWritePre *  :call <SID>UpdateRcHeader()
+
+    " never see ^M again! (DOS text files)
+    autocmd BufRead * silent! %s/^M$//
     
     "recalculate the tab warning flag when idle and after writing
     autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
@@ -628,9 +693,8 @@ if has("autocmd")
     " For svn-commit, don't create backups
     autocmd BufRead svn-commit.tmp :setlocal nobackup
 
-    autocmd FileType html,xhtml,xml,eruby,mako,ruby,haml,yaml,erb setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2 autoindent
+    autocmd FileType html,xhtml,xml,eruby,mako,ruby,haml,yaml,erb,god,javascript call UseRubyIndent() 
     autocmd FileType css setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
-    autocmd FileType javascript setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
     autocmd FileType xslt,xml,xhtml,html set ts=2
     autocmd FileType php set ts=4 complete+=k
     autocmd BufReadPost,BufNewFile,BufRead rsnapshot.conf set noet
@@ -748,7 +812,7 @@ if has("autocmd")
         au BufRead,BufNewFile *.js.haml set ft=javascript.jquery
         au BufRead,BufNewFile *.js.erb set ft=javascript.jquery
         au BufRead,BufNewFile *.pp set ft=puppet
-        au BufRead,BufNewFile *.god set ft=ruby
+        au BufReadPost,BufNewFile,BufRead .railsrc set ft=ruby
     augroup END
 endif
 
@@ -804,11 +868,14 @@ if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt' && (&termencoding
 endif
 
 " set vim to chdir for each file
-let os = substitute(system('uname'), "\n", "", "")
-if os ==? "Linux" 
-    au BufEnter * if &ft != 'help' | silent! cd %:p:h | endif
-    set autochdir
+if exists('+autochdir')
+  set autochdir
+else
+  autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
 endif
 " }}}
+
+" Source local vimrc
+source ~/.vim/vimrc.local
 
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=120 :
