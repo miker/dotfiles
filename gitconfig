@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.gitconfig
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Fri 07 Aug 2009 09:37:00 PM EDT
+# Modified: Sun 23 Aug 2009 06:17:05 PM EDT
 # ----------------------------------------------------------------------------
 
 [user]
@@ -37,6 +37,12 @@
   thread = true
 [alias]
     co = clone
+    ignored = "!git ls-files --others --exclude-standard"
+    pending = !git --no-pager log origin/master..master && echo
+    missing = !sh -c 'git cherry "$0" | cut -sd + -f 2 | xargs "git show"'
+    conflicts = !git ls-files --unmerged | cut -c51- | sort -u | xargs $EDITOR
+    resolve = !git ls-files --unmerged | cut -c51- | sort -u | xargs git add
+    subadd = !sh -c 'git submodule add $(git config -f"$0".git/config remote.origin.url) "$0"'
     ci = commit -v -s
     commit = !git commit -v -s
     st = status
@@ -88,4 +94,8 @@
 	user = gregf
 	token = c063595c9d2dca14f8115509cce8a228
 [push]
-	default = matching
+	default = tracking
+[mirror]
+    summary = true
+[branch]
+    autosetupmerge = true
