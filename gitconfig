@@ -68,6 +68,7 @@
     rev = revert HEAD
     count = shortlog -s -n
     tar = !"git-archive --format tar master --output"
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 [apply]
     #whitespace = nowarn
 [merge]
