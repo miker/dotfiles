@@ -9,4 +9,5 @@ lftp/cwd_history
 vim/spellfile.add
 vim/spellfile.add.spl
 zsh/cache/*
-vimrc.local
+vim/vimrc.local
+mutt/aliases.rc
