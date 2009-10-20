@@ -5,6 +5,8 @@ defaults:
   fix_dependencies: false 
 gems:
 - name: giraffesoft-trample
+- name: gravtastic
+- name: ahoward-open4
 - name: rails
 - name: chriseppstein-compass-validator
 - name: chriseppstein-compass
