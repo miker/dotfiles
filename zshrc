@@ -362,6 +362,9 @@ alias tmux="tmux -2"
 alias tmr="tmux attach-session"
 alias most="most +s +u"
 alias ri="ri -Tf ansi"
+alias images='feh -d -x -F -Z $PWD'
+alias imgindex='feh -irFarial/14 -O index.jpg $PWD'
+alias wgetlist="wget -c -i"
 
 
 # }}}
@@ -989,7 +992,7 @@ script_path=(~/code/bin/conky ~/code/bin/clipboard)
 path=($path /usr/local/bin /usr/bin /bin /usr/local/bin /usr/local/sbin /usr/X11R6/bin ${HOME}/code/bin /opt/virtualbox /usr/share/texmf/bin /usr/lib/jre1.5.0_10/bin /usr/games/bin /usr/libexec/git-core /opt/icedtea6-bin-1.4.1/bin /opt/sun-jre-bin-1.6.0.14/bin /opt/VirtualBox $script_path ~/bin)
 fpath=(~/.zsh/functions $fpath)
 autoload -U ~/.zsh/functions/*(:t)
-cdpath=($cdpath ~/code/bin/)
+cdpath=($cdpath ~/code/bin/ ~/code/active)
 if (( EUID == 0 )); then
     rootpath=(/sbin /usr/sbin /usr/local/sbin)
     # Don't think this is an issue any longer but waiting to find out...
