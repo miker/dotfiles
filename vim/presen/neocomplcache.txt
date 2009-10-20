@@ -27,6 +27,8 @@ http://www.vim.org/scripts/script.php?script_id=2620
 Windowsの場合は$VIM/vimfiles/、MacやLinuxの場合は$HOME/.vim/が一般的です。
 http://github.com/Shougo/neocomplcache/tarball/master
 最近はファイルが増えてきたため、フォルダごとコピーした方がよいでしょう。
+Ver.3.00より、ディレクトリ構造が大きく変化しました。
+昔のバージョンのファイルは削除してください。
 
 そして、.vimrcで
 let g:NeoComplCache_EnableAtStartup = 1
@@ -60,15 +62,15 @@ autocomplpop.vimの良いところ
 ・一部の言語はオムニ補完にも対応
 ・情報が多い
 ・仕様が安定している
+・completefuncを登録して呼び出せる
 
 autocomplpop.vimの悪いところ
 ・カスタマイズがしづらい
 ・補完機能はVimの機能に制限されてしまう
 ・ATOK X3で暴走する
 ・日本語入力中も補完候補が出る
-・なかなか更新されない
 
-最近作者さんに時間ができたようなので、今後に期待です。
+一年ほど更新が途絶えていましたが、最近になって更新されるようになってきました。
 ただし基本的にVim標準の補完を呼び出すので、大幅な機能追加は望めないでしょう。
 あまり設定をしなくても、それなりに動作します。
 
@@ -101,14 +103,18 @@ neocomplcacheの良いところ
 ・補完機能はほとんど自前実装
 ・プラグインを追加することで拡張できる
 ・タグ補完やシンタックス補完が強力
-・毎日のように更新
+・毎週のように更新
 ・スニペットを検索できる
+・vimshellと連携できる
+・ファイル名補完やオムニ補完を統合
+・クイックマッチが便利
 
 neocomplcacheの悪いところ
 ・行数の多いバッファを開くときに重い
 ・大量のバッファを開いていると遅くなる（ことがある）
 ・開発が早いので、不安定（なことがある）
 ・内部でcompletefuncを使っている
+・クイックマッチは誤爆することがある
 ・メモリを大量に使う
 ・まだ発展途上なので、仕様変更が頻繁にある
 ・バグが多い
@@ -119,7 +125,7 @@ autocomplpopに満足できない、アルファギーク向け。
 
 安定した物が良ければ、vim.orgに置いてある物を使ってください。
 http://www.vim.org/scripts/script.php?script_id=2620
-こちらも数週間に一度は更新されると思います。
+こちらも一ヶ月に一度は更新されると思います。
 
 --------------------------------
 neocomplcacheの歴史
@@ -145,7 +151,7 @@ Linux GVim上のATOK X3でおかしくなる
 　　　　　　↓
 　　そして現在に至る……
 
-詳しくはChangeLog:で。
+詳しくはplugin/neocomplcache.vim内のChangeLog:で。
 
 --------------------------------
 neocomplcacheの代表的機能
@@ -173,7 +179,7 @@ neocomplcacheの代表的機能
 ・スニペット補完
 
 面白そうな機能をどんどん追加していたら、かなり増えてきました。
-全ての機能を把握しているのは作者くらいでしょう。
+あまりに多くの機能があるので、全てを把握しているのは作者くらいでしょう。
 
 --------------------------------
 キーワードの使用頻度によるランク付け
@@ -215,6 +221,14 @@ fuzzyfinderにインスパイア。
 <TAB>や<C-p>, <C-n>を連打しなくても、補完候補横に表示されている数値を入力するだけで補完ができます。
 ルーチンの改良により、0～99の二桁まで対応。
 よくよく調べてみると、ATOKにも同様の機能がありますね。
+自動補完の設定が有効になっていないと、非常に使いにくいです。
+最近のバージョンで改善していますが、入力によっては誤爆もあり得ます。
+
+注意：
+'completeopt'が初期値のmenuのままになっていると、
+クイックマッチマッチの候補がうまく表示されません。
+set completeopt=menuone,preview
+のように、'completeopt'にmenuoneを含めてください。
 
 --------------------------------
 ディクショナリ補完、タグ補完
@@ -267,21 +281,25 @@ Ver.2.58より、キャッシュタイミングを改善し、入力した候補
 バッファ内で../といったディレクトリ名を入力するとファイル名の補完ができます。
 autocomplpopで便利だったので、移植しました。
 特にvimshellではこれがないと生きていけません。
-自動補完に慣れてしまうと、通常のシェルの<TAB>補完が馬鹿らしくなります。
+ファイル名の自動補完に慣れてしまうと、いちいち<TAB>を入力しなければならない通常のシェルが馬鹿らしくなります。
+この機能が邪魔な場合は、g:NeoComplCache_TryFilenameCompletionの値を0にすることによって、ファイル名を自動補完しないようにできます。
 
-g:NeoComplCache_TryFilenameCompletionの値を0にすることによって、ファイル名を自動補完しないようにできます。
-ついにファイル名補完を自前実装したので、
-ワイルドカード（-のみ）や、数字によるクイックマッチが動作します。
-/で補完を続けることができるので、vimshellで使うとかなり便利です。
+ファイル名補完は自前実装したので、数字によるクイックマッチが動作します。
 ただしSmartCaseやUnderbar completionなど、一部の機能は動作しません。
 実行ファイルには'*'マークが付くので判別も容易です。
 
 手動でファイル名補完を呼び出すこともできるので、
 inoremap <expr><C-x><C-f>  neocomplcache#manual_filename_complete()
 このようにマッピングすると、標準のファイル名補完を置き換えることができます。
+補完スキップも指定できます。手動補完はスキップされません。
 
-補完スキップも指定でき、g:NeoComplCache_FilenameCompletionSkipItems以上の候補があった場合、
-自動補完はスキップされます。手動補完はスキップされません。
+Ver.2.71より、短縮ファイル名補完に対応。
+ディレクトリ名の先頭の文字を入力し、/で区切ることで簡単に補完できます。
+例：
+/hoge/piyo/hoge.vim
+を補完したい場合、
+/h/p/
+と入力するだけで、hoge.vimが候補として現れます。
 
 --------------------------------
 カーソル後方のキーワードに応じた補完
@@ -349,6 +367,9 @@ if !exists('g:NeoComplCache_OmniPatterns')
 endif
 let g:NeoComplCache_OmniPatterns['無効にしたいファイルタイプ'] = ''
 とすると、無効にできます。
+
+Ver.2.68より、Omni補完呼び出しはneocomplcacheと統合されました。
+Omni補完でもクイックマッチや補完のスキップが動作します。
 
 --------------------------------
 ローカルタグ補完
@@ -450,23 +471,41 @@ let g:NeoComplCache_EnableUnderbarCompletion = 1
 Ver.2.10にて、複雑だったソースコードを分割し、ついに補完をプラグインで拡張できるようになりました。
 他のプラグインを読み込む部分も実装したので、夢が広がります。
 プラグインの作り方については、今後ドキュメントを用意する予定ですが、
-やる気があるならばautoload/neocomplcache/syntax_complete.vimなどを読んでみてください。
-autoload/neocomplcacheディレクトリにプラグインファイルをおいておけば、補完時に自動で読み込まれます。
+やる気があるならばautoload/neocomplcache/plugin/syntax_complete.vimなどを読んでみてください。
+autoload/neocomplcache/pluginディレクトリにプラグインファイルをおいておけば、補完時に自動で読み込まれます。
+
+Ver.3.00より、プラグインを配置するディレクトリが変更されたので注意してください。
+
+--------------------------------
+補完関数
+
+Ver.3.00にて、オムニ補完とファイル名補完を分離しました。
+やる気があるならばautoload/neocomplcache/complfunc/filename_complete.vimなどを読んでみてください。
+autoload/neocomplcache/complfuncディレクトリにファイルをおいておけば、自動で読み込まれます。
+
+プラグインと補完関数の違いは、プラグインはカーソル前のキーワードに反応しますが、
+補完関数は独自に補完位置を決められるということです。
+Vim標準の補完でいうと、プラグインによる補完はキーワード補完に対応し、
+補完関数による補完は、オムニ補完やユーザ定義補完に対応します。
 
 --------------------------------
 ステータスラインにキャッシュ率を表示
 
-Ver.2.27より、keyword_completeにneocomplcache#keyword_complete#caching_percent()という関数が追加され、
+Ver.2.27より、neocomplcache#caching_percent()という関数が追加され、
 簡単にキャッシュ率を得ることが可能になりました。
 例えばステータスラインに表示すると、次のようになります。
 
-let &statusline = '%=%m%y%{"[".(&fenc!=""?&fenc:&enc).",".&ff."]"}%{"[".neocomplcache#keyword_complete#caching_percent("")."%]"} %3l,%3c %3p%%'
+let &statusline = '%=%m%y%{"[".(&fenc!=""?&fenc:&enc).",".&ff."]"}%{"[".neocomplcache#caching_percent("")."%]"} %3l,%3c %3p%%'
 
 だんだん数字が増えていくのを楽しむのも、なかなか良いものですね。
 ちなみに、このキャッシュ率は詳細キャッシュ率を表しています。
+そのバッファが全くキャッシュされていない場合、'-'となります。
 neocomplcache Ver.2.50より、ファイルを開くときにすべてのキーワードをキャッシュするようになっているので、
 キャッシュ率が0%であっても、キーワード補完は動作するので注意してください。
 このキャッシュ率が上昇するにつれて、補完候補が表示される順番が変化します。
+
+Ver.3.00より、neocomplcache#caching_percent()で呼び出せるようになりました。
+以前のneocomplcache#keyword_complete#caching_percent()は動作しないので注意してください。
 
 --------------------------------
 スニペット補完
@@ -485,9 +524,11 @@ prev_word   '^'
 #を行頭に書くとコメントで、空行は無視されます。
 snippetの後には補完するために入力する文字列、先頭に空白文字があると補完されるキーワード、
 abbrはポップアップメニューに表示される略語（省略可）、
-prev_wordは優先して補完する文脈を,で区切って''で囲んで指定します（省略可）。'^'は文の先頭という意味になります。
+prev_wordは優先して補完する文脈を,で区切って''で囲んで指定します（省略可）。ちなみに'^'は文の先頭という意味になります。
 スニペットファイルのシンタックスファイルを作成したので、それぞれの要素が色分けされます。
 詳しくはautoload/neocomplcache/snippet_completeにあるスニペット補完ファイルを参照してください。
+最近のsnipMateではシンタックスファイルが付属していますが、
+neocomplcacheが使用しているものの方が高機能なので、そちらを利用してください。
 
 snipMateと違って、外部スニペットのインクルードも使えます。
 include c
@@ -500,17 +541,16 @@ snippet     hoge
 prev_word   '^'
     `expand("%")`
 例えばこのように記述すると、現在開いているバッファ名を補完できます。
-ただしevalを用いると、補完候補を生成するときに毎回評価を行うため、副作用には十分注意してください。
+ただし補完候補を展開するときに評価を行うため、副作用には十分注意してください。
 
 簡単にスニペットファイルを編集できるように、
 :NeoComplCacheEditSnippets [filetype]というコマンドを用意しています。
 このコマンドを用いると、filetypeのスニペット補完ファイルを簡単に編集することができます。
 filetypeを省略すると、&filetypeとなります。保存すると自動的に再キャッシュされるので、さらに便利です。
 
-Ver.2.33にて、遂に改行文字に対応しました！
 imap <silent> <C-l>    <Plug>(neocomplcache_snippets_expand)
 smap <silent> <C-l>    <Plug>(neocomplcache_snippets_expand)
-のようにplugin keymappingを定義しておけば、<C-l>で改行付きのスニペットを展開できます。
+のようにplugin keymappingを定義しておけば、<C-l>でスニペットを展開できます。
 展開時にインデントもきちんとなされるので便利です。これでスニペットの自由度が増しますね。
 
 snipMate風のプレースホルダにも対応しています。
@@ -530,7 +570,6 @@ ${1:condition}はデフォルトでconditionという単語が選択された状
 
 expandするときにスニペットを解析するので、展開したスニペットのランクが上昇するようにしました。
 これで、よく使用するスニペットは補完時に上位に来るようになります。
-expandしないスニペットや評価を行うスニペットには効果がないので注意してください。
 
 vnoremapやvmap, mapはselect modeでも有効になるので、
 変なマッピングをしていると、デフォルト値の選択時に上手く文字が入力できなくなります。
@@ -547,15 +586,45 @@ let g:NeoComplCache_SnippetsDir = $HOME.'/snippets'
 imap <expr><silent><C-l>    neocomplcache#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<C-n>"
 のように設定でき、展開可能でない場合は他の機能にキーバインドを割り当てることが出来ます。
 
-展開可能なスニペットは表示が変わるようになりました。
-[Snippet]が<Snippet>に変化します。
+複数回展開が必要ななスニペットは表示が変わり、[Snippet]が<Snippet>に変化します。
 
 Ver.2.39より、スニペット名が同じスニペットを定義した場合、上書きされるようになりました。
 インクルードしたスニペットや標準のスニペットを書き換えるときに便利です。
 
 Ver.2.57より、どのファイルタイプでも読み込まれる、'_.snip'を追加しました。
 さらに、snipMate形式のスニペットファイルもそのまま読み込めます。
-ただしプレースホルダの動機には対応していませんので注意してください。
+ただしプレースホルダの同期には対応していませんので注意してください。
+
+alias hoge hogera hogehoge
+のように空白で区切って指定すると、スニペットの別名定義ができます。
+スニペット名を直接入力するときに、覚えることが簡単になるので便利です。
+
+Ver.2.76より、プレースホルダの同期を実装。
+${1}は$1のプレースホルダに同期されます。
+これでsnipMateのスニペットとの互換性も上がりました。
+即座に同期されるsnipMateと違い、次にジャンプするときに同期されるので注意。
+同期させる値には改行を含ませることはできないことにも注意してください。
+${0}は最後に展開されるので、最後に入力する部分に指定すると良いです。
+
+スニペットの一覧を表示するには:NeoComplCachePrintSnippetsコマンドを実行します。
+スニペットを忘れたときに便利。
+
+snippet ${1:trigger} ${2:description}
+${3}
+で表される、snipMateのmulti snippetにも対応。
+ただし英数字でないスニペット名は、_に変換されます。
+
+スニペット補完はVer.3.01にて、さらにパワーアップしました。
+Same filetypeや、最後に記号を含むスニペットにも対応。
+
+condition neocomplcache#plugin#snippets_complete#get_cur_text() =~ '^\s*if$'
+conditionのあとにVimScriptを書くことで、その条件に合うときだけ補完や展開が行われるようになります。
+neocomplcache#plugin#snippets_complete#get_cur_text()はカーソル前の文字列を取得する関数です。
+
+snippet div
+<div ${1:id="${2:someid\}"}>${3}</div>${4}
+プレースホルダの中にプレースホルダを書くことができます。ただし、}はエスケープしてください。
+\がエスケープ文字になっているので、\を初期値に入れるときは\\とする必要があります。
 
 --------------------------------
 自動補完のスキップ
@@ -568,16 +637,10 @@ let g:NeoComplCache_SkipInputTime = '0.1'
 値は文字列にしないと動作しないので注意。
 
 --------------------------------
-completefuncの自動呼び出し
-
-Ver.2.42より、&l:completefuncがneocomplcacheのものでない場合にも、自動的に呼び出すようにしました。
-上手く使えば他のプラグインとも連携できるかもしれません。
-
---------------------------------
 ポップアップメニューを閉じる
 
-Ver.2.45より実装。neocomplcache#close_popup()やneocomplcache#cancel_popup()を
-キーマッピングに使用することで、確実にポップアップを閉じます。
+Ver.2.45より実装。通常では二回<C-y>や<C-e>を押さなければポップアップが消えませんが、
+neocomplcache#close_popup()やneocomplcache#cancel_popup()をキーマッピングに使用することで、確実にポップアップを閉じることができます。
 neocomplcache#close_popup()の場合は使用することでキーワードのランクが上昇します。
 
 例：
@@ -587,19 +650,57 @@ inoremap <expr><C-y>  pumvisible() ? neocomplcache#close_popup() :  "\<C-r>0"
 inoremap <expr><C-e>  pumvisible() ? neocomplcache#cancel_popup() : "\<End>"
 
 --------------------------------
+確定した補完候補をキャンセルする
+
+Ver.2.67より実装。キーマッピングを定義することで、確定した補完候補をキャンセルできます。
+カーソル前のキーワードを補完前の文字列で置き換える形で実装しているので、<C-y>で確定していなくても動作します。
+確定前の補完候補のキャンセルには使用できないので注意してください。
+
+例：
+inoremap <expr><silent><C-g>     neocomplcache#undo_completion()
+
+--------------------------------
+自動キャッシュの制御
+
+Ver.2.64よりオプションが追加され、キャッシュの制御がやりやすくなりました。
+g:NeoComplCache_CachingLimitFileSizeオプションではキャッシュする最大ファイルサイズを設定します。
+これより大きいファイルは自動でキャッシュされません。
+g:NeoComplCache_CachingDisablePatternオプションではキャッシュしないバッファ名パターンを設定します。
+正規表現で指定するので、\|で区切れば複数のパターンを指定できます。
+
+--------------------------------
+プラグインごとに補完開始文字数を設定
+
+Ver.2.71より、プラグインごとに補完開始文字数を設定できるようになりました。
+
+例：
+let g:NeoComplCache_KeywordCompletionStartLength = 1
+if !exists('g:NeoComplCache_PluginCompletionLength')
+    let g:NeoComplCache_PluginCompletionLength = {}
+endif
+let g:NeoComplCache_PluginCompletionLength['snippets_complete'] = 1
+let g:NeoComplCache_PluginCompletionLength['buffer_complete'] = 2
+let g:NeoComplCache_PluginCompletionLength['syntax_complete'] = 2
+let g:NeoComplCache_PluginCompletionLength['tags_complete'] = 3
+
+この例ではsnippets_completeのみ1文字で補完、tags_completeは3文字、他は2文字で補完するようにしています。
+g:NeoComplCache_KeywordCompletionStartLengthを変更しないと、
+入力文字数がg:NeoComplCache_KeywordCompletionStartLengthを超えるまで自動補完が呼び出されないので注意してください。
+
+--------------------------------
 私の設定
 
-私が使用しているneocomplcacheの設定を紹介しておきます。
+参考までに、私が使用しているneocomplcacheの設定を紹介しておきます。
 neocomplcacheのオプションはdoc/neocomplcache.jaxに詳しい解説があるので、そこを参照してください。
 
-" Don't use autocomplpop.
-let g:AutoComplPop_NotEnableAtStartup = 1
 " Use neocomplcache.
 let g:NeoComplCache_EnableAtStartup = 1
 " Use smartcase.
 let g:NeoComplCache_SmartCase = 1
 " Use previous keyword completion.
 let g:NeoComplCache_PreviousKeywordCompletion = 1
+" Use tags auto update.
+"let g:NeoComplCache_TagsAutoUpdate = 1
 " Use preview window.
 let g:NeoComplCache_EnableInfo = 1
 " Use camel case completion.
@@ -609,7 +710,9 @@ let g:NeoComplCache_EnableUnderbarCompletion = 1
 " Set minimum syntax keyword length.
 let g:NeoComplCache_MinSyntaxLength = 3
 " Set skip input time.
-let g:NeoComplCache_SkipInputTime = '0.1'
+let g:NeoComplCache_SkipInputTime = '0.2'
+" Set manual completion length.
+let g:NeoComplCache_ManualCompletionStartLength = 0
 
 " Define dictionary.
 let g:NeoComplCache_DictionaryFileTypeLists = {
@@ -627,8 +730,8 @@ let g:NeoComplCache_KeywordPatterns['default'] = '\v\h\w*'
 " Plugin key-mappings.
 imap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
 smap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
-nmap <silent><C-e>     <Plug>(neocomplcache_keyword_caching)
-imap <expr><silent><C-e>     pumvisible() ? "\<C-e>" : "\<Plug>(neocomplcache_keyword_caching)"
+inoremap <expr><C-h> pumvisible() ? "\<C-y>\<C-h>" : "\<C-h>"
+inoremap <expr><silent><C-g>     neocomplcache#undo_completion()
 
 neocomplcache自体が標準で自分好みの設定になっているので、あまり凝った設定はしていません。
 むしろ皆さんが使用するときは存分にカスタマイズすることを推奨します。
@@ -663,9 +766,9 @@ C-hは一度ポップアップを消去し、ちらついたり、重くなら�
 --------------------------------
 知名度
 
-autocomplpop: 14,700件
-auto-complete.el: 14,300件
-neocomplcache: 5790件
+autocomplpop: 17,800件
+auto-complete.el: 160,000件
+neocomplcache: 26,500件
 
                   Google調べ
 
@@ -681,6 +784,12 @@ http://d.hatena.ne.jp/thinca/20090305/1236191531
 
 追記２：
 はてなキーワードにも登録されました！
+http://d.hatena.ne.jp/keyword/neocomplcache
+
+追記３：
+snippetファイルの設定例
+http://d.hatena.ne.jp/cooldaemon/20090807/1249644264
+解説がなかなか詳しいので役立ちます。
 
 --------------------------------
 現在開発されているプラグイン
@@ -690,6 +799,8 @@ http://gist.github.com/99936
 thincaさん作。
 snipMateの関数をneocomplcacheから呼び出し、補完します。
 このプラグインを使用するためには、snipMateにパッチを当てる必要があります。
+Ver.2.76より、スニペットの同期が実装されたのでもはや必要ないでしょう。
+構造が単純なので、プラグイン作りのサンプルとして便利。
 
 --------------------------------
 使用上の注意
@@ -708,12 +819,20 @@ Ver.2.55より、キャッシュしたファイルをg:NeoComplCache_TemporaryDi
 書き出すようになりました。同じファイルを開く場合は格段に高速化されます。
 ただし、キャッシュを書き出すのは500行以上のファイルのみです。
 
+Ver.2.64より、readonlyなファイルは自動的にキャッシュしません。
+どうしてもキャッシュしたい場合、:NeoComplCacheCachingBufferコマンドを使用してください。
+
+githubにて指摘されたのですが、
+set completeopt=menuone
+を.vimrcに書いていないと、数字キーを入力してもクイックマッチの候補が表示されません。
+注意してください。
+
 --------------------------------
 今後の予定
 
-機能追加も一段落したので、あとは動作の高速化と、おざなりなドキュメントを何とかしたいと思っています。
-せっかくvim.orgに登録したので、英語のヘルプファイルも作成しなければなりません。
-あと一つほど大きな機能追加も考えていますが、それは今後のお楽しみです。
+何とか英語のヘルプファイルを作成することができました。
+これからは要望されたり、思いついた機能を加えつつ、neocomplcacheを使いやすく改良することになると思います。
+さらに、インクルード補完を自前で実装したいと思っていて、これが実装できればtags_completeは必要なくなると思います。
 
 --------------------------------
 まとめ
@@ -726,7 +845,10 @@ Twitterやブログもやってます。
 http://vinarian.blogspot.com/
 http://twitter.com/ShougoMatsu
 更新情報は主にブログに、重要な情報はTwitterでもアナウンスする予定です。
-Twitterはneocomplcache開発日記とかしているので、チェックするとおもしろいかもしれません。
+Twitterはneocomplcache開発日記と化しているので、こまめにチェックするとおもしろいかもしれません。
+
+最近はLingr内の補完部屋にも常駐しています。
+http://lingr.com/room/completion
 
 実装してみて分かりましたが、補完にはまだまだ無限の可能性があります。
 みんなの力で、どんどんneocomplcacheを良くしていきましょう。
@@ -735,6 +857,15 @@ Twitterはneocomplcache開発日記とかしているので、チェックする
 --------------------------------
 更新履歴
 
+2009/10/02     neocomplcache Ver.3.01に対応。
+2009/09/27     neocomplcache Ver.3.00に対応。
+2009/09/22     neocomplcache Ver.2.78に対応。
+2009/09/17     neocomplcache Ver.2.77に対応。
+2009/09/12     neocomplcache Ver.2.76に対応。
+2009/08/22     neocomplcache Ver.2.71に対応。
+2009/08/12     neocomplcache Ver.2.68に対応。
+2009/08/10     neocomplcache Ver.2.67に対応。
+2009/07/26     neocomplcache Ver.2.64に対応。
 2009/07/10     neocomplcache Ver.2.62に対応。
 2009/05/30     neocomplcache Ver.2.57に対応。細々とした修正。
 2009/05/21     neocomplcache Ver.2.56に対応。
