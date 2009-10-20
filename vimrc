@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Mon 24 Aug 2009 07:08:35 PM EDT
+" Modified: Wed 26 Aug 2009 01:22:55 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -321,6 +321,7 @@ noremap <Leader>pp :s/:/ /g<CR>
 noremap <Leader>cache :call ClearCache()<CR>
 noremap <Leader>ac :AutoCloseToggle<CR>
 noremap <Leader>ne :NeoComplCacheEnable<CR>
+noremap <Leader>doc :!rake documentation:generate<CR>
 noremap :close :bd!<CR>
 " Quick sudo saving from tpope
 command! -bar -nargs=0 SudoW :silent exe "write !sudo tee % >/dev/null" | silent edit!
@@ -369,7 +370,7 @@ function UseRubyIndent ()
     setlocal expandtab
     setlocal autoindent
 
-    imap <buffer> <CR> <C-R>=PMADE_RubyEndToken()<CR>
+    "imap <buffer> <CR> <C-R>=PMADE_RubyEndToken()<CR>
 endfunction
 
 " Shift-Enter inserts 'end' for ruby scripts
@@ -680,7 +681,7 @@ if has("autocmd")
     " Always do a full syntax refresh
     autocmd BufEnter * syntax sync fromstart
 
-    autocmd BufWritePre *  :call <SID>UpdateRcHeader()
+    "autocmd BufWritePre *  :call <SID>UpdateRcHeader()
 
     " never see ^M again! (DOS text files)
     autocmd BufRead * silent! %s/^M$//
