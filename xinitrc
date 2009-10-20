@@ -19,6 +19,7 @@ export BROWSER=/usr/bin/firefox
 export TERMINAL=$TERMCMD
 export GTK2_RC_FILES=$HOME/.gtkrc-2.0
 export MOZILLA_NEWTYPE=tab
+#export XDG_CACHE_DIR="/var/cache/users/gregf/"
 RXVT_SOCKET="$HOME/.tmp/rxvt-unicode"
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
@@ -57,12 +58,6 @@ xsetroot -solid black &
 # Turn on numlock
 numlockx on &
 
-# Ask for keychain password
-keychain --agents ssh,gpg --clear -q ~/.ssh/id_dsa
-source ~/.keychain/$(uname -n)-sh
-source ~/.keychain/$(uname -n)-sh-gpg
-
-
 if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
   eval `dbus-launch --sh-syntax --exit-with-session`
 fi
@@ -73,6 +68,12 @@ autocutsel -s PRIMARY -buttonup -fork &
 xsetroot -cursor_name arrow &
 
 urxvtd -q -o -f &
+
+# Ask for keychain password
+keychain --agents ssh,gpg --clear -q ~/.ssh/id_dsa
+source ~/.keychain/$(uname -n)-sh
+source ~/.keychain/$(uname -n)-sh-gpg
+
 
 # Execute window manager into background
 exec $DEFAULTWM & wmpid=$!
