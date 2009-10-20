@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/libs/config.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Sun 21 Jun 2009 03:06:27 PM EDT
+-- Modified: Sun 12 Jul 2009 08:52:27 PM EDT
 --  ----------------------------------------------------------------------------
 
 -- {{{ TODO
@@ -34,7 +34,7 @@ config.keys.modkey = config.keys.alt
 
 -- {{{ Apps
 --config.apps.terminal = "xterm"
-config.apps.terminal = "urxvt"
+config.apps.terminal = "urxvt -e tmux -2"
 config.apps.browser = "epiphany -n"
 config.apps.editor = os.getenv("EDITOR") or "vim"
 config.apps.editor_cmd = config.apps.terminal .. " -e " .. config.apps.editor
