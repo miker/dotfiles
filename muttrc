@@ -230,3 +230,5 @@ macro index b '<enter-command>toggle sidebar_visible<enter>'
 macro pager b '<enter-command>toggle sidebar_visible<enter>'
 # }}}
 # }}}
+
+source ~/.mutt/aliases.rc
