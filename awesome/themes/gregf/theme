@@ -19,8 +19,8 @@ theme.border_normal = "#000055"
 theme.border_focus = "#2C619C"
 theme.border_marked = "#91231c"
  
-theme.titlebar_close_button = "true"
-theme.taglist_squares = "true"
+theme.titlebar_close_button = true
+theme.taglist_squares = true
 
 theme.titlebar_close_button_img_normal = "/usr/share/awesome/icons/titlebar/close.png"
 theme.titlebar_close_button_img_focus = "/usr/share/awesome/icons/titlebar/close.png"
