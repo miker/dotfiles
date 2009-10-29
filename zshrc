@@ -113,9 +113,25 @@ case `uname` in
             alias ex='paludis --executables'
             alias puu='paludis --permit-unsafe-uninstalls -u'
 
+            export PALUDIS_CARRY_OUT_UPDATES="yes"
             export PALUDIS_RESUME_DIR="${HOME}"/.resume-paludis
             export PALUDIS_OPTIONS="--resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX --show-reasons summary --log-level warning --show-use-descriptions all --continue-on-failure if-satisfied --dl-reinstall if-use-changed --dl-reinstall-scm weekly"
             export RECONCILIO_OPTIONS="--continue-on-failure if-satisfied"
+
+            function build_kernel {
+                if (( EUID != 0 )); then
+                    echo "* You must be root to run build_kernel!"
+                    return 1 
+                else 
+                    mount /boot
+                    make clean
+                    make -j3 all
+                    make -j3 modules_install
+                    make install
+                    vim /boot/grub/grub.cfg
+                    echo "* Reboot When Your Ready..."
+                fi
+            }
 
             function paludis-scm {
                 PALUDIS_OPTIONS="--dl-reinstall-scm daily"
@@ -322,7 +338,7 @@ alias burniso='wodim -v dev=/dev/cdrw'
 alias burndvdiso='growisofs -speed=8 -dvd-compat -Z /dev/dvdrw=$1'
 alias usepretend='sudo paludis -ip --dl-reinstall if-use-changed'
 alias usedo='sudo paludis -i --dl-reinstall if-use-changed'
-alias ketchup='ketchup -G'
+alias ketchup='ketchup -G -a /usr/portage/distfiles'
 alias biosinfo='sudo dmidecode'
 alias pwgen='pwgen -sBnc 10'
 alias la="ls -a"
@@ -365,6 +381,8 @@ alias ri="ri -Tf ansi"
 alias images='feh -d -x -F -Z $PWD'
 alias imgindex='feh -irFarial/14 -O index.jpg $PWD'
 alias wgetlist="wget -c -i"
+alias become="sudo -s -H -u $1"
+alias runas="sudo -H -u $1 $@"
 
 
 # }}}
@@ -530,7 +548,7 @@ fi
 # http://zsh.sourceforge.net/Doc/Release/zsh_15.html#SEC81
 setopt always_to_end append_history auto_continue auto_list auto_menu \
 auto_param_slash auto_remove_slash auto_resume bg_nice no_check_jobs no_hup \
-complete_in_word csh_junkie_history extended_glob \
+auto_pushd complete_in_word csh_junkie_history extended_glob brace_ccl \
 glob_complete hist_find_no_dups hist_ignore_all_dups hist_ignore_dups \
 hist_ignore_space hist_no_functions hist_save_no_dups list_ambiguous \
 long_list_jobs menu_complete rm_star_wait zle inc_append_history \
@@ -667,16 +685,16 @@ function mcdrom {
     local cpwd
     mounted=$(grep cdrom /etc/mtab)
     if [[ $mounted = "" ]];then
-        mount /cdrom
+        mount /media/cdrom
         echo "-- mounted cdrom --"
-        cd /cdrom ; ls
+        cd /media/cdrom ; ls
     else
         cpwd=$(pwd|grep cdrom)
         if [[ $cpwd = "" ]];then
-            umount /cdrom
+            umount /media/cdrom
             echo "-- umounted cdrom --"
         else
-            cd;umount /cdrom
+            cd;umount /media/cdrom
             echo "-- umounted cdrom --"
             pwd
             eject
@@ -751,7 +769,7 @@ function junk {
 }
 
 function torrent {
-    scp -r $* quad:~/.torrents/
+    scp -r *.torrent quad:~/.torrents/
 }
 
 function dotfile {
@@ -900,7 +918,8 @@ function xephyr {
 }
 
 function cpv {
-    rsync -rPIhb --backup-dir=/tmp/rsync -e /dev/null -- ${@}
+    #rsync -rPIhb --backup-dir=/tmp/rsync -e /dev/null -- ${@}
+    rsync -rPIhb -- ${@}
 }
 
 function h { 
