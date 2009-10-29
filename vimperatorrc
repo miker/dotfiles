@@ -1,0 +1,122 @@
+" ==================== Settings ==================== "
+set loadplugins
+set wildmode=list:full
+set guioptions=mB
+set hlsearch
+set complete=sbfh
+set defsearch=yubnub
+set showmode
+set showtabline=2
+set verbose=9
+set activate=quickmark,paste
+set editor=gvim -f
+set focuscontent
+set followhints=1
+set newtab=all
+set visualbell
+
+" emulate vim's "after"
+set runtimepath+=~/.vimperator/after,~/vimperator/after
+let mapleader=","
+
+" ==================== key mappings ==================== "
+" increase j, k, h, l
+nnoremap j 5j
+nnoremap k 5k
+nnoremap h 3h
+nnoremap l 3l
+map <C-c>   :tabclose<CR>
+map <C-t>   :tabnew<CR>
+map <M-n>   :tabnext<CR>
+map <M-p>   :tabprev<CR>
+map <C-r>   :restart<CR>
+map <A-r>   :source ~/.vimperatorrc<CR>
+noremap b   :back<CR>
+noremap f   :forward<CR>
+" select next/previous tab
+map <Right> gt
+map <Left>  gT
+
+" ==================== Firefox options ==================== "
+" disable accesskey
+set! ui.key.generalAccessKey=0
+" hide close button
+set! browser.tabs.closeButtons=2
+" open bookmarks in background
+set! browser.tabs.loadBookmarksInBackground=true
+" open tabs by javascript in background
+set! browser.tabs.loadDivertedInBackground=true
+" allow lots of popups for ldr
+set! dom.popup_maximum=1000
+set! browser.backspace_action=0 
+set! geo.enabled=false
+set! general.warnOnAboutConfig=false
+set! javascript.options.jit.chrome=true
+set! network.dns.disableIPv6=true
+set! network.http.max-connections=48
+set! network.http.max-connections-per-server=16
+set! network.http.max-persistent-connections-per-server=4
+set! network.http.pipelining=true
+set! network.http.pipelining.maxrequests=10
+set! network.http.pipelining.ssl=true
+set! network.http.proxy.pipelining=true
+set! network.http.request.timeout=300
+set! nglayout.initialpaint.delay=0
+set! ui.submenuDelay=0
+set! content.interrupt.parsing=true
+set! content.notify.ontimer=true
+set! browser.urlbar.clickSelectsAll=true
+set! browser.urlbar.doubleClickSelectsAll=false
+set! browser.startup.page=3
+
+" ==================== colorscheme ==================== "
+colorscheme desert 
+
+" force disable ime in commandline
+style -name commandline-ime chrome://* #liberator-commandline-command input { ime-mode: inactive; }
+
+
+" ==================== others ==================== "
+" load local file
+js <<EOM
+(function() {
+    var local = "~/.vimperatorrc.local";
+    var file = io.getFile(local);
+    if(file.exists() && file.isReadable()) {
+        io.source(local, true);
+    }
+})();
+EOM
+
+javascript <<EOF
+    (function() {
+        var inputElement = document.getElementById('liberator-commandline-command');
+        function swapBGColor(event) {
+            inputElement.style.backgroundColor = event.type == "focus" ? "yellow" : "";
+        }
+        inputElement.addEventListener('focus', swapBGColor, false);
+        inputElement.addEventListener('blur', swapBGColor, false);
+    })();
+EOF
+
+"javascript <<EOF
+  "(function(){
+    "var feedPanel = document.createElement("statusbarpanel");
+    "feedPanel.setAttribute("id", "feed-panel-clone");
+    "feedPanel.appendChild(document.getElementById("feed-button"));
+    "feedPanel.firstChild.setAttribute("style", "padding: 0; max-height: 16px;");
+    "document.getElementById("status-bar")
+    ".insertBefore(feedPanel, document.getElementById("security-button"));
+  "})();
+"EOF
+" ==================== Abbreviations ==================== "
+ab url http://www.gregf.org
+ab name Greg Fitzgerald
+ab st 57 Riverside Drive
+ab email netzdamon@gmail.com
+
+command gmail tabopen www.google.com/mail
+command reader tabopen www.google.com/reader
+command reddit tabopen www.reddit.com
+
+" vim: ft=vimperator sw=2 sts=2
