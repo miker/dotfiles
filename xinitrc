@@ -76,10 +76,26 @@ source ~/.keychain/$(uname -n)-sh-gpg
 
 
 # Execute window manager into background
-exec $DEFAULTWM & wmpid=$!
-    nitrogen --restore &
-    nice -n10 ${BROWSER} & 
-    nice -n19 gpodder &
-    orage &
-    conky -d &
+case $1 in
+awesomewm)
+	exec awesome & wmpid=$!
+	;;
+openbox)
+	exec openbox & wmpid=$!
+	;;
+subtle)
+	exec subtle & wmpid=$!
+	;;
+*)
+	exec $DEFAULTWM & wmpid=$1
+	;;
+esac
+
+# Run these after the window manager has been started
+~/code/bin/wallpaper/wallpaper.rb &
+nice -n10 ${BROWSER} & 
+nice -n19 gpodder &
+orage &
+conky -d &
+
 wait $wmpid
