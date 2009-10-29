@@ -11,3 +11,4 @@ vim/spellfile.add.spl
 zsh/cache/*
 vim/vimrc.local
 mutt/aliases.rc
+vimperator/info
