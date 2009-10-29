@@ -1,7 +1,7 @@
 --  ----------------------------------------------------------------------------
 -- File:     ~/.config/awesome/rc.lua
 -- Author:   Greg Fitzgerald <netzdamon@gmail.com>
--- Modified: Sun 23 Aug 2009 11:14:10 AM EDT
+-- Modified: Sat 24 Oct 2009 1:39:10 PM EDT
 --  ----------------------------------------------------------------------------
 
 -- Standard awesome library
@@ -12,16 +12,14 @@ require("awful.rules")
 require("beautiful")
 -- Notification library
 require("naughty")
-require("libs/config")
-require("libs/shifty")
+-- Config Settings
+require("lib/config")
+require("lib/shifty")
 
 -- {{{ Variable definitions
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvt"
-editor = os.getenv("EDITOR") or "vim"
-editor_cmd = terminal .. " -e " .. editor
-modkey = "Mod1"
 beautiful.init(config.theme)
+modkey = config.keys.modkey
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
@@ -29,7 +27,6 @@ layouts =
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
@@ -223,15 +220,20 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey            }, "r",           shifty.rename),
     awful.key({ modkey            }, "w",           shifty.del),
     -- Application Launchers
-    awful.key({ modkey,           }, "p", function () awful.util.spawn("dmenu_run -i -b -nb '#303030' -nf '#CCCCCC' -sb '#97B26B' -sf '#000000'") end),
+    awful.key({ modkey,           }, "n", function () awful.util.spawn(config.apps.tmux) end),
+    awful.key({ modkey,           }, "p", function () awful.util.spawn(config.apps.launcher) end),
+    awful.key({ modkey,           }, "b", function () awful.util.spawn("/home/gregf/code/bin/gentoobugs/gentoobugs.rb") end),
     awful.key({ modkey,           }, "o", function () awful.util.spawn("/home/gregf/code/bin/clipboard/clipboard.sh") end),
     awful.key({ modkey,           }, "g", function () awful.util.spawn("/home/gregf/code/bin/google/google.sh") end),
-    awful.key({ modkey,           }, "[", function () awful.util.spawn("xfce4-mixer") end),
-    awful.key({ modkey,           }, "m", function () awful.util.spawn("urxvt -T mutt -e mutt") end),
-    awful.key({ modkey,             }, "h", function () awful.util.spawn("huludesktop") end),
+    awful.key({ modkey,           }, "m", function () awful.util.spawn(config.apps.mail) end),
+    awful.key({ modkey,           }, "t", function () awful.util.spawn(config.apps.filemanager) end),
+    awful.key({ modkey,           }, "i", function () awful.util.spawn(config.apps.irc) end),
+    awful.key({ modkey,           }, "f", function () awful.util.spawn(config.apps.browser) end),
+    awful.key({ modkey,           }, "h", function () awful.util.spawn("huludesktop") end),
     awful.key({ modkey,           }, "y", function () awful.util.spawn(config.apps.music) end),
-    awful.key({ modkey,           }, "k", function () awful.util.spawn("gvim") end),
-    awful.key({ modkey,           }, "y", function () awful.util.spawn("xlock") end)
+    --awful.key({ modkey,           }, "j", function () awful.util.spawn(config.apps.chat) end),
+    awful.key({ modkey,           }, "k", function () awful.util.spawn(config.apps.graphical_editor) end),
+    awful.key({ modkey,           }, "y", function () awful.util.spawn(config.apps.lock) end)
 
 )
 
