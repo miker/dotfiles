@@ -14,7 +14,6 @@ require("beautiful")
 require("naughty")
 -- Config Settings
 require("lib/config")
-require("lib/shifty")
 
 -- {{{ Variable definitions
 -- This is used later as the default terminal and editor to run.
@@ -24,53 +23,48 @@ modkey = config.keys.modkey
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
-    awful.layout.suit.floating
+    awful.layout.suit.tile,             --1
+    awful.layout.suit.tile.left,        --2
+    awful.layout.suit.tile.bottom,      --3
+    awful.layout.suit.tile.top,         --4
+    awful.layout.suit.fair,             --5
+    awful.layout.suit.fair.horizontal,  --6
+    awful.layout.suit.spiral,           --7
+    awful.layout.suit.spiral.dwindle,   --8
+    awful.layout.suit.max,              --9
+    awful.layout.suit.max.fullscreen,   --10
+    awful.layout.suit.magnifier,        --11
+    awful.layout.suit.floating          --12
 }
+
+-- {{{ Tags
+
+local tags = {}
+tags.setup = {
+    { name = "dev",       layout = layouts[3]  },
+    { name = "www",       layout = layouts[9]  },
+    { name = "im",        layout = layouts[3]  },
+    { name = "mail",      layout = layouts[9]  },
+    { name = "music",     layout = layouts[9]  },
+    { name = "irc",       layout = layouts[3]  },
+    { name = "downloads", layout = layouts[3]  },
+    { name = "vbox",      layout = layouts[3]  },
+    { name = "media",     layout = layouts[3]  }
+}
+
+for s = 1, screen.count() do
+    tags[s] = {}
+    for i, t in ipairs(tags.setup) do
+        tags[s][i] = tag({ name = t.name })
+        tags[s][i].screen = s
+        awful.tag.setproperty(tags[s][i], "layout", t.layout)
+        awful.tag.setproperty(tags[s][i], "mwfact", t.mwfact)
+        awful.tag.setproperty(tags[s][i], "hide",   t.hide)
+    end
+    tags[s][1].selected = true
+end
+
 -- }}}
-shifty.config.tags = {
-    ["dev"] = { init = true, layout = awful.layout.suit.tile.bottom, position = 1, } ,
-    ["www"] = { init = true, layout = awful.layout.suit.max, position = 2, } ,
-    ["im"] = { init = true, layout = awful.layout.suit.tile, position = 3,  } ,
-    ["mail"] = { init = true, layout = awful.layout.suit.max, position = 4, } ,
-    ["irc"] = { init = true, layout = awful.layout.suit.max, position = 5, } ,
-    ["music"] = { init = true, layout = awful.layout.suit.max, position = 6, } ,
-    ["downloads"] = { init = true, persist = true, layout = awful.layout.suit.fair.horizontal,position = 7 } ,
-    ["vbox"] = { init = true, layout = awful.layout.suit.max, position = 8, } ,
-    ["media"] = { init = true, layout = awful.layout.suit.max, position = 9, } ,
-}
-
-shifty.config.apps = {
-    { match = { "xterm", "XTerm", "urxvt"}, intrusive = true, honorsizehints = false, },
-    { match = { "epiphany", "Navigator", "navigator"                              } , tag = "www"                            } ,
-    { match = { "gajim"                                          } , tag = "im",                          } ,
-    { match = { "xchat"                                          } , tag = "irc",                          } ,
-    { match = { "mutt", "Mutt",                                          } , tag = "mail",                          } ,
-    { match = { "gmpc"}, tag = "music", },
-    { match = { "gthumb", "gpodder", "gqview", "k3b", "gphoto2", "xfburn"}, tag = "media", },
-    { match = { "deluge", "dta", "DTA", ".*DownThemAll!",}, tag = "downloads", },
-    { match = { "VirtualBox", "VBox.*","VirtualBox.*"                               } , tag = "vbox", float = false,            } ,
-    { match = { "XDosEmu", "MPlayer", "gimp", "Gnuplot", "galculator", "ristretto", "xfce4-mixer", "Xfce4-mixer" } , float = true  } ,
-    { match = { "About gmpc", "Server Information", "unnamed", "About", "Dialog", "Extension", "Add-ons", "VirtualBox","glxgears",                              } , float = true,                           } ,
-}
-
-shifty.config.defaults = {
-  layout = awful.layout.suit.max,
-  ncol = 1,
-  mwfact = 0.60,
-  leave_kills = true, 
-  screen = 1,
-  nopopup = true,
-}
 
 -- {{{ Wibox
 -- Create a textclock widget
@@ -79,8 +73,6 @@ mytextclock = awful.widget.textclock({ align = "right" }, config.date_format, 30
 -- Create a systray
 mysystray = widget({ type = "systray" })
 
-shifty.taglist = mytaglist
-shifty.init()
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -210,15 +202,6 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
-    -- Shifty
-    awful.key({                   }, "XF86Back",    awful.tag.viewprev),
-    awful.key({                   }, "XF86Forward", awful.tag.viewnext),
-    awful.key({  modkey           }, "XF86Back",    shifty.shift_prev),
-    awful.key({  modkey           }, "XF86Forward", shifty.shift_next),
-    --awful.key({ modkey            }, "t",           function() shifty.add({ rel_index = 1 }) end),
-    --awful.key({ modkey, "Control" }, "t",           function() shifty.add({ rel_index = 1, nopopup = true }) end),
-    awful.key({ modkey            }, "r",           shifty.rename),
-    awful.key({ modkey            }, "w",           shifty.del),
     -- Application Launchers
     awful.key({ modkey,           }, "n", function () awful.util.spawn(config.apps.tmux) end),
     awful.key({ modkey,           }, "p", function () awful.util.spawn(config.apps.launcher) end),
@@ -228,12 +211,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "m", function () awful.util.spawn(config.apps.mail) end),
     awful.key({ modkey,           }, "t", function () awful.util.spawn(config.apps.filemanager) end),
     awful.key({ modkey,           }, "i", function () awful.util.spawn(config.apps.irc) end),
-    awful.key({ modkey,           }, "f", function () awful.util.spawn(config.apps.browser) end),
     awful.key({ modkey,           }, "h", function () awful.util.spawn("huludesktop") end),
     awful.key({ modkey,           }, "y", function () awful.util.spawn(config.apps.music) end),
-    --awful.key({ modkey,           }, "j", function () awful.util.spawn(config.apps.chat) end),
-    awful.key({ modkey,           }, "k", function () awful.util.spawn(config.apps.graphical_editor) end),
-    awful.key({ modkey,           }, "y", function () awful.util.spawn(config.apps.lock) end)
+    awful.key({ modkey,           }, "k", function () awful.util.spawn(config.apps.graphical_editor) end)
 
 )
 
@@ -253,32 +233,42 @@ clientkeys = awful.util.table.join(
 )
 
 -- Compute the maximum number of digit we need, limited to 9
-for i=1,9 do
-  
-  globalkeys = awful.util.table.join(globalkeys, awful.key({ modkey }, i,
-  function ()
-    local t = awful.tag.viewonly(shifty.getpos(i))
-  end))
-  globalkeys = awful.util.table.join(globalkeys, awful.key({ modkey, "Control" }, i,
-  function ()
-    local t = shifty.getpos(i)
-    t.selected = not t.selected
-  end))
-  globalkeys = awful.util.table.join(globalkeys, awful.key({ modkey, "Control", "Shift" }, i,
-  function ()
-    if client.focus then
-      awful.client.toggletag(shifty.getpos(i))
-    end
-  end))
-  -- move clients to other tags
-  globalkeys = awful.util.table.join(globalkeys, awful.key({ modkey, "Shift" }, i,
-    function ()
-      if client.focus then
-        local t = shifty.getpos(i)
-        awful.client.movetotag(t)
-        awful.tag.viewonly(t)
-      end
-    end))
+keynumber = 0
+for s = 1, screen.count() do
+   keynumber = math.min(9, math.max(#tags[s], keynumber));
+end
+
+-- Bind all key numbers to tags.
+-- Be careful: we use keycodes to make it works on any keyboard layout.
+-- This should map on the top row of your keyboard, usually 1 to 9.
+for i = 1, keynumber do
+    globalkeys = awful.util.table.join(globalkeys,
+        awful.key({ modkey }, "#" .. i + 9,
+                  function ()
+                        local screen = mouse.screen
+                        if tags[screen][i] then
+                            awful.tag.viewonly(tags[screen][i])
+                        end
+                  end),
+        awful.key({ modkey, "Control" }, "#" .. i + 9,
+                  function ()
+                      local screen = mouse.screen
+                      if tags[screen][i] then
+                          awful.tag.viewtoggle(tags[screen][i])
+                      end
+                  end),
+        awful.key({ modkey, "Shift" }, "#" .. i + 9,
+                  function ()
+                      if client.focus and tags[client.focus.screen][i] then
+                          awful.client.movetotag(tags[client.focus.screen][i])
+                      end
+                  end),
+        awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
+                  function ()
+                      if client.focus and tags[client.focus.screen][i] then
+                          awful.client.toggletag(tags[client.focus.screen][i])
+                      end
+                  end))
 end
 
 clientbuttons = awful.util.table.join(
@@ -288,9 +278,6 @@ clientbuttons = awful.util.table.join(
 
 -- Set keys
 root.keys(globalkeys)
-shifty.config.globalkeys = globalkeys
-shifty.config.clientkeys = clientkeys
-
 -- }}}
 
 -- {{{ Rules
@@ -302,21 +289,74 @@ awful.rules.rules = {
                      focus = true,
                      keys = clientkeys,
                      buttons = clientbuttons } },
-    --{ rule = { class = "MPlayer" },
-    --  properties = { floating = true } },
-    --{ rule = { class = "pinentry" },
-    --  properties = { floating = true } },
-    --{ rule = { class = "gimp" },
-    --  properties = { floating = true } },
-    -- Set Firefox to always map on tags number 2 of screen 1.
---    { rule = { class = "Firefox" },
---       properties = { tag = tags[1][2] } },
---    { rule = { class = "Gajim.py" },
---       properties = { tag = tags[1][3] } },
---    { rule = { class = "Gmpc" },
---       properties = { tag = tags[1][5] } },
+    { rule = { instance = "MPlayer" },
+      properties = { floating = true } },
+    { rule = { class = "pinentry" },
+      properties = { floating = true } },
+    { rule = { class = "gimp" },
+      properties = { floating = true } },
+    { rule = { name = "gPodder.*" },
+      properties = { tag = tags[1][9] } },
+    { rule = { class = "Gajim" },
+      properties = { tag = tags[1][3] } },
+    { rule = { class = "Firefox", instance = "Navigator" },
+      properties = { tag = tags[1][2] } },
+    { rule = { instance = "gmpc" },
+      properties = { tag = tags[1][5] } },
+    { rule = { name = ".*DownThemAll!" },
+      properties = { tag = tags[1][7] } },
+    { rule = { instance = "xfburn" },
+      properties = { tag = tags[1][7] } },
+    { rule = { instance = "xchat" },
+      properties = { tag = tags[1][6] } },
+    { rule = { name = "About gmpc", name = "Server Information", name = "unnamed", name = "About", name = "Dialog", name = "Extension", name = "Add-ons", name = "VirtualBox", name = "glxgears" },
+      properties = { floating = true } },
+    { rule = { name = "VirtualBox.*" },
+      properties = { tag = tags[1][8] } },
+    { rule = { name = "mutt" },
+      properties = { tag = tags[1][4] } },
+    { rule = { instance = "firefox-bin" },
+      properties = { floating = true } },
+
 }
 -- }}}
+
+-- {{{ Signals
+-- Signal function to execute when a new client appears.
+client.add_signal("manage", function (c, startup)
+    -- Add a titlebar to each floating client
+    if awful.client.floating.get(c)
+    or awful.layout.get(c.screen) == awful.layout.suit.floating then
+        if not c.titlebar and c.class ~= "Xmessage" then
+            awful.titlebar.add(c, { modkey = modkey })
+        end
+        -- Floating clients are always on top
+        c.above = true
+    end
+
+    -- Enable sloppy focus
+    c:add_signal("mouse::enter", function(c)
+        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+            and awful.client.focus.filter(c) then
+            client.focus = c
+        end
+    end)
+
+    if not startup then
+        -- Set the windows at the slave,
+        -- i.e. put it at the end of others instead of setting it master.
+        -- awful.client.setslave(c)
+
+        -- Put windows in a smart way, only if they does not set an initial position.
+        if not c.size_hints.user_position and not c.size_hints.program_position then
+            awful.placement.no_overlap(c)
+            awful.placement.no_offscreen(c)
+        end
+    end
+    
+    -- Honor size hints
+    c.size_hints_honor = false
+end)
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
