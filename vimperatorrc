@@ -118,5 +118,7 @@ ab email netzdamon@gmail.com
 command gmail tabopen www.google.com/mail
 command reader tabopen www.google.com/reader
 command reddit tabopen www.reddit.com
+command mu open javascript:var s1=location.href; window.location.assign("http://www.megaupload.com/mgr_dl.php?d="+s1.substring (29));
+
 
 " vim: ft=vimperator sw=2 sts=2
