@@ -209,7 +209,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "o", function () awful.util.spawn("/home/gregf/code/bin/clipboard/clipboard.sh") end),
     awful.key({ modkey,           }, "g", function () awful.util.spawn("/home/gregf/code/bin/google/google.sh") end),
     awful.key({ modkey,           }, "m", function () awful.util.spawn(config.apps.mail) end),
-    awful.key({ modkey,           }, "t", function () awful.util.spawn(config.apps.filemanager) end),
+    awful.key({ config.keys.super,           }, "t", function () awful.util.spawn(config.apps.filemanager) end),
     awful.key({ modkey,           }, "i", function () awful.util.spawn(config.apps.irc) end),
     awful.key({ modkey,           }, "h", function () awful.util.spawn("huludesktop") end),
     awful.key({ modkey,           }, "y", function () awful.util.spawn(config.apps.music) end),
