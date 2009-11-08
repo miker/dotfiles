@@ -2,6 +2,7 @@
 *.~
 *.old
 .svn
+*.log
 mutt/imap.rc
 lftp/transfer_log
 lftp/rl_history
