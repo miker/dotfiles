@@ -365,6 +365,7 @@ alias ra="echo 'awful.util.restart()' | awesome-client -"
 alias sv="gvim --remote-tab-silent"
 alias lvim="vim -c \"normal '0\""
 alias geminstaller='sudo geminstaller -s -c $HOME/.geminstaller.yaml'
+alias gem_remove_all="gem uninstall -x --a --ignore-dependencies `gem list -q -l --no-details --no-versions `"
 alias c="clear"
 alias smv="sudo mv"
 alias srm="sudo rm"
