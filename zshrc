@@ -820,7 +820,7 @@ function plast {
 }
  
 function isocdrom {
-    dd if=/dev/cdrom of=$1 bs=2048
+    dd if=/dev/cdrom of=$1 bs=2048 conv=sync,notrunc
 }
 
 function fix-paludis-perms {
