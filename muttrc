@@ -87,11 +87,12 @@ set include=yes
 set copy=yes
 set imap_keepalive = 5
 set timeout = 600 # or 600
+set allow_ansi
 set wrap_search=yes
 set use_idn=yes
 set mail_check = 5
 set delete=yes
-set check_new
+set check_new=yes
 set mark_old=no
 set markers=no
 set menu_context=5
@@ -122,8 +123,8 @@ set tilde=yes
 set use_from=yes
 set user_agent=yes
 unset wait_key
-unset beep
-unset beep_new
+set beep
+set beep_new=yes
 unset askbcc
 unset askcc
 set quit=ask-yes
@@ -196,8 +197,8 @@ bind  browser <left>   exit
 macro index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
 bind browser y exit
 
-macro attach W <save-entry><kill-line>/home/gregf/downloads/attachments/
-macro attach E <save-entry><kill-line>/home/gregf/downloads/attachments/<enter>
+macro attach W <save-entry><kill-line>/home/gregf/media/downloads/attachments/
+macro attach E <save-entry><kill-line>/home/gregf/media/downloads/attachments/<enter>
 
 # imitate the old search-body function
 macro index \eb "<search>~b " "search in message bodies"
@@ -213,7 +214,11 @@ macro index,pager \cD <delete-thread><down>
 
 macro index,pager a "<pipe-message>abook --add-email-quiet<return>"
 
-# {{{ Settings for sidebar patch
+#folder-hook imaps://mail.server.com/INBOX.doc 'set signature=~/signature-doc from="Doc<doc@server.com>"'
+folder-hook =friends 'set signature=~/.mutt/friends"'
+
+
+#{{{ Settings for sidebar patch
 # http://www.lunar-linux.org/index.php?option=com_content&task=view&id=44
 set sidebar_width=25
 set sidebar_visible=yes
