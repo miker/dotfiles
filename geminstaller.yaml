@@ -4,6 +4,7 @@ defaults:
   check_for_upgrade: true
   fix_dependencies: false 
 gems:
+- name: yard
 - name: giraffesoft-trample
 - name: gravtastic
 - name: open4
