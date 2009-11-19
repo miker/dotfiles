@@ -1,9 +1,9 @@
 " Vim syntax file
 " Language:     lighttpd config, http://www.lighttpd.net/
-" URL:          http://cvs.pld-linux.org/cgi-bin/cvsweb.cgi/SOURCES/lighttpd.vim
-" Version Info: $Revision: 1.11 $
-" Maintainer:   Elan Ruusamae <glen@pld-linux.org>
-" Last Change:  $Date: 2009/04/01 14:06:18 $ UTC
+" URL:          http://cvs.pld-linux.org/cgi-bin/cvsweb.cgi/packages/vim-syntax-lighttpd/lighttpd.vim
+" Version Info: $Revision: 1.16 $
+" Maintainer:   Elan Ruusamäe <glen@pld-linux.org>
+" Last Change:  $Date: 2009/11/09 12:52:16 $ UTC
 
 " For version 5.x: Clear all syntax items
 " For version 6.x: Quit when a syntax file was already loaded
@@ -60,10 +60,15 @@ syn keyword lighttpdOption
 	\ auth.debug
 	\ auth.require
 	\ cgi.assign
+	\ cgi.execute-x-only
 	\ cml.extension
 	\ cml.memcache-hosts
 	\ cml.memcache-namespace
 	\ cml.power-magnet
+	\ compress.allowed-encodings
+	\ compress.cache-dir
+	\ compress.filetype
+	\ compress.max-filesize
 	\ connection.kbytes-per-second
 	\ debug.log-condition-handling
 	\ debug.log-file-not-found
@@ -73,8 +78,11 @@ syn keyword lighttpdOption
 	\ debug.log-response-header
 	\ debug.log-ssl-noise
 	\ debug.log-state-handling
-	\ debug.log-timeouts \
+	\ debug.log-timeouts
 	\ dir-listing.activate
+	\ dir-listing.auto-layout
+	\ dir-listing.encode-header
+	\ dir-listing.encode-readme
 	\ dir-listing.encoding
 	\ dir-listing.exclude
 	\ dir-listing.external-css
@@ -90,9 +98,11 @@ syn keyword lighttpdOption
 	\ evasive.http-status-code
 	\ evasive.max-conns-per-ip
 	\ evasive.retry-after
+	\ evasive.silent
 	\ evhost.path-pattern
 	\ expire.url
 	\ extforward.forwarder
+	\ extforward.headers
 	\ fastcgi.debug
 	\ fastcgi.map-extensions
 	\ fastcgi.server
@@ -113,8 +123,10 @@ syn keyword lighttpdOption
 	\ secdownload.timeout
 	\ secdownload.uri-prefix
 	\ server.bind
+	\ server.breakagelog
 	\ server.chroot
 	\ server.core-files
+	\ server.defer-accept
 	\ server.dir-listing
 	\ server.document-root
 	\ server.errorfile-prefix
@@ -155,12 +167,18 @@ syn keyword lighttpdOption
 	\ simple-vhost.default-host
 	\ simple-vhost.document-root
 	\ simple-vhost.server-root
+	\ ssi.content-type
 	\ ssi.extension
 	\ ssl.ca-file
 	\ ssl.cipher-list
 	\ ssl.engine
 	\ ssl.pemfile
 	\ ssl.use-sslv2
+	\ ssl.verifyclient.activate
+	\ ssl.verifyclient.depth
+	\ ssl.verifyclient.enforce
+	\ ssl.verifyclient.exportcert
+	\ ssl.verifyclient.username
 	\ static-file.etags
 	\ static-file.exclude-extensions
 	\ status.config-url
@@ -179,8 +197,10 @@ syn keyword lighttpdOption
 	\ url.redirect
 	\ url.rewrite
 	\ url.rewrite-final
+	\ url.rewrite-if-not-file
 	\ url.rewrite-once
 	\ url.rewrite-repeat
+	\ url.rewrite-repeat-if-not-file
 	\ userdir.basepath
 	\ userdir.exclude-user
 	\ userdir.include-user
