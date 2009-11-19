@@ -26,8 +26,6 @@ set ts=4
 set showmode
 " Expand tabs to spaces
 set expandtab
-" highlight search matches
-set incsearch hlsearch 
 " Backup extension if on
 set backupext=.bak
 " Backups directory if on
@@ -36,8 +34,6 @@ set backupdir=~/.backups/
 set linebreak
 " Backspace over everything
 set bs=2
-" Case-insensitive search
-set ignorecase
 " Auto indent
 set autoindent
 " No startup messages
@@ -88,6 +84,7 @@ set printoptions+=syntax:y,number:y
 set nofsync
 " ruler
 set ruler
+set undolevels=999
 " ignore these in auto complete
 set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.git,.info,.aux,.log,.dvi,.bbl,.out
 set cmdheight=2
@@ -101,6 +98,14 @@ set spellfile=~/.vim/spell/spellfile.add
 set switchbuf=usetab
 set scrolloff=2 " minlines to show around cursor
 set sidescrolloff=4 " minchars to show around cursor
+" Search
+set wrapscan   " search wrap around the end of the file
+set ignorecase " ignore case search
+set smartcase  " override 'ignorecase' if the search pattern contains upper case
+set incsearch  " incremental search
+set hlsearch   " highlight searched words
+nohlsearch     " avoid highlighting when reload vimrc
+
 
 " {{{ Set a shell
 if has("unix")
@@ -148,11 +153,32 @@ set foldmethod=marker
 set foldnestmax=3       "deepest fold is 3 levels
 " }}}
 
+" {{{iabbrev
+iabbrev xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+ 
+iabbrev #p #!/usr/bin/perl
+iabbrev #e #!/usr/bin/env
+iabbrev #r #!/usr/bin/ruby
+iabbrev #b #!/bin/bash
+
+iabbrev sdef definitely
+" }}}
+
 " {{{ Plugin settings
 
-" gist
 
-let g:NeoComplCache_EnableAtStartup = 0 
+" neocomplcache
+" Reference: :h neocomplcache
+let g:NeoComplCache_EnableAtStartup = 0
+let g:NeoComplCache_PartialCompletionStartLength = 2
+let g:NeoComplCache_MinKeywordLength = 2
+let g:NeoComplCache_MinSyntaxLength = 2
+let g:NeoComplCache_SmartCase = 1
+let g:NeoComplCache_EnableMFU = 1
+let g:NeoComplCache_EnableQuickMatch = 1
+let g:NeoComplCache_TagsAutoUpdate = 1
+let g:NeoComplCache_EnableUnderbarCompletion = 1
+let g:NeoComplCache_EnableCamelCaseCompletion = 1
 
 let g:loaded_AutoClose = 0 
 
@@ -264,6 +290,15 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
 endif
 
+"highlight the current line
+if v:version > 700
+    set cursorline
+    hi Cursorline ctermbg=Red guibg=#771c1c
+else
+    syntax match CurrentLine /.*\%#.*/
+    hi CurrentLine guifg=white guibg=lightblue
+endif
+
 " Always check for UTF-8 when trying to determine encodings.
 if &fileencodings !~? "utf-8"
     set fileencodings+=utf-8
@@ -314,7 +349,7 @@ noremap <Leader>rr :w\|!ruby %<cr>
 noremap <Leader>rb :w\|!bash %<cr>
 noremap <Leader>xd :w\|!xrdb -load ~/.Xdefaults %<cr>
 noremap <Leader>p :set paste<CR>
-noremap <Leader>nu :set nonumber<CR>
+noremap <Leader>nu :set invnumber<CR>
 noremap <Leader>sp :set spell<CR>
 noremap <Leader>nsp :set nospell<CR>
 noremap <Leader>pp :s/:/ /g<CR>
@@ -326,6 +361,11 @@ noremap :close :bd!<CR>
 " Quick sudo saving from tpope
 command! -bar -nargs=0 SudoW :silent exe "write !sudo tee % >/dev/null" | silent edit!
 noremap <Leader>su :SudoW<CR>
+command! -nargs=+ PopupMap call s:popupMap(<f-args>)
+function! s:popupMap(lhs, ...)
+    let rhs = join(a:000, ' ')
+    execute 'inoremap <silent> <expr>' a:lhs 'pumvisible() ?' rhs ': "' . a:lhs . '"'
+endfunction
 
 " Plugin key-mappings.
 imap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
@@ -358,8 +398,16 @@ cnoremap <C-A> <C-C>gggH<C-O>G
 onoremap <C-A> <C-C>gggH<C-O>G
 snoremap <C-A> <C-C>gggH<C-O>G
 xnoremap <C-A> <C-C>ggVG
-" }}}
+imap <silent> <C-l> <Plug>(neocomplcache_snippets_expand)
+PopupMap <C-y>   neocomplcache#close_popup()
+PopupMap <C-e>   neocomplcache#cancel_popup()
+PopupMap <CR>    neocomplcache#close_popup() . "\<CR>"
+PopupMap <Tab>   "\<C-n>"
+PopupMap <S-Tab> "\<C-p>"
+PopupMap <C-h>   neocomplcache#cancel_popup() . "\<C-h>"
+nnoremap <silent> <C-f> :call FindInNERDTree()<CR> 
 
+" }}}
 
 " {{{ Functions
 
@@ -525,7 +573,7 @@ endfunction
 "If possible, try to use a narrow number column.
 if v:version >= 700
     try
-        setlocal numberwidth=3
+        setlocal numberwidth=2
     catch
     endtry
 endif
@@ -622,7 +670,7 @@ endif
 
 function Stage5()
     chdir /home/gregf/code/active/athenry/
-    open TODO
+    open TODO.md
     NERDTreeFromBookmark athenry
 endfunction
 
@@ -668,9 +716,81 @@ if isdirectory(expand("$VIMRUNTIME/ftplugin"))
         filetype indent on
     endif
 endif
-
 if has("autocmd")
-    
+    if has("eval")
+        function! <SID>abbrev_cpp()
+            iabbrev <buffer> jin #include
+            iabbrev <buffer> jde #define
+            iabbrev <buffer> jci const_iterator
+            iabbrev <buffer> jcl class
+            iabbrev <buffer> jco const
+            iabbrev <buffer> jdg \ingroup
+            iabbrev <buffer> jdx /**<CR><CR>/<Up>
+            iabbrev <buffer> jrd /*<CR><CR>/<Up>
+            iabbrev <buffer> jit iterator
+            iabbrev <buffer> jns namespace
+            iabbrev <buffer> jpr protected
+            iabbrev <buffer> jpu public
+            iabbrev <buffer> jpv private
+            iabbrev <buffer> jsl std::list
+            iabbrev <buffer> jsm std::map
+            iabbrev <buffer> jsM std::multimap
+            iabbrev <buffer> jss std::string
+            iabbrev <buffer> jsv std::vector
+            iabbrev <buffer> jsp std::tr1::shared_ptr
+            iabbrev <buffer> jty typedef
+            iabbrev <buffer> jun using namespace
+            iabbrev <buffer> jvi virtual
+            iabbrev <buffer> jst static
+            iabbrev <buffer> jt1 std::tr1
+            iabbrev <buffer> jmp std::make_pair
+        endfunction
+ 
+        function! <SID>abbrev_php()
+            iabbrev <buffer> jcl class
+            iabbrev <buffer> jfu function
+            iabbrev <buffer> jco const
+            iabbrev <buffer> jpr protected
+            iabbrev <buffer> jpu public
+            iabbrev <buffer> jpv private
+            iabbrev <buffer> jst static
+            iabbrev <buffer> jdx /**<CR><CR>/<Up>
+            iabbrev <buffer> jrd /*<CR><CR>/<Up>
+            iabbrev <buffer> jin include
+        endfunction
+ 
+        function! <SID>abbrev_ruby()
+            iabbrev <buffer> jcl class
+            iabbrev <buffer> jmo module
+            iabbrev <buffer> jin require
+            iabbrev <buffer> jdx #<CR><CR><Up>
+        endfunction
+ 
+        function! <SID>abbrev_c()
+            iabbrev <buffer> jin #include
+            iabbrev <buffer> jde #define
+            iabbrev <buffer> jco const
+            iabbrev <buffer> jdx /**<CR><CR>/<Up>
+            iabbrev <buffer> jst static
+        endfunction
+ 
+        function! <SID>abbrev_python()
+            iabbrev <buffer> jin import
+            iabbrev <buffer> jcl class
+        endfunction
+ 
+        augroup abbreviations
+            autocmd!
+            autocmd FileType cpp :call <SID>abbrev_cpp()
+            autocmd FileType php :call <SID>abbrev_php()
+            autocmd FileType ruby :call <SID>abbrev_ruby()
+            autocmd FileType c :call <SID>abbrev_c()
+            autocmd FileType python :call <SID>abbrev_python()
+        augroup END
+    endif
+endif
+ 
+if has("autocmd")
     au VimEnter * nohls
     au VimEnter * AutoCloseOff
     au VimLeave * set nospell
@@ -700,7 +820,6 @@ if has("autocmd")
     autocmd FileType php set ts=4 complete+=k
     autocmd BufReadPost,BufNewFile,BufRead rsnapshot.conf set noet
     autocmd BufReadPost,BufNewFile,BufRead nginx.conf set syntax=nginx
-    autocmd BufReadPost,BufNewFile,BufRead TODO set syntax=todolist
 
     au BufRead,BufNewFile COMMIT_EDITMSG setf git
 
@@ -711,38 +830,12 @@ if has("autocmd")
     au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,~/.tmp/mutt/mutt* :set ft=mail
     au! BufRead,BufNewFile *.haml :set ft=haml
     au! BufRead,BufNewFile *.sass :set ft=sass
-    autocmd BufNewFile,BufRead *.inc
-                \		  if getline(1) =~ 'php'
-                \		|	setf php
-                \		| else
-                    \		|	setf perl
-                    \		| endif
-
-    autocmd BufNewFile *.pl,*.plx set noai | execute "normal a
-                \#!/usr/bin/perl -W\<CR>
-                \# $Id\$\<CR>
-                \\<CR>
-                \use strict;\<CR>
-                \use warnings;\<CR>
-                \\<CR>" | set ai
-
-    autocmd BufNewFile *.htm,*.html	set noai | execute "normal a
-                \<!DOCTYPE html PUBLIC \"-//W3C//XHTML 1.0 Transitional//EN\">\<CR>
-                \\<CR>
-                \<html lang=\"en-US\" xml:lang=\"en-US\" xmlns=\"http://www.w3.org/1999/XHTML\">\<CR>
-                \<head>\<CR>
-                \<title></title>\<CR>
-                \<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\<CR>
-                \</head>\<CR>
-                \<body>\<CR>
-                \</body>\<CR>
-                \</html>" | set ai
-
-    "ruby
+    
     autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
     autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
     autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
     autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+    au BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
 endif
 
 augroup gentoo
@@ -783,13 +876,20 @@ if has("autocmd")
     augroup content
         autocmd!
 
-        autocmd BufNewFile *.rb 0put = '' |
+       autocmd BufNewFile *.rb 0put = '' |
                     \ 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
                     \ 0put = '# Copyright (c) 2009 Greg Fitzgerald <netzdamon@gmail.com>' |
                     \ 0put = '# Distributed under the terms of the GNU General Public License v2' |
                     \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
                     \ norm G
-
+        
+       autocmd BufNewFile *.sh 0put = '' |
+                    \ 0put ='# vim: set sw=4 sts=4 et tw=80 :' |
+                    \ 0put = '# Copyright (c) 2009 Greg Fitzgerald <netzdamon@gmail.com>' |
+                    \ 0put = '# Distributed under the terms of the GNU General Public License v2' |
+                    \ 0put ='#!/usr/bin/env bash' | set sw=4 sts=4 et tw=80 |
+                    \ norm G
+        
         autocmd BufNewFile *.lua 0put ='# vim: set sw=4 sts=4 et tw=80 :' |
                     \ 0put ='#!/usr/bin/env lua' | set sw=4 sts=4 et tw=80 |
                     \ norm G
@@ -814,8 +914,16 @@ if has("autocmd")
         au BufRead,BufNewFile *.js.erb set ft=javascript.jquery
         au BufRead,BufNewFile *.pp set ft=puppet
         au BufReadPost,BufNewFile,BufRead .railsrc set ft=ruby
+
     augroup END
 endif
+
+"markdown
+augroup mkd
+    autocmd BufRead,BufNewFile *.mkd  set ai formatoptions=tcroqn2 comments=n:> filetype=mkd spell
+    autocmd BufRead,BufNewFile *.md  set ai formatoptions=tcroqn2 comments=n:> filetype=mkd spell
+    autocmd BufRead,BufNewFile *.markdown  set ai formatoptions=tcroqn2 comments=n:> filetype=mkd spell
+augroup END
 
 " }}}
 
