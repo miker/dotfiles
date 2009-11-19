@@ -25,6 +25,7 @@ nnoremap j 5j
 nnoremap k 5k
 nnoremap h 3h
 nnoremap l 3l
+nnoremap s :stop<CR>
 map <C-c>   :tabclose<CR>
 map <C-t>   :tabnew<CR>
 map <M-n>   :tabnext<CR>
@@ -118,6 +119,13 @@ ab email netzdamon@gmail.com
 command gmail tabopen www.google.com/mail
 command reader tabopen www.google.com/reader
 command reddit tabopen www.reddit.com
+command gh tabopen www.github.com
+command fm tabopen www.lastfm.com
+command doc tabopen http://stuff.gregf.org/meta/documentation/
+command api tabopen http://apidock.com/
+
+
+
 command mu open javascript:var s1=location.href; window.location.assign("http://www.megaupload.com/mgr_dl.php?d="+s1.substring (29));
 
 
