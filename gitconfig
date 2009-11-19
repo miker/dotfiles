@@ -16,7 +16,7 @@
     branch = auto
     diff = auto
     status = auto
-    ui = auto
+	ui = auto
     pager = true
 [color "branch"]
     current = yellow reverse
@@ -36,7 +36,8 @@
   numbered = auto
   thread = true
 [alias]
-    co = clone
+    cl = clone
+    co =  checkout
     ignored = "!git ls-files --others --exclude-standard"
     pending = !git --no-pager log origin/master..master && echo
     missing = !sh -c 'git cherry "$0" | cut -sd + -f 2 | xargs "git show"'
@@ -58,7 +59,7 @@
     d = diff
     pu = !"git fetch origin -v; git fetch upstream -v; git merge upstream/master"
     mideo = clone git:mideo.git mideo
-    athenry = clone git:athenry.git athenry
+    athenry = clone git@github.com:gregf/athenry athenry
     gitosis = clone git:gitosis-admin.git gitosis-admin 
     code = clone git@github.com:gregf/scripts.git bin
     dotfiles = clone git@github.com:gregf/dotfiles.git
@@ -85,6 +86,7 @@
 [diff]
     ;external = /usr/bin/vimdiff
     renames = true
+	renamelimit = 0
 [giggle]
 	main-window-maximized = false
 	main-window-geometry = 1674x911+0+133
@@ -99,4 +101,6 @@
 [mirror]
     summary = true
 [branch]
-    autosetupmerge = true
+	autosetupmerge = true
+[pack]
+	threads = 0
