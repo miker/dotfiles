@@ -70,7 +70,7 @@ xsetroot -cursor_name arrow &
 urxvtd -q -o -f &
 
 # Ask for keychain password
-keychain --agents ssh,gpg --clear -q ~/.ssh/id_dsa
+keychain --agents ssh,gpg --clear -q ~/.ssh/id_rsa
 source ~/.keychain/$(uname -n)-sh
 source ~/.keychain/$(uname -n)-sh-gpg
 
@@ -95,6 +95,7 @@ esac
 ~/code/bin/wallpaper/wallpaper.rb &
 nice -n10 ${BROWSER} & 
 nice -n19 gpodder &
+xsetroot -cursor_name left_ptr &
 orage &
 conky -d &
 
