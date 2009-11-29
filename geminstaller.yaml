@@ -2,10 +2,11 @@
 defaults:
   install_options: --no-ri --no-rdoc
   check_for_upgrade: true
-  fix_dependencies: false 
+  fix_dependencies: true 
 gems:
 - name: yard
-- name: giraffesoft-trample
+- name: jammit
+- name: request-log-analyzer
 - name: gravtastic
 - name: open4
 - name: rails
@@ -25,7 +26,6 @@ gems:
 - name: syntax
 - name: what_methods
 - name: stripper
-- name: josevalim-easy_http_cache
 - name: authlogic
 - name: authlogic-oid
 - name: ZenTest
@@ -44,7 +44,6 @@ gems:
 - name: jeweler
 - name: oniguruma
 - name: ultraviolet
-- name: jnunemaker-google-weather
 - name: httparty
 - name: haddock
 - name: flapcore
@@ -68,7 +67,6 @@ gems:
 - name: capistrano
 - name: piston
 - name: image_science
-- name: jamis-fuzzy_file_finder
 - name: git_remote_branch
 - name: is_taggable
 - name: getopt-declare
@@ -92,6 +90,5 @@ gems:
 - name: friendly_id
 - name: dom_id
 - name: gemedit
-- name: visionmedia-css
 - name: settingslogic
 - name: isaac
