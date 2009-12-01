@@ -3,15 +3,15 @@ fs="yes"
 vo="xv"
 ao="alsa"
 idx="yes"
-#nosound="yes"
 monitoraspect="16:9"
 af=volnorm
+fullscreen="yes"
 vf=denoise3d,pp
-#framedrop="yes"
-#hardframedrop=0
+framedrop="yes"
 autoq=100
 ontop="1"
 stop-xscreensaver="yes"
+#nosound="yes"
 #heartbeat-cmd="/usr/bin/xscreensaver-command -deactivate > /dev/null"
 
 [xvmc]
