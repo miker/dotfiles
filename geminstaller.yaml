@@ -6,13 +6,15 @@ defaults:
 gems:
 - name: yard
 - name: jammit
+- name: open_gem
+- name: nokogiri
 - name: request-log-analyzer
 - name: gravtastic
 - name: open4
 - name: rails
 - name: compass
-  name: compass-colors
-  name: compass-jquery-plugin
+- name: compass-colors
+- name: compass-jquery-plugin
 - name: patron
 - name: coderay
 - name: passenger
