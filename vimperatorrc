@@ -9,7 +9,7 @@ set showmode
 set showtabline=2
 set verbose=9
 set activate=quickmark,paste
-set editor=gvim -f
+set editor="gvim -f"
 set focuscontent
 set followhints=1
 set newtab=all
@@ -69,6 +69,7 @@ set! content.notify.ontimer=true
 set! browser.urlbar.clickSelectsAll=true
 set! browser.urlbar.doubleClickSelectsAll=false
 set! browser.startup.page=3
+set! browser.sessionhistory.max_total_viewers="-1"
 
 " ==================== colorscheme ==================== "
 colorscheme desert 
