@@ -1,0 +1,411 @@
+#!/bin/zsh -f 
+
+alias_exists() {
+  name=$1
+  value=$2
+  command=$3
+  [[ $command = "" ]] && command=$value
+  if [[ -x `which $command` ]]; then
+    alias $name="$value"
+  fi
+}
+
+service() { sudo $RCDIR$1 $2; }
+
+## find all suid files
+function suidfind {
+    ls -l /**/*(su0x) 
+}
+
+function install_dotfiles {
+    git clone git://github.com/gregf/dotfiles.git $HOME/.dotfiles
+    cd $HOME/.dotfiles
+    rake install
+    cd
+}
+
+function zkbd {
+    ZVER=(`zsh --version | awk '{print $2}' -`)
+    if [[ -f /usr/share/zsh/${ZVER}/functions/Misc/zkbd ]]; then
+        zsh /usr/share/zsh/${ZVER}/functions/Misc/zkbd
+    elif [[ -f /usr/local/share/zsh/${ZVER}/functions/Misc/zkbd ]]; then
+        zsh /usr/local/share/zsh/${ZVER}/functions/Misc/zkbd
+    elif [[ -f /usr/local/share/zsh/${ZVER}/functions/zkbd ]]; then
+        zsh /usr/local/share/zsh/${ZVER}/functions/zkbd
+    fi
+}
+
+function clamscan {
+    mkdir -p /tmp/virus
+    nice -n 19 clamscan --verbose --max-recursion=20 -m -i --detect-pua --move=/tmp/virus -r
+    cd /tmp/virus
+    echo -n "Viruses:"
+    ls
+}
+
+function kvmiso {
+    kvm -boot d -m 256 -localtime \
+    -net nic \
+    -net user \
+    -no-fd-bootchk -no-acpi -cdrom $1
+}
+
+function kvmimg {
+    kvm-img create -f qcow2 /storage/kvm/$i.qcow 10G
+}
+
+function kvminst {
+    echo "Supply disk.img and path to iso or drive for installing from"
+    kvm -boot d -m 256 -localtime \
+    -net nic \
+    -net user \
+    -no-fd-bootchk -no-acpi \
+    -hda /storage/kvm/$1.qcow -cdrom $2
+}
+
+function kvmrun {
+    echo "Supply drive image to boot from"
+    kvm -boot c -m 256 -localtime \
+    -net nic \
+    -net user \
+    -no-fd-bootchk -no-acpi -hda /storage/kvm/$1.qcow
+}
+
+function pskill {
+    kill -9 `pgrep $1`
+    echo "slaughtered."
+}
+
+
+function kscreen {
+    echo -ne "\017"
+    reset
+}
+
+function spell { echo "$@" | aspell -a }
+
+function calc { echo "$*" | bc; }
+
+function date {
+    if [ $# = 0 ]; then
+        # format: saturday, december 21, 2002 06:46:38 pm est
+        command date +"%a, %b %e %Y %I:%M:%S%P %Z"
+    else
+        # execute real `date`
+        command date $@
+    fi
+}
+
+function cal {
+    if [ $# = 0 ]; then
+        command cal -3
+    else
+        command cal $@
+    fi
+}
+
+
+#function to clean up web permissions.
+# TODO Move this to a script
+function fixwww {
+    DIRPERM="0755"
+    FILEPERM="0644"
+    USER="gregf"
+    GROUP="gregf"
+    echo " * Are you in the correct directory? (yes/no)"
+    pwd
+    read input
+    if [ "$input" = "yes" ]; then
+        echo " ! Fixing up WWW Permissions"
+        echo "   Fixing File Permissions"
+        find . -type f -print0 | xargs -0 chmod $FILEPERM
+        find . -type f -print0 | xargs -0 chown $USER:$GROUP
+        echo "   Fixing Directory Permissions"
+        find . -type d -print0 | xargs -0 chmod $DIRPERM
+        find . -type d -print0 | xargs -0 chown $USER:$GROUP
+        echo " * done."
+    else
+        echo " ! Invalid response."
+    fi
+}
+
+function mcdrom {
+    local mounted
+    local cpwd
+    mounted=$(grep cdrom /etc/mtab)
+    if [[ $mounted = "" ]];then
+        mount /media/cdrom
+        echo "-- mounted cdrom --"
+        cd /media/cdrom ; ls
+    else
+        cpwd=$(pwd|grep cdrom)
+        if [[ $cpwd = "" ]];then
+            umount /media/cdrom
+            echo "-- umounted cdrom --"
+        else
+            cd;umount /media/cdrom
+            echo "-- umounted cdrom --"
+            pwd
+            eject
+        fi
+    fi
+}
+
+function extractrar {
+    FILE=$(basename "$1" .rpm)
+    rpm2tar "$1"
+    mkdir -p ${FILE}
+    tar -xvf ${FILE}.tar -C ${FILE}
+}
+
+function createlzma {
+    lzma -q -9 $1
+}
+
+function extractlzma {
+    TARFILE=$(basename $1 .lzma)
+    unlzma $1
+    mkdir -p ${TARFILE}
+    tar xvf $TARFILE.tar -C ${TARFILE}
+}
+
+function open {
+    if [[ -f "$1" ]]
+    then
+        case "$1" in
+            (*.tar.bz2) tar -xvjf "$1" ;;
+            (*.tar.gz) tar -xvzf "$1" ;;
+            (*.ace) unace e "$1" ;;
+            (*.rar) unrar x "$1" ;;
+            (*.deb) ar -x "$1" ;;
+            (*.bz2) bzip2 -d "$1" ;;
+            (*.lzh) lha x "$1" ;;
+            (*.gz) gunzip -d "$1" ;;
+            (*.tar) tar -xvf "$1" ;;
+            (*.rpm) extractrar "$1" ;;
+            (*.lzma) extractlzma "$1" ;;
+            (*.tgz) gunzip -d "$1" ;;
+            (*.tbz2) tar -jxvf "$1" ;;
+            (*.zip) unzip "$1" ;;
+            (*.Z) uncompress "$1" ;;
+            (*.shar) sh "$1" ;;
+            (*.7z) 7z x "$1" ;;
+            (*) echo "'"$1"' Error. Please go away" ;;
+        esac
+    else
+        echo "'"$1"' is not a valid file"
+    fi
+}
+
+function mps { /bin/ps $@ -u $USER -o pid,ppid,%cpu,%mem,command ; }
+
+function mpsu { /bin/ps -u $@ -o pid,ppid,%cpu,%mem,command ; }
+
+# $1 should be something like /dev/sdb1
+function deviceinfo { udevinfo -a -p $(udevinfo -q path -n $1) }
+
+function ech {
+    chpth=`qlist -C -I -e $1`
+    if [[ -n $chpth ]]; then
+        $PAGER /usr/portage/$chpth/ChangeLog
+    else
+        echo "No such package named $1"
+    fi
+}
+
+function junk {
+    scp -r $* norush:~/www/stuff/
+}
+
+function torrent {
+    scp -r *.torrent quad:~/.torrents/
+}
+
+function dotfile {
+    scp -r $* web:~/blog/shared/dotfiles/
+}
+
+function pcache {
+    paludis --regenerate-installable-cache
+    paludis --regenerate-installed-cache
+}
+
+function manifest {
+    appareo --log-level warning --master-repository-name gentoo --extra-repository-dir /usr/portage --extra-repository-dir $PWD $1 -m
+}
+
+function tbuild {
+    manfiest $1 && \
+    ebuild $1 clean && \
+    ebuild $1 install
+}
+
+function qa {
+    qualudis --log-level warning --master-repository-name gentoo --extra-repository-dir /usr/portage --extra-repository-dir $PWD $1 
+}
+
+function gitsearch {
+    git grep $* $(git log -g --pretty=format:%h)
+}
+
+# http://polatel.wordpress.com/2009/05/05/paludis-resume-files/
+function plast {
+    local index
+    local lastfile
+    local cmd
+ 
+    # Sanity check
+    if [[ -z "${PALUDIS_RESUME_DIR}" ]]; then
+        echo "PALUDIS_RESUME_DIR not set" >&2
+        return 1
+    elif [[ ! -d "${PALUDIS_RESUME_DIR}" ]]; then
+        echo "${PALUDIS_RESUME_DIR} is not a directory" >&2
+        return 1
+    fi
+ 
+    index=${1:-1}
+    lastfile=$(print "${PALUDIS_RESUME_DIR}"/*(om[${index}]))
+    if [[ ! -f "${lastfile}" ]]; then
+        echo "no file at index ${index}" >&2
+        return 1
+    fi
+ 
+    eval sudo $(< "${lastfile}")
+}
+ 
+function isocdrom {
+    dd if=/dev/cdrom of=$1 bs=2048 conv=sync,notrunc
+}
+
+function fix-paludis-perms {
+    mkdirs=(/usr/portage/.cache/names /usr/portage/distfiles /var/tmp/paludis /etc/paludis)
+    fixdirs=(/usr/portage /var/tmp/paludis /etc/paludis)
+    repodir="/var/paludis/repositories"
+    for dir in $mkdirs;
+    do
+        mkdir -p $dir
+    done
+    for dir in $fixdirs;
+    do
+        chown -R paludisbuild:paludisbuild $dir
+        find $dir -type d -exec chmod g+wrx {} \;
+    done
+    if [ -d $repodir ]; then
+        for repo in `ls --color=never -Fd *(-/DN)`;
+        do
+            mkdir -p $repo/.cache/names
+            chown -R paludisbuild:paludisbuild $repo
+            find $repo -type d -exec chmod g+wrx {} \;
+        done
+    fi
+    pcache # see function above
+}
+
+function remove_all_gems {
+    gem list --no-versions | sed -r '/^(\*|$)/d' | xargs sudo gem uninstall 
+}
+
+function confcat {
+    grep -vh '^[[:space:]]*#' "$@" | grep -v '^$'
+}
+
+function pgrep {
+    ps aux | grep $@ | grep -v grep | grep -v "pgrep" | column -t
+}
+
+function sg {
+    local last_path=`script/generate $@ | awk '/db\/migrate\//{print $NF}'`
+    if [ $last_path ]; then $EDITOR $last_path && rake db:migrate; fi
+}
+
+function http_headers {
+    curl -I -L $@
+}
+
+function mktar {
+    tar jcvf "${1%%/}.tar.bz2" "${1%%/}/"
+}
+
+function sanitize {
+    chmod -R u=rwX,go=rX "$@"
+    chown -R ${USER}:users "$@"
+}
+
+# Start nginx and tail the logfile
+# catch ^C and kill nginx
+function ss {
+    TRAPINT() {
+        print "Caught Control C, shutting down nginx"
+        sudo /etc/init.d/nginx stop
+    }
+    sudo /etc/init.d/nginx start
+    tail -f log/development.log
+
+}
+
+# Stolen:
+# http://cinderwick.ca/files/configs/bashrc
+
+# remindme - a simple reminder
+# usage: remindme <time> <text>
+# e.g.: remindme 10m "omg, the pizza"
+function remindme {
+    sleep $1 && zenity --info --text "$2" &
+}
+
+function background {
+    nohup $1 &> /dev/null &    
+}
+
+function cdgem {
+    gem open $1
+}
+
+function keepempty {
+    for i in $(find . -type d -regex ``./[^.].*'' -empty); do touch $i"/.gitignore"; done;
+}
+
+function xephyr {
+    Xephyr -ac -br -noreset -screen 1024x768 :1 &
+    sleep 5
+    DISPLAY=:1.0 $@
+}
+
+function cpv {
+    #rsync -rPIhb --backup-dir=/tmp/rsync -e /dev/null -- ${@}
+    rsync -rPIhb -- ${@}
+}
+
+function h { 
+    history 0 | grep $1 
+}
+
+function ports {
+case `uname` in
+    OpenBSD)
+        sudo netstat -at | grep LISTEN
+    ;;
+    FreeBSD)
+        sudo sockstat -4 -l
+    ;;
+    Linux)
+        sudo netstat -lptu
+    ;;
+    *)
+        nmap -sT -O localhost
+    ;;
+esac
+}
+
+# Recompiles .zshrc
+src () {
+    autoload -U zrecompile
+    [ -f ~/.zshrc ] && zrecompile -p ~/.zshrc
+    [ -f ~/.zcompdump ] && zrecompile -p ~/.zcompdump
+    [ -f ~/.zshrc.zwc.old ] && rm -f ~/.zshrc.zwc.old
+    [ -f ~/.zcompdump.zwc.old ] && rm -f ~/.zcompdump.zwc.old
+    source ~/.zshrc
+}
+# }}}
+
+# vim: set et sw=4 sts=4 ts=4 ft=zsh :

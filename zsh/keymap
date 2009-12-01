@@ -1,0 +1,39 @@
+#!/bin/zsh -f
+
+################################################################################
+# Get keys working
+#
+# For this to work you have to first run 'zsh /usr/share/zsh/4.3.4/functions/Misc/zkbd'.
+# The location of this script on your system may vary.
+# Also note you must change the 'source' line below to match your zkbd config.
+#################################################################################
+
+bindkey -v
+if [[ -f ~/.zkbd/$TERM-${DISPLAY:-$VENDOR-$OSTYPE} ]]; then
+    source ~/.zkbd/$TERM-${DISPLAY:-$VENDOR-$OSTYPE}
+else
+    echo "no zkbd file, run zkbd"
+fi
+
+#################################################################################
+# Set some keybindings
+#################################################################################
+# Bind the keys that zkbd set up to some widgets
+[[ -n ${key[Home]} ]]      && bindkey "${key[Home]}"      beginning-of-line
+[[ -n ${key[Delete]} ]]    && bindkey "${key[Delete]}"    delete-char
+[[ -n ${key[End]} ]]       && bindkey "${key[End]}"       end-of-line
+[[ -n ${key[Up]} ]]        && bindkey "${key[Up]}"        history-search-backward 
+[[ -n ${key[Left]} ]]      && bindkey "${key[Left]}"      backward-char
+[[ -n ${key[Down]} ]]      && bindkey "${key[Down]}"      history-search-forward
+[[ -n ${key[Right]} ]]     && bindkey "${key[Right]}"     forward-char
+[[ -n ${key[PageUp]} ]]    && bindkey "${key[PageUp]}"    history-incremental-search-backward
+[[ -n ${key[PageDown]} ]]  && bindkey "${key[PageDown]}"  history-incremental-search-forward
+bindkey '^xh' run-help
+autoload edit-command-line
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^xx' execute-named-cmd
+bindkey "^K"      kill-whole-line                      # ctrl-k
+bindkey "^A"      beginning-of-line                    # ctrl-a  
+bindkey "^E"      end-of-line                          # ctrl-e
+bindkey "^R"      history-incremental-search-backward  # ctrl-r

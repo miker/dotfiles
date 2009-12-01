@@ -1,0 +1,13 @@
+#! /bin/zsh -f 
+   
+zmodload -i zsh/complist
+zmodload -i zsh/compctl
+zmodload -i zsh/computil
+zmodload -i zsh/zle
+zmodload -i zsh/zutil
+
+# Eat it bc
+autoload -z zcalc
+autoload -U zmv
+
+autoload -Uz compinit zrecompile

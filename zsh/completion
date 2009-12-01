@@ -1,0 +1,148 @@
+#!/bin/zsh -f 
+
+zstyle :compinstall filename '$HOME/.zshrc'
+compinit
+
+# Follow GNU LS_COLORS
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# insert all expansions for expand completer
+zstyle ':completion:*:expand:*' keep-prefix true tag-order all-expansions
+
+compctl -g '*.Z *.gz *.tgz' + -g '*' zcat gunzip tar open
+compctl -g '*.tar.Z *.tar.gz *.tgz *.tar.bz2' + -g '*' tar bzip2 open
+compctl -g '*.zip *.ZIP' + -g '*' unzip zip open
+compctl -g '*.rar *.RAR' + -g '*' rar unrar open
+compctl -g '*.(mp3|MP3|ogg|OGG|WAV|wav|ogv|OGV)' + -g '*(-/)'  ogg123 mpg123 audacious wma123 mplayer vlc
+compctl -g '*.(divx|DIVX|m4v|M4V|wmv|WMV|avi|AVI|mpg|mpeg|MPG|MPEG|WMV|wmv|mov|MOV|wma|WMA|w4a|W4A|part|PART|rmvb|RMVB)' + -g '*(-/)'  xine mplayer kmplayer gmplayer vlc
+compctl -g '*.(pdf|PDF|ps|PS|tiff|TIFF)' + -g '*(-/)' evince acroread xpdf epdfview
+compctl -g '*.(jpg|JPG|jpeg|JPEG|gif|GIF|tiff|TIFF|png|PNG|tga|TGA)' + -g '*(-/)' feh gthumb xv f-spot gqview
+
+# SSH Completion
+zstyle ':completion:*:scp:*' tag-order files 'hosts:-domain:domain'
+zstyle ':completion:*:scp:*' group-order files all-files users hosts-domain hosts-host hosts-ipaddr
+zstyle ':completion:*:ssh:*' tag-order 'hosts:-domain:domain'
+zstyle ':completion:*:ssh:*' group-order hosts-domain hosts-host users hosts-ipaddr
+
+# highlight parameters with uncommon names
+zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
+ 
+# highlight aliases
+zstyle ':completion:*:aliases' list-colors "=*=$color[green]"
+ 
+# highlight the original input.
+zstyle ':completion:*:original' list-colors "=*=$color[red];$color[bold]"
+ 
+# highlight words like 'esac' or 'end'
+zstyle ':completion:*:reserved-words' list-colors "=*=$color[red]"
+
+# With commands like `rm' it's annoying if one gets offered the same filename
+# again even if it is already on the command line. To avoid that:
+zstyle ':completion:*:rm:*' ignore-line yes
+
+# Manpages, ho!
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
+
+# This makes rake autocomplete happy
+zstyle ':completion:*' matcher-list 'r:|[:]=*'
+
+## add colors to processes for kill completion
+zstyle ':completion:*:*:kill:*' verbose yes
+zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#) #([^ ]#)*=$color[cyan]=$color[yellow]=$color[green]"
+
+# Make the nice with git completion and others
+zstyle ':completion::*:(git|less|rm|vim|most)' ignore-line true
+
+# Select Prompt
+zstyle ':completion:*' menu select
+
+# Expansion options
+zstyle ':completion:*' completer _complete _list _oldlist _expand _ignored _match _correct _approximate _prefix
+zstyle ':completion:*' completer _complete _prefix
+zstyle ':completion::prefix-1:*' completer _complete
+zstyle ':completion:incremental:*' completer _complete _correct
+zstyle ':completion:predict:*' completer _complete
+
+# Completion caching
+# Cache
+#zstyle ':completion:*' use-cache off
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+# Expand partial paths
+zstyle ':completion:*' expand 'yes'
+zstyle ':completion:*' squeeze-slashes 'yes'
+
+# Include non-hidden directories in globbed file completions
+# for certain commands
+
+zstyle ':completion::complete:*' '\'
+
+# Use menuselection for pid completion
+zstyle ':completion:*:*:kill:*' menu yes select
+#zstyle ':completion:*:kill:*' force-list always
+zstyle ':completion:*:processes' command 'ps -au$USER'
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;32'
+
+#  tag-order 'globbed-files directories' all-files
+zstyle ':completion::complete:*:tar:directories' file-patterns '*~.*(-/)'
+
+# Don't complete backup files as executables
+zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
+
+# formatting and messages
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:descriptions' format "- %{${fg[yellow]}%}%d%{${reset_color}%} -"
+zstyle ':completion:*:messages' format '%d'
+zstyle ':completion:*:warnings' format 'No matches for: %d'
+zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' list-separator '#'
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*:prefix:*' add-space true
+
+# Separate matches into groups
+zstyle ':completion:*:matches' group 'yes'
+
+## Describe each match group.
+zstyle ':completion:*:descriptions' format "%B---- %d%b"
+
+## Describe options in full
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+
+#  tag-order 'globbed-files directories' all-files
+zstyle ':completion::complete:*:tar:directories' file-patterns '*~.*(-/)'
+
+# Don't complete backup files as executables
+zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~'
+
+# pasting with tabs doesn't perform completion
+zstyle ':completion:*' insert-tab pending
+
+# matches case insensitive for lowercase
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# Magically quote urls
+autoload -U url-quote-magic
+zle -N self-insert url-quote-magic
+
+compctl -g '*(-/)' + -g '.*(-/)' -v cd pushd rmdir dirs chdir
+
+# completion for "man" by Gossamer <gossamer@tertius.net.au> 980827
+compctl -f -x 'S[1][2][3][4][5][6][7][8][9]' -k '(1 2 3 4 5 6 7 8 9)' \
+- 'R[[1-9nlo]|[1-9](|[a-z]),^*]' -K 'match-man' \
+- 's[-M],c[-1,-M]' -g '*(-/)' \
+- 's[-P],c[-1,-P]' -c \
+- 's[-S],s[-1,-S]' -k '( )' \
+- 's[-]' -k '(a d f h k t M P)' \
+- 'p[1,-1]' -c + -K 'match-man' \
+-- man
+
+if [ -f ~/.ssh/known_hosts ]; then
+    local _myhosts
+    _myhosts=( ${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*} )
+    zstyle ':completion:*' hosts $_myhosts
+fi

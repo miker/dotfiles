@@ -1,0 +1,112 @@
+#!/bin/zsh -f
+
+# file associations
+alias -s html=uzbl --uri=
+alias -s org=uzbl --uri=
+alias -s com=uzbl --uri=
+alias -s html=uzbl --uri=
+alias -s org=uzbl --uri=
+alias -s jpg=feh
+alias -s pdf=evince
+alias -s rb=ruby
+
+# better programs
+alias_exists top htop
+alias_exists more most
+alias_exists ping mtr
+
+alias ssh='ssh -qAX'
+alias ps='ps auxwww'
+alias xlog="sudo grep --binary-files=without-match --color -nsie '(EE)' -e '(WW)' /var/log/Xorg.0.log"
+alias which="whence"
+alias z='vim ~/.zshrc;src'
+alias sd='export DISPLAY=:0.0'
+alias cpan="perl -MCPAN -e shell"
+alias cup='cvs -z3 update -Pd'
+alias mv='nocorrect /bin/mv'
+alias shred='nocorrect ionice -c3 /usr/bin/shred -fuzv'
+alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l1 -v -r'
+alias man='nocorrect man'
+alias mkdir='nocorrect /bin/mkdir -p'
+alias find='noglob find'
+alias wget="wget -c"
+alias ll="ls -l"
+alias l.='ls -d .[^.]*'
+alias lsd='ls -ld *(-/DN)'
+alias weather="~/code/bin/forecast/forecast.rb"
+alias ncmpc="ncmpc -c"
+alias fixdbus="dbus-uuidgen --ensure"
+alias wp="~/code/bin/wallpaper/wallpaper.rb"
+alias m="nice -n1 mplayer"
+alias ml="nice -n1 mplayer -loop 0"
+alias mls="nice -n1 mplayer -loop 0 -shuffle"
+alias mn="nice -n1 mplayer -nosound"
+alias e="gvim"
+alias v="vim"
+alias t="thunar"
+alias repo='cd /var/paludis/repositories'
+alias ov='cd /home/gregf/code/active/gregf-overlay'
+alias sc='script/console'
+alias sp='script/plugin'
+alias db='script/dbconsole'
+alias sgmo="sg model $@"
+alias sgmi="sg migration $@"
+alias setmid='rm -f db/*.sqlite3 ; rake db:migrate && rake admin:create'
+alias a='autotest -rails'
+alias tlog='tail -f log/development.log'
+alias rst='touch tmp/restart.txt'
+alias migrate='rake db:migrate db:test:clone'
+alias gi='sudo gem install --no-ri --include-dependencies'
+alias gs='gem search -b'
+alias burniso='wodim -v dev=/dev/cdrw'
+alias burndvdiso='growisofs -speed=8 -dvd-compat -Z /dev/dvdrw=$1'
+alias usepretend='sudo paludis -ip --dl-reinstall if-use-changed'
+alias usedo='sudo paludis -i --dl-reinstall if-use-changed'
+alias ketchup='ketchup -G -a /usr/portage/distfiles'
+alias biosinfo='sudo dmidecode'
+alias pwgen='pwgen -sBnc 10'
+alias la="ls -a"
+alias l="ls"
+alias d="devtodo"
+alias gnp="git-notpushed"
+alias s="sudo"
+alias ej="eject"
+alias k="killall"
+alias poweroff='sudo poweroff'
+alias reboot='sudo reboot'
+alias savage="~/code/bin/savage/savage.sh"
+alias wcyy="mplayer http://68.142.81.164:80/citadelcc_WCYY_FM\?MSWMExt\=.asf"
+alias wkit="mplayer http://64.92.199.73/WKIT-FM"
+alias dropcache='sudo echo 3 > /proc/sys/vm/drop_caches'
+alias lock='alock -auth pam -bg blank:color=black'
+alias lsnoext="ls | grep -v '\.'"
+alias gis="git status | grep --color=always '^[^a-z]\+\(new file:\|modified:\)' | cut -d'#' -f2-"
+alias lk='lynx -dump http://kernel.org/kdist/finger_banner'
+alias dosbox='dosbox -conf ~/.dosbox.conf -fulscreen'
+alias vim="vim -p"
+alias g='grep -Hn --color=always'
+alias ra="echo 'awful.util.restart()' | awesome-client -"
+alias sv="gvim --remote-tab-silent"
+alias lvim="vim -c \"normal '0\""
+alias geminstaller='sudo geminstaller -s -c $HOME/.geminstaller.yaml'
+alias gem_remove_all="gem uninstall -x --a --ignore-dependencies `gem list -q -l --no-details --no-versions `"
+alias c="clear"
+alias smv="sudo mv"
+alias srm="sudo rm"
+alias installed='qlist -I | most'
+alias lg='ls | grep -i $1'
+alias n="nitrogen ~/media/images/wallpaper/"
+alias grm='git rm $(git ls-files --deleted)'
+alias encrypt="gpg -e -r Greg"
+alias decrypt="gpg -d -r Greg"
+alias tmux="tmux -2"
+alias tmr="tmux attach-session"
+alias most="most +s +u"
+alias ri="ri -Tf ansi"
+alias images='feh -d -x -F -Z $PWD'
+alias imgindex='feh -irFarial/14 -O index.jpg $PWD'
+alias wgetlist="wget -c -i"
+alias become="sudo -s -H -u $1"
+alias runas="sudo -H -u $1 $@"
+
+# vim: set et sw=4 sts=4 ts=4 ft=zsh :

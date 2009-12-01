@@ -1,0 +1,156 @@
+#!/bin/zsh -f
+
+case `uname` in
+    OpenBSD)
+        # Enviroment Varibles
+        export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/`uname -r`/packages/`machine -a`/
+
+        # which version of ls should we use?
+        if [ -x /usr/local/bin/gls ]; then
+            alias ls='/usr/local/bin/gls -F --color --human-readable'
+            export LS_COLORS="no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;3:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:"
+        else
+            if [ -x /usr/local/bin/colorls ]; then
+                alias ls='/usr/local/bin/colorls -G -F'
+                export LSCOLORS="ExGxFxDxCxDxDxxbadacad"
+            fi
+        fi
+        # Aliases
+        alias cvsup="cd /usr && cvs -qd anoncvs@anoncvs1.usa.openbsd.org:/cvs checkout -P -rOPENBSD_4_5 src"
+        alias srcup="cd /usr/src && cvs -q up -rOPENBSD_4_5 -Pd"
+        alias portsup="cd /usr &&  cvs -qd anoncvs@anoncvs1.usa.openbsd.org:/cvs get -rOPENBSD_4_5 -P ports"
+        alias cvsrun="sudo cvsup -g -L 2 /etc/cvs-supfile"
+        alias killall="pkill"
+        alias shred="rm -P"
+    ;;
+    FreeBSD)
+        SSH_ASKPASS="/usr/local/bin/ssh-askpass-gtk2"
+        LSCOLORS=ExCxFxFxBxGxGxababaeae
+        CLICOLOR=$LSCOLORS
+
+        alias ls='ls -GF'
+        alias portu="sudo csup -L 2 /etc/ports-cvsup"
+        alias srcu="sudo csup -L 2 /etc/src-cvsup"
+        export LANG="en_US.UTF-8"
+        export LC_CTYPE="en_US.UTF-8"
+        export LC_ALL="en_US.UTF-8"
+
+    ;;
+    Linux)
+        #export SSH_ASKPASS="/usr/bin/gtk2-ssh-askpass"
+
+        # We Want utf8
+        export LC_CTYPE=en_US.utf8
+        export LC_ALL=en_US.UTF8
+
+        #aliases
+        alias ls='ls -F --color --human-readable'
+        alias rm='nocorrect /bin/rm -I --preserve-root'
+
+        if [ $HOST  = "mail" ]; then
+            export RAILS_ENV="production"
+        fi
+
+        #############################################################################
+        # colors for ls, etc.  Prefer ~/.dir_colors
+        #############################################################################
+        if [[ -f ~/.dir_colors ]]; then
+            eval `dircolors -b ~/.dir_colors`
+        elif [[ -f /etc/DIR_COLORS ]]; then 
+            eval `dircolors -b /etc/DIR_COLORS`
+        fi
+
+        if [[ -f /etc/gentoo-release ]]; then
+            alias ms="mirrorselect -b10 -s5 -D"
+            alias python-updater="python-updater -P paludis"
+            alias module-rebuild="module-rebuild -P paludis $@"
+            alias dp="dispatch-conf"
+            alias keywords='sudo vim /etc/paludis/keywords.conf'
+            alias use='sudo vim /etc/paludis/use.conf'
+            alias mask='sudo vim /etc/paludis/package_mask.conf'
+            alias unmask='sudo vim /etc/paludis/package_unmask.conf'
+            alias bashrc='sudo vim /etc/paludis/bashrc'
+            alias df='df -hT'
+            alias pq='paludis -q'
+            alias lf='paludis --contents'
+            alias ex='paludis --executables'
+            alias puu='paludis --permit-unsafe-uninstalls -u'
+
+            export PALUDIS_CARRY_OUT_UPDATES="yes"
+            export RECONCILIO_OPTIONS="--continue-on-failure if-satisfied"
+            export PALUDIS_RESUME_DIR="${HOME}"/.resume-paludis
+
+            export PALUDIS_OPTIONS="--log-level warning"
+            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-upgrade always"
+            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-circular discard"
+            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-suggested discard"
+            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-reinstall-scm weekly"
+            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-reinstall if-use-changed"
+            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --continue-on-failure if-satisfied"
+            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --show-reasons summary" 
+            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --show-use-descriptions all"
+            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX" 
+            
+            function build_kernel {
+                if (( EUID != 0 )); then
+                    echo "* You must be root to run build_kernel!"
+                    return 1 
+                else 
+                    mount /boot
+                    time ( make -j3 clean make -j3 all && make -j3 modules_install && make -j3 install )
+                    vim /boot/grub/grub.cfg
+                    echo "* Reboot When Your Ready..."
+                fi
+            }
+
+            function paludis-scm {
+                PALUDIS_OPTIONS="--dl-reinstall-scm daily"
+                paludis $@
+            }
+
+            function explainuseflag {
+                sed -ne "s,^\([^ ]*:\)\?$1 - ,,p" \
+                /usr/portage/profiles/use.desc \
+                /usr/portage/profiles/use.local.desc
+             }
+
+            function edesc {
+                cat *.ebuild | sed -ne 's-^DESCRIPTION="\(.*\)".*-\1-1p' | sort -u
+            }
+
+            function ewww {
+                cat *.ebuild | sed -ne 's-^HOMEPAGE="\(.*\)".*-\1-1p' | sort -u
+            }
+
+            function svcs {
+                sudo /etc/init.d/$1 start
+            }
+
+            function svce {
+                sudo /etc/init.d/$1 stop
+            }
+
+            function svcr {
+                sudo /etc/init.d/$1 restart
+            }
+
+            function svcz {
+                sudo /etc/init.d/$1 zap
+            }
+
+            function rca {
+                sudo /sbin/rc-update add $1 default
+            }
+
+            function rcd {
+                sudo /sbin/rc-update del $1 default
+            }
+            
+            if ! [ -d ~/.resume-paludis ]; then
+                mkdir -p ~/.resume-paludis
+            fi
+
+        fi
+    ;;
+esac
+

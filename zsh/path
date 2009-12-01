@@ -1,0 +1,20 @@
+#!/bin/zsh -f
+
+script_path=(~/code/bin/conky ~/code/bin/clipboard)
+path=($path /usr/local/bin /usr/bin /bin /usr/local/bin /usr/local/sbin /usr/X11R6/bin ${HOME}/code/bin /opt/virtualbox /usr/share/texmf/bin /usr/lib/jre1.5.0_10/bin /usr/games/bin /usr/libexec/git-core /opt/icedtea6-bin-1.4.1/bin /opt/sun-jre-bin-1.6.0.14/bin /opt/VirtualBox $script_path ~/bin)
+#fpath=(~/.zsh/functions $fpath)
+#autoload -U ~/.zsh/functions/*(:t)
+cdpath=($cdpath ~/code/bin/ ~/code/active)
+if (( EUID == 0 )); then
+    rootpath=(/sbin /usr/sbin /usr/local/sbin)
+    # hack to fix "Can not write to history" after leaving sudo or su
+    # sudo does not export enviroment vars
+    #SAVEHIST=1000
+    #HISTFILE=~root/.history_zsh
+    #HISTSIZE=1000
+    #HOME=/root
+fi
+
+# remove duplicate entries from path,cdpath,manpath & fpath
+typeset -gU path cdpath manpath fpath
+
