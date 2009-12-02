@@ -1,6 +1,6 @@
 #!/bin/zsh -f 
 
-alias_exists() {
+function alias_exists {
   name=$1
   value=$2
   command=$3
@@ -10,7 +10,7 @@ alias_exists() {
   fi
 }
 
-service() { sudo $RCDIR$1 $2; }
+function service { sudo $RCDIR$1 $2; }
 
 ## find all suid files
 function suidfind {
@@ -21,7 +21,13 @@ function install_dotfiles {
     git clone git://github.com/gregf/dotfiles.git $HOME/.dotfiles
     cd $HOME/.dotfiles
     rake install
-    cd
+    cd -
+}
+
+function update_dotfiles {
+    cd $HOME/.dotfiles
+    git pull
+    cd -
 }
 
 function zkbd {
@@ -146,8 +152,8 @@ function mcdrom {
             cd;umount /media/cdrom
             echo "-- umounted cdrom --"
             pwd
-            eject
         fi
+        eject
     fi
 }
 
@@ -184,6 +190,7 @@ function open {
             (*.tar) tar -xvf "$1" ;;
             (*.rpm) extractrar "$1" ;;
             (*.lzma) extractlzma "$1" ;;
+            (*.xz) xz -d "$1" ;;
             (*.tgz) gunzip -d "$1" ;;
             (*.tbz2) tar -jxvf "$1" ;;
             (*.zip) unzip "$1" ;;
@@ -218,16 +225,11 @@ function junk {
 }
 
 function torrent {
-    scp -r *.torrent quad:~/.torrents/
+    scp -r *.torrent quad:~/.torrents/ && rm *.torrent 
 }
 
 function dotfile {
     scp -r $* web:~/blog/shared/dotfiles/
-}
-
-function pcache {
-    paludis --regenerate-installable-cache
-    paludis --regenerate-installed-cache
 }
 
 function manifest {
@@ -235,7 +237,7 @@ function manifest {
 }
 
 function tbuild {
-    manfiest $1 && \
+    appareo --log-level warning --master-repository-name gentoo --extra-repository-dir /usr/portage --extra-repository-dir $PWD $1 -m \
     ebuild $1 clean && \
     ebuild $1 install
 }
@@ -298,7 +300,6 @@ function fix-paludis-perms {
             find $repo -type d -exec chmod g+wrx {} \;
         done
     fi
-    pcache # see function above
 }
 
 function remove_all_gems {
@@ -367,12 +368,11 @@ function keepempty {
 
 function xephyr {
     Xephyr -ac -br -noreset -screen 1024x768 :1 &
-    sleep 5
+    sleep 2 
     DISPLAY=:1.0 $@
 }
 
 function cpv {
-    #rsync -rPIhb --backup-dir=/tmp/rsync -e /dev/null -- ${@}
     rsync -rPIhb -- ${@}
 }
 
@@ -406,6 +406,5 @@ src () {
     [ -f ~/.zcompdump.zwc.old ] && rm -f ~/.zcompdump.zwc.old
     source ~/.zshrc
 }
-# }}}
 
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
