@@ -16,9 +16,9 @@ case `uname` in
             fi
         fi
         # Aliases
-        alias cvsup="cd /usr && cvs -qd anoncvs@anoncvs1.usa.openbsd.org:/cvs checkout -P -rOPENBSD_4_5 src"
-        alias srcup="cd /usr/src && cvs -q up -rOPENBSD_4_5 -Pd"
-        alias portsup="cd /usr &&  cvs -qd anoncvs@anoncvs1.usa.openbsd.org:/cvs get -rOPENBSD_4_5 -P ports"
+        alias cvsup="cd /usr && cvs -qd anoncvs@anoncvs1.usa.openbsd.org:/cvs checkout -P -rOPENBSD_4_6 src"
+        alias srcup="cd /usr/src && cvs -q up -rOPENBSD_4_6 -Pd"
+        alias portsup="cd /usr &&  cvs -qd anoncvs@anoncvs1.usa.openbsd.org:/cvs get -rOPENBSD_4_6 -P ports"
         alias cvsrun="sudo cvsup -g -L 2 /etc/cvs-supfile"
         alias killall="pkill"
         alias shred="rm -P"
@@ -47,10 +47,6 @@ case `uname` in
         alias ls='ls -F --color --human-readable'
         alias rm='nocorrect /bin/rm -I --preserve-root'
 
-        if [ $HOST  = "mail" ]; then
-            export RAILS_ENV="production"
-        fi
-
         #############################################################################
         # colors for ls, etc.  Prefer ~/.dir_colors
         #############################################################################
@@ -71,26 +67,7 @@ case `uname` in
             alias unmask='sudo vim /etc/paludis/package_unmask.conf'
             alias bashrc='sudo vim /etc/paludis/bashrc'
             alias df='df -hT'
-            alias pq='paludis -q'
-            alias lf='paludis --contents'
-            alias ex='paludis --executables'
-            alias puu='paludis --permit-unsafe-uninstalls -u'
 
-            export PALUDIS_CARRY_OUT_UPDATES="yes"
-            export RECONCILIO_OPTIONS="--continue-on-failure if-satisfied"
-            export PALUDIS_RESUME_DIR="${HOME}"/.resume-paludis
-
-            export PALUDIS_OPTIONS="--log-level warning"
-            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-upgrade always"
-            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-circular discard"
-            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-suggested discard"
-            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-reinstall-scm weekly"
-            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-reinstall if-use-changed"
-            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --continue-on-failure if-satisfied"
-            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --show-reasons summary" 
-            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --show-use-descriptions all"
-            export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX" 
-            
             function build_kernel {
                 if (( EUID != 0 )); then
                     echo "* You must be root to run build_kernel!"
@@ -101,11 +78,6 @@ case `uname` in
                     vim /boot/grub/grub.cfg
                     echo "* Reboot When Your Ready..."
                 fi
-            }
-
-            function paludis-scm {
-                PALUDIS_OPTIONS="--dl-reinstall-scm daily"
-                paludis $@
             }
 
             function explainuseflag {
@@ -146,10 +118,6 @@ case `uname` in
                 sudo /sbin/rc-update del $1 default
             }
             
-            if ! [ -d ~/.resume-paludis ]; then
-                mkdir -p ~/.resume-paludis
-            fi
-
         fi
     ;;
 esac

@@ -8,6 +8,7 @@ ZSH_CONF_FILES=(
   env
   path
   aliases
+  paludis
   keymap
   prompt
   options
