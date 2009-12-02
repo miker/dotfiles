@@ -32,5 +32,8 @@ if [[ -x `which keychain` ]] && [[ $UID -ne 0 ]]; then
 fi
 
 
-# Enable flow control, prevents ^k^s from locking up my screen session.
-stty -ixon
+# Kill flow control
+if tty -s ; then
+    stty -ixon
+    stty -ixoff
+fi
