@@ -1,5 +1,14 @@
 #!/usr/bin/env ruby
-%w{rubygems irb/completion irb/ext/save-history hirb wirble open-uri color hpricot what_methods find bond bond/completion}.each { |lib| require lib }
+
+require 'rubygems'
+require 'color'
+require 'irb/completion'
+require 'irb/ext/save-history'
+require 'hirb'
+require 'what_methods'
+require 'wirble'
+require 'bond'
+require 'bond/completion'
 
 Wirble.init
 Wirble.colorize
@@ -9,6 +18,9 @@ IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb_history"
 IRB.conf[:PROMPT_MODE] = :SIMPLE
 IRB.conf[:AUTO_INDENT] = true
 IRB.conf[:USE_READLINE] = true
+
+# Prompt behavior
+ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
 
 load File.dirname(__FILE__) + '/.railsrc' if $0 == 'irb' && ENV['RAILS_ENV']
 

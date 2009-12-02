@@ -19,3 +19,9 @@ IRB.conf[:IRB_RC] = Proc.new do
   # Require all models so we can tab complete them right away
   silence_warnings { Dir[Dir.pwd + "/app/models/**/*.rb"].entries.each { |x| require x } }
 end
+
+# print SQL to STDOUT
+if ENV.include?('RAILS_ENV') && !Object.const_defined?('RAILS_DEFAULT_LOGGER')
+  require 'logger'
+  RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)
+end
