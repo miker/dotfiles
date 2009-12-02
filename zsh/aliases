@@ -43,7 +43,7 @@ alias ln='nocorrect ln'
 alias mkdir='nocorrect mkdir -p'
 
 # shortcuts
-alias which="whence"
+alias which="whence -a"
 alias p='ping'
 alias h='history'
 alias c="clear"
