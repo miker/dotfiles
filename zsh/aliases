@@ -86,6 +86,8 @@ alias db='script/dbconsole'
 alias a='autotest -rails'
 alias tlog='tail -f log/development.log'
 alias rst='touch tmp/restart.txt'
+alias migrate="rake db:migrate db:test:prepare"
+alias remigrate="rake db:migrate && rake db:migrate:redo && rake db:schema:dump db:test:prepare"
 
 # new commands
 alias xlog="sudo grep --binary-files=without-match --color -nsie '(EE)' -e '(WW)' /var/log/Xorg.0.log"
