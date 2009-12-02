@@ -19,7 +19,3 @@ ZSH_CONF_FILES=(
 for conf_file in $ZSH_CONF_FILES; do
   source $ZSH_CONF_DIR/$conf_file;
 done
-
-if [ ! -z ${DISPLAY} ]; then
-    setxkbmap -option "ctrl:nocaps"
-fi

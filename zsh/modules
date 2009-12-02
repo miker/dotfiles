@@ -6,8 +6,6 @@ zmodload -i zsh/computil
 zmodload -i zsh/zle
 zmodload -i zsh/zutil
 
-# Eat it bc
-autoload -z zcalc
-autoload -U zmv
+autoload -Uz compinit zrecompile colors vcs_info zcalc zmv 
 
-autoload -Uz compinit zrecompile
+colors

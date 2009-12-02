@@ -24,6 +24,7 @@ function title() {
 # precmd is called just before the prompt is printed
 function precmd() {
     title "zsh" "$USER@%m" "%55<...<%~"
+    vcs_info 'prompt'          
 }
 
 # preexec is called just before any command line is executed
@@ -31,15 +32,67 @@ function preexec() {
     title "$1" "$USER@%m" "%35<...<%~"
 }
 
+# set some colors
+for COLOR in RED GREEN YELLOW WHITE BLACK CYAN; do
+    eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'         
+    eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
+done                                                 
+PR_RESET="%{${reset_color}%}";                       
 
-for zshrc_snipplet in ~/.zsh/prompt_extras/S[0-9][0-9]*[^~] ; do
-   source $zshrc_snipplet
-done
-if (( EUID == 0 )); then
-    PROMPT=$'%{\e[01;31m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%# '
-else
-    PROMPT=$'%{\e[01;32m%}%n@%m%{\e[0m%}[%{\e[01;34m%}%3~%{\e[0;m%}](%?)$(get_git_prompt_info)%% '
-fi
+# set formats
+# %b - branchname
+# %u - unstagedstr (see below)
+# %c - stangedstr (see below)
+# %a - action (e.g. rebase-i)
+# %R - repository path
+# %S - path in the repository
+FMT_BRANCH="${PR_GREEN}%b%u%c${PR_RESET}" # e.g. master¹²
+FMT_ACTION="(${PR_CYAN}%a${PR_RESET}%)"   # e.g. (rebase-i)
+FMT_PATH="%R${PR_YELLOW}/%S"              # e.g. ~/repo/subdir
+
+# check-for-changes can be really slow.
+# you should disable it, if you work with large repositories    
+zstyle ':vcs_info:*:prompt:*' check-for-changes true
+zstyle ':vcs_info:*:prompt:*' unstagedstr '¹'  # display ¹ if there are unstaged changes
+zstyle ':vcs_info:*:prompt:*' stagedstr '²'    # display ² if there are staged changes
+zstyle ':vcs_info:*:prompt:*' actionformats "${FMT_BRANCH}${FMT_ACTION}//" "${FMT_PATH}"
+zstyle ':vcs_info:*:prompt:*' formats       "${FMT_BRANCH}//"              "${FMT_PATH}"
+zstyle ':vcs_info:*:prompt:*' nvcsformats   ""                             "%~"         
+
+function lprompt {
+    local brackets=$1
+    local color1=$2  
+    local color2=$3  
+                     
+    local bracket_open="${color1}${brackets[1]}${PR_RESET}"
+    local bracket_close="${color1}${brackets[2]}"          
+                                                             
+    local git='$vcs_info_msg_0_'                           
+    local cwd="${color2}%B%1~%b"
+
+    PROMPT="${PR_RESET}${bracket_open}${git}${cwd}${bracket_close}%# ${PR_RESET}"
+}                                                                                        
+
+function rprompt {
+    local brackets=$1
+    local color1=$2  
+    local color2=$3  
+                     
+    local bracket_open="${color1}${brackets[1]}${PR_RESET}"
+    local bracket_close="${color1}${brackets[2]}${PR_RESET}"
+    local colon="${color1}:"                                
+    local at="${color1}@${PR_RESET}"                        
+                                                            
+    local user_host="${color2}%n${at}${color2}%m"                    
+    local vcs_cwd='${${vcs_info_msg_1_%%.}/$HOME/~}'        
+    local cwd="${color2}%B%20<..<${vcs_cwd}%<<%b"
+    local inner="${user_host}${colon}${cwd}"
+
+    RPROMPT="${PR_RESET}${bracket_open}${inner}${bracket_close}${PR_RESET}"
+}
+
+lprompt '[]' $BR_BRIGHT_BLACK $PR_CYAN
+rprompt '()' $BR_BRIGHT_BLACK $PR_RED
 
 
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
