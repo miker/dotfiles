@@ -8,6 +8,8 @@ gems:
 - name: jammit
 - name: open_gem
 - name: nokogiri
+- name: bond
+- name: hirb
 - name: request-log-analyzer
 - name: gravtastic
 - name: open4
