@@ -5,7 +5,7 @@
 " Author: Cornelius
 " Email:  cornelius.howl@gmail.com
 " Web:    http://oulixe.us/
-" Version: 1.8
+" Version: 2
 "
 
 
@@ -33,6 +33,12 @@ fun! s:close_buffer()
   bw!
 endf
 
+fun! s:init_plugin()
+  hi GitCommandMsg ctermbg=yellow ctermfg=black
+  hi GitMsg        ctermbg=yellow ctermfg=black
+  hi GitCommandOutput ctermbg=black ctermfg=darkyellow
+endf
+
 " XXX:  if branch exists , we should jsut switch , not to create one
 fun! s:switch_branch(branch)
   let opt = ''
@@ -44,10 +50,9 @@ fun! s:switch_branch(branch)
     let opt .= a:branch
   endif
   let cmd = 'git checkout ' . opt
-  echo cmd
+  echohl GitCommandMsg | echo cmd | echohl None
   let out = system( cmd )
   echo out
-
   silent 1,$delete _
   cal s:refresh_branch_buffer()
 endf
@@ -225,12 +230,12 @@ fun! s:filter_message_op(msgfile)
     if l =~ '^\!A\s\+'
       let file = s:trim_message_op(l)
       cal system( g:git_command . ' add ' . file )
-      cal s:echo( file . ' added' )
+      echohl GitMsg | echo file . ' added' | echohl None
       let lines[ idx ] = ''
     elseif l =~ '^\!D\s\+'
       let file = s:trim_message_op(l)
       cal system( g:git_command . ' rm ' . file )   " XXX: detect failure
-      cal s:echo( file . ' deleted')
+      echohl GitMsg | echo file . ' deleted' | echohl None
       let lines[ idx ] = ''
     endif
     let idx += 1
@@ -238,17 +243,61 @@ fun! s:filter_message_op(msgfile)
   cal writefile(lines,a:msgfile)
 endf
 
+
+fun! s:save_msg(file)
+  let l:id = 1
+  while filereadable( 'git-commit-' . l:id )
+    let l:id += 1
+  endwhile
+  let fname = 'git-commit-' . l:id
+  cal writefile( readfile(a:file ) , fname )
+
+  echoerr "commit message saved to '". fname ."'. "
+  return fname
+endf
+
+fun! s:git_dir_found()
+  let comps = split(expand('%:p:h'),'/')
+  let paths = []
+  let path = ''
+  while len(comps) > 0 
+    let p = remove(comps,0)
+    let path = join( [ path , p ] , '/' )
+    echo path
+    cal add(paths,path)
+  endwhile
+  cal reverse(paths)
+
+  for f in paths 
+    if isdirectory( f . '/.git') 
+      return 1
+    endif
+  endfor
+
+  echohl WarningMsg
+  echo "\I can not found your .git directory"
+  echo "Seems you are not under a git repository directory"
+  echo " Then please use ':cd [path]' command to change directory"
+  echo "or do you forget to initialize git repository"
+  echohl None
+  return 0
+endf
+
 fun! s:commit(msgfile)
   if ! s:can_commit(a:msgfile)
     return
   endif
 
-  cal s:filter_message_op(a:msgfile)
+  if ! s:git_dir_found()
+    cal s:save_msg( a:msgfile )
+    return
+  endif
 
-  echo "committing "
+  cal s:filter_message_op(a:msgfile)
+  echohl GitMsg | echo "committing " | echohl None
   let ret = system( printf('%s commit -a -F %s ', g:git_command , a:msgfile ) )
   echo ret
-  echo "committed"
+  echohl GitMsg | echo "committed" | echohl None
 endf
 
 fun! s:can_commit(msgfile)
@@ -265,13 +314,18 @@ fun! s:single_commit(msgfile,file)
   if ! s:can_commit(a:msgfile)
     return
   endif
+  
+  if ! s:git_dir_found()
+    cal s:save_msg( a:msgfile )
+    return 
+  endif
 
   cal s:filter_message_op(a:msgfile)
 
-  echo "committing " . a:file
+  echohl GitMsg | echo "committing " . a:file | echohl None
   let ret = system( printf('%s commit -F %s %s ', g:git_command , a:msgfile, a:file ) )
   echo ret
-  echo "committed"
+  echohl GitMsg | echo "committed" | echohl None
 endf
 
 fun! s:skip_commit(file)
@@ -445,7 +499,7 @@ endf
 
 fun! s:append_statusline(stl)
   cal s:update_branch_name()
-  let g:git_ch = s:count_changes_from_yesterday()
+  let g:git_ch = 0 " s:count_changes_from_yesterday()
   let l:stl = a:stl . " %=(B:%{g:git_br} C:%{g:git_ch})"
   cal s:set_statusline(l:stl)
 endf
@@ -486,7 +540,7 @@ fun! s:exec_cmd(cmd)
     return
   endif
   redraw
-  echo cmd_output
+  echohl GitCommandOutput | echo cmd_output | echohl None
 endf
 
 com! Gbranchtoggle      :cal s:branch_list_toggle()
@@ -548,3 +602,5 @@ com! GitSyncEnable    :augroup GitSyncAG
 if g:fastgit_sync
   :GitSyncEnable
 endif
+
+cal s:init_plugin()
