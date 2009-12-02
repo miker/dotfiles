@@ -68,10 +68,11 @@ alias wget="wget -c"
 alias ncmpc="ncmpc -c"
 alias vim="vim -p"
 alias tmux="tmux -2"
+alias dispatch-conf="s dispatch-conf"
 alias most="most +s +u"
 alias ri="ri -Tf ansi"
-alias poweroff='s poweroff'
-alias reboot='s reboot'
+alias poweroff="s poweroff"
+alias reboot="s reboot"
 alias ketchup='ketchup -G -a /usr/portage/distfiles'
 alias shred='nocorrect ionice -c3 /usr/bin/shred -fuzv'
 alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l1 -v -r'
@@ -103,10 +104,8 @@ alias wcyy="mplayer http://68.142.81.164:80/citadelcc_WCYY_FM\?MSWMExt\=.asf"
 alias wkit="mplayer http://64.92.199.73/WKIT-FM"
 alias gis="git status | grep --color=always '^[^a-z]\+\(new file:\|modified:\)' | cut -d'#' -f2-"
 alias lk='lynx -dump http://kernel.org/kdist/finger_banner'
-alias g='grep -Hn --color=always'
 alias ra="echo 'awful.util.restart()' | awesome-client -"
 alias sv="gvim --remote-tab-silent"
-alias lvim="vim -c \"normal '0\""
 alias geminstaller='sudo geminstaller -s -c $HOME/.geminstaller.yaml'
 alias gem_remove_all="gem uninstall -x --a --ignore-dependencies `gem list -q -l --no-details --no-versions `"
 alias smv="s mv"
