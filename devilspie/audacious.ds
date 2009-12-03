@@ -1,8 +1,0 @@
-(if
-    (and
-        (matches (window_name) "Audacious?.")
-    )
-    (begin
-        (set_workspace 5)
-    )
-)

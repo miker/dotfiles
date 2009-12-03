@@ -1,9 +1,0 @@
-(if
-    (and
-        (matches (window_name) "XChat.*")
-    )
-    (begin
-        (set_workspace 10)
-        (maximize)
-    )
-)

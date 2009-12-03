@@ -1,8 +1,0 @@
-(if
-    (is (window_name) "Downloads")
-    (begin
-       (set_workspace 9)
-       (geometry "500x500+300+300")
-
-    )
-)

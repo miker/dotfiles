@@ -1,9 +1,0 @@
-(if
-    (and
-        (matches (window_name) "^Kaffeine Player$")
-    )
-    (begin
-        (set_workspace 6)
-	(center)
-    )
-)

@@ -1,9 +1,0 @@
-(if
-    (and
-        (matches (window_name) "mutt")
-    )
-    (begin
-        (set_workspace 5)
-        (maximize)
-    )
-)

@@ -1,8 +1,0 @@
-(if
-      (matches (window_name) "^[0-9]*%.*")
-  (begin
-      (set_workspace 9)
-      (geometry "500x500+300+300")
-
-  )
-)
