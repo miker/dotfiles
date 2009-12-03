@@ -68,7 +68,6 @@ function lprompt {
     local bracket_close="${color1}${brackets[2]}"          
                                                              
     local git='$vcs_info_msg_0_'                           
-    #local cwd="${color2}%B%1~%b"
     local cwd="${color2}${SSH_CONNECTION+"%n@%m:"}%B%1~%b"
 
     PROMPT="${PR_RESET}${bracket_open}${git}${cwd}${bracket_close}%# ${PR_RESET}"
@@ -92,7 +91,11 @@ function rprompt {
     RPROMPT="${PR_RESET}${bracket_open}${inner}${bracket_close}${PR_RESET}"
 }
 
-lprompt '[]' $BR_BRIGHT_BLACK $PR_CYAN
+if (( EUID == 0 )); then
+    lprompt '[]' $BR_BRIGHT_BLACK $PR_RED
+else
+    lprompt '[]' $BR_BRIGHT_BLACK $PR_CYAN
+fi
 rprompt '()' $BR_BRIGHT_BLACK $PR_RED
 
 
