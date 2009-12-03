@@ -109,7 +109,6 @@ alias lk='lynx -dump http://kernel.org/kdist/finger_banner'
 alias ra="echo 'awful.util.restart()' | awesome-client -"
 alias sv="gvim --remote-tab-silent"
 alias geminstaller='sudo geminstaller -s -c $HOME/.geminstaller.yaml'
-alias gem_remove_all="gem uninstall -x --a --ignore-dependencies `gem list -q -l --no-details --no-versions `"
 alias smv="s mv"
 alias srm="s rm"
 alias installed='qlist -I | most'

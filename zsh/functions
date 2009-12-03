@@ -303,7 +303,7 @@ function fix-paludis-perms {
 }
 
 function remove_all_gems {
-    gem list --no-versions | sed -r '/^(\*|$)/d' | xargs sudo gem uninstall 
+    gem uninstall -x --a --ignore-dependencies `gem list -q -l --no-details --no-versions `
 }
 
 function confcat {
