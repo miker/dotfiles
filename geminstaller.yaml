@@ -79,7 +79,7 @@ gems:
 - name: exifr
 - name: eventmachine
 - name: escape
-- name: defunkt-github
+- name: github
 - name: daemons
 - name: cucumber
 - name: configatron
