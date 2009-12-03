@@ -46,7 +46,6 @@ gems:
 - name: paperclip
 - name: webrat
 - name: jeweler
-- name: oniguruma
 - name: ultraviolet
 - name: httparty
 - name: haddock
