@@ -89,14 +89,34 @@ alias rst='touch tmp/restart.txt'
 alias migrate="rake db:migrate db:test:prepare"
 alias remigrate="rake db:migrate && rake db:migrate:redo && rake db:schema:dump db:test:prepare"
 
+#Git
+alias  ga="git add"
+alias  gs="git status"
+alias  gb="git branch"
+alias gba="git branch -a"
+alias  gm="git merge"
+alias  gd="git diff"
+alias gci="git commit -v -s"
+alias  gp="git push"
+alias gpp="push origin master:refs/heads/master"
+alias  gl="git pull"
+alias  gw="git shortlog -s -n"
+alias grev="git revert HEAD"
+alias gres="git reset"
+alias rlog="git log --pretty=format:\"%h %Cblue%cr%Creset %cn %Cgreen%s%Creset\""
+alias glo="git log --date=local --pretty=full --stat"
+alias  gc="git clean -f"
+alias  gf="git checkout -f"
+alias  lg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+
 # new commands
 alias xlog="sudo grep --binary-files=without-match --color -nsie '(EE)' -e '(WW)' /var/log/Xorg.0.log"
 alias sd='export DISPLAY=:0.0'
 alias cup='cvs -z3 update -Pd'
 alias fixdbus="dbus-uuidgen --ensure"
 alias wp="~/code/bin/wallpaper/wallpaper.rb"
-alias gi='sudo gem install --no-ri --include-dependencies'
-alias gs='gem search -b'
+alias gemi='sudo gem install --no-ri --include-dependencies'
+alias gems='gem search -b'
 alias burniso='wodim -v dev=/dev/cdrw'
 alias burndvdiso='growisofs -speed=8 -dvd-compat -Z /dev/dvdrw=$1'
 alias biosinfo='sudo dmidecode'
