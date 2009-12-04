@@ -38,7 +38,8 @@ set mbox=!
 # Setup some colors
 source ~/.mutt/colors.rc
 # Setup gnupg bindings
-source ~/.mutt/mutt.gpg
+#source ~/.mutt/mutt.gpg
+source ~/.mutt/gpg.rc
 # Mailboxes
 source ~/.mutt/mailboxes
 # }}}
@@ -103,7 +104,6 @@ set pager_index_lines=10
 set postpone=yes
 set quote_regexp="^([ \t]*[|>:])+"
 set read_inc=50
-set recall=no
 set resolve=no
 set smart_wrap
 set wrapmargin
@@ -114,8 +114,8 @@ set reverse_alias=yes
 set auto_tag
 set wrap_search
 set sort=threads
-set sort_aux=date-received
-set strict_threads
+set sort_aux=reverse-date
+#set strict_threads
 set sort_browser=alpha
 set sort_alias=alias
 set suspend=no
@@ -130,13 +130,18 @@ unset askcc
 set quit=ask-yes
 set write_bcc=no
 set move=no
-set editor="vim +/^$ ++1 +':setf mail' +':set spell spelllang=en' +'set tw=72'"
+#set editor="vim +/^$ ++1 +':setf mail' +':set spell spelllang=en' +'set tw=72'"
+set editor="vim"
 set query_command="abook --mutt-query '%s'"
 set mask = '!(^\.)|(\.log$)|(\.lst$)|(\.cache$)' # Ignore these file types when browsing folders
 set mime_forward=ask-yes
 set mime_forward_rest=ask-yes
 set send_charset="us-ascii:utf-8"
 set charset=utf-8
+set pgp_verify_sig=no
+set recall
+
+
 # }}}
 
 # {{{ Mailing lists
@@ -213,6 +218,11 @@ macro index,pager,attach,compose \cb "\
 macro index,pager \cD <delete-thread><down>
 
 macro index,pager a "<pipe-message>abook --add-email-quiet<return>"
+
+bind pager G bottom	# just like vi and less
+bind pager gg top	# just like vi and less
+
+
 
 #folder-hook imaps://mail.server.com/INBOX.doc 'set signature=~/signature-doc from="Doc<doc@server.com>"'
 folder-hook =friends 'set signature=~/.mutt/friends"'
