@@ -13,7 +13,7 @@ set wrap
 " autoident
 set autoindent
 " Turn off backups
-set nobackup
+set backup
 " Turn off swapfile
 set noswapfile
 " Soft tab 4
@@ -26,8 +26,6 @@ set ts=4
 set showmode
 " Expand tabs to spaces
 set expandtab
-" Backup extension if on
-set backupext=.bak
 " Backups directory if on
 set backupdir=~/.backups/
 " Line breaks for linewrap
@@ -166,24 +164,6 @@ iabbrev sdef definitely
 
 " {{{ Plugin settings
 
-
-" neocomplcache
-" Reference: :h neocomplcache
-let g:NeoComplCache_EnableAtStartup = 0
-let g:NeoComplCache_PartialCompletionStartLength = 2
-let g:NeoComplCache_MinKeywordLength = 2
-let g:NeoComplCache_MinSyntaxLength = 2
-let g:NeoComplCache_SmartCase = 1
-let g:NeoComplCache_EnableMFU = 1
-let g:NeoComplCache_EnableQuickMatch = 1
-let g:NeoComplCache_TagsAutoUpdate = 1
-let g:NeoComplCache_EnableUnderbarCompletion = 1
-let g:NeoComplCache_EnableCamelCaseCompletion = 1
-
-let g:loaded_AutoClose = 0 
-
-source ~/.vim/vimrc.local
-
 " rails.vim
 
 let g:rails_dbext=1
@@ -198,7 +178,7 @@ let g:browser = 'firefox -new-tab '
 " Supertab
 let g:SuperTabMappingForward = '<S-Tab>'
 let g:SuperTabLongestHighlight = 1 
-let g:SuperTabMidWordCompletion = 1
+let g:SuperTabMidWordCompletion = 1 
 let g:SuperTabRetainCompletionType = 1 
 
 " Settings for NERDCommenter
@@ -206,11 +186,20 @@ let g:NERDShutUp=1
 " Settings for git status bar plugin
 let g:git_branch_status_head_current=1
 " NERDTree settings
-let NERDChristmasTree = 1
-let NERDTreeQuitOnOpen=1
+let NERDChristmasTree = 1 
+let NERDTreeQuitOnOpen = 1
 let NERDTreeHighlightCursorline = 1
 let NERDTreeMapActivateNode='<CR>'
-let NERDTreeIgnore=['\.git','\.DS_Store']
+let g:NERDTreeChDirMode = 1
+let NERDTreeIgnore=['\.git','\.DS_Store', '\.svn', '\.cvs']
+
+" Append status line if enough room
+let g:fastgit_statusline = 'a'
+
+let g:syntastic_enable_signs = 1 
+let g:syntastic_auto_loc_list = 1
+let g:gist_clip_command = 'xclip -selection clipboard'
+
 
 " Hightlight redundent spaces
 highlight RedundantSpaces ctermbg=red guibg=red
@@ -254,7 +243,7 @@ set statusline+=%r      "read only flag
 set statusline+=%m      "modified flag
 
 " display current git branch
-set statusline+=%{StatuslineGitBranch()}
+set statusline=%{GitBranchInfoString()}
 
 "display a warning if &et is wrong, or we have mixed-indenting
 set statusline+=%#error#
@@ -322,15 +311,14 @@ let mapleader = ","
 nmap <C-P> :tabp<CR>
 nmap <C-N> :tabn<CR>
 noremap <silent> <C-z> :undo<CR>
-noremap <silent> <C-O> :FuzzyFinderMruFile<CR>
-noremap <silent> <F9> :NERDTreeToggle<CR>
-noremap <Leader>n :NERDTreeToggle<CR>
+noremap <silent><C-L> :NERDTreeToggle<CR>
 map <leader>nh :nohls <CR>
-nmap <silent> <C-H> :silent noh<CR>
+nmap <silent> <C-H> :silent nohls<CR>
 noremap <Leader>res :call <SID>Restart()<CR>
 noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
 " Split Window Movement
-map <F6> :wincmd w<CR> imap <F6> <c-[>:wincmd w<CR> map <S-F6> :wincmd W<CR> imap <S-F6> <c-[>:wincmd W<CR>
+"map <F6> :wincmd w<CR> imap <F6> <c-[>:wincmd w<CR> map <S-F6> :wincmd W<CR> imap <S-F6> <c-[>:wincmd W<CR>
+noremap <C-Right> :wincmd w<CR>
 " Setup mini ide for a project of mine
 noremap <silent> <F5> :call Mideo()<CR>
 noremap <Leader>st :call Stage5()<CR>
@@ -354,24 +342,12 @@ noremap <Leader>sp :set spell<CR>
 noremap <Leader>nsp :set nospell<CR>
 noremap <Leader>pp :s/:/ /g<CR>
 noremap <Leader>cache :call ClearCache()<CR>
-noremap <Leader>ac :AutoCloseToggle<CR>
-noremap <Leader>ne :NeoComplCacheEnable<CR>
 noremap <Leader>doc :!rake documentation:generate<CR>
 noremap :close :bd!<CR>
 " Quick sudo saving from tpope
 command! -bar -nargs=0 SudoW :silent exe "write !sudo tee % >/dev/null" | silent edit!
 noremap <Leader>su :SudoW<CR>
 command! -nargs=+ PopupMap call s:popupMap(<f-args>)
-function! s:popupMap(lhs, ...)
-    let rhs = join(a:000, ' ')
-    execute 'inoremap <silent> <expr>' a:lhs 'pumvisible() ?' rhs ': "' . a:lhs . '"'
-endfunction
-
-" Plugin key-mappings.
-imap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
-smap <silent><C-l>     <Plug>(neocomplcache_snippets_expand)
-nmap <silent><C-e>     <Plug>(neocomplcache_keyword_caching)
-imap <expr><silent><C-e>     pumvisible() ? "\<C-e>" : "\<Plug>(neocomplcache_keyword_caching)"
 
 " This group is stolen from mislav's vimrc
 " http://github.com/mislav/dotfiles/blob/master/vimrc
@@ -398,13 +374,7 @@ cnoremap <C-A> <C-C>gggH<C-O>G
 onoremap <C-A> <C-C>gggH<C-O>G
 snoremap <C-A> <C-C>gggH<C-O>G
 xnoremap <C-A> <C-C>ggVG
-imap <silent> <C-l> <Plug>(neocomplcache_snippets_expand)
-PopupMap <C-y>   neocomplcache#close_popup()
-PopupMap <C-e>   neocomplcache#cancel_popup()
-PopupMap <CR>    neocomplcache#close_popup() . "\<CR>"
-PopupMap <Tab>   "\<C-n>"
-PopupMap <S-Tab> "\<C-p>"
-PopupMap <C-h>   neocomplcache#cancel_popup() . "\<C-h>"
+
 nnoremap <silent> <C-f> :call FindInNERDTree()<CR> 
 
 " }}}
@@ -418,7 +388,7 @@ function UseRubyIndent ()
     setlocal expandtab
     setlocal autoindent
 
-    "imap <buffer> <CR> <C-R>=PMADE_RubyEndToken()<CR>
+    imap <buffer> <CR> <C-R>=PMADE_RubyEndToken()<CR>
 endfunction
 
 " Shift-Enter inserts 'end' for ruby scripts
@@ -442,26 +412,6 @@ function PMADE_RubyEndToken ()
     endif
 endfunction
  
-function! StatuslineGitBranch()
-    if has("eval")
-        let g:scm_cache = {}
-        fun! ScmInfo()
-            let l:key = getcwd()
-            if ! has_key(g:scm_cache, l:key)
-                if (isdirectory(getcwd() . "/.git"))
-                    let g:scm_cache[l:key] = "[" . substitute(readfile(getcwd() . "/.git/HEAD", "", 1)[0],
-                                \ "^.*/", "", "") . "] "
-                else
-                    let g:scm_cache[l:key] = ""
-                endif
-            endif
-            return g:scm_cache[l:key]
-        endfun
-        let b:statusline_git_branch = ScmInfo() 
-    endif
-    return b:statusline_git_branch 
-endfunction
-
 "return the syntax highlight group under the cursor ''
 function! StatuslineCurrentHighlight()
     let name = synIDattr(synID(line('.'),col('.'),1),'name')
@@ -649,7 +599,7 @@ if has("eval")
     " If we're in a wide window, enable line numbers.
     fun! <SID>WindowWidth()
         if winwidth(0) > 90
-            setlocal foldcolumn=2
+            setlocal foldcolumn=0
             setlocal number
         else
             setlocal nonumber
@@ -658,15 +608,15 @@ if has("eval")
     endfun
 endif
 
-if version >= 700
-    au TabLeave * let g:MRUtabPage = tabpagenr()
-    fun MRUTab()
-        if exists( "g:MRUtabPage" )
-            exe "tabn " g:MRUtabPage
-        endif
-    endfun
-    noremap <silent> gl :call MRUTab()<Cr>
-endif
+"if version >= 700
+    "au TabLeave * let g:MRUtabPage = tabpagenr()
+    "fun MRUTab()
+        "if exists( "g:MRUtabPage" )
+            "exe "tabn " g:MRUtabPage
+        "endif
+    "endfun
+    "noremap <silent> gl :call MRUTab()<Cr>
+"endif
 
 function Stage5()
     chdir /home/gregf/code/active/athenry/
@@ -792,7 +742,6 @@ endif
  
 if has("autocmd")
     au VimEnter * nohls
-    au VimEnter * AutoCloseOff
     au VimLeave * set nospell
 
     " Automagic line numbers
@@ -803,16 +752,10 @@ if has("autocmd")
 
     "autocmd BufWritePre *  :call <SID>UpdateRcHeader()
 
-    " never see ^M again! (DOS text files)
-    autocmd BufRead * silent! %s/^M$//
-    
     "recalculate the tab warning flag when idle and after writing
     autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
 
     autocmd BufWritePre .Xdefaults :!xrdb -load ~/.Xdefaults
-
-    " For svn-commit, don't create backups
-    autocmd BufRead svn-commit.tmp :setlocal nobackup
 
     autocmd FileType html,xhtml,xml,eruby,mako,ruby,haml,yaml,erb,god,javascript call UseRubyIndent() 
     autocmd FileType css setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
@@ -918,13 +861,6 @@ if has("autocmd")
     augroup END
 endif
 
-"markdown
-augroup mkd
-    autocmd BufRead,BufNewFile *.mkd  set ai formatoptions=tcroqn2 comments=n:> filetype=mkd spell
-    autocmd BufRead,BufNewFile *.md  set ai formatoptions=tcroqn2 comments=n:> filetype=mkd spell
-    autocmd BufRead,BufNewFile *.markdown  set ai formatoptions=tcroqn2 comments=n:> filetype=mkd spell
-augroup END
-
 " }}}
 
 " {{{ GUI Options & Colorschemes
@@ -955,15 +891,6 @@ if (has("gui_running"))
     set mouse=a
 endif
 
-" Nice window title
-if has('title') && (has('gui_running') || &title)
-    set titlestring=
-    set titlestring+=%f\                                              " file name
-    set titlestring+=%h%m%r%w                                         " flags
-    set titlestring+=\ -\ %{v:progname}                               " program name
-    set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
-endif
-
 "Extra terminal things
 if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt' && (&termencoding == "")
     set termencoding=utf-8
@@ -975,14 +902,6 @@ if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt' && (&termencoding
         let &t_EI = "\<Esc>]12;grey80\x7"
     endif
 endif
-
-" set vim to chdir for each file
-if exists('+autochdir')
-  set autochdir
-else
-  autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
-endif
-" }}}
 
 " Source local vimrc
 source ~/.vim/vimrc.local
