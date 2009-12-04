@@ -102,7 +102,6 @@ set ignorecase " ignore case search
 set smartcase  " override 'ignorecase' if the search pattern contains upper case
 set incsearch  " incremental search
 set hlsearch   " highlight searched words
-nohlsearch     " avoid highlighting when reload vimrc
 
 
 " {{{ Set a shell
@@ -608,16 +607,6 @@ if has("eval")
     endfun
 endif
 
-"if version >= 700
-    "au TabLeave * let g:MRUtabPage = tabpagenr()
-    "fun MRUTab()
-        "if exists( "g:MRUtabPage" )
-            "exe "tabn " g:MRUtabPage
-        "endif
-    "endfun
-    "noremap <silent> gl :call MRUTab()<Cr>
-"endif
-
 function Stage5()
     chdir /home/gregf/code/active/athenry/
     open TODO.md
@@ -666,6 +655,7 @@ if isdirectory(expand("$VIMRUNTIME/ftplugin"))
         filetype indent on
     endif
 endif
+
 if has("autocmd")
     if has("eval")
         function! <SID>abbrev_cpp()
@@ -750,83 +740,54 @@ if has("autocmd")
     " Always do a full syntax refresh
     autocmd BufEnter * syntax sync fromstart
 
-    "autocmd BufWritePre *  :call <SID>UpdateRcHeader()
-
     "recalculate the tab warning flag when idle and after writing
     autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
 
     autocmd BufWritePre .Xdefaults :!xrdb -load ~/.Xdefaults
 
-    autocmd FileType html,xhtml,xml,eruby,mako,ruby,haml,yaml,erb,god,javascript call UseRubyIndent() 
-    autocmd FileType css setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
-    autocmd FileType xslt,xml,xhtml,html set ts=2
-    autocmd FileType php set ts=4 complete+=k
-    autocmd BufReadPost,BufNewFile,BufRead rsnapshot.conf set noet
-    autocmd BufReadPost,BufNewFile,BufRead nginx.conf set syntax=nginx
+    augroup gentoo
+      au!
 
-    au BufRead,BufNewFile COMMIT_EDITMSG setf git
+      " Gentoo-specific settings for ebuilds.  These are the federally-mandated
+      " required tab settings.  See the following for more information:
+      " http://www.gentoo.org/proj/en/devrel/handbook/handbook.xml
+      " Note that the rules below are very minimal and don't cover everything.
+      " Better to emerge app-vim/gentoo-syntax, which provides full syntax,
+      " filetype and indent settings for all things Gentoo.
+      au BufRead,BufNewFile *.e{build,class} let is_bash=1|setfiletype sh
+      au BufRead,BufNewFile *.e{build,class} set ts=4 sw=4 noexpandtab
 
-    autocmd BufNewFile,BufRead /tmp/mutt/mutt*
-                \ setf mail |
-                \ set spell | 
+      " In text files, limit the width of text to 78 characters, but be careful
+      " that we don't override the user's setting.
+      autocmd BufNewFile,BufRead *.txt
+            \ if &tw == 0 && ! exists("g:leave_my_textwidth_alone") |
+            \     setlocal textwidth=78 |
+            \ endif
 
-    au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,~/.tmp/mutt/mutt* :set ft=mail
-    au! BufRead,BufNewFile *.haml :set ft=haml
-    au! BufRead,BufNewFile *.sass :set ft=sass
+      " When editing a file, always jump to the last cursor position
+      autocmd BufReadPost *
+            \ if ! exists("g:leave_my_cursor_position_alone") |
+            \     if line("'\"") > 0 && line ("'\"") <= line("$") |
+            \         exe "normal g'\"" |
+            \     endif |
+            \ endif
+
+      " When editing a crontab file, set backupcopy to yes rather than auto. See
+      " :help crontab and bug #53437.
+      autocmd FileType crontab set backupcopy=yes
+    augroup END
     
-    autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-    autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-    autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-    autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-    au BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
-endif
-
-augroup gentoo
-  au!
-
-  " Gentoo-specific settings for ebuilds.  These are the federally-mandated
-  " required tab settings.  See the following for more information:
-  " http://www.gentoo.org/proj/en/devrel/handbook/handbook.xml
-  " Note that the rules below are very minimal and don't cover everything.
-  " Better to emerge app-vim/gentoo-syntax, which provides full syntax,
-  " filetype and indent settings for all things Gentoo.
-  au BufRead,BufNewFile *.e{build,class} let is_bash=1|setfiletype sh
-  au BufRead,BufNewFile *.e{build,class} set ts=4 sw=4 noexpandtab
-
-  " In text files, limit the width of text to 78 characters, but be careful
-  " that we don't override the user's setting.
-  autocmd BufNewFile,BufRead *.txt
-        \ if &tw == 0 && ! exists("g:leave_my_textwidth_alone") |
-        \     setlocal textwidth=78 |
-        \ endif
-
-  " When editing a file, always jump to the last cursor position
-  autocmd BufReadPost *
-        \ if ! exists("g:leave_my_cursor_position_alone") |
-        \     if line("'\"") > 0 && line ("'\"") <= line("$") |
-        \         exe "normal g'\"" |
-        \     endif |
-        \ endif
-
-  " When editing a crontab file, set backupcopy to yes rather than auto. See
-  " :help crontab and bug #53437.
-  autocmd FileType crontab set backupcopy=yes
-
-augroup END
-
-" content creation
-if has("autocmd")
     augroup content
         autocmd!
 
-       autocmd BufNewFile *.rb 0put = '' |
+        autocmd BufNewFile *.rb 0put = '' |
                     \ 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
                     \ 0put = '# Copyright (c) 2009 Greg Fitzgerald <netzdamon@gmail.com>' |
                     \ 0put = '# Distributed under the terms of the GNU General Public License v2' |
                     \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
                     \ norm G
         
-       autocmd BufNewFile *.sh 0put = '' |
+        autocmd BufNewFile *.sh 0put = '' |
                     \ 0put ='# vim: set sw=4 sts=4 et tw=80 :' |
                     \ 0put = '# Copyright (c) 2009 Greg Fitzgerald <netzdamon@gmail.com>' |
                     \ 0put = '# Distributed under the terms of the GNU General Public License v2' |
@@ -836,30 +797,9 @@ if has("autocmd")
         autocmd BufNewFile *.lua 0put ='# vim: set sw=4 sts=4 et tw=80 :' |
                     \ 0put ='#!/usr/bin/env lua' | set sw=4 sts=4 et tw=80 |
                     \ norm G
-
-        autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
-                    \ 1put ='' | call MakeIncludeGuards() |
-                    \ set sw=4 sts=4 et tw=80 | norm G
-
-        autocmd BufNewFile *.cc 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
-                    \ 1put ='' | 2put ='' | call setline(3, '#include "' .
-                    \ substitute(expand("%:t"), ".cc$", ".hh", "") . '"') |
-                    \ set sw=4 sts=4 et tw=80 | norm G
-
-        "ruby
-        autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-        autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-        autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-        autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-        
-        au BufRead,BufNewFile *.js set ft=javascript.jquery
-        au BufRead,BufNewFile *.js.haml set ft=javascript.jquery
-        au BufRead,BufNewFile *.js.erb set ft=javascript.jquery
-        au BufRead,BufNewFile *.pp set ft=puppet
-        au BufReadPost,BufNewFile,BufRead .railsrc set ft=ruby
-
     augroup END
 endif
+
 
 " }}}
 
