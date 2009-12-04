@@ -30,6 +30,11 @@ function update_dotfiles {
     cd -
 }
 
+function compare_dirs {
+    diff -qr $1 $2 | grep -v -e '.git' -e '.cvs' -e '.svn' | 
+    sort | most
+}
+
 function zkbd {
     ZVER=(`zsh --version | awk '{print $2}' -`)
     if [[ -f /usr/share/zsh/${ZVER}/functions/Misc/zkbd ]]; then
