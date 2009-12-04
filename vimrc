@@ -844,6 +844,8 @@ if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt' && (&termencoding
 endif
 
 " Source local vimrc
-source ~/.vim/vimrc.local
+if exists(expand("~/.vim/vimrc.local"))
+    source ~/.vim/vimrc.local
+endif
 
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=120 :
