@@ -68,7 +68,7 @@ case `uname` in
             alias bashrc='sudo vim /etc/paludis/bashrc'
             alias df='df -hT'
 
-            function build_kernel {
+            function kbuild {
                 if (( EUID != 0 )); then
                     echo "* You must be root to run build_kernel!"
                     return 1 
@@ -76,6 +76,7 @@ case `uname` in
                     mount /boot
                     time ( make -j3 clean make -j3 all && make -j3 modules_install && make -j3 install )
                     vim /boot/grub/grub.cfg
+                    umount /boot
                     echo "* Reboot When Your Ready..."
                 fi
             }
