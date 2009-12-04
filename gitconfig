@@ -36,28 +36,6 @@
   numbered = auto
   thread = true
 [alias]
-    cl = clone
-    co =  checkout
-    ignored = "!git ls-files --others --exclude-standard"
-    pending = !git --no-pager log origin/master..master && echo
-    missing = !sh -c 'git cherry "$0" | cut -sd + -f 2 | xargs "git show"'
-    conflicts = !git ls-files --unmerged | cut -c51- | sort -u | xargs $EDITOR
-    resolve = !git ls-files --unmerged | cut -c51- | sort -u | xargs git add
-    subadd = !sh -c 'git submodule add $(git config -f"$0".git/config remote.origin.url) "$0"'
-    ci = commit -v -s
-    commit = !git commit -v -s
-    st = status
-    p = push
-    psh = push
-    pl = pull
-    lo = log --date=local --pretty=full --stat
-    me = log --date=local --pretty=short --author=netzdamon@gmail.com --stat
-    rlog = log --pretty=format:\"%h %Cblue%cr%Creset %cn %Cgreen%s%Creset\"
-    restart = checkout -f
-    gp = push origin master:refs/heads/master
-    gc = clean -f
-    d = diff
-    pu = !"git fetch origin -v; git fetch upstream -v; git merge upstream/master"
     mideo = clone git:mideo.git mideo
     athenry = clone git@github.com:gregf/athenry athenry
     gitosis = clone git:gitosis-admin.git gitosis-admin 
@@ -65,11 +43,6 @@
     dotfiles = clone git@github.com:gregf/dotfiles.git
     overlay = clone git@github.com:gregf/gregf-overlay.git
     initramfs = clone git@github.com:gregf/initramfs.git
-    gr = reset
-    rev = revert HEAD
-    count = shortlog -s -n
-    tar = !"git-archive --format tar master --output"
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 [apply]
     #whitespace = nowarn
 [merge]
@@ -84,7 +57,7 @@
     autocrlf = false
     whitespace = trailing-space,space-before-tab,indent-with-non-tab,cr-at-eol
 [diff]
-    ;external = /usr/bin/vimdiff
+    external = /usr/bin/vimdiff
     renames = true
 	renamelimit = 0
 [giggle]
