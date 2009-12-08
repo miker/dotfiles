@@ -42,11 +42,11 @@ function update_dotfiles {
     cd $HOME/.dotfiles
     git pull
     rake install
-    cd -
+    cd ~ 
     src
     
     for i in `find ${HOME} -maxdepth 1 -type l `; do 
-        [ -e $i ] || rm ${HOME}/$i; 
+        [ -e $i ] || rm -rf $i; 
     done
 }
 
