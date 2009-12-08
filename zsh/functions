@@ -41,7 +41,9 @@ function install_dotfiles {
 function update_dotfiles {
     cd $HOME/.dotfiles
     git pull
+    rake install
     cd -
+    src
 }
 
 function compare_dirs {
