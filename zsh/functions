@@ -9,6 +9,20 @@ function alias_exists {
     alias $name="$value"
   fi
 }
+function vnice {
+    if [[ -z "$1" ]] ; then
+            echo "vnice [ <pid>... | <program> ]" >&2
+            return 1
+    elif [[ "$1" =~ ^[0-9]+$ ]] ; then
+            while [[ "$1" =~ ^[0-9]+$ ]] ; do
+                    ionice -n7 -p $1
+                    renice 20 $1
+                    shift
+            done
+    else
+            ionice -n7 nice -n20 $@
+    fi
+}
 
 function service { sudo $RCDIR$1 $2; }
 
@@ -269,6 +283,9 @@ function plast {
         echo "${PALUDIS_RESUME_DIR} is not a directory" >&2
         return 1
     fi
+
+    # Clean resume templates older than 3 days
+    find "${PALUDIS_RESUME_DIR}" -mtime +3 -exec rm -f {} \;
  
     index=${1:-1}
     lastfile=$(print "${PALUDIS_RESUME_DIR}"/*(om[${index}]))
