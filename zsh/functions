@@ -291,7 +291,7 @@ function plast {
     fi
 
     # Clean resume templates older than 3 days
-    find "${PALUDIS_RESUME_DIR}" -mtime +3 -exec rm -f {} \;
+    find "${PALUDIS_RESUME_DIR}" -mtime +3 -type f exec rm -f {} \;
  
     index=${1:-1}
     lastfile=$(print "${PALUDIS_RESUME_DIR}"/*(om[${index}]))
