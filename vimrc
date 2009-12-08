@@ -339,7 +339,7 @@ noremap <Leader>p :set paste<CR>
 noremap <Leader>nu :set invnumber<CR>
 noremap <Leader>sp :set spell<CR>
 noremap <Leader>nsp :set nospell<CR>
-noremap <Leader>pp :s/:/ /g<CR>
+noremap <Leader>pp :s/:/ /g<CR>:nohl<CR>
 noremap <Leader>cache :call ClearCache()<CR>
 noremap <Leader>doc :!rake documentation:generate<CR>
 noremap :close :bd!<CR>
