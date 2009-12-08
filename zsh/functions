@@ -290,9 +290,6 @@ function plast {
         return 1
     fi
 
-    # Clean resume templates older than 3 days
-    find "${PALUDIS_RESUME_DIR}" -mtime +3 -type f exec rm -f {} \;
- 
     index=${1:-1}
     lastfile=$(print "${PALUDIS_RESUME_DIR}"/*(om[${index}]))
     if [[ ! -f "${lastfile}" ]]; then
@@ -301,6 +298,9 @@ function plast {
     fi
  
     eval sudo $(< "${lastfile}")
+
+    # Clean resume templates older than 3 days
+    find ${PALUDIS_RESUME_DIR} -mtime +3 -type f -exec rm {} \;
 }
  
 function isocdrom {
