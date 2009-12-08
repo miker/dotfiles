@@ -44,6 +44,10 @@ function update_dotfiles {
     rake install
     cd -
     src
+    
+    for i in `find ${HOME} -maxdepth 1 -type l `; do 
+        [ -e $i ] || rm ${HOME}/$i; 
+    done
 }
 
 function compare_dirs {
