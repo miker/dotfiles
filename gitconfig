@@ -45,8 +45,6 @@
     initramfs = clone git@github.com:gregf/initramfs.git
 [apply]
     #whitespace = nowarn
-[merge]
-    tool = vimdiff
 [core]
     excludesfile = /home/gregf/.gitignore
     editor = vim
@@ -57,7 +55,7 @@
     autocrlf = false
     whitespace = trailing-space,space-before-tab,indent-with-non-tab,cr-at-eol
 [diff]
-    external = /usr/bin/vimdiff
+    #external = /usr/bin/vimdiff
     renames = true
 	renamelimit = 0
 [giggle]
