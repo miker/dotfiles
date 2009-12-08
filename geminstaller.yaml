@@ -5,6 +5,7 @@ defaults:
   fix_dependencies: true 
 gems:
 - name: yard
+- name: rcov
 - name: jammit
 - name: open_gem
 - name: nokogiri
