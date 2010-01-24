@@ -396,10 +396,55 @@ function! s:GistDelete(user, token, gistid)
   endif
 endfunction
 
+
+" GistPost function:
+"   Post new gist to github
+"
+"   if there is an embedded gist url or gist id in your file,
+"   it will just update it.
+"                                                   -- by c9s
+"
+"   embedded gist url format:
+"
+"       Gist: http://gist.github.com/123123
+"
+"   embedded gist id format:
+"
+"       GistID: 123123
+"
 function! s:GistPost(user, token, content, private)
+
+  " find GistID: in content , then we should just update
+  for l in split( a:content , "\n" )
+    if l =~ '\<GistID:'
+      let gistid = matchstr( l , '\(GistID:\s*\)\@<=[0-9]\+')
+
+      if strlen(gistid) == 0
+        echohl WarningMsg | echo "GistID error" | echohl None
+        return
+      endif
+      echo "Found GistID: " . gistid
+
+      cal s:GistUpdate( a:user , a:token ,  a:content , gistid , '' )
+      return
+    elseif l =~ '\<Gist:'
+      let gistid = matchstr( l , '\(Gist:\s*http://gist.github.com/\)\@<=[0-9]\+')
+
+      if strlen(gistid) == 0
+        echohl WarningMsg | echo "GistID error" | echohl None
+        return
+      endif
+      echo "Found GistID: " . gistid
+
+      cal s:GistUpdate( a:user , a:token ,  a:content , gistid , '' )
+      return
+    endif
+  endfor
+
   let ext = expand('%:e')
   let ext = len(ext) ? '.'.ext : ''
   let name = expand('%:t')
+
   let query = [
     \ 'file_ext[gistfile1]=%s',
     \ 'file_name[gistfile1]=%s',

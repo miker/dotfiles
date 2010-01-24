@@ -1,7 +1,7 @@
 "============================================================================
-"File:        php.vim
+"File:        c.vim
 "Description: Syntax checking plugin for syntastic.vim
-"Maintainer:  Martin Grenfell <martin.grenfell at gmail dot com>
+"Maintainer:  Gregor Uhlenheuer <kongo2002 at gmail dot com>
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
@@ -9,18 +9,32 @@
 "             See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 "============================================================================
-if exists("loaded_php_syntax_checker")
+
+" in order to also check header files add this to your .vimrc:
+" (this usually creates a .gch file in your source directory)
+"
+"   let g:syntastic_c_check_header = 1
+
+if exists('loaded_c_syntax_checker')
     finish
 endif
-let loaded_php_syntax_checker = 1
+let loaded_c_syntax_checker = 1
 
-"bail if the user doesnt have php installed
-if !executable("php")
+if !executable('gcc')
     finish
 endif
 
-function! SyntaxCheckers_php_GetLocList()
-    let makeprg = "php -l %"
-    let errorformat='%-GNo syntax errors detected in%.%#,%-GErrors parsing %.%#,%-G\s%#,%EParse error: syntax error\, %m in %f on line %l'
+function! SyntaxCheckers_c_GetLocList()
+    let makeprg = 'gcc -fsyntax-only %'
+    let errorformat =  '%-G%f:%s:,%f:%l: %m'
+
+    if expand('%') =~? '.h$'
+        if exists('g:syntastic_c_check_header')
+            let makeprg = 'gcc -c %'
+        else
+            return []
+        endif
+    endif
+
     return SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
 endfunction
