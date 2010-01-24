@@ -305,6 +305,8 @@ awful.rules.rules = {
       properties = { tag = tags[1][5] } },
     { rule = { name = ".*DownThemAll!" },
       properties = { tag = tags[1][7] } },
+    { rule = { name = "feh.*" },
+      properties = { floating = true } },
     { rule = { instance = "xfburn" },
       properties = { tag = tags[1][7] } },
     { rule = { instance = "xchat" },
