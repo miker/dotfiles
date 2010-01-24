@@ -186,7 +186,7 @@ let g:NERDShutUp=1
 let g:git_branch_status_head_current=1
 " NERDTree settings
 let NERDChristmasTree = 1 
-let NERDTreeQuitOnOpen = 1
+let NERDTreeQuitOnOpen = 0 
 let NERDTreeHighlightCursorline = 1
 let NERDTreeMapActivateNode='<CR>'
 let g:NERDTreeChDirMode = 1
@@ -198,6 +198,8 @@ let g:fastgit_statusline = 'a'
 let g:syntastic_enable_signs = 1 
 let g:syntastic_auto_loc_list = 1
 let g:gist_clip_command = 'xclip -selection clipboard'
+
+let g:git_branch_status_nogit=""
 
 
 " Hightlight redundent spaces
@@ -242,7 +244,7 @@ set statusline+=%r      "read only flag
 set statusline+=%m      "modified flag
 
 " display current git branch
-set statusline=%{GitBranchInfoString()}
+set statusline+=%{GitBranchInfoString()}
 
 "display a warning if &et is wrong, or we have mixed-indenting
 set statusline+=%#error#
@@ -816,7 +818,8 @@ if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt'
 endif
 
 if (has("gui_running"))
-    colorscheme mustang
+    "colorscheme mustang
+    colorscheme vilight
     ""set guifont=Droid\ Sans\ Mono\ 12
     set guifont=inconsolata\ 14
     set mousem=popup	" Nice pop-up
