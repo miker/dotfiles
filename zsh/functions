@@ -75,19 +75,19 @@ function clamscan {
 }
 
 function kvmiso {
-    kvm -boot d -m 256 -localtime \
+    qemu-kvm -boot d -m 256 -localtime \
     -net nic \
     -net user \
     -no-fd-bootchk -no-acpi -cdrom $1
 }
 
 function kvmimg {
-    kvm-img create -f qcow2 /storage/kvm/$i.qcow 10G
+    qemu-img create -f qcow2 /storage/kvm/$1.qcow 10G
 }
 
 function kvminst {
     echo "Supply disk.img and path to iso or drive for installing from"
-    kvm -boot d -m 256 -localtime \
+    qemu-kvm -boot d -m 256 -localtime \
     -net nic \
     -net user \
     -no-fd-bootchk -no-acpi \
@@ -96,7 +96,7 @@ function kvminst {
 
 function kvmrun {
     echo "Supply drive image to boot from"
-    kvm -boot c -m 256 -localtime \
+    qemu -boot c -m 256 -localtime \
     -net nic \
     -net user \
     -no-fd-bootchk -no-acpi -hda /storage/kvm/$1.qcow
@@ -280,7 +280,7 @@ function plast {
     local index
     local lastfile
     local cmd
- 
+
     # Sanity check
     if [[ -z "${PALUDIS_RESUME_DIR}" ]]; then
         echo "PALUDIS_RESUME_DIR not set" >&2
@@ -296,11 +296,8 @@ function plast {
         echo "no file at index ${index}" >&2
         return 1
     fi
- 
-    eval sudo $(< "${lastfile}")
 
-    # Clean resume templates older than 3 days
-    find ${PALUDIS_RESUME_DIR} -mtime +3 -type f -exec rm {} \;
+    eval sudo $(< "${lastfile}")
 }
  
 function isocdrom {
