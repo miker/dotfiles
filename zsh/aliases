@@ -21,19 +21,20 @@ alias_exists more most
 alias_exists ping mtr
 
 # ls shortcuts
-alias lsa='ls -ld .*' 
-alias lsbig='ls -lSh *(.) | head' 
-alias lsd='ls -ld *(-/DN)' 
-alias lsnew='ls -lrt *(.) | tail' 
-alias lsold='ls -lrt *(.) | head' 
-alias lssmall='ls -lSh *(.) | head' 
-alias lsnoext="ls | grep -v '\.'"
-alias ll="ls -l"
-alias l.='ls -d .[^.]*'
-alias lsd='ls -ld *(-/DN)'
-alias la="ls -a"
 alias l="ls"
-alias lg='ls | grep -i $1'
+alias lsa="l -ld .*"
+alias lsbig="l -lSh *(.) | head"
+alias lsd="l -ld *(-/DN)"
+alias lsnew="l -lrt *(.) | tail"
+alias lsold="l -lrt *(.) | head"
+alias lssmall="l -lSh *(.) | head"
+alias lsnoext="l | grep -v '\.'"
+alias lsd='ls -ld *(-/DN)'
+alias l.='ls -d .[^.]*'
+alias ll="l -l"
+alias la="l -a"
+alias lla="l -la"
+alias lg="l | grep -i $1"
 
 # nocorrect 
 alias rm='nocorrect rm'
@@ -47,7 +48,7 @@ alias which="whence -a"
 alias p='ping'
 alias h='history'
 alias c="clear"
-alias s='sudo -E'
+alias s='sudo'
 alias su='s -s'
 alias ej='eject'
 alias k='killall'
@@ -58,10 +59,12 @@ alias m="nice -n1 mplayer"
 alias ml="nice -n1 mplayer -loop 0"
 alias mls="nice -n1 mplayer -loop 0 -shuffle"
 alias mn="nice -n1 mplayer -nosound"
-alias g='grep'
+alias find='LC_ALL="C" find'
+alias grep='LC_ALL="C" grep'
+alias g="grep"
 
 # default options
-alias ssh='ssh -qAX'
+alias ssh='ssh -AX'
 alias ps='ps auxwww'
 alias cpan="perl -MCPAN -e shell"
 alias wget="wget -c"
@@ -76,7 +79,7 @@ alias reboot="s reboot"
 alias ketchup='ketchup -G -a /usr/portage/distfiles'
 alias shred='nocorrect ionice -c3 /usr/bin/shred -fuzv'
 alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l1 -v -r'
-alias grep='grep -Hn --color=always'
+alias grep="grep -Hn --color=always"
 alias pwgen='pwgen -sBnc 10'
 
 # Rails
@@ -107,7 +110,7 @@ alias rlog="git log --pretty=format:\"%h %Cblue%cr%Creset %cn %Cgreen%s%Creset\"
 alias glo="git log --date=local --pretty=full --stat"
 alias  gc="git clean -f"
 alias  gf="git checkout -f"
-alias  lg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+#alias  lg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
 
 # new commands
 alias xlog="sudo grep --binary-files=without-match --color -nsie '(EE)' -e '(WW)' /var/log/Xorg.0.log"
@@ -121,7 +124,6 @@ alias burniso='wodim -v dev=/dev/cdrw'
 alias burndvdiso='growisofs -speed=8 -dvd-compat -Z /dev/dvdrw=$1'
 alias biosinfo='sudo dmidecode'
 alias gnp="git-notpushed"
-alias savage="~/code/bin/savage/savage.sh"
 alias wcyy="mplayer http://68.142.81.164:80/citadelcc_WCYY_FM\?MSWMExt\=.asf"
 alias wkit="mplayer http://64.92.199.73/WKIT-FM"
 alias gis="git status | grep --color=always '^[^a-z]\+\(new file:\|modified:\)' | cut -d'#' -f2-"
@@ -141,5 +143,11 @@ alias images='feh -d -x -F -Z $PWD'
 alias wgetlist="wget -c -i"
 alias become="sudo -s -H -u $1"
 alias runas="sudo -H -u $1 $@"
+alias fixkey='ssh-keygen -i -f'
+
+#games
+alias torchlight="wine ~/.wine/drive_c/Program\ Files/Runic\ Games/Torchlight/Torchlight.exe"
+alias savage="~/code/bin/savage/savage.sh"
+
 
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :

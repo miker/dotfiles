@@ -3,11 +3,11 @@
 ZSH_CONF_DIR=~/.zsh
 ZSH_CONF_FILES=(
   modules
-  functions
   os
+  functions
+  aliases
   env
   path
-  aliases
   paludis
   keymap
   prompt
