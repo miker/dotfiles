@@ -35,6 +35,8 @@ set auto-sync-mode "icrosoft FTP Service|MadGoat"
 
 ## Set this to follow http redirections
 set xfer:max-redirections 10
+set ftp:ssl-allow true
+#set ftp:ssl-force true
 
 ## Proxy can help to pass a firewall
 ## Environment variables ftp_proxy, http_proxy and no_proxy are used to
