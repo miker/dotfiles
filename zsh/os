@@ -74,7 +74,7 @@ case `uname` in
                     return 1 
                 else 
                     mount /boot
-                    time ( make -j3 clean make -j3 all && make -j3 modules_install && make -j3 install )
+                    time ( make -j3 clean && make -j3 all && make -j3 modules_install && make -j3 install )
                     vim /boot/grub/grub.cfg
                     umount /boot
                     echo "* Reboot When Your Ready..."
