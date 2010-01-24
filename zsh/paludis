@@ -24,7 +24,7 @@ if [[ -f /etc/gentoo-release ]]; then
     alias  pu="p --uninstall"
     alias  pU="p --uninstall-unused"
     alias puu='p --permit-unsafe-uninstalls -u'
-    alias  pe="pi everything -f; pi everything"
+    alias  pe="pi installed-packages -f; pi installed-packages"
     alias  pw="pi world -f && pi world"
     alias  pk="p --contents"
     alias  ex='p --executables'
@@ -32,7 +32,7 @@ if [[ -f /etc/gentoo-release ]]; then
     alias ppi="pi -p"
     alias ppu="pu -p"
     alias ppU="pU -p"
-    alias ppe="ppi everything"
+    alias ppe="ppi installed-packages"
     alias ppw="ppi world"
 
     alias syn="p --sync"
