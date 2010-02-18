@@ -14,11 +14,13 @@ alias -s jpg=feh
 alias -s pdf=evince
 alias -s rb=ruby
 alias -s pl=perl
+alias -s exe=wine
 
 # better programs
 alias_exists top htop
 alias_exists more most
 alias_exists ping mtr
+alias_exists mpc boogie
 
 # ls shortcuts
 alias l="ls"
@@ -48,7 +50,7 @@ alias which="whence -a"
 alias p='ping'
 alias h='history'
 alias c="clear"
-alias s='sudo'
+alias s='sudo -E'
 alias su='s -s'
 alias ej='eject'
 alias k='killall'
@@ -120,8 +122,10 @@ alias fixdbus="dbus-uuidgen --ensure"
 alias wp="~/code/bin/wallpaper/wallpaper.rb"
 alias gemi='sudo gem install --no-ri --include-dependencies'
 alias gems='gem search -b'
-alias burniso='wodim -v dev=/dev/cdrw'
-alias burndvdiso='growisofs -speed=8 -dvd-compat -Z /dev/dvdrw=$1'
+alias burniso='wodim -v dev=/dev/cdrw speed=24'
+alias burndvdiso="growisofs -speed=8 -dvd-compat -Z /dev/dvdrw=$*"
+alias mkdvdiso="genisoimage -o dvd.iso  -R -J -hfs $*"
+alias mkisofs="genisoimage -o cd.iso -R -J $*"
 alias biosinfo='sudo dmidecode'
 alias gnp="git-notpushed"
 alias wcyy="mplayer http://68.142.81.164:80/citadelcc_WCYY_FM\?MSWMExt\=.asf"
@@ -144,6 +148,7 @@ alias wgetlist="wget -c -i"
 alias become="sudo -s -H -u $1"
 alias runas="sudo -H -u $1 $@"
 alias fixkey='ssh-keygen -i -f'
+alias hammertime='ruby -rhammertime'
 
 #games
 alias torchlight="wine ~/.wine/drive_c/Program\ Files/Runic\ Games/Torchlight/Torchlight.exe"
