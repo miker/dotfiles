@@ -28,5 +28,4 @@ mailboxes =gentoo/user
 mailboxes =gentoo/hardened
 mailboxes =gentoo/security
 mailboxes =paludis
-mailboxes =libmtp
 mailboxes =Exherbo-dev
