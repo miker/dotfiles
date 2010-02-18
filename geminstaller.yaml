@@ -2,9 +2,11 @@
 defaults:
   install_options: --no-ri --no-rdoc
   check_for_upgrade: true
-  fix_dependencies: true 
 gems:
 - name: yard
+- name: bundler
+- name: hammertime
+- name: progressbar
 - name: rconfig
 - name: rcov
 - name: jammit
@@ -13,6 +15,7 @@ gems:
 - name: bond
 - name: hirb
 - name: request-log-analyzer
+- name: rails_best_practices
 - name: gravtastic
 - name: open4
 - name: rails
@@ -53,7 +56,6 @@ gems:
 - name: haddock
 - name: flapcore
 - name: git
-- name: rubyweather
 - name: ruby-openid
 - name: ruby-mp3info
 - name: reek
@@ -89,7 +91,6 @@ gems:
 - name: color
 - name: cheat
 - name: sinatra
-- name: puppet
 - name: bcrypt-ruby
 - name: commander
 - name: friendly_id
