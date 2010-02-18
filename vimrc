@@ -105,18 +105,7 @@ set hlsearch   " highlight searched words
 
 
 " {{{ Set a shell
-if has("unix")
-  set clipboard=autoselect
-    if "" == &shell
-      if executable("zsh")
-        set shell=zsh
-      elseif executable("bash")
-        set shell=bash
-      elseif executable("sh")
-        set shell=sh
-      endif
-    endif
-endif
+set shell=sh
 " }}}
 
 " {{{ Our default /bin/sh is bash, not ksh, so syntax highlighting for .sh
@@ -200,6 +189,11 @@ let g:syntastic_auto_loc_list = 1
 let g:gist_clip_command = 'xclip -selection clipboard'
 
 let g:git_branch_status_nogit=""
+
+let g:syntastic_enable_signs = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_quiet_warnings = 1 
+
 
 
 " Hightlight redundent spaces
@@ -377,6 +371,16 @@ snoremap <C-A> <C-C>gggH<C-O>G
 xnoremap <C-A> <C-C>ggVG
 
 nnoremap <silent> <C-f> :call FindInNERDTree()<CR> 
+
+noremap <leader>q ZQ
+noremap <leader>qa :qa<CR>
+
+" convert word into ruby symbol
+imap <C-k> <C-o>b:<Esc>Ea
+nmap <C-k> lbi:<Esc>E
+
+" bind control-l to hashrocket
+imap <C-l> <Space>=><Space>"
 
 " }}}
 
