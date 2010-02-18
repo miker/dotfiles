@@ -39,7 +39,7 @@ if [[ -f /etc/gentoo-release ]]; then
 
     alias     pR="p --report"
     alias     pc="p --regenerate-installable-cache && p --regenerate-installed-cache"
-    alias  recon="s reconcilio"
+    alias  reconcilio="s reconcilio"
     alias precon="s reconcilio -p"
     alias    inq="s inquisitio"
     
