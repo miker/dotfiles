@@ -273,6 +273,14 @@ function gitsearch {
     git grep $* $(git log -g --pretty=format:%h)
 }
 
+function mklzma {
+    tar -cv $* | xz -v > backup.tar.xz
+}
+
+function unlzma {
+    xz -dcv $1 | tar -xv
+}
+
 # http://polatel.wordpress.com/2009/05/05/paludis-resume-files/
 function plast {
     local index
