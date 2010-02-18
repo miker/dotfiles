@@ -1,7 +1,7 @@
 #!/bin/zsh -f
 
 SCRIPTPATH="~/code/bin/clipboard"
-cdpath=(~/code/bin ~/code/active)
+cdpath=(~/code/bin ~/code/active ~/media ~/media/videos )
 PATH="/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin:/opt/virtualbox:/usr/share/texmf/bin:/usr/games/bin:/usr/libexec/git-core:$SCRIPT_PATH"
 MANPATH="/usr/local/man:$MANPATH"
 GEMPATH=`gem env gemdir`
