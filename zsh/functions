@@ -246,7 +246,7 @@ function ech {
 }
 
 function junk {
-    scp -r $* norush:~/www/stuff/
+    scp -r $* web:~/www/stuff/
 }
 
 function torrent {
@@ -262,9 +262,7 @@ function manifest {
 }
 
 function tbuild {
-    appareo --log-level warning --master-repository-name gentoo --extra-repository-dir /usr/portage --extra-repository-dir $PWD $1 -m \
-    ebuild $1 clean && \
-    ebuild $1 install
+    ebuild $1 manifest && ebuild $1 clean ; ebuild $1 install
 }
 
 function qa {
@@ -423,7 +421,7 @@ esac
 }
 
 # Recompiles .zshrc
-src () {
+function src {
     autoload -U zrecompile
     [ -f ~/.zshrc ] && zrecompile -p ~/.zshrc
     [ -f ~/.zcompdump ] && zrecompile -p ~/.zcompdump
@@ -431,5 +429,10 @@ src () {
     [ -f ~/.zcompdump.zwc.old ] && rm -f ~/.zcompdump.zwc.old
     source ~/.zshrc
 }
+
+function gr {
+    groff -Tascii -man $1 | $PAGER 
+}
+
 
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
