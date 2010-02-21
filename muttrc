@@ -198,6 +198,8 @@ bind  index   <right>  display-message
 bind  browser <right>  select-entry
 bind  browser <left>   exit
 
+macro index,pager q <sync-mailbox><exit>
+
 # show the incoming mailboxes list (just like "mutt -y") and back when pressing "y"
 macro index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
 bind browser y exit
@@ -216,17 +218,16 @@ macro index,pager,attach,compose \cb "\
 "call urlview to extract URLs out of a message"
 
 macro index,pager \cD <delete-thread><down>
+macro index,pager d <delete-message><down>
+
 
 macro index,pager a "<pipe-message>abook --add-email-quiet<return>"
 
 bind pager G bottom	# just like vi and less
 bind pager gg top	# just like vi and less
 
-
-
 #folder-hook imaps://mail.server.com/INBOX.doc 'set signature=~/signature-doc from="Doc<doc@server.com>"'
-folder-hook =friends 'set signature=~/.mutt/friends"'
-
+folder-hook =family 'set signature=~/.mutt/family"'
 
 #{{{ Settings for sidebar patch
 # http://www.lunar-linux.org/index.php?option=com_content&task=view&id=44
@@ -238,7 +239,8 @@ bind index n sidebar-next
 bind index o sidebar-open
 bind pager p sidebar-prev
 bind pager n sidebar-next
-bind pager o sidebar-open
+macro pager o sidebar-open <sync-mailbox>
+
 
 # b toggles sidebar visibility 
 macro index b '<enter-command>toggle sidebar_visible<enter>'
