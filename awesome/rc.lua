@@ -302,6 +302,8 @@ awful.rules.rules = {
       properties = { tag = tags[1][3] } },
     { rule = { class = "Chrome" },
       properties = { tag = tags[1][2] } },
+    { rule = { class = "Exe" },
+      properties = { floating = true, fullscreen = true, titlebar = false } },
     { rule = { class = "Firefox", instance = "Navigator" },
       properties = { tag = tags[1][2] } },
     { rule = { instance = "gmpc" },
