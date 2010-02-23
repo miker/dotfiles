@@ -37,7 +37,7 @@ schedule = low_diskspace,5,60,close_low_diskspace=100M
 # when also reaching total upload in bytes, or when
 # reaching final upload ratio in percent.
 # example: stop at ratio 2.0 with at least 200 MB uploaded, or else ratio 20.0
-schedule = ratio,60,60,"stop_on_ratio=100,200M,200"
+schedule = ratio,60,60,"stop_on_ratio=100,200M,100"
 
 # The ip address reported to the tracker.
 #ip = 127.0.0.1
