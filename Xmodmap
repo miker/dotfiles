@@ -5,3 +5,9 @@ keycode 236 = XF86AudioNext
 keycode 176 = XF86AudioRaiseVolume
 keycode 174 = XF86AudioLowerVolume
 keycode 160 = XF86AudioMute
+
+! Swap caps lock and escape
+remove Lock = Caps_Lock
+keysym Caps_Lock = Escape
+!keysym Escape = Caps_Lock
+!add Lock = Caps_Lock
