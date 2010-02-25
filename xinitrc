@@ -7,7 +7,8 @@
 
 # Set your Default Window Manager
 DEFAULTWM='awesome'
-#DEFAULTWM='subtle -c ~/.config/subtle/subtle.rb'
+#DEFAULTWM='openbox'
+#DEFUALTWM="subtle"
 
 
 # Set some enviroment varibles
@@ -15,7 +16,7 @@ export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X1
 export TMP=$HOME/.tmp
 export TMDIR=$TMP
 export TERMCMD=/usr/bin/urxvt
-export BROWSER=/usr/bin/firefox
+export BROWSER=/usr/bin/chromium
 export TERMINAL=$TERMCMD
 export GTK2_RC_FILES=$HOME/.gtkrc-2.0
 export MOZILLA_NEWTYPE=tab
@@ -46,10 +47,6 @@ fi
 
 # Disable repeat for multimediakeys
 xset -r 129 -r 231 -r 198 -r 236 -r 160 &
-
-# Make capslock key equal to escape
-#xmodmap -e "remove lock = Caps_Lock"
-#xmodmap -e "keysym Caps_Lock = Escape"
 
 nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1 &
 
