@@ -38,9 +38,6 @@ zstyle ':completion:*:rm:*' ignore-line yes
 zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:manuals.(^1*)' insert-sections true
 
-# This makes rake autocomplete happy
-zstyle ':completion:*' matcher-list 'r:|[:]=*'
-
 ## add colors to processes for kill completion
 zstyle ':completion:*:*:kill:*' verbose yes
 zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#) #([^ ]#)*=$color[cyan]=$color[yellow]=$color[green]"
@@ -147,16 +144,5 @@ if [ -f Capfile ]; then
   fi
   if [ -f .cap_tasks~ ]; then
     compadd `cat .cap_tasks~`
-  fi
-fi
-
-#compdef rake
-if [ -f Rakefile ]; then
-  recent=`last_modified .rake_tasks~ Rakefile **/*.rake`
-  if [[ $recent != '.rake_tasks~' ]]; then
-    rake --silent --tasks | cut -d " " -f 2 > .rake_tasks~
-  fi
-  if [ -f .rake_tasks~ ]; then
-    compadd `cat .rake_tasks~`
   fi
 fi
