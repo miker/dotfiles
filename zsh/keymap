@@ -28,12 +28,24 @@ fi
 [[ -n ${key[Right]} ]]     && bindkey "${key[Right]}"     forward-char
 [[ -n ${key[PageUp]} ]]    && bindkey "${key[PageUp]}"    history-incremental-search-backward
 [[ -n ${key[PageDown]} ]]  && bindkey "${key[PageDown]}"  history-incremental-search-forward
-bindkey '^xh' run-help
-autoload edit-command-line
-zle -N edit-command-line
-bindkey '^xe' edit-command-line
-bindkey '^xx' execute-named-cmd
-bindkey "^K"      kill-whole-line                      # ctrl-k
-bindkey "^A"      beginning-of-line                    # ctrl-a  
-bindkey "^E"      end-of-line                          # ctrl-e
-bindkey "^R"      history-incremental-search-backward  # ctrl-r
+
+bindkey -v "^A" beginning-of-line
+bindkey -v "^E" end-of-line
+bindkey -v "^K" kill-line
+bindkey -v "^L" clear-screen
+bindkey -v "^R" history-incremental-search-backward
+bindkey -v "^U" kill-whole-line
+bindkey -v "^V" quoted-insert
+bindkey -v "^W" backward-kill-word
+
+bindkey -v "^N" down-history
+bindkey -v "^P" up-history
+
+bindkey -v "^[H" run-help
+bindkey -v "^[h" run-help
+
+# alow for editing of the command line
+# http://zshwiki.org/home/examples/zlewidgets
+autoload -U    edit-command-line
+zle -N         edit-command-line
+bindkey -a 'v' edit-command-line
