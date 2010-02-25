@@ -11,7 +11,7 @@ ZSH_CONF_FILES=(
   paludis
   keymap
   prompt
-  options
+  shopt
   completion
   rake
   config
