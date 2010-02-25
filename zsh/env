@@ -13,11 +13,6 @@ fi
 
 export RCDIR="/etc/init.d/"
 
-## If nonnegative, commands whose combined user and system execution times
-## (measured in seconds) are greater than this value have timing
-## statistics printed for them.
-REPORTTIME=2
-
 # To many stupid scripts don't unset this so I'm using an alias for now
 #export GREP_OPTIONS="--color=auto -nsi"
 (( ${+TZ} )) || export TZ="EST5EDT"
@@ -27,6 +22,7 @@ export MPD_PORT="6600"
 export GIT_AUTHOR_EMAIL="netzdamon@gmail.com"
 export GIT_AUTHOR_NAME="Greg Fitzgerald"
 export GIT_COMMITTER_EMAIL=$GIT_AUTHOR_EMAIL
+export GIT_COMMITTER_NAME=$GIT_AUTHOR_NAME
 
 # Some settings for autotest
 export AUTOFEATURE="true" 
@@ -50,6 +46,11 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 # }}}
 
+export ACK_OPTIONS="--color"
+
+export LC_MESSAGES=C
+export LC_ALL=
+
 # {{{ Resource Limits
 limit stack 8192
 #limit core unlimited
@@ -58,9 +59,16 @@ limit -s
 # }}}
 
 # {{{ Setup History Options
-HISTSIZE=10000
+HISTSIZE=10000              # size of history
+LISTMAX=1000                # never ask
+NULLCMD='cat'               # use cat for > null commands
+REPORTTIME=2                # report time if execution exceeds amount of seconds
+SAVEHIST=10000              # maximum of history events to be save
+LOGCHECK=60
+watch=(notme)               # watch login/logout
+WORDCHARS="*?_-.[]~/&;!#$%^(){}<>"
+                            # part of word in line editor
 HISTFILE=${HOME}/.history_zsh
-SAVEHIST=10000
 DIRSTACKSIZE=16
 # }}}
 
