@@ -442,5 +442,27 @@ function gr {
     groff -Tascii -man $1 | $PAGER 
 }
 
+# short form of dig
+function dig1 () {
+    dig +noauthority +noadditional +noqr +nostats +noidentify +nocmd +noquestion +nocomments $@
+}
+
+function gitize() {
+        git init \
+        && git add . \
+        && git commit -m"initial commit" \
+        && git gc
+}
+
+# URL encode something and print it.
+function url-encode; {
+        setopt extendedglob
+        echo "${${(j: :)@}//(#b)(?)/%$[[##16]##${match[1]}]}"
+}
+
+# Search google for the given keywords.
+function google; {
+        w3m "http://www.google.com/search?q=`url-encode "${(j: :)@}"`"
+}
 
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
