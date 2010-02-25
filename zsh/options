@@ -14,4 +14,8 @@ hash_cmds hash_dirs numeric_glob_sort vi rmstarwait nullglob
 
 unsetopt beep equals mail_warning
 
+typeset -ga preexec_functions
+typeset -ga precmd_functions
+typeset -ga chpwd_functions
+
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :

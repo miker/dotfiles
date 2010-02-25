@@ -1,5 +1,4 @@
 #! /bin/zsh -f
-PR_GIT_UPDATE=1
 
 ZSH_CONF_DIR=~/.zsh
 ZSH_CONF_FILES=(
