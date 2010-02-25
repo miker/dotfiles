@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Wed 26 Aug 2009 01:22:55 PM EDT
+" Modified: Tue 29 Feb 2010 01:22:55 PM EDT
 " ----------------------------------------------------------------------------
 
 " {{{ Settings
@@ -788,14 +788,14 @@ if has("autocmd")
 
         autocmd BufNewFile *.rb 0put = '' |
                     \ 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
-                    \ 0put = '# Copyright (c) 2009 Greg Fitzgerald <netzdamon@gmail.com>' |
+                    \ 0put = '# Copyright (c) 2010 Greg Fitzgerald <netzdamon@gmail.com>' |
                     \ 0put = '# Distributed under the terms of the GNU General Public License v2' |
                     \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
                     \ norm G
         
         autocmd BufNewFile *.sh 0put = '' |
                     \ 0put ='# vim: set sw=4 sts=4 et tw=80 :' |
-                    \ 0put = '# Copyright (c) 2009 Greg Fitzgerald <netzdamon@gmail.com>' |
+                    \ 0put = '# Copyright (c) 2010 Greg Fitzgerald <netzdamon@gmail.com>' |
                     \ 0put = '# Distributed under the terms of the GNU General Public License v2' |
                     \ 0put ='#!/usr/bin/env bash' | set sw=4 sts=4 et tw=80 |
                     \ norm G
