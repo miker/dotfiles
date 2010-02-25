@@ -1,5 +1,6 @@
 #! /bin/zsh -f
- 
+PR_GIT_UPDATE=1
+
 ZSH_CONF_DIR=~/.zsh
 ZSH_CONF_FILES=(
   modules
@@ -13,9 +14,12 @@ ZSH_CONF_FILES=(
   prompt
   options
   completion
+  rake
   config
 )
  
 for conf_file in $ZSH_CONF_FILES; do
   source $ZSH_CONF_DIR/$conf_file;
 done
+
+if [[ -s /home/gregf/.rvm/scripts/rvm ]] ; then source /home/gregf/.rvm/scripts/rvm ; fi

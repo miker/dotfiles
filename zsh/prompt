@@ -1,4 +1,19 @@
 #!/bin/zsh -f
+#
+# This file was written by Greg Fitzgerald <netzdamon@gmail.com>
+#
+# references
+#   http://www.zsh.org/mla/users/2006/msg01196.html
+#   http://dotfiles.org/~frogb/.zshrc
+#   http://kriener.org/articles/2009/06/04/zsh-prompt-magic
+#   http://www.jukie.net/~bart/blog/20100225104049
+
+
+setopt prompt_subst
+autoload colors
+colors
+
+autoload -Uz vcs_info
 
 # set the titlebar to the current working directory
 #chpwd()
@@ -37,7 +52,9 @@ for COLOR in RED GREEN YELLOW WHITE BLACK CYAN; do
     eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'         
     eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
 done                                                 
-PR_RESET="%{${reset_color}%}";                       
+PR_RST="%{${reset_color}%}"
+PR_RESET="%{%b%s%u$reset_color%}"
+PR_BG="%{%(?.$PR_RESET.%S)%}"
 
 # set formats
 # %b - branchname
@@ -46,8 +63,8 @@ PR_RESET="%{${reset_color}%}";
 # %a - action (e.g. rebase-i)
 # %R - repository path
 # %S - path in the repository
-FMT_BRANCH="${PR_GREEN}%b%u%c${PR_RESET}" # e.g. master¹²
-FMT_ACTION="(${PR_CYAN}%a${PR_RESET}%)"   # e.g. (rebase-i)
+FMT_BRANCH="${PR_GREEN}%b%u%c${PR_RST}" # e.g. master¹²
+FMT_ACTION="(${PR_CYAN}%a${PR_RST}%)"   # e.g. (rebase-i)
 FMT_PATH="%R${PR_YELLOW}/%S"              # e.g. ~/repo/subdir
 
 # check-for-changes can be really slow.
@@ -64,13 +81,16 @@ function lprompt {
     local color1=$2  
     local color2=$3  
                      
-    local bracket_open="${color1}${brackets[1]}${PR_RESET}"
-    local bracket_close="${color1}${brackets[2]}"          
+    local bracket_open="${color1}${brackets[1]}${PR_BG}"
+    local bracket_close="${color1}${brackets[2]}${PR_RESET}"          
                                                              
     local git='$vcs_info_msg_0_'                           
     local cwd="${color2}${SSH_CONNECTION+"%n@%m:"}%B%1~%b"
 
-    PROMPT="${PR_RESET}${bracket_open}${git}${cwd}${bracket_close}%# ${PR_RESET}"
+    local vimode='${PR_VIMODE}'
+    local vicol='${PR_VICOLOR}'
+
+    PROMPT="${PR_BG}${bracket_open}${git}${cwd}${bracket_close}%# ${PR_RESET}"
 }                                                                                        
 
 function rprompt {
@@ -91,12 +111,87 @@ function rprompt {
     RPROMPT="${PR_RESET}${bracket_open}${inner}${bracket_close}${PR_RESET}"
 }
 
-if (( EUID == 0 )); then
-    lprompt '[]' $BR_BRIGHT_BLACK $PR_RED
+# -------------------------------
+# host dependent colouring
+
+#lprompt '[]' $PR_BRIGHT_BLACK $PR_WHITE
+#rprompt '()' $PR_BRIGHT_BLACK $PR_WHITE
+
+if [ $UID -eq 0 ]; then
+    lprompt '<>' $PR_RED $PR_RED
+    rprompt '<>' $PR_RED $PR_RED
 else
-    lprompt '[]' $BR_BRIGHT_BLACK $PR_CYAN
+    case $HOST in
+        betsy)
+            lprompt '[]' $PR_BRIGHT_BLACK $PR_GREEN
+            rprompt '()' $PR_YELLOW $PR_WHITE
+            ;;
+        bint)
+            lprompt '[]' $BR_BRIGHT_BLACK $PR_CYAN
+            rprompt '()' $BR_BRIGHT_BLACK $PR_RED
+            ;;
+        quad)
+            lprompt '[]' $PR_WHITE $PR_GREEN
+            rprompt '()' $PR_YELLOW $PR_WHITE
+            ;;
+        one)
+            lprompt '<>' $PR_RED $PR_YELLOW
+            rprompt '<>' $PR_RED $PR_WHITE
+            ;;
+        two)
+            lprompt '<>' $PR_RED $PR_BLUE
+            rprompt '<>' $PR_RED $PR_WHITE
+            ;;
+        three)
+            lprompt '<>' $PR_RED $PR_GREEN
+            rprompt '<>' $PR_RED $PR_WHITE
+            ;;
+
+        *)
+            if [ ${$(hostname -f)#*.} = "dirtyslag.org" ]; then
+                lprompt '[]' $PR_BRIGHT_BLACK $PR_WHITE
+                rprompt '()' $PR_BRIGHT_BLACK $PR_WHITE
+            else
+                lprompt '{}' $PR_WHITE $PR_WHITE
+                rprompt '()' $PR_WHITE $PR_WHITE
+            fi
+            ;;
+    esac
 fi
-rprompt '()' $BR_BRIGHT_BLACK $PR_RED
+
+if [ -n "$gentoo_chroot" ]; then
+    PROMPT="$bgc%{$fg[yellow]%}%B${gentoo_chroot}%b ${PROMPT}"
+fi
+
+# ------------------------------
+# this stuff updates screen and xterm titles as the command runs
+
+case $TERM in
+    xterm* | rxvt* | urxvt*)
+        function zsh_term_prompt_precmd {
+                print -Pn "\e]0;%n@%m: %~\a"
+        }
+        function zsh_term_prompt_preexec {
+                local x="${${${1//\"/\\\"}//\$/\\\\\$}//\%/%%}"
+                print -Pn "\e]0;%n@%m: %~  $x\a"
+        }
+        preexec_functions+='zsh_term_prompt_preexec'
+        precmd_functions+='zsh_term_prompt_precmd'
+        ;;
+    screen*)
+        function zsh_term_prompt_precmd {
+                print -nR $'\033k'"zsh"$'\033'\\\
+                print -nR $'\033]0;'"zsh"$'\a'
+        }
+        function zsh_term_prompt_preexec {
+                local x="${${${1//\"/\\\"}//\$/\\\\\$}//\%/%%}"
+                print -nR $'\033k'"$x"$'\033'\\\
+                print -nR $'\033]0;'"$x"$'\a'
+        }
+        preexec_functions+='zsh_term_prompt_preexec'
+        precmd_functions+='zsh_term_prompt_precmd'
+        ;;
+esac
 
 
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
