@@ -9,14 +9,11 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # insert all expansions for expand completer
 zstyle ':completion:*:expand:*' keep-prefix true tag-order all-expansions
 
-compctl -g '*.Z *.gz *.tgz' + -g '*' zcat gunzip tar open
-compctl -g '*.tar.Z *.tar.gz *.tgz *.tar.bz2' + -g '*' tar bzip2 open
-compctl -g '*.zip *.ZIP' + -g '*' unzip zip open
-compctl -g '*.rar *.RAR' + -g '*' rar unrar open
-compctl -g '*.(mp3|MP3|ogg|OGG|WAV|wav|ogv|OGV)' + -g '*(-/)'  ogg123 mpg123 audacious wma123 mplayer vlc
-compctl -g '*.(divx|DIVX|m4v|M4V|wmv|WMV|avi|AVI|mpg|mpeg|MPG|MPEG|WMV|wmv|mov|MOV|wma|WMA|w4a|W4A|part|PART|rmvb|RMVB)' + -g '*(-/)'  xine mplayer kmplayer gmplayer vlc
-compctl -g '*.(pdf|PDF|ps|PS|tiff|TIFF)' + -g '*(-/)' evince acroread xpdf epdfview
-compctl -g '*.(jpg|JPG|jpeg|JPEG|gif|GIF|tiff|TIFF|png|PNG|tga|TGA)' + -g '*(-/)' feh gthumb xv f-spot gqview
+#compctl -g '*.Z *.gz *.tgz' + -g '*' zcat gunzip tar open
+#compctl -g '*.tar.Z *.tar.gz *.tgz *.tar.bz2' + -g '*' tar bzip2 open
+#compctl -g '*.zip *.ZIP' + -g '*' unzip zip open
+#compctl -g '*.rar *.RAR' + -g '*' rar unrar open
+#compctl -g '*.(mp3|MP3|ogg|OGG|WAV|wav|ogv|OGV)' + -g '*(-/)'  ogg123 mpg123 audacious wma123 mplayer vlc
 
 # highlight parameters with uncommon names
 zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
@@ -116,6 +113,47 @@ zstyle ':completion:*' insert-tab pending
 # matches case insensitive for lowercase
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
+zstyle ':completion:*:*:evince:*' file-patterns \
+    '*.(ps|pdf|tiff|div)(|.gz|.bz2):pspdf-files:PostScript\ or\ PDF\ files  *(-/):directories:Directories' '*:all-files'
+zstyle ':completion:*:*:(m|mplayer|xine|vlc):*' file-patterns \
+    '*.(avi|wmv|mov|m4a|mpg|mpeg|mp4|part|mp3|ogg|ogv|flv|rm|m4v):media-files:Audio\ or\ Video\ files  *(-/):directories:Directories' '*:all-files'
+zstyle ':completion:*:*:(ogg123|mpg123|audacious|wma123):*' file-patterns \
+    '*.(mp3|ogg|m4a|flac|wav):media-files:Audio\ files  *(-/):directories:Directories' '*:all-files'
+zstyle ':completion:*:*:(feh|gqview|xv|gthumb):*' file-patterns \
+    '*.(jpeg|jpg|gif|png|tiff|raw):media-files:Image\ files  *(-/):directories:Directories' '*:all-files'
+zstyle ':completion:*:*:(zcat|gunzip|tar|open):*' file-patterns \
+    '*.(z|gz|tgz):media-files:Gzip\ files  *(-/):directories:Directories' '*:all-files'
+zstyle ':completion:*:*:(bzcat|tar|bzip2|open):*' file-patterns \
+    '*.(bz2|tbz2):media-files:Bzip\ files  *(-/):directories:Directories' '*:all-files'
+zstyle ':completion:*:*:(zip|unzip|open):*' file-patterns \
+    '*.(zip):media-files:Zip\ files  *(-/):directories:Directories' '*:all-files'
+zstyle ':completion:*:*:(rar|unrar|open):*' file-patterns \
+    '*.(rar):media-files:Rar\ files  *(-/):directories:Directories' '*:all-files'
+zstyle ':completion:*:*:(xz|unlzma|lzma|open):*' file-patterns \
+    '*.(xz|txz|lzma):media-files:Lzma\ files  *(-/):directories:Directories' '*:all-files'
+zstyle ':completion:*:*:swfplayer:*' file-patterns \
+    '*.swf:swf-files:Swf\ files  *(-/):directories:Directories' '*:all-files'
+
+zstyle ':completion:*' file-patterns \
+    '%p:globbed-files: *(-/):directories:Directories' '*:all-files'
+
+zstyle ':completion:*:*:vi(m|):*:*files' ignored-patterns '*?.(aux|dvi|ps|pdf|bbl|toc|lot|lof|o|cm?)'
+
+#[ hosts and users ]############################################################
+hosts=()
+[ -r ~/.ssh/config ] && hosts=(${${${$(grep '^Host' ~/.ssh/config)}##Host }##[*0-9]*})
+[ -r ~/.ssh/known_hosts ] && hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%\*}%,*})
+hosts=($( ( \
+        ( [ -r ~/.ssh/config ] && awk '/^host +[a-z]/ { print $2 }' ~/.ssh/config) ; \
+        ( [ -r ~/.ssh/known_hosts ] && awk '{print $1}' ~/.ssh/known_hosts | tr , '\n') \
+) | sort -u))
+
+zstyle ':completion:*' hosts $hosts
+zstyle ':completion:*:hosts' list-colors '=(#b)(*)(.jukie.net)=01;30=01;31' '=[^.]#=01;31'
+
+users=(root gregf fgreg)
+zstyle ':completion:*' users $users
+
 # Magically quote urls
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
@@ -131,10 +169,6 @@ compctl -f -x 'S[1][2][3][4][5][6][7][8][9]' -k '(1 2 3 4 5 6 7 8 9)' \
 - 's[-]' -k '(a d f h k t M P)' \
 - 'p[1,-1]' -c + -K 'match-man' \
 -- man
-
-if [ -f ~/.ssh/known_hosts ]; then
-    zstyle -e ':completion::*:*:*:hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
-fi
 
 #compdef cap
 if [ -f Capfile ]; then
