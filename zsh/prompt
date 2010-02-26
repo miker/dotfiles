@@ -86,8 +86,8 @@ function rprompt {
 #rprompt '()' $PR_BRIGHT_BLACK $PR_WHITE
 
 if [ $UID -eq 0 ]; then
-    lprompt '<>' $PR_RED $PR_RED
-    rprompt '<>' $PR_RED $PR_RED
+    lprompt '[]' $PR_RED $PR_RED
+    rprompt '()' $PR_RED $PR_RED
 else
     case $HOST in
         betsy)
