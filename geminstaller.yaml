@@ -1,9 +1,11 @@
 ---
 defaults:
   install_options: --no-ri --no-rdoc
-  check_for_upgrade: true
+  check_for_upgrade: false 
 gems:
 - name: yard
+- name: ronn
+- name: ghost
 - name: bundler
 - name: hammertime
 - name: progressbar
