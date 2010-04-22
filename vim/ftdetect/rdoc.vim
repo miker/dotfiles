@@ -1,1 +1,3 @@
-autocmd BufNewFile,BufRead *.rdoc setf rdoc 
+" RDoc
+autocmd BufNewFile,BufRead *.{rd,rdoc} set filetype=rdoc
+
