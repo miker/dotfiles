@@ -5,6 +5,9 @@
 # Modified: Mon 17 Aug 2009 01:54:04 PM EDT
 # ----------------------------------------------------------------------------
 
+rm -f ~/.recently-used.xbel
+rm -f ~/.recently-used
+
 # Set your Default Window Manager
 DEFAULTWM='awesome'
 #DEFAULTWM='openbox'
@@ -16,10 +19,13 @@ export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X1
 export TMP=$HOME/.tmp
 export TMDIR=$TMP
 export TERMCMD=/usr/bin/urxvt
-export BROWSER=/usr/bin/chromium
+#export BROWSER=/usr/bin/chrome
+#export BROWSER=/usr/bin/uzbl-browser
+export BROWSER=/usr/bin/firefox
 export TERMINAL=$TERMCMD
 export GTK2_RC_FILES=$HOME/.gtkrc-2.0
 export MOZILLA_NEWTYPE=tab
+export SSH_ASKPASS=/usr/bin/gnome-ssh-askpass
 #export XDG_CACHE_DIR="/var/cache/users/gregf/"
 RXVT_SOCKET="$HOME/.tmp/rxvt-unicode"
 userresources=$HOME/.Xresources
@@ -27,7 +33,7 @@ usermodmap=$HOME/.Xmodmap
 
 unclutter -idle 30 -reset -root &
 
-xset -b -bc +dpms r rate 250 50 &
+xset -b +dpms r rate 250 50 &
 
 # Get back ctrl+alt+backspace in new versions of xorg
 setxkbmap -option terminate:ctrl_alt_bksp
@@ -94,6 +100,7 @@ nice -n10 ${BROWSER} &
 nice -n19 gpodder &
 xsetroot -cursor_name left_ptr &
 orage &
+caffeine &
 conky -d &
 
 wait $wmpid
