@@ -14,8 +14,6 @@ XTerm*pointerColor:	blue
 XTerm*pointerColor2: 	yellow
 XTerm*borderWidth:	0
 XTerm*scrollBar:    false
-XTerm*foreground: #ffffff
-XTerm*background: #000000
 XTerm*loginShell: true 
 XTerm*eightBitInput: false
 XTerm*hideScrollbar: true
@@ -28,10 +26,9 @@ XTerm*.showBlinkAsBold: true
 XTerm*.utf8: 1
 XTerm*.visualBell: true
 !XTerm*faceName: andale mono
-!XTerm*faceName: terminus:size=13
 !XTerm*faceName: droid sans mono:size=12:antialias=true
-XTerm*faceName: inconsolata:size:12:antialias=true
-!XTerm*faceName: terminus:size=12:antialias=false
+!XTerm*faceName: inconsolata:size:12:antialias=true
+XTerm*faceName: terminus:size=12:antialias=true
 XTerm*saveLines: 10000
 XTerm*on4Clicks: all
 XTerm*colorBDMode: true
@@ -50,38 +47,46 @@ XTerm*bellIsUrgent: true
 !}}}
 
 !{{{ URxvt
-URxvt*loginShell:       true 
+URxvt*loginShell:       false 
 URxvt*saveLines:        5500
 URxvt*geometry:         100x25
-URxvt.depth:        32
-URxvt.modifier:         alt
-URxvt.scrollstyle:   plain
-URxvt.scrollColor:  #444444
+URxvt*depth:        32
+URxvt*modifier:         alt
+URxvt*scrollstyle:   plain
+URxvt*scrollColor:  #444444
 URxvt*scrollTtyKeypress: true
-URxvt.scrollWithBuffer: true
-URxvt.scrollTtyOutput:  false
-URxvt.inheritPixmap:    false
-URxvt.urgentOnBell:     true
-URxvt.perl-ext-common:  default,matcher
-URxvt.urlLauncher:  /usr/bin/chromium
-URxvt.matcher.button:   1
+URxvt*scrollWithBuffer: true
+URxvt*scrollTtyOutput:  false
+URxvt*inheritPixmap:    false
+URxvt*urgentOnBell:     true
+URxvt.perl-ext-common: default,matcher 
+!,tabbed
+!URxvt*urlLauncher:  /usr/bin/uzbl-browser
+URxvt*urlLauncher:  firefox 
+!URxvt*urlLauncher:  /usr/bin/chrome
+URxvt*matcher.button:   1
 URxvt*keysym.M-u: perl:mark-yank-urls:activate_mark_mode
 URxvt*underlineURLs: true
 URxvt*termName: rxvt
 
 ! appearance
 URxvt*transparent:        false 
-URxvt.cursorBlink:        false 
-URxvt.cursorOnTime:       400
-URxvt.cursorOffTime:      140
+URxvt*cursorBlink:        false 
+URxvt*cursorOnTime:       400
+URxvt*cursorOffTime:      140
 URxvt*jumpScroll:         true
-URxvt*scrollTtyOutput:    false
 URxvt*scrollBar:          false
 
-URxvt.font: xft:inconsolata:size=12:antialias=true
-URxvt.boldFont: xft:inconsolata:bold
-URxvt.italicFont: xft:inconsolata:italic
-URxvt.boldItalicFont: xft:inconsolata:italic
+URxvt*font: xft:terminus:size=12:antialias=true
+URxvt*boldFont: xft:terminus:size=12:antialias=true:bold
+URxvt*italicFont: xft:terminus:size=12:antialias=true:italic
+URxvt*boldItalicFont: xft:terminus:size=12:antialias=true:italic
+
+!URxvt.font: xft:inconsolata:size=12:antialias=true
+!URxvt.boldFont: xft:inconsolata:bold
+!URxvt.italicFont: xft:inconsolata:italic
+!URxvt.boldItalicFont: xft:inconsolata:italic
+
 !}}}
 
 !{{{ colors
@@ -133,7 +138,6 @@ Xcursor.size: 18
 !{{{ irssi
 !   -- also: set 'vbell on' in screen
 !   --       set 'bell_msg' "\a in window!"
-URxvt*urgentOnBell: true 
 irssi*urgentOnBell:true
 !}}}
 
