@@ -38,7 +38,6 @@ set mbox=!
 # Setup some colors
 source ~/.mutt/colors.rc
 # Setup gnupg bindings
-#source ~/.mutt/mutt.gpg
 source ~/.mutt/gpg.rc
 # Mailboxes
 source ~/.mutt/mailboxes
@@ -115,7 +114,6 @@ set auto_tag
 set wrap_search
 set sort=threads
 set sort_aux=reverse-date
-#set strict_threads
 set sort_browser=alpha
 set sort_alias=alias
 set suspend=no
@@ -130,7 +128,6 @@ unset askcc
 set quit=ask-yes
 set write_bcc=no
 set move=no
-#set editor="vim +/^$ ++1 +':setf mail' +':set spell spelllang=en' +'set tw=72'"
 set editor="vim"
 set query_command="abook --mutt-query '%s'"
 set mask = '!(^\.)|(\.log$)|(\.lst$)|(\.cache$)' # Ignore these file types when browsing folders
@@ -226,7 +223,6 @@ macro index,pager a "<pipe-message>abook --add-email-quiet<return>"
 bind pager G bottom	# just like vi and less
 bind pager gg top	# just like vi and less
 
-#folder-hook imaps://mail.server.com/INBOX.doc 'set signature=~/signature-doc from="Doc<doc@server.com>"'
 folder-hook =family 'set signature=~/.mutt/family"'
 
 #{{{ Settings for sidebar patch
