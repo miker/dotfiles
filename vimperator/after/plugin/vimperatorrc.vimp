@@ -1,9 +1,0 @@
-" ==================== plugin options ==================== "
-
-" colorize_url
-"hi ColorizeUrlSubdomain color: #333;
-"hi ColorizeUrlPort      color: #333;
-"hi ColorizeUrlFragment  color: #333;
-set complete+=D
-set go+=D
-" vim: set ft=vimperator foldmethod=marker:
