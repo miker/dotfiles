@@ -1,14 +1,16 @@
 require 'rake'
 require 'erb'
- 
+
 desc "install the dot files into user's home directory"
 task :install do
   replace_all = false
   Dir['*'].each do |file|
-    next if %w[Rakefile README.mkd update_dotfiles.sh].include? file
+    next if %w[Rakefile README.mkd LICENSE update_dotfiles].include? file
     
     if File.exist?(File.join(ENV['HOME'], ".#{file.sub('.erb', '')}"))
-      if replace_all
+      if File.identical? file, File.join(ENV['HOME'], ".#{file.sub('.erb', '')}")
+        puts "identical ~/.#{file.sub('.erb', '')}"
+      elsif replace_all
         replace_file(file)
       else
         print "overwrite ~/.#{file.sub('.erb', '')}? [ynaq] "
@@ -29,12 +31,12 @@ task :install do
     end
   end
 end
- 
+
 def replace_file(file)
-  system %Q{rm "$HOME/.#{file.sub('.erb', '')}"}
+  system %Q{rm -rf "$HOME/.#{file.sub('.erb', '')}"}
   link_file(file)
 end
- 
+
 def link_file(file)
   if file =~ /.erb$/
     puts "generating ~/.#{file.sub('.erb', '')}"
