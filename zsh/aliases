@@ -77,7 +77,6 @@ alias most="most +s +u"
 alias ri="ri -Tf ansi"
 alias poweroff="s poweroff"
 alias reboot="s reboot"
-alias ketchup='ketchup -G -a /usr/portage/distfiles'
 alias shred='nocorrect ionice -c3 /usr/bin/shred -fuzv'
 alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l1 -v -r'
 alias grep="grep -Hn --color=always"
@@ -90,28 +89,30 @@ alias db='script/dbconsole'
 alias a='autotest -rails'
 alias tlog='tail -f log/development.log'
 alias rst='touch tmp/restart.txt'
-alias migrate="rake db:migrate db:test:prepare"
+alias migrate='rake db:migrate db:test:clone'
 alias remigrate="rake db:migrate && rake db:migrate:redo && rake db:schema:dump db:test:prepare"
 
-#Git
-alias  ga="git add"
-alias  gs="git status"
-alias  gb="git branch"
-alias gba="git branch -a"
-alias  gm="git merge"
-alias  gd="git diff"
-alias gci="git commit -v -s"
-alias  gp="git push"
-alias gpp="push origin master:refs/heads/master"
-alias  gl="git pull"
-alias  gw="git shortlog -s -n"
-alias grev="git revert HEAD"
-alias gres="git reset"
-alias rlog="git log --pretty=format:\"%h %Cblue%cr%Creset %cn %Cgreen%s%Creset\""
-alias glo="git log --date=local --pretty=full --stat"
-alias  gc="git clean -f"
-alias  gf="git checkout -f"
-#alias  lg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+# git
+alias gl='git pull'
+alias gc='git clone'
+alias gp='git push'
+alias gpp='git push origin master:refs/heads/master'
+alias gd='git diff'
+alias gc='git commit'
+alias gca='git commit -a'
+alias gco='git checkout'
+alias gb='git branch'
+alias gba='git branch -a'
+alias gs='git status'
+alias ga='git add'
+alias gd='git diff'
+alias gci='git commit -v'
+alias gc="git clean -f"
+alias grm='git rm $(git ls-files --deleted)'
+alias glg='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset" --abbrev-commit --date=relative'
+alias rlog='git log --pretty=format:"%h %Cblue%cr%Creset %cn %Cgreen%s%Creset"'
+alias glo='git log --date=local --pretty=full --stat'
+alias mkpatch="git format-patch --stdout -M -C -C -1"
 
 # new commands
 alias xlog="sudo grep --binary-files=without-match --color -nsie '(EE)' -e '(WW)' /var/log/Xorg.0.log"
@@ -119,10 +120,8 @@ alias sd='export DISPLAY=:0.0'
 alias cup='cvs -z3 update -Pd'
 alias fixdbus="dbus-uuidgen --ensure"
 alias wp="~/code/bin/wallpaper/wallpaper.rb"
-alias gemi='sudo gem install --no-ri --include-dependencies'
-alias gems='gem search -b'
-alias burniso='wodim -v dev=/dev/cdrw speed=24'
-alias burndvdiso="growisofs -speed=8 -dvd-compat -Z /dev/dvdrw=$*"
+alias burniso='wodim -v dev=/dev/sr0 speed=24'
+alias burndvdiso="growisofs -speed=8 -dvd-compat -Z /dev/sr0=$*"
 alias mkdvdiso="genisoimage -o dvd.iso  -R -J -hfs $*"
 alias mkisofs="genisoimage -o cd.iso -R -J $*"
 alias biosinfo='sudo dmidecode'
@@ -130,17 +129,13 @@ alias gnp="git-notpushed"
 alias wcyy="mplayer http://68.142.81.164:80/citadelcc_WCYY_FM\?MSWMExt\=.asf"
 alias wkit="mplayer http://64.92.199.73/WKIT-FM"
 alias gis="git status | grep --color=always '^[^a-z]\+\(new file:\|modified:\)' | cut -d'#' -f2-"
+alias dosbox="dosbox -conf ~/.dosbox.conf"
 alias lk='lynx -dump http://kernel.org/kdist/finger_banner'
 alias ra="echo 'awful.util.restart()' | awesome-client -"
 alias sv="gvim --remote-tab-silent"
-alias geminstaller='sudo geminstaller -s -c $HOME/.geminstaller.yaml'
 alias smv="s mv"
 alias srm="s rm"
-alias installed='qlist -I | most'
 alias n="nitrogen ~/media/images/wallpaper/"
-alias grm='git rm $(git ls-files --deleted)'
-alias encrypt="gpg -e -r Greg"
-alias decrypt="gpg -d -r Greg"
 alias tmr="tmux attach-session"
 alias images='feh -d -x -F -Z $PWD'
 alias wgetlist="wget -c -i"
@@ -148,10 +143,17 @@ alias become="sudo -s -H -u $1"
 alias runas="sudo -H -u $1 $@"
 alias fixkey='ssh-keygen -i -f'
 alias hammertime='ruby -rhammertime'
+alias sendpatch="git format-patch --stdout -M -C -C -1 | wgetpaste -r"
+alias gemu="s gem update --system && s gem update"
+alias gemi="s gem install --no-ri --include-dependencies"
+alias gems="gem search -b"
+alias gemr="s gem uninstall"
+alias gemc="s gem clean"
+alias geminstaller="s geminstaller -s -c ${HOME}/.geminstaller.yaml"
+alias minicom='minicom -c on'
 
 #games
 alias torchlight="wine ~/.wine/drive_c/Program\ Files/Runic\ Games/Torchlight/Torchlight.exe"
 alias savage="~/code/bin/savage/savage.sh"
-
 
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
