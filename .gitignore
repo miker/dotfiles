@@ -14,3 +14,4 @@ vim/vimrc.local
 mutt/aliases.rc
 vimperator/info
 vim/.VimballRecord
+gitconfig
