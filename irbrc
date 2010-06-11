@@ -8,7 +8,7 @@ require 'hirb'
 require 'what_methods'
 require 'wirble'
 require 'bond'
-require 'bond/completion'
+require 'interactive_editor'
 
 Wirble.init
 Wirble.colorize
@@ -22,8 +22,6 @@ IRB.conf[:USE_READLINE] = true
 # Prompt behavior
 ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
 
-load File.dirname(__FILE__) + '/.railsrc' if $0 == 'irb' && ENV['RAILS_ENV']
-
 # http://blog.evanweaver.com/articles/2006/12/13/benchmark/
 def benchmark(times = 1000, samples = 20)
   times *= samples
@@ -34,3 +32,5 @@ def benchmark(times = 1000, samples = 20)
   $last_benchmark = cur
   result
 end
+
+load File.dirname(__FILE__) + '/.railsrc' if $0 == 'irb' && ENV['RAILS_ENV']
