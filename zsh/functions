@@ -24,6 +24,11 @@ function vnice {
     fi
 }
 
+function getexheres { 
+    egrep -rlis $1 /var/paludis/repositories/*/packages/*/*/*.ex* | xargs -I xxx cp xxx .
+    ack -a $1 *
+}
+
 function service { sudo $RCDIR$1 $2; }
 
 ## find all suid files
@@ -311,26 +316,23 @@ function isocdrom {
 }
 
 function fix-paludis-perms {
-    mkdirs=(/usr/portage/.cache/names /usr/portage/distfiles /var/tmp/paludis /etc/paludis)
-    fixdirs=(/usr/portage /var/tmp/paludis /etc/paludis)
-    repodir="/var/paludis/repositories"
-    for dir in $mkdirs;
-    do
-        mkdir -p $dir
-    done
-    for dir in $fixdirs;
-    do
-        chown -R paludisbuild:paludisbuild $dir
-        find $dir -type d -exec chmod g+wrx {} \;
-    done
-    if [ -d $repodir ]; then
-        for repo in `ls --color=never -Fd *(-/DN)`;
-        do
-            mkdir -p $repo/.cache/names
-            chown -R paludisbuild:paludisbuild $repo
-            find $repo -type d -exec chmod g+wrx {} \;
-        done
+    if [[ -f /etc/exherbo-release ]]; then
+        paludis_dirs=(/etc/paludis /var/tmp/paludis /var/cache/paludis /var/db/paludis)
+    elif [[ -f /etc/gentoo-release ]]; then
+        paludis_dirs=(/etc/paludis /var/tmp/paludis /var/paludis /usr/portage)
+    else
+        echo "Watcha Talking about Willis?"
+        exit 1
     fi
+    for dir in ${paludis_dirs[@]}; do
+        chown -R paludisbuild:paludisbuild ${dir}
+        find ${dir} -type d -exec chmod g+wrx {} \;
+    done
+}
+
+function find_exheres {
+    cd /var/db/paludis/repositories &&
+    ack --type-add Exherbo=.exheres-0
 }
 
 function remove_all_gems {
@@ -404,7 +406,7 @@ function xephyr {
 }
 
 function cpv {
-    rsync -rPIhb -- ${@}
+    rsync -rPIhu -- ${@}
 }
 
 function h { 
@@ -461,8 +463,27 @@ function url-encode; {
 }
 
 # Search google for the given keywords.
-function google; {
-        w3m "http://www.google.com/search?q=`url-encode "${(j: :)@}"`"
+function google {
+        elinks "http://www.google.com/search?q=`url-encode "${(j: :)@}"`"
+}
+
+function installed {
+    case `uname` in
+        Linux)
+            if [[ -e /etc/gentoo-release ]]; then
+                sudo qlist -I | ${PAGER}
+            elif [[ -e /etc/exherbo-release ]]; then
+                sudo cave show "*/*::/" | ${PAGER}
+            fi
+            ;;
+        OpenBSD)
+            sudo pkg_info | ${PAGER}
+            ;;
+        *)
+            echo "Not sure how to list installed packages for `uname`"
+            ;;
+    esac
+
 }
 
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
