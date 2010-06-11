@@ -1,19 +1,12 @@
 #!/usr/bin/env zsh
 
-if which getent > /dev/null; then
-        REALNAME=$(getent passwd $USER|awk -F : '{print $5}' | awk -F , '{print $1}')
-else
-        REALNAME=$(grep $USER /etc/passwd|awk -F : '{print $5}' | awk -F , '{print $1}')
-        if which nidump > /dev/null && [ -z "$REALNAME" ]; then
-                REALNAME=$(nidump passwd / | grep $USER|awk -F : '{print $8}')
-        fi
-fi
 DATE=$(date)
 YEAR=$(date +%Y)
+AUTHOR="$(echo $GIT_AUTHOR_NAME) <$(echo $GIT_AUTHOR_EMAIL)>"
 FILENAME=$(echo $1 | sed 's/[^/]*\///')
 FILE=$(echo $FILENAME | sed 's/\..*//')
 FILEBIG=$(echo $FILE | tr '[:lower:]' '[:upper:]')
-sed     "s/%%AUTHOR%%/$REALNAME/g;
+sed     "s/%%AUTHOR%%/$AUTHOR/g;
         s/%%DATE%%/$DATE/g;
         s/%%YEAR%%/$YEAR/g;
         s/%%FILENAME%%/$FILENAME/g;
