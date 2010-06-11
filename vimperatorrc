@@ -26,6 +26,7 @@ nnoremap k 5k
 nnoremap h 3h
 nnoremap l 3l
 nnoremap s :stop<CR>
+nnoremap <leader>p :pageinfo<CR>
 map <C-c>   :tabclose<CR>
 map <C-t>   :tabnew<CR>
 map <M-n>   :tabnext<CR>
@@ -39,6 +40,8 @@ map <Right> gt
 map <Left>  gT
 
 " ==================== Firefox options ==================== "
+"Seems to screw up sessionmanager
+"set! browser.startup.page=1
 " disable accesskey
 set! ui.key.generalAccessKey=0
 " hide close button
@@ -52,7 +55,7 @@ set! dom.popup_maximum=1000
 set! browser.backspace_action=0 
 set! geo.enabled=false
 set! general.warnOnAboutConfig=false
-set! javascript.options.jit.chrome=true
+"set! javascript.options.jit.chrome=true
 set! network.dns.disableIPv6=true
 set! network.http.max-connections=48
 set! network.http.max-connections-per-server=16
@@ -64,58 +67,16 @@ set! network.http.proxy.pipelining=true
 set! network.http.request.timeout=300
 set! nglayout.initialpaint.delay=0
 set! ui.submenuDelay=0
-set! content.interrupt.parsing=true
-set! content.notify.ontimer=true
 set! browser.urlbar.clickSelectsAll=true
 set! browser.urlbar.doubleClickSelectsAll=false
-set! browser.startup.page=3
-set! browser.sessionhistory.max_total_viewers="-1"
 
 " ==================== colorscheme ==================== "
-colorscheme desert 
+colorscheme desert
 
 " force disable ime in commandline
 style -name commandline-ime chrome://* #liberator-commandline-command input { ime-mode: inactive; }
 
-
-" ==================== others ==================== "
-" load local file
-js <<EOM
-(function() {
-    var local = "~/.vimperatorrc.local";
-    var file = io.getFile(local);
-    if(file.exists() && file.isReadable()) {
-        io.source(local, true);
-    }
-})();
-EOM
-
-javascript <<EOF
-    (function() {
-        var inputElement = document.getElementById('liberator-commandline-command');
-        function swapBGColor(event) {
-            inputElement.style.backgroundColor = event.type == "focus" ? "yellow" : "";
-        }
-        inputElement.addEventListener('focus', swapBGColor, false);
-        inputElement.addEventListener('blur', swapBGColor, false);
-    })();
-EOF
-
-"javascript <<EOF
-  "(function(){
-    "var feedPanel = document.createElement("statusbarpanel");
-    "feedPanel.setAttribute("id", "feed-panel-clone");
-    "feedPanel.appendChild(document.getElementById("feed-button"));
-    "feedPanel.firstChild.setAttribute("style", "padding: 0; max-height: 16px;");
-    "document.getElementById("status-bar")
-    ".insertBefore(feedPanel, document.getElementById("security-button"));
-  "})();
-"EOF
 " ==================== Abbreviations ==================== "
-ab url http://www.gregf.org
-ab name Greg Fitzgerald
-ab st 57 Riverside Drive
-ab email netzdamon@gmail.com
 
 command gmail tabopen www.google.com/mail
 command reader tabopen www.google.com/reader
@@ -124,10 +85,5 @@ command gh tabopen www.github.com
 command fm tabopen www.lastfm.com
 command doc tabopen http://stuff.gregf.org/meta/documentation/
 command api tabopen http://apidock.com/
-
-
-
-command mu open javascript:var s1=location.href; window.location.assign("http://www.megaupload.com/mgr_dl.php?d="+s1.substring (29));
-
-
-" vim: ft=vimperator sw=2 sts=2
+command tv tabopen http://www.sharetv.org
+command paste tabopen http://www.pastie.org
