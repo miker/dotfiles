@@ -51,6 +51,7 @@
 :CVSWatchers	vcscommand.txt	/*:CVSWatchers*
 :CommandT	command-t.txt	/*:CommandT*
 :CommandTFlush	command-t.txt	/*:CommandTFlush*
+:DetectIndent	detectindent.txt	/*:DetectIndent*
 :Errors	syntastic.txt	/*:Errors*
 :FufAddBookmark	fuf.txt	/*:FufAddBookmark*
 :FufAddBookmarkAsSelectedText	fuf.txt	/*:FufAddBookmarkAsSelectedText*
@@ -353,7 +354,7 @@ b:VCSCommandSourceFile	vcscommand.txt	/*b:VCSCommandSourceFile*
 b:VCSCommandVCSType	vcscommand.txt	/*b:VCSCommandVCSType*
 buffer_complete	neocomplcache.txt	/*buffer_complete*
 command-t	command-t.txt	/*command-t*
-command-t-author	command-t.txt	/*command-t-author*
+command-t-authors	command-t.txt	/*command-t-authors*
 command-t-commands	command-t.txt	/*command-t-commands*
 command-t-contents	command-t.txt	/*command-t-contents*
 command-t-donations	command-t.txt	/*command-t-donations*
@@ -363,12 +364,18 @@ command-t-license	command-t.txt	/*command-t-license*
 command-t-mappings	command-t.txt	/*command-t-mappings*
 command-t-options	command-t.txt	/*command-t-options*
 command-t-requirements	command-t.txt	/*command-t-requirements*
+command-t-trouble-shooting	command-t.txt	/*command-t-trouble-shooting*
 command-t-usage	command-t.txt	/*command-t-usage*
 command-t-website	command-t.txt	/*command-t-website*
 command-t-wildignore	command-t.txt	/*command-t-wildignore*
 command-t.txt	command-t.txt	/*command-t.txt*
 config/rails.vim	rails.txt	/*config\/rails.vim*
 cvscommand-changes	vcscommand.txt	/*cvscommand-changes*
+detectindent	detectindent.txt	/*detectindent*
+detectindent-changelog	detectindent.txt	/*detectindent-changelog*
+detectindent-contents	detectindent.txt	/*detectindent-contents*
+detectindent-settings	detectindent.txt	/*detectindent-settings*
+detectindent.txt	detectindent.txt	/*detectindent.txt*
 fuf	fuf.txt	/*fuf*
 fuf-abbreviation	fuf.txt	/*fuf-abbreviation*
 fuf-about	fuf.txt	/*fuf-about*
