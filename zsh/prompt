@@ -17,9 +17,9 @@ autoload -Uz vcs_info
 
 # set some colors
 for COLOR in RED GREEN YELLOW WHITE BLACK CYAN; do
-    eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'         
+    eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'
     eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
-done                                                 
+done
 PR_RST="%{${reset_color}%}"
 PR_RESET="%{%b%s%u$reset_color%}"
 PR_BG="%{%(?.$PR_RESET.%S)%}"
@@ -36,43 +36,43 @@ FMT_ACTION="(${PR_CYAN}%a${PR_RST}%)"   # e.g. (rebase-i)
 FMT_PATH="%R${PR_YELLOW}/%S"              # e.g. ~/repo/subdir
 
 # check-for-changes can be really slow.
-# you should disable it, if you work with large repositories    
+# you should disable it, if you work with large repositories
 zstyle ':vcs_info:*:prompt:*' check-for-changes true
 zstyle ':vcs_info:*:prompt:*' unstagedstr '¹'  # display ¹ if there are unstaged changes
 zstyle ':vcs_info:*:prompt:*' stagedstr '²'    # display ² if there are staged changes
 zstyle ':vcs_info:*:prompt:*' actionformats "${FMT_BRANCH}${FMT_ACTION}//" "${FMT_PATH}"
 zstyle ':vcs_info:*:prompt:*' formats       "${FMT_BRANCH}//"              "${FMT_PATH}"
-zstyle ':vcs_info:*:prompt:*' nvcsformats   ""                             "%~"         
+zstyle ':vcs_info:*:prompt:*' nvcsformats   ""                             "%~"
 
 function lprompt {
     local brackets=$1
-    local color1=$2  
-    local color2=$3  
-                     
+    local color1=$2
+    local color2=$3
+
     local bracket_open="${color1}${brackets[1]}${PR_BG}"
-    local bracket_close="${color1}${brackets[2]}${PR_RESET}"          
-                                                             
-    local git='$vcs_info_msg_0_'                           
+    local bracket_close="${color1}${brackets[2]}${PR_RESET}"
+
+    local git='$vcs_info_msg_0_'
     local cwd="${color2}${SSH_CONNECTION+"%n@%m:"}%B%1~%b"
 
     local vimode='${PR_VIMODE}'
     local vicol='${PR_VICOLOR}'
 
     PROMPT="${PR_BG}${bracket_open}${git}${cwd}${bracket_close}%# ${PR_RESET}"
-}                                                                                        
+}
 
 function rprompt {
     local brackets=$1
-    local color1=$2  
-    local color2=$3  
-                     
+    local color1=$2
+    local color2=$3
+
     local bracket_open="${color1}${brackets[1]}${PR_RESET}"
     local bracket_close="${color1}${brackets[2]}${PR_RESET}"
-    local colon="${color1}:"                                
-    local at="${color1}@${PR_RESET}"                        
-                                                            
-    local user_host="${color2}%n${at}${color2}%m"                    
-    local vcs_cwd='${${vcs_info_msg_1_%%.}/$HOME/~}'        
+    local colon="${color1}:"
+    local at="${color1}@${PR_RESET}"
+
+    local user_host="${color2}%n${at}${color2}%m"
+    local vcs_cwd='${${vcs_info_msg_1_%%.}/$HOME/~}'
     local cwd="${color2}%B%20<..<${vcs_cwd}%<<%b"
     local inner="${user_host}${colon}${cwd}"
 
@@ -102,21 +102,21 @@ else
             lprompt '[]' $PR_WHITE $PR_GREEN
             rprompt '()' $PR_YELLOW $PR_WHITE
             ;;
-        one)
+        betsy)
             lprompt '<>' $PR_RED $PR_YELLOW
             rprompt '<>' $PR_RED $PR_WHITE
             ;;
-        two)
+        slag)
             lprompt '<>' $PR_RED $PR_BLUE
             rprompt '<>' $PR_RED $PR_WHITE
             ;;
-        three)
+        four)
             lprompt '<>' $PR_RED $PR_GREEN
             rprompt '<>' $PR_RED $PR_WHITE
             ;;
 
         *)
-            if [ ${$(hostname -f)#*.} = "dirtyslag.org" ]; then
+            if [ ${$(hostname)#*.} = "dirtyslag.org" ]; then
                 lprompt '[]' $PR_BRIGHT_BLACK $PR_WHITE
                 rprompt '()' $PR_BRIGHT_BLACK $PR_WHITE
             else
@@ -164,7 +164,7 @@ function title() {
 # precmd is called just before the prompt is printed
 function precmd() {
     title "$1"
-    vcs_info 'prompt'          
+    vcs_info 'prompt'
 }
 
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
