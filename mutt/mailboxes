@@ -27,5 +27,6 @@ mailboxes =gentoo/dev-announce
 mailboxes =gentoo/user
 mailboxes =gentoo/hardened
 mailboxes =gentoo/security
+mailboxes =funtoo
 mailboxes =paludis
 mailboxes =Exherbo-dev
