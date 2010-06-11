@@ -486,4 +486,14 @@ function installed {
 
 }
 
+function ketchup {
+    if [[ -e /etc/gentoo-release ]]; then
+        command ketchup -G -a /usr/portage/distfiles $*
+    elif [[ -e /etc/exherbo-release ]]; then
+        command ketchup -G -a /var/cache/paludis/distfiles $*
+    else
+        command ketchup -G $*
+    fi
+}
+
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
