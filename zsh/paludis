@@ -1,5 +1,45 @@
 #!/bin/zsh -f
 
+if [[ -f /etc/exherbo-release ]]; then
+    # options
+    export CAVE_RESUME_DIR="${HOME}"/.resume-paludis
+    export CAVE_RESOLVE_OPTIONS="--reinstall-scm weekly"
+    export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --continue-on-failure if-satisfied"
+
+    alias c="s cave"
+    alias cr="c resolve"
+    alias crx="cr -x"
+    alias cre="cr installed-packages"
+    alias crex="crx installed-packages"
+    alias ch="c help"
+    alias cs="c show"
+    alias csr="cs -t package 'repository/*'"
+    alias cq="c search"
+    alias cf="c fix-linkage"
+    alias cfx="cf -x"
+    alias cir="c resolve -x"
+    alias syn="c sync"
+    alias   p="s paludis"
+    alias  pu="p --uninstall"
+    alias  pU="p --uninstall-unused"
+    alias puu='p --permit-unsafe-uninstalls -u'
+
+    alias ec="s eclectic config interactive"
+
+    alias ex="c print-id-executables"
+    alias sets="c print-sets"
+    alias cfile="c print-owners"
+
+    alias whats-installed="cs \"*/*::/\" | most"
+
+    alias platforms="s vim /etc/paludis/platforms.conf"
+    alias opts="s vim /etc/paludis/options.conf"
+    alias mask="s vim /etc/paludis/package_mask.conf"
+    alias unmask="s vim /etc/paludis/package_unmask.conf"
+    alias bashrc="s vim /etc/paludis/bashrc"
+
+fi
+
 if [[ -f /etc/gentoo-release ]]; then
 
     # options
@@ -17,7 +57,7 @@ if [[ -f /etc/gentoo-release ]]; then
     export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --show-reasons summary" 
     export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --show-use-descriptions all"
     export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX" 
-    
+
     # shortcuts
     alias   p="s paludis"
     alias  pi="p --install"
@@ -42,13 +82,13 @@ if [[ -f /etc/gentoo-release ]]; then
     alias  reconcilio="s reconcilio"
     alias precon="s reconcilio -p"
     alias    inq="s inquisitio"
-    
+
     alias keywords="s vim /etc/paludis/keywords.conf"
     alias use="s vim /etc/paludis/use.conf"
     alias mask="s vim /etc/paludis/package_mask.conf"
     alias unmask="s vim /etc/paludis/package_unmask.conf"
     alias bashrc="s vim /etc/paludis/bashrc"
-    
+
     if ! [ -d ~/.resume-paludis ]; then
         mkdir -p ~/.resume-paludis
     fi
