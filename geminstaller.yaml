@@ -3,7 +3,12 @@ defaults:
   install_options: --no-ri --no-rdoc
   check_for_upgrade: false 
 gems:
+- name: awesome_print
+- name: nokogiri
 - name: yard
+- name: interactive_editor
+- name: mysqlplus
+- name: colortail
 - name: ronn
 - name: ghost
 - name: bundler
