@@ -59,11 +59,11 @@ set history=1000
 " Default fileformat
 set fileformat=unix
 " Display list of matching files for completion
-set wildmode=list:longest	" Display list of matching files for completion
+set wildmode=list:longest " Display list of matching files for completion
 " character to show that a line is wrapped
-set showbreak=> 
+set showbreak=>
 " Characters to break at for line wrapping
-set breakat=\ ^I!@*-+;:,./? 
+set breakat=\ ^I!@*-+;:,./?
 " Do not stay vi compatible
 set nocompatible
 " Enable wild menu
@@ -71,10 +71,10 @@ set wildmenu
 " Smart tab
 set smarttab
 " override ignorecase when there are uppercase characters
-set smartcase 
+set smartcase
 " Buffer updates
 set lazyredraw
-" Faster scrolling updates when on a decent connection. 
+" Faster scrolling updates when on a decent connection.
 set ttyfast
 " Print line numbers and syntax highlighting
 set printoptions+=syntax:y,number:y
@@ -84,15 +84,12 @@ set nofsync
 set ruler
 set undolevels=999
 " ignore these in auto complete
-set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.git,.info,.aux,.log,.dvi,.bbl,.out
+set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.info,.aux,.log,.dvi,..out
 set cmdheight=2
 set showtabline=1               " display tabbar
 " Set some global options for spell check
 set spelllang=en_us
 set spellfile=~/.vim/spell/spellfile.add
-"display tabs and trailing spaces
-"set list
-"set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
 set switchbuf=usetab
 set scrolloff=2 " minlines to show around cursor
 set sidescrolloff=4 " minchars to show around cursor
@@ -114,6 +111,27 @@ if has("eval")
   let is_bash=1
 endif
 " }}}
+
+" Show tabs and trailing whitespace visually
+if (&termencoding == "utf-8") || has("gui_running")
+    if v:version >= 700
+        if has("gui_running")
+            set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
+        else
+            " xterm + terminus hates these
+            set list listchars=tab:»·,trail:·,extends:>,nbsp:_
+        endif
+    else
+        set list listchars=tab:»·,trail:·,extends:…
+    endif
+else
+    if v:version >= 700
+        set list listchars=tab:>-,trail:.,extends:>,nbsp:_
+    else
+        set list listchars=tab:>-,trail:.,extends:>
+    endif
+endif
+
 
 "Include $HOME in cdpath
 if has("file_in_path")
@@ -141,7 +159,7 @@ set foldnestmax=3       "deepest fold is 3 levels
 
 " {{{iabbrev
 iabbrev xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
- 
+
 iabbrev #p #!/usr/bin/perl
 iabbrev #e #!/usr/bin/env
 iabbrev #r #!/usr/bin/ruby
@@ -153,7 +171,6 @@ iabbrev sdef definitely
 " {{{ Plugin settings
 
 " rails.vim
-
 let g:rails_dbext=1
 let g:rails_default_database='sqlite3'
 let g:rails_gnu_screen=1
@@ -165,35 +182,31 @@ let g:browser = 'firefox -new-tab '
 
 " Supertab
 let g:SuperTabMappingForward = '<S-Tab>'
-let g:SuperTabLongestHighlight = 1 
-let g:SuperTabMidWordCompletion = 1 
-let g:SuperTabRetainCompletionType = 1 
+let g:SuperTabLongestHighlight = 1
+let g:SuperTabMidWordCompletion = 1
+let g:SuperTabRetainCompletionType = 1
 
 " Settings for NERDCommenter
 let g:NERDShutUp=1
 " Settings for git status bar plugin
 let g:git_branch_status_head_current=1
 " NERDTree settings
-let NERDChristmasTree = 1 
-let NERDTreeQuitOnOpen = 0 
+let NERDChristmasTree = 1
+let NERDTreeQuitOnOpen = 0
 let NERDTreeHighlightCursorline = 1
 let NERDTreeMapActivateNode='<CR>'
 let g:NERDTreeChDirMode = 1
-let NERDTreeIgnore=['\.git','\.DS_Store', '\.svn', '\.cvs']
+let NERDTreeIgnore=['\.git','\.DS_Store', '\.svn', '\.cvs', '\.log']
 
 " Append status line if enough room
 let g:fastgit_statusline = 'a'
 
-let g:syntastic_enable_signs = 1 
-let g:syntastic_auto_loc_list = 1
 let g:gist_clip_command = 'xclip -selection clipboard'
 
 let g:git_branch_status_nogit=""
 
 let g:syntastic_enable_signs = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_quiet_warnings = 1 
-
 
 
 " Hightlight redundent spaces
@@ -216,7 +229,7 @@ let g:secure_modelines_allowed_items = [
             \ "readonly",    "ro",   "noreadonly", "noro",
             \ "rightleft",   "rl",   "norightleft", "norl"
             \ ]
-" }}} 
+" }}}
 
 " {{{ Nice statusbar
 "statusline setup
@@ -309,14 +322,13 @@ noremap <silent> <C-z> :undo<CR>
 noremap <silent><C-L> :NERDTreeToggle<CR>
 map <leader>nh :nohls <CR>
 nmap <silent> <C-H> :silent nohls<CR>
-noremap <Leader>res :call <SID>Restart()<CR>
+noremap <Leader>res :call Restart()<CR>
 noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
-" Split Window Movement
-"map <F6> :wincmd w<CR> imap <F6> <c-[>:wincmd w<CR> map <S-F6> :wincmd W<CR> imap <S-F6> <c-[>:wincmd W<CR>
-noremap <C-Right> :wincmd w<CR>
+noremap <Leader>ss :call StripTrailingWhitespace()<CR>
 " Setup mini ide for a project of mine
-noremap <silent> <F5> :call Mideo()<CR>
-noremap <Leader>st :call Stage5()<CR>
+noremap <Leader>md :call Mideo()<CR>
+noremap <Leader>at :call Athenry()<CR>
+noremap <Leader>sw :call Swindle()<CR>
 noremap <Leader>sa :call Sass()<CR>
 " Reformat everything
 noremap <Leader>gq gggqG
@@ -352,16 +364,16 @@ command! -nargs=+ PopupMap call s:popupMap(<f-args>)
 nmap <C-J> gqap
 vmap <C-J> gq
 imap <C-J> <C-O>gqap
- 
+
 " Delete line with CTRL-K
 map <C-K> dd
 imap <C-K> <C-O>dd
- 
+
 " Use CTRL-S for saving, also in Insert mode
 noremap <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
 inoremap <C-S> <C-O>:update<CR>
- 
+
 " CTRL-A is Select all
 noremap <C-A> gggH<C-O>G
 inoremap <C-A> <C-O>gg<C-O>gH<C-O>G
@@ -370,7 +382,7 @@ onoremap <C-A> <C-C>gggH<C-O>G
 snoremap <C-A> <C-C>gggH<C-O>G
 xnoremap <C-A> <C-C>ggVG
 
-nnoremap <silent> <C-f> :call FindInNERDTree()<CR> 
+nnoremap <silent> <C-f> :call FindInNERDTree()<CR>
 
 noremap <leader>q ZQ
 noremap <leader>qa :qa<CR>
@@ -381,6 +393,36 @@ nmap <C-k> lbi:<Esc>E
 
 " bind control-l to hashrocket
 imap <C-l> <Space>=><Space>"
+" Hide search highlighting
+map <Leader>h :set invhls <CR>
+
+" Leader shortcuts for Rails commands
+map <Leader>m :Rmodel
+map <Leader>c :Rcontroller
+map <Leader>v :Rview
+map <Leader>u :Runittest
+map <Leader>f :Rfunctionaltest
+map <Leader>tm :RTmodel
+map <Leader>tc :RTcontroller
+map <Leader>tv :RTview
+map <Leader>tu :RTunittest
+map <Leader>tf :RTfunctionaltest
+map <Leader>sm :RSmodel
+map <Leader>sc :RScontroller
+map <Leader>sv :RSview
+map <Leader>su :RSunittest
+map <Leader>sf :RSfunctionaltest
+
+" Duplicate a selection
+" Visual mode: D
+vmap D y'>p
+
+" Press Shift+P while in visual mode to replace the selection without
+" overwriting the default register
+vmap P p :call setreg('"', getreg('0')) <CR>
+
+" Press ^F from insert mode to insert the current file name
+imap <C-F> <C-R>=expand("%")<CR>
 
 " }}}
 
@@ -403,7 +445,7 @@ function PMADE_RubyEndToken ()
     let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?\(\s*#.*\)\?$'
     let stuff_without_do = '^\s*\<\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)\>'
     let with_do = '\<do\>\s*\(|\(,\|\s\|\w\)*|\s*\)\?\(\s*#.*\)\?$'
- 
+
     if getpos('.')[2] < len(current_line)
         return "\<CR>"
     elseif match(current_line, braces_at_end) >= 0
@@ -416,7 +458,7 @@ function PMADE_RubyEndToken ()
         return "\<CR>"
     endif
 endfunction
- 
+
 "return the syntax highlight group under the cursor ''
 function! StatuslineCurrentHighlight()
     let name = synIDattr(synID(line('.'),col('.'),1),'name')
@@ -613,10 +655,16 @@ if has("eval")
     endfun
 endif
 
-function Stage5()
+function Athenry()
     chdir /home/gregf/code/active/athenry/
     open TODO.md
     NERDTreeFromBookmark athenry
+endfunction
+
+function Swindle()
+    chdir /home/gregf/code/active/swindle/
+    open TODO.mkd
+    NERDTreeFromBookmark swindle
 endfunction
 
 function Mideo()
@@ -634,21 +682,19 @@ function ClearCache()
     !rm -rf public/cache/*
 endfunction
 
-function <SID>Restart()
+function Restart()
     !touch $PWD/tmp/restart.txt
 endfunction
 
 " Removes unnecessary whitespace
-if has("eval")
-    fun! <SID>StripWhite()
-        %s/[ \t]\+$//ge
-        %s!^\( \+\)\t!\=StrRepeat("\t", 1 + strlen(submatch(1)) / 8)!ge
-    endfun
+function StripTrailingWhitespace()
+    %s/[ \t]\+$//ge
+    %s!^\( \+\)\t!\=StrRepeat("\t", 1 + strlen(submatch(1)) / 8)!ge
+endfunction
 
-    fun! <SID>RemoveBlankLines()
-        %s/^[\ \t]*\n//g
-    endfun
-endif
+function RemoveBlankLines()
+    %s/^[\ \t]*\n//g
+endfunction
 
 " }}}
 
@@ -662,80 +708,7 @@ if isdirectory(expand("$VIMRUNTIME/ftplugin"))
     endif
 endif
 
-if has("autocmd")
-    if has("eval")
-        function! <SID>abbrev_cpp()
-            iabbrev <buffer> jin #include
-            iabbrev <buffer> jde #define
-            iabbrev <buffer> jci const_iterator
-            iabbrev <buffer> jcl class
-            iabbrev <buffer> jco const
-            iabbrev <buffer> jdg \ingroup
-            iabbrev <buffer> jdx /**<CR><CR>/<Up>
-            iabbrev <buffer> jrd /*<CR><CR>/<Up>
-            iabbrev <buffer> jit iterator
-            iabbrev <buffer> jns namespace
-            iabbrev <buffer> jpr protected
-            iabbrev <buffer> jpu public
-            iabbrev <buffer> jpv private
-            iabbrev <buffer> jsl std::list
-            iabbrev <buffer> jsm std::map
-            iabbrev <buffer> jsM std::multimap
-            iabbrev <buffer> jss std::string
-            iabbrev <buffer> jsv std::vector
-            iabbrev <buffer> jsp std::tr1::shared_ptr
-            iabbrev <buffer> jty typedef
-            iabbrev <buffer> jun using namespace
-            iabbrev <buffer> jvi virtual
-            iabbrev <buffer> jst static
-            iabbrev <buffer> jt1 std::tr1
-            iabbrev <buffer> jmp std::make_pair
-        endfunction
- 
-        function! <SID>abbrev_php()
-            iabbrev <buffer> jcl class
-            iabbrev <buffer> jfu function
-            iabbrev <buffer> jco const
-            iabbrev <buffer> jpr protected
-            iabbrev <buffer> jpu public
-            iabbrev <buffer> jpv private
-            iabbrev <buffer> jst static
-            iabbrev <buffer> jdx /**<CR><CR>/<Up>
-            iabbrev <buffer> jrd /*<CR><CR>/<Up>
-            iabbrev <buffer> jin include
-        endfunction
- 
-        function! <SID>abbrev_ruby()
-            iabbrev <buffer> jcl class
-            iabbrev <buffer> jmo module
-            iabbrev <buffer> jin require
-            iabbrev <buffer> jdx #<CR><CR><Up>
-        endfunction
- 
-        function! <SID>abbrev_c()
-            iabbrev <buffer> jin #include
-            iabbrev <buffer> jde #define
-            iabbrev <buffer> jco const
-            iabbrev <buffer> jdx /**<CR><CR>/<Up>
-            iabbrev <buffer> jst static
-        endfunction
- 
-        function! <SID>abbrev_python()
-            iabbrev <buffer> jin import
-            iabbrev <buffer> jcl class
-        endfunction
- 
-        augroup abbreviations
-            autocmd!
-            autocmd FileType cpp :call <SID>abbrev_cpp()
-            autocmd FileType php :call <SID>abbrev_php()
-            autocmd FileType ruby :call <SID>abbrev_ruby()
-            autocmd FileType c :call <SID>abbrev_c()
-            autocmd FileType python :call <SID>abbrev_python()
-        augroup END
-    endif
-endif
- 
+
 if has("autocmd")
     au VimEnter * nohls
     au VimLeave * set nospell
@@ -751,59 +724,39 @@ if has("autocmd")
 
     autocmd BufWritePre .Xdefaults :!xrdb -load ~/.Xdefaults
 
-    augroup gentoo
-      au!
+    autocmd BufWritePre *.cpp,*.hpp,*.i,
+                \ *.rb,*.pl,*.sh,*.bash,*.plx,
+                \ *.ebuild,*.exheres-0,*.exlib,
+                \ *.e{build,class} 
+                \ :call StripTrailingWhitespace()
 
-      " Gentoo-specific settings for ebuilds.  These are the federally-mandated
-      " required tab settings.  See the following for more information:
-      " http://www.gentoo.org/proj/en/devrel/handbook/handbook.xml
-      " Note that the rules below are very minimal and don't cover everything.
-      " Better to emerge app-vim/gentoo-syntax, which provides full syntax,
-      " filetype and indent settings for all things Gentoo.
-      au BufRead,BufNewFile *.e{build,class} let is_bash=1|setfiletype sh
-      au BufRead,BufNewFile *.e{build,class} set ts=4 sw=4 noexpandtab
+    " Gentoo-specific settings for ebuilds.  These are the federally-mandated
+    " required tab settings.  See the following for more information:
+    " http://www.gentoo.org/proj/en/devrel/handbook/handbook.xml
+    " Note that the rules below are very minimal and don't cover everything.
+    " Better to emerge app-vim/gentoo-syntax, which provides full syntax,
+    " filetype and indent settings for all things Gentoo.
+    autocmd BufRead,BufNewFile *.e{build,class} let is_bash=1|setfiletype sh
+    autocmd BufRead,BufNewFile *.e{build,class} set ts=4 sw=4 noexpandtab
 
-      " In text files, limit the width of text to 78 characters, but be careful
-      " that we don't override the user's setting.
-      autocmd BufNewFile,BufRead *.txt
-            \ if &tw == 0 && ! exists("g:leave_my_textwidth_alone") |
-            \     setlocal textwidth=78 |
-            \ endif
+    " In text files, limit the width of text to 78 characters, but be careful
+    " that we don't override the user's setting.
+    autocmd BufNewFile,BufRead *.txt
+                \ if &tw == 0 && ! exists("g:leave_my_textwidth_alone") |
+                \     setlocal textwidth=78 |
+                \ endif
 
-      " When editing a file, always jump to the last cursor position
-      autocmd BufReadPost *
-            \ if ! exists("g:leave_my_cursor_position_alone") |
-            \     if line("'\"") > 0 && line ("'\"") <= line("$") |
-            \         exe "normal g'\"" |
-            \     endif |
-            \ endif
+    " When editing a file, always jump to the last cursor position
+    autocmd BufReadPost *
+                \ if ! exists("g:leave_my_cursor_position_alone") |
+                \     if line("'\"") > 0 && line ("'\"") <= line("$") |
+                \         exe "normal g'\"" |
+                \     endif |
+                \ endif
 
-      " When editing a crontab file, set backupcopy to yes rather than auto. See
-      " :help crontab and bug #53437.
-      autocmd FileType crontab set backupcopy=yes
-    augroup END
-    
-    augroup content
-        autocmd!
-
-        autocmd BufNewFile *.rb 0put = '' |
-                    \ 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
-                    \ 0put = '# Copyright (c) 2010 Greg Fitzgerald <netzdamon@gmail.com>' |
-                    \ 0put = '# Distributed under the terms of the GNU General Public License v2' |
-                    \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
-                    \ norm G
-        
-        autocmd BufNewFile *.sh 0put = '' |
-                    \ 0put ='# vim: set sw=4 sts=4 et tw=80 :' |
-                    \ 0put = '# Copyright (c) 2010 Greg Fitzgerald <netzdamon@gmail.com>' |
-                    \ 0put = '# Distributed under the terms of the GNU General Public License v2' |
-                    \ 0put ='#!/usr/bin/env bash' | set sw=4 sts=4 et tw=80 |
-                    \ norm G
-        
-        autocmd BufNewFile *.lua 0put ='# vim: set sw=4 sts=4 et tw=80 :' |
-                    \ 0put ='#!/usr/bin/env lua' | set sw=4 sts=4 et tw=80 |
-                    \ norm G
-    augroup END
+    " When editing a crontab file, set backupcopy to yes rather than auto. See
+    " :help crontab and bug #53437.
+    autocmd FileType crontab set backupcopy=yes
 endif
 
 
@@ -816,19 +769,18 @@ highlight pmenu ctermbg=238 gui=bold
 
 if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt'
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
-    colorscheme mustang 
-    else
+    colorscheme candyman
+else
     colorscheme jammy
 endif
 
 if (has("gui_running"))
-    "colorscheme mustang
-    colorscheme vilight
-    ""set guifont=Droid\ Sans\ Mono\ 12
+    colorscheme two2tango
+    "set guifont=Droid\ Sans\ Mono\ 12
     set guifont=inconsolata\ 14
-    set mousem=popup	" Nice pop-up
-    set selection=exclusive	" Allow one char past EOL
-    set ttymouse=xterm2	" Terminal type for mouse code recognition
+    set mousem=popup 
+    set selection=exclusive " Allow one char past EOL
+    set ttymouse=xterm2 " Terminal type for mouse code recognition
     set mousehide
     " Make shift-insert work like in xterm
     map <S-Insert> <MiddleMouse>
