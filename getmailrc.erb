@@ -1,0 +1,15 @@
+[options]
+verbose = 0 
+delete = false 
+message_log = ~/.getmail/log
+
+[retriever]
+type = SimpleIMAPSSLRetriever
+server = imap.gmail.com
+username = <%= print("Gmail Username: "); STDOUT.flush; STDIN.gets.chomp %>
+password = <%= print("Gmail Password: "); STDOUT.flush; STDIN.gets.chomp %>
+mailboxes = <%= print("Mailboxes (seperate by spaces): "); STDOUT.flush; STDIN.gets.chomp.split(" ").inspect.gsub("[", "(").gsub("]", ")") %>
+
+[destination]
+type = Maildir
+path = <%= print("Backup Path: "); STDOUT.flush; STDIN.gets.chomp %>
