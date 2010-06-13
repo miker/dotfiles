@@ -91,6 +91,8 @@ alias tlog='tail -f log/development.log'
 alias rst='touch tmp/restart.txt'
 alias migrate='rake db:migrate db:test:clone'
 alias remigrate="rake db:migrate && rake db:migrate:redo && rake db:schema:dump db:test:prepare"
+alias prod='export RAILS_ENV="production"'
+alias dev='export RAILS_ENV="dev"'
 
 # git
 alias gl='git pull'
