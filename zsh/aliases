@@ -79,8 +79,8 @@ alias poweroff="s poweroff"
 alias reboot="s reboot"
 alias shred='nocorrect ionice -c3 /usr/bin/shred -fuzv'
 alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l1 -v -r'
-alias grep="grep -Hn --color=always"
 alias pwgen='pwgen -sBnc 10'
+alias grep="grep -Hn"
 
 # Rails
 alias sc='script/console'
