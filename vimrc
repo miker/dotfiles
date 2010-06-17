@@ -316,8 +316,6 @@ endif
 
 " Set map leader to ,
 let mapleader = ","
-nmap <C-P> :tabp<CR>
-nmap <C-N> :tabn<CR>
 noremap <silent> <C-z> :undo<CR>
 noremap <silent><C-L> :NERDTreeToggle<CR>
 map <leader>nh :nohls <CR>
