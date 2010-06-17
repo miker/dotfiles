@@ -23,7 +23,7 @@ OpenBSD)
     alias cvsrun="sudo cvsup -g -L 2 /etc/cvs-supfile"
     alias killall="pkill"
     alias shred="rm -P"
-    alias packages="curl ftp://ftp.openbsd.org/pub/OpenBSD/`uname -r`/packages/`machine -a`/index.txt | $PAGER"
+    alias packages="wget ftp://ftp.openbsd.org/pub/OpenBSD/`uname -r`/packages/`machine -a`/index.txt -O /tmp/packages.list && $PAGER /tmp/packages.list"
 ;;
 FreeBSD)
     SSH_ASKPASS="/usr/local/bin/ssh-askpass-gtk2"
