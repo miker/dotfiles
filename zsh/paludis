@@ -30,13 +30,21 @@ if [[ -f /etc/exherbo-release ]]; then
     alias sets="c print-sets"
     alias cfile="c print-owners"
 
-    alias whats-installed="cs \"*/*::/\" | most"
+    alias whats-installed="cs \"*/*::/\" | $PAGER"
 
     alias platforms="s vim /etc/paludis/platforms.conf"
     alias opts="s vim /etc/paludis/options.conf"
     alias mask="s vim /etc/paludis/package_mask.conf"
     alias unmask="s vim /etc/paludis/package_unmask.conf"
     alias bashrc="s vim /etc/paludis/bashrc"
+
+    function get_sync {
+        if [[ -e /etc/paludis/repositories/$1.conf ]]; then
+            egrep 'sync\s?=' /etc/paludis/repositories/$1.conf
+        else
+            echo "Repository /etc/paludis/repositories/$1.conf not found"
+        fi
+    }
 
 fi
 
