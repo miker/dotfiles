@@ -656,19 +656,19 @@ if has("eval")
 endif
 
 function Athenry()
-    chdir /home/gregf/code/active/athenry/
+    chdir /home/gregf/code/projects/active/athenry/
     open TODO.md
     NERDTreeFromBookmark athenry
 endfunction
 
 function Swindle()
-    chdir /home/gregf/code/active/swindle/
+    chdir /home/gregf/code/projects/active/swindle/
     open TODO.mkd
     NERDTreeFromBookmark swindle
 endfunction
 
 function Mideo()
-    chdir /home/gregf/code/active/mideo/
+    chdir /home/gregf/code/projects/active/mideo/
     open TODO
     NERDTreeFromBookmark mideo
 endfunction
