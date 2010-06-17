@@ -11,14 +11,16 @@ ZSH_CONF_FILES=(
   paludis
   keymap
   prompt
-  shopt
+  options
   completion
   rake
   config
 )
- 
+
 for conf_file in $ZSH_CONF_FILES; do
   source $ZSH_CONF_DIR/$conf_file;
 done
 
-if [[ -s /home/gregf/.rvm/scripts/rvm ]] ; then source /home/gregf/.rvm/scripts/rvm ; fi
+if [[ -s ${HOME}/.rvm/scripts/rvm ]]; then
+  source ${HOME}/.rvm/scripts/rvm
+fi
