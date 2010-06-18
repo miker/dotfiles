@@ -5,16 +5,16 @@
 ! ----------------------------------------------------------------------------
 
 !{{{ XTerm
-XTerm*cursorBlink: false 
+XTerm*cursorBlink: false
 XTerm*showBlinkAsBold: true
 XTerm*multiScroll: true
-XTerm*cursorColor: #73B8D9 
-XTerm*colorMode: 	true
-XTerm*pointerColor:	blue
-XTerm*pointerColor2: 	yellow
-XTerm*borderWidth:	0
+XTerm*cursorColor: #73B8D9
+XTerm*colorMode: true
+XTerm*pointerColor: blue
+XTerm*pointerColor2: yellow
+XTerm*borderWidth: 0
 XTerm*scrollBar:    false
-XTerm*loginShell: true 
+XTerm*loginShell: true
 XTerm*eightBitInput: false
 XTerm*hideScrollbar: true
 XTerm*hideTabbar: true
@@ -25,9 +25,6 @@ XTerm*.multiScroll: true
 XTerm*.showBlinkAsBold: true
 XTerm*.utf8: 1
 XTerm*.visualBell: true
-!XTerm*faceName: andale mono
-!XTerm*faceName: droid sans mono:size=12:antialias=true
-!XTerm*faceName: inconsolata:size:12:antialias=true
 XTerm*faceName: terminus:size=12:antialias=true
 XTerm*saveLines: 10000
 XTerm*on4Clicks: all
@@ -47,7 +44,7 @@ XTerm*bellIsUrgent: true
 !}}}
 
 !{{{ URxvt
-URxvt*loginShell:       false 
+URxvt*loginShell:       false
 URxvt*saveLines:        5500
 URxvt*geometry:         100x25
 URxvt*depth:        32
@@ -59,19 +56,16 @@ URxvt*scrollWithBuffer: true
 URxvt*scrollTtyOutput:  false
 URxvt*inheritPixmap:    false
 URxvt*urgentOnBell:     true
-URxvt.perl-ext-common: default,matcher 
-!,tabbed
-!URxvt*urlLauncher:  /usr/bin/uzbl-browser
-URxvt*urlLauncher:  firefox 
-!URxvt*urlLauncher:  /usr/bin/chrome
+URxvt*perl-ext-common:    default,matcher,searchable-scrollback
+URxvt*urlLauncher:  firefox
 URxvt*matcher.button:   1
 URxvt*keysym.M-u: perl:mark-yank-urls:activate_mark_mode
 URxvt*underlineURLs: true
 URxvt*termName: rxvt
 
 ! appearance
-URxvt*transparent:        false 
-URxvt*cursorBlink:        false 
+URxvt*transparent:        false
+URxvt*cursorBlink:        false
 URxvt*cursorOnTime:       400
 URxvt*cursorOffTime:      140
 URxvt*jumpScroll:         true
@@ -82,22 +76,17 @@ URxvt*boldFont: xft:terminus:size=12:antialias=true:bold
 URxvt*italicFont: xft:terminus:size=12:antialias=true:italic
 URxvt*boldItalicFont: xft:terminus:size=12:antialias=true:italic
 
-!URxvt.font: xft:inconsolata:size=12:antialias=true
-!URxvt.boldFont: xft:inconsolata:bold
-!URxvt.italicFont: xft:inconsolata:italic
-!URxvt.boldItalicFont: xft:inconsolata:italic
-
 !}}}
+! colors ---------------------------------------------------------------
 
 !{{{ colors
 *background: #202020
 *foreground: #ffffff
 *cursorColor: #07A5FF
 
-! old colors
 *color0:             #242424
 *color8:             #828282
-! red 
+! red
 *color1:             #BF7979
 *color9:             #F4A45F
 ! green
@@ -132,7 +121,7 @@ Xft.hintstyle: hintfull
 
 !{{{ Cursor
 Xcursor.theme: PolarCursorTheme
-Xcursor.size: 18 
+Xcursor.size: 18
 ! }}}
 
 !{{{ irssi
@@ -145,5 +134,3 @@ irssi*urgentOnBell:true
 *VT100.Translations: #override  \
 	Alt<Key>;:       dabbrev-expand()
 !}}}
-
-! vim: set tabstop=4 shiftwidth=4 :
