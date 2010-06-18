@@ -9,12 +9,6 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # insert all expansions for expand completer
 zstyle ':completion:*:expand:*' keep-prefix true tag-order all-expansions
 
-#compctl -g '*.Z *.gz *.tgz' + -g '*' zcat gunzip tar open
-#compctl -g '*.tar.Z *.tar.gz *.tgz *.tar.bz2' + -g '*' tar bzip2 open
-#compctl -g '*.zip *.ZIP' + -g '*' unzip zip open
-#compctl -g '*.rar *.RAR' + -g '*' rar unrar open
-#compctl -g '*.(mp3|MP3|ogg|OGG|WAV|wav|ogv|OGV)' + -g '*(-/)'  ogg123 mpg123 audacious wma123 mplayer vlc
-
 # highlight parameters with uncommon names
 zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
  
