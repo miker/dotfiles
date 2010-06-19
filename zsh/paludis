@@ -2,9 +2,11 @@
 
 if [[ -f /etc/exherbo-release ]]; then
     # options
-    export CAVE_RESUME_DIR="${HOME}"/.resume-paludis
+    export CAVE_RESUME_DIR="${HOME}/.resume-cave"
     export CAVE_RESOLVE_OPTIONS="--reinstall-scm weekly"
     export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --continue-on-failure if-satisfied"
+    export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --resume-file ${CAVE_RESUME_DIR}/cave-resume-XXXXXX"
+    export CAVE_RESUME_OPTIONS="--resume-file ${CAVE_RESUME_DIR}/cave-resume-XXXXXX"
 
     alias c="s cave"
     alias cr="c resolve"
@@ -20,6 +22,7 @@ if [[ -f /etc/exherbo-release ]]; then
     alias cir="c resolve -x"
     alias syn="c sync"
     alias   p="s paludis"
+    alias  cu="c perform uninstall"
     alias  pu="p --uninstall"
     alias  pU="p --uninstall-unused"
     alias puu='p --permit-unsafe-uninstalls -u'
@@ -53,7 +56,7 @@ if [[ -f /etc/gentoo-release ]]; then
     # options
     export PALUDIS_CARRY_OUT_UPDATES="yes"
     export RECONCILIO_OPTIONS="--continue-on-failure if-satisfied"
-    export PALUDIS_RESUME_DIR="${HOME}"/.resume-paludis
+    export PALUDIS_RESUME_DIR="${HOME}/.resume-paludis"
 
     export PALUDIS_OPTIONS="--log-level warning"
     export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-upgrade always"
@@ -62,9 +65,9 @@ if [[ -f /etc/gentoo-release ]]; then
     export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-reinstall-scm weekly"
     export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-reinstall if-use-changed"
     export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --continue-on-failure if-satisfied"
-    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --show-reasons summary" 
+    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --show-reasons summary"
     export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --show-use-descriptions all"
-    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX" 
+    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX"
 
     # shortcuts
     alias   p="s paludis"
