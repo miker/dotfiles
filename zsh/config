@@ -26,6 +26,14 @@ if ! [ -f ~/.viminfo ]; then
     touch ~/.viminfo
 fi
 
+if [ -e /usr/bin/paludis ]; then
+    mkdir ~/.resume-paludis
+fi
+
+if [ -e /usr/bin/cave ]; then
+    mkdir ~/.resume-cave
+fi
+
 # Keychain
 if [[ -x `which keychain` ]] && [[ $UID -ne 0 ]]; then
   eval `keychain --inherit any-once --eval -Q -q --ignore-missing ${HOME}.ssh/id_rsa`
