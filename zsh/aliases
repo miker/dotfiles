@@ -39,9 +39,9 @@ alias lla="l -la"
 alias lg="l | grep -i $1"
 
 # nocorrect 
-alias rm='nocorrect rm'
-alias cp='nocorrect cp'
-alias mv='nocorrect mv'
+alias rm='nocorrect rm -I'
+alias cp='nocorrect cp -v'
+alias mv='nocorrect mv -v'
 alias ln='nocorrect ln'
 alias mkdir='nocorrect mkdir -p'
 
@@ -73,7 +73,7 @@ alias ncmpc="ncmpc -c"
 alias vim="vim -p"
 alias tmux="tmux -2"
 alias dispatch-conf="s dispatch-conf"
-alias most="most +s +u"
+alias most="most +s +u -s"
 alias ri="ri -Tf ansi"
 alias poweroff="s poweroff"
 alias reboot="s reboot"
@@ -153,6 +153,7 @@ alias gemr="s gem uninstall"
 alias gemc="s gem clean"
 alias geminstaller="s geminstaller -s -c ${HOME}/.geminstaller.yaml"
 alias minicom='minicom -c on'
+alias mkchangelog='git log --stat --name-only --date=short --abbrev-commit > ChangeLog'
 
 #games
 alias torchlight="wine ~/.wine/drive_c/Program\ Files/Runic\ Games/Torchlight/Torchlight.exe"
