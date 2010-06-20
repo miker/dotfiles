@@ -16,11 +16,10 @@ DEFAULTWM='awesome'
 
 # Set some enviroment varibles
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin
-export TMP=$HOME/.tmp
-export TMDIR=$TMP
+export TMP="${HOME}/.tmp"
+export TMDIR="${TMP}"
+export PAGER='most -s'
 export TERMCMD=/usr/bin/urxvt
-#export BROWSER=/usr/bin/chrome
-#export BROWSER=/usr/bin/uzbl-browser
 export BROWSER=/usr/bin/firefox
 export TERMINAL=$TERMCMD
 export GTK2_RC_FILES=$HOME/.gtkrc-2.0
@@ -73,7 +72,7 @@ xsetroot -cursor_name arrow &
 urxvtd -q -o -f &
 
 # Ask for keychain password
-keychain --agents ssh,gpg --clear -q ~/.ssh/id_rsa
+keychain --agents ssh,gpg --clear -q ~/.ssh/id_rsa ~/.ssh/mpd_rsa
 source ~/.keychain/$(uname -n)-sh
 source ~/.keychain/$(uname -n)-sh-gpg
 
@@ -99,7 +98,6 @@ esac
 nice -n10 ${BROWSER} & 
 nice -n19 gpodder &
 xsetroot -cursor_name left_ptr &
-orage &
 caffeine &
 conky -d &
 
