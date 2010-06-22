@@ -1,5 +1,10 @@
+text/html; firefox %s & sleep 5; test=~/bin/RunningX;
 text/html; /usr/bin/lynx -dump -force_html %s; needsterminal; copiousoutput;
-application/pdf; /usr/bin/evince %s
-image/jpeg; /usr/bin/feh -w %s
-image/gif; /usr/bin/feh -w %s
-image/png; /usr/bin/feh -w %s
+application/pdf; /usr/bin/evince %s; test=~/bin/RunningX;
+image/*; /usr/bin/feh -w %s; test=~/bin/RunningX;
+application/ms-tnef; tnef -t %s && read ans;
+application/msword; abiword %s; test=~/bin/RunningX
+application/msword; antiword %s | most;
+text/richtext ; catdoc %s ; copiousoutput 
+text/* ; cat %s ; copiousoutput 
+video/*; mplayer '%s'; needsterminal
