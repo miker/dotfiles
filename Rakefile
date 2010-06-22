@@ -6,7 +6,7 @@ task :install do
   replace_all = false
   Dir['*'].each do |file|
     next if %w[Rakefile README.mkd LICENSE update_dotfiles].include? file
-    
+
     if File.exist?(File.join(ENV['HOME'], ".#{file.sub('.erb', '')}"))
       if File.identical? file, File.join(ENV['HOME'], ".#{file.sub('.erb', '')}")
         puts "identical ~/.#{file.sub('.erb', '')}"
@@ -32,6 +32,18 @@ task :install do
   end
 end
 
+desc "uninstall the dot files created in the user's home directory"
+task :uninstall do
+  Dir["*"].each do |file|
+    next if %w[Rakefile README.mkd LICENSE update_dotfiles].include? file
+
+    if File.exist?(File.join(ENV['HOME']))
+      remove_link(file)
+    end
+
+  end
+end
+
 def replace_file(file)
   system %Q{rm -rf "$HOME/.#{file.sub('.erb', '')}"}
   link_file(file)
@@ -47,4 +59,9 @@ def link_file(file)
     puts "linking ~/.#{file}"
     system %Q{ln -s "$PWD/#{file}" "$HOME/.#{file}"}
   end
+end
+
+def remove_link(link)
+  puts "Removing ~/.#{link}"
+  system %Q{rm -rf "$HOME/.#{link}"}
 end
