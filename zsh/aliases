@@ -40,19 +40,18 @@ alias lg="l | grep -i $1"
 
 # nocorrect 
 alias rm='nocorrect rm -I'
-alias cp='nocorrect cp -v'
-alias mv='nocorrect mv -v'
+alias cp='nocorrect cp'
+alias mv='nocorrect mv'
 alias ln='nocorrect ln'
 alias mkdir='nocorrect mkdir -p'
 
 # shortcuts
 alias which="whence -a"
-alias p='ping'
 alias h='history'
 alias c="clear"
 alias s='sudo -E'
 alias su='s -s'
-alias ej='eject'
+alias ej='eject -T'
 alias k='killall'
 alias e='vim'
 alias t='thunar'
@@ -63,6 +62,7 @@ alias mn="nice -n1 mplayer -nosound"
 alias find='LC_ALL="C" find'
 alias grep='LC_ALL="C" grep'
 alias g="grep"
+alias p="${PAGER}"
 
 # default options
 alias ssh='ssh -AX'
