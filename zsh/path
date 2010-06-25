@@ -1,6 +1,6 @@
 #!/bin/zsh -f
 
-cdpath=(~/code/bin ~/code/projects/active ~/media ~/media/videos )
+cdpath=(~/work/bin ~/work/projects/active ~/media ~/media/videos )
 PATH="${HOME}/bin:/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin:/opt/virtualbox:/usr/share/texmf/bin:/usr/games/bin:/usr/local/libexec"
 MANPATH="/usr/local/man:$MANPATH"
 GEMPATH=`gem env gemdir`
