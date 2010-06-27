@@ -24,6 +24,8 @@ OpenBSD)
     alias killall="pkill"
     alias shred="rm -P"
     alias packages="wget ftp://ftp.openbsd.org/pub/OpenBSD/`uname -r`/packages/`machine -a`/index.txt -O /tmp/packages.list && $PAGER /tmp/packages.list"
+    alias rm='nocorrect rm -i'
+
 ;;
 FreeBSD)
     SSH_ASKPASS="/usr/local/bin/ssh-askpass-gtk2"
@@ -49,6 +51,8 @@ Linux)
     alias ls='ls -F --color --human-readable'
     alias rm='nocorrect /bin/rm -I --preserve-root'
     alias df='df -hT'
+    alias rm='nocorrect rm -I'
+
 
     #############################################################################
     # colors for ls, etc.  Prefer ~/.dir_colors
