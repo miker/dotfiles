@@ -3,9 +3,9 @@
 ZSH_CONF_DIR=~/.zsh
 ZSH_CONF_FILES=(
   modules
-  os
   functions
   aliases
+  os
   env
   path
   paludis
