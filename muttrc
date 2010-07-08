@@ -22,13 +22,17 @@ source ~/.mutt/imap.rc
 #set mbox="imaps://imap.gmail.com[Gmail]/All Mail"
 #set smtp_url="smtps://you:password@smtp.gmail.com"
 
-unset imap_passive
 set forward_format="fwd: %s"
 set attribution="On %d, %n wrote:"
 set imap_list_subscribed=no
 set imap_check_subscribed=no
 set imap_peek=yes
 set imap_servernoise=yes
+# activate TLS 
+set ssl_starttls=yes
+# always use SSL
+set ssl_force_tls=yes
+unset imap_passive
 set use_from
 set use_envelope_from
 set mbox=!
@@ -36,7 +40,8 @@ set mbox=!
 
 # {{{ Include Files
 # Setup some colors
-source ~/.mutt/colors.rc
+source ~/.mutt/colors.`tty -s && tput colors || echo 8`
+
 # Setup gnupg bindings
 source ~/.mutt/gpg.rc
 # Mailboxes
@@ -50,9 +55,9 @@ alternates (gregf@gregf.org|netzdamon@gmail.com|greg.fitzgerald@gmail.com|gregf@
 # }}}
 
 # {{{ Autoviews
-# Prefer plaintext over html
+# order of preferred viewing formats:
 auto_view text/html
-alternative_order text/plain text/html
+alternative_order text/plain text/enriched text/html
 # }}}
 
 # {{{ Folder hooks
@@ -69,7 +74,6 @@ set tmpdir="$HOME/.tmp/mutt"
 # }}}
 
 # {{{ Set some basic settings
-set net_inc=5
 set sleep_time = 0
 set ascii_chars=yes
 set thorough_search
@@ -85,12 +89,11 @@ set fast_reply=yes
 set nouse_domain
 set include=yes
 set copy=yes
+set imap_idle=yes
 set imap_keepalive = 5
-set timeout = 600 # or 600
 set allow_ansi
 set wrap_search=yes
 set use_idn=yes
-set mail_check = 5
 set delete=yes
 set check_new=yes
 set mark_old=no
@@ -113,7 +116,8 @@ set reverse_alias=yes
 set auto_tag
 set wrap_search
 set sort=threads
-set sort_aux=reverse-date
+#set sort_aux=reverse-date
+set sort_aux=last-date-received
 set sort_browser=alpha
 set sort_alias=alias
 set suspend=no
@@ -137,7 +141,14 @@ set send_charset="us-ascii:utf-8"
 set charset=utf-8
 set pgp_verify_sig=no
 set recall
-
+set implicit_autoview  # use autoview, if a "copiousoutput" is in mailcap.
+set mailcap_sanitize   # remove ugly chars from mailcap % expands.
+# Polling frequency
+set mail_check=60
+# Poll the current mailbox 
+set timeout=10
+# Display download progress every 5K
+set net_inc=5
 
 # }}}
 
@@ -149,7 +160,7 @@ source ~/.mutt/mailinglists
 # }}}
 
 # {{{ Some index formats
-set status_on_top
+#set status_on_top
 set index_format="[%Z]-[%[!%Y-%m-%d %I:%M%P]]-[%-20.20F] %s %> %y[%4c]"
 set folder_format="%f"
 set attach_format="[%t][%1n][%4s] %T%d %> %m %M"
@@ -220,8 +231,26 @@ macro index,pager d <delete-message><down>
 
 macro index,pager a "<pipe-message>abook --add-email-quiet<return>"
 
-bind pager G bottom	# just like vi and less
-bind pager gg top	# just like vi and less
+bind pager G bottom # just like vi and less
+bind pager gg top # just like vi and less
+
+# Mark message as spam
+macro index,pager S "<save-message>=[Gmail]/Spam<enter>"
+# Mark message as ham
+macro index,pager H "<save-message>=INBOX<enter>"
+
+# http://www.jukie.net/bart/blog/20090608232531
+macro index     .i      "l((~N|~O|~F)!~D)|(~d<1w!~Q)\n"
+macro index     .n      "l~N\n"
+macro index     .o      "l(~N|~O)\n"
+macro index     .a      "l~A\n"
+macro index     .t      "l~d<1d\n"
+macro index     .y      "l~d<2d ~d>1d\n"
+
+folder-hook     .       push '.i'
+
+macro pager,editor,index <F8> :source\ /home/gregf/.muttrc<enter>
+
 
 folder-hook =family 'set signature=~/.mutt/family"'
 
