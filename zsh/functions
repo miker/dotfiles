@@ -1,4 +1,4 @@
-#!/bin/zsh -f 
+#!/bin/zsh -f
 
 function alias_exists {
   name=$1
@@ -24,7 +24,7 @@ function vnice {
     fi
 }
 
-function getexheres { 
+function getexheres {
     egrep -rlis $1 /var/paludis/repositories/*/packages/*/*/*.ex* | xargs -I xxx cp xxx .
     ack -a $1 *
 }
@@ -33,7 +33,7 @@ function service { sudo $RCDIR$1 $2; }
 
 ## find all suid files
 function suidfind {
-    ls -l /**/*(su0x) 
+    ls -l /**/*(su0x)
 }
 
 function install_dotfiles {
@@ -47,16 +47,16 @@ function update_dotfiles {
     cd $HOME/.dotfiles
     git pull
     rake install
-    cd ~ 
+    cd ~
     src
-    
-    for i in `find ${HOME} -maxdepth 1 -type l `; do 
-        [ -e $i ] || rm -rf $i; 
+
+    for i in `find ${HOME} -maxdepth 1 -type l `; do
+        [ -e $i ] || rm -rf $i;
     done
 }
 
 function compare_dirs {
-    diff -qr $1 $2 | grep -v -e '.git' -e '.cvs' -e '.svn' | 
+    diff -qr $1 $2 | grep -v -e '.git' -e '.cvs' -e '.svn' |
     sort | most
 }
 
@@ -250,28 +250,31 @@ function ech {
     fi
 }
 
+alias stuff="junk"
 function junk {
     scp -r $* web:~/www/stuff/
 }
 
 function torrent {
-    scp -r *.torrent quad:~/.torrents/ && rm *.torrent 
+    scp -r *.torrent quad:~/.torrents/ && rm *.torrent
 }
 
-function dotfile {
-    scp -r $* web:~/blog/shared/dotfiles/
+function mvbackup {
+    mv ${1%%/} ${1%%/}"-`date "+"%Y-%m-%d`"
 }
 
-function manifest {
-    appareo --log-level warning --master-repository-name gentoo --extra-repository-dir /usr/portage --extra-repository-dir $PWD $1 -m
+function cpbackup {
+    cp -R ${1%%/} ${1%%/}"-`date "+"%Y-%m-%d`"
 }
 
-function tbuild {
-    ebuild $1 manifest && ebuild $1 clean ; ebuild $1 install
+# Backup config file then edit it.
+function edc {
+    cp ${1%%/} ${1%%/}"-`date "+"%Y-%m-%d`".bak
+    $EDITOR ${1}
 }
 
-function qa {
-    qualudis --log-level warning --master-repository-name gentoo --extra-repository-dir /usr/portage --extra-repository-dir $PWD $1 
+function install_rvm {
+    bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
 }
 
 function gitsearch {
@@ -310,9 +313,45 @@ function plast {
 
     eval sudo $(< "${lastfile}")
 }
- 
+
 function isocdrom {
     dd if=/dev/cdrom of=$1 bs=2048 conv=sync,notrunc
+}
+
+# make folder and chdir into it:
+function mkcd {
+    mkdir -p "$@" && cd "$@"
+}
+
+# Up and back are stolen from http://github.com/milomouse/dotfiles
+# go up X amount of directories:
+function up(){
+  local arg=${1:-1};
+  while [ $arg -gt 0 ]; do
+    cd .. >&/dev/null;
+    arg=$(($arg - 1));
+  done
+}
+
+# jump to previous directory by number or last visited:
+function back() {
+  case $1 in
+  [a-zA-Z]) : ;;
+  <->) pushd -q +$1 ;;
+  l) dirs -lpv|sed '2 s|$| \[last\]|' ;;
+  *) pushd -q -
+  esac
+}
+
+function nvidia-update {
+    if [[ -d /usr/src/nvidia-drivers ]]; then
+        cd /usr/src/nvidia-drivers || exit 1
+    else
+        echo "/usr/src/nvidia-drivers does not exist"
+        echo "cave install x11-drivers/nvidia-drivers first"
+        exit 1
+    fi
+    sudo make module && sudo make install && sudo eclectic opengl set nvidia-drivers
 }
 
 function fix-paludis-perms {
@@ -388,7 +427,7 @@ function remindme {
 }
 
 function background {
-    nohup $1 &> /dev/null &    
+    nohup $1 &> /dev/null &
 }
 
 function cdgem {
@@ -401,7 +440,7 @@ function keepempty {
 
 function xephyr {
     Xephyr -ac -br -noreset -screen 1024x768 :1 &
-    sleep 2 
+    sleep 2
     DISPLAY=:1.0 $@
 }
 
@@ -409,12 +448,12 @@ function cpv {
     rsync -rPIhu -- ${@}
 }
 
-function h { 
-    history 0 | grep $1 
+function h {
+    history 0 | ack $1
 }
 
 function ports {
-case `uname` in
+    case `uname` in
     OpenBSD)
         sudo netstat -at | grep LISTEN
     ;;
@@ -427,7 +466,7 @@ case `uname` in
     *)
         nmap -sT -O localhost
     ;;
-esac
+    esac
 }
 
 # Recompiles .zshrc
@@ -441,11 +480,11 @@ function src {
 }
 
 function gr {
-    groff -Tascii -man $1 | $PAGER 
+    groff -Tascii -man $1 | $PAGER
 }
 
 # short form of dig
-function dig1 () {
+function digme () {
     dig +noauthority +noadditional +noqr +nostats +noidentify +nocmd +noquestion +nocomments $@
 }
 
