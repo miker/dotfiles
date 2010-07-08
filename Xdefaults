@@ -57,7 +57,7 @@ URxvt*scrollTtyOutput:  false
 URxvt*inheritPixmap:    false
 URxvt*urgentOnBell:     true
 URxvt*perl-ext-common:    default,matcher,searchable-scrollback
-URxvt*urlLauncher:  firefox
+URxvt*urlLauncher:  firefox-bin
 URxvt*matcher.button:   1
 URxvt*keysym.M-u: perl:mark-yank-urls:activate_mark_mode
 URxvt*underlineURLs: true
@@ -80,7 +80,8 @@ URxvt*boldItalicFont: xft:terminus:size=12:antialias=true:italic
 ! colors ---------------------------------------------------------------
 
 !{{{ colors
-*background: #202020
+!*background: #202020
+*background: #2e2e2e
 *foreground: #ffffff
 *cursorColor: #07A5FF
 
@@ -127,7 +128,9 @@ Xcursor.size: 18
 !{{{ irssi
 !   -- also: set 'vbell on' in screen
 !   --       set 'bell_msg' "\a in window!"
-irssi*urgentOnBell:true
+irssi*urgentOnBell: true
+weechat*urgentOnBell: true
+urxvt*urgentOnBell: true
 !}}}
 
 !{{{ VT100
