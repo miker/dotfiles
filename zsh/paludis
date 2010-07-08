@@ -22,9 +22,9 @@ if [[ -f /etc/exherbo-release ]]; then
     alias cir="c resolve -x"
     alias cres="c resume -f ${CAVE_RESUME_FILE}"
     alias syn="c sync"
-    alias  cu="c -x uninstall"
-    alias  cU="cu -x --remove-if-dependent */*"
-    alias cuu='cu -x --uninstalls-may-break */*'
+    alias  cu="c uninstall -x "
+    alias  cU="cu --remove-if-dependent */*"
+    alias cuu='cu --uninstalls-may-break */*'
 
     alias ec="s eclectic config interactive"
 
