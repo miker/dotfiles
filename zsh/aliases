@@ -47,7 +47,6 @@ alias mkdir='nocorrect mkdir -p'
 
 # shortcuts
 alias which="whence -a"
-alias h='history'
 alias c="clear"
 alias s='sudo -E'
 alias su='s -s'
@@ -116,6 +115,7 @@ alias glg='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset 
 alias rlog='git log --pretty=format:"%h %Cblue%cr%Creset %cn %Cgreen%s%Creset"'
 alias glo='git log --date=local --pretty=full --stat'
 alias mkpatch="git format-patch --stdout -M -C -C -1"
+alias gdp="git push origin && git push github"
 
 # new commands
 alias xlog="sudo grep --binary-files=without-match --color -nsie '(EE)' -e '(WW)' /var/log/Xorg.0.log"
@@ -147,15 +147,16 @@ alias runas="sudo -H -u $1 $@"
 alias fixkey='ssh-keygen -i -f'
 alias hammertime='ruby -rhammertime'
 alias sendpatch="git format-patch --stdout -M -C -C -1 | wgetpaste -r"
-alias gemu="s gem update --system && s gem update"
-alias gemi="s gem install --no-ri --include-dependencies"
+alias gemu="gem update --system && gem update"
+alias gemi="gem install --no-ri --include-dependencies"
 alias gems="gem search -b"
-alias gemr="s gem uninstall"
-alias gemc="s gem clean"
-alias geminstaller="s geminstaller -s -c ${HOME}/.geminstaller.yaml"
+alias gemr="gem uninstall"
+alias gemc="gem clean"
+alias geminstaller="geminstaller -s -c ${HOME}/.geminstaller.yaml"
 alias minicom='minicom -c on'
 alias mkchangelog='git log --stat --name-only --date=short --abbrev-commit > ChangeLog'
 alias googlecl='/usr/bin/google'
+alias playaudio='mplayer -cdrom-device /dev/cdrom cdda://'
 
 #games
 alias torchlight="wine ~/.wine/drive_c/Program\ Files/Runic\ Games/Torchlight/Torchlight.exe"
