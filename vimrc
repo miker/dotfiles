@@ -4,6 +4,10 @@ scriptencoding utf-8
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
 " Modified: Tue 29 Feb 2010 01:22:55 PM EDT
 " ----------------------------------------------------------------------------
+"
+filetype off
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
 
 " {{{ Settings
 " Set encoding
@@ -85,6 +89,7 @@ set ruler
 set undolevels=999
 " ignore these in auto complete
 set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.info,.aux,.log,.dvi,..out
+set wildchar=<TAB>
 set cmdheight=2
 set showtabline=1               " display tabbar
 " Set some global options for spell check
@@ -98,8 +103,7 @@ set wrapscan   " search wrap around the end of the file
 set ignorecase " ignore case search
 set smartcase  " override 'ignorecase' if the search pattern contains upper case
 set incsearch  " incremental search
-set hlsearch   " highlight searched words
-
+set nohlsearch
 
 " {{{ Set a shell
 set shell=sh
@@ -158,14 +162,43 @@ set foldnestmax=3       "deepest fold is 3 levels
 " }}}
 
 " {{{iabbrev
-iabbrev xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 
-iabbrev #p #!/usr/bin/perl
-iabbrev #e #!/usr/bin/env
-iabbrev #r #!/usr/bin/ruby
-iabbrev #b #!/bin/bash
+iab #p #!/usr/bin/perl
+iab #e #!/usr/bin/env
+iab #r #!/usr/bin/ruby
+iab #b #!/bin/bash
 
-iabbrev sdef definitely
+iab definatley definitely
+iab wahts what's
+iab responce response
+iab whats what's
+iab hows how's
+iab i I
+iab irc IRC
+iab isnt isn't
+iab wasnt wasn't
+iab internet Internet
+iab cant can't
+iab peolpe people
+iab linux Linux
+iab bsd BSD
+iab openbsd OpenBSD
+iab freebsd FreeBSD
+iab teh the
+iab iso ISO
+iab gwi GWI
+iab fairpoint FairPoint
+iab intranet Intranet
+iab athenry Athenry
+iab mideo Mideo
+iab paludis Paludis
+iab exherbo Exherbo
+iab gentoo Gentoo
+iab funtoo Funtoo
+iab Ok OK
+iab ok OK
+
 " }}}
 
 " {{{ Plugin settings
@@ -354,6 +387,10 @@ command! -bar -nargs=0 SudoW :silent exe "write !sudo tee % >/dev/null" | silent
 noremap <Leader>su :SudoW<CR>
 command! -nargs=+ PopupMap call s:popupMap(<f-args>)
 
+vmap bq :call VBlockquote ()<CR>
+vmap bqt :call VBlockquote("
+
+
 " This group is stolen from mislav's vimrc
 " http://github.com/mislav/dotfiles/blob/master/vimrc
 
@@ -362,6 +399,8 @@ command! -nargs=+ PopupMap call s:popupMap(<f-args>)
 nmap <C-J> gqap
 vmap <C-J> gq
 imap <C-J> <C-O>gqap
+
+imap ;; <Esc>
 
 " Delete line with CTRL-K
 map <C-K> dd
@@ -694,6 +733,27 @@ function RemoveBlankLines()
     %s/^[\ \t]*\n//g
 endfunction
 
+function! VBlockquote(...) range
+    " Author: Ralf Arens
+    " put `| ' at beginning of line
+    exe a:firstline.",".a:lastline."s/^/| /"
+    " remove trailing whitespaces
+    exe a:firstline.",".a:lastline.'s/^| $/|/e'
+    " generate tail
+    exe a:lastline."put ='`----'"
+    " set mark
+    normal m'
+    " generate title
+    let @z = ',----'
+    if (a:0 != 0)
+        " -> extra argument a:1
+        let @z = @z."[ ".a:1." ]"
+    endif
+    exe a:firstline."put! z"
+    " jump back to mark
+    normal ''
+endfunction
+
 " }}}
 
 " {{{ auto commands
@@ -708,7 +768,6 @@ endif
 
 
 if has("autocmd")
-    au VimEnter * nohls
     au VimLeave * set nospell
 
     " Automagic line numbers
