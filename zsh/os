@@ -81,44 +81,15 @@ Linux)
         alias python-updater="python-updater -P paludis"
         alias module-rebuild="module-rebuild -P paludis $@"
 
-        function explainuseflag {
-            sed -ne "s,^\([^ ]*:\)\?$1 - ,,p" \
-            /usr/portage/profiles/use.desc \
-            /usr/portage/profiles/use.local.desc
-         }
-
-        function edesc {
-            cat *.ebuild | sed -ne 's-^DESCRIPTION="\(.*\)".*-\1-1p' | sort -u
-        }
-
-        function ewww {
-            cat *.ebuild | sed -ne 's-^HOMEPAGE="\(.*\)".*-\1-1p' | sort -u
-        }
     fi
 
-    function svcs {
-        sudo /etc/init.d/$1 start
-    }
+    function rcstart() {sudo /etc/init.d/$1 start}
+    function rcstop() {sudo /etc/init.d/$1 stop}
+    function rcrestart() {sudo /etc/init.d/$1 restart}
+    function rczap() {sudo /etc/init.d/$1 zap}
+    function rcdel() {sudo rc-update del $1}
+    function rcadd() {sudo rc-update add $1 default}
 
-    function svce {
-        sudo /etc/init.d/$1 stop
-    }
-
-    function svcr {
-        sudo /etc/init.d/$1 restart
-    }
-
-    function svcz {
-        sudo /etc/init.d/$1 zap
-    }
-
-    function rca {
-        sudo /sbin/rc-update add $1 default
-    }
-
-    function rcd {
-        sudo /sbin/rc-update del $1 default
-    }
 
 ;;
 esac
