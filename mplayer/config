@@ -1,18 +1,28 @@
 [default]
-fs="yes"
-vo="xv"
-ao="alsa"
+fs="yes" # start full screen
 idx="yes"
 monitoraspect="16:9"
 af=volnorm
-fullscreen="yes"
-vf=denoise3d,pp
-framedrop="yes"
 autoq=100
-ontop="1"
+ontop="no" # Not always on top
+cache=9999 # Use a large cache
 stop-xscreensaver="yes"
+quiet="yes" # Don't print no gui errors
+lavdopts=threads=4 # Use 6 threads for x264
+channels=2 # Use 2 channels by default
 #nosound="yes"
-#heartbeat-cmd="/usr/bin/xscreensaver-command -deactivate > /dev/null"
+
+# Use vdpau
+#vc=ffh264vdpau,ffmpeg12vdpau,ffwmv3vdpau,ffvc1vdpau,
+
+# Language defaults
+slang=eng,en,
+alang=eng,en,
+
+# Outputs
+#vo=vdpau
+vo=xv
+ao=alsa
 
 [xvmc]
 vo=xvmc
