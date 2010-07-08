@@ -25,14 +25,14 @@ config.keys.modkey = config.keys.alt
 -- }}}
 
 -- {{{ Apps
-config.apps.terminal = os.getenv("TERMCMD") or "urxvt"
-config.apps.tmux = "urxvt -e tmux -2"
+config.apps.terminal = os.getenv("TERMCMD") or "urxvtc"
+config.apps.tmux = "urxvtc -e tmux -2"
 config.apps.browser = os.getenv("BROWSER") or "firefox"
 config.apps.editor = os.getenv("EDITOR") or "vim"
 config.apps.editor_cmd = config.apps.terminal .. " -e " .. config.apps.editor
 config.apps.graphical_editor = "gvim"
 config.apps.music = config.apps.terminal.." -name ncmpcpp -e ncmpcpp"
-config.apps.mail = config.apps.terminal.." -name mutt -e mutt"
+config.apps.mail = config.apps.terminal.." -name mutt -e /home/gregf/bin/mutt"
 config.apps.chat = "gajim"
 config.apps.burn = "xfburn"
 config.apps.filemanager = "thunar"
