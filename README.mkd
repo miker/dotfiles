@@ -1,3 +1,3 @@
 Dotfiles Repo
 ==============
-Greg Fitzgerald <greg.fitzgerald@gmail.com>
+Greg Fitzgerald <netzdamon@gmail.com>
