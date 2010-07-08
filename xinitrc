@@ -10,9 +10,6 @@ rm -f ~/.recently-used
 
 # Set your Default Window Manager
 DEFAULTWM='awesome'
-#DEFAULTWM='openbox'
-#DEFUALTWM="subtle"
-
 
 # Set some enviroment varibles
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin
@@ -25,33 +22,42 @@ export TERMINAL=$TERMCMD
 export GTK2_RC_FILES=$HOME/.gtkrc-2.0
 export MOZILLA_NEWTYPE=tab
 export SSH_ASKPASS=/usr/bin/gnome-ssh-askpass
+errorlog="${HOME}/.xsession-errors"
 #export XDG_CACHE_DIR="/var/cache/users/gregf/"
 RXVT_SOCKET="$HOME/.tmp/rxvt-unicode"
-userresources=$HOME/.Xresources
-usermodmap=$HOME/.Xmodmap
 
-unclutter -idle 30 -reset -root &
+# {{{ Resource and keymap settings
+usermodmap="${HOME}/.Xmodmap"
+userresources="${HOME}/.Xresources"
+sysmodmap="/etc/X11/xinit/.Xmodmap"
+sysresources="/etc/X11/xinit/.Xresources"
+
+# Merge system and user resources and keymaps
+[[ -r "${sysresources}" ]]  && xrdb -merge "${sysresources}"
+[[ -r "${sysmodmap}" ]]     && xmodmap "${sysmodmap}"
+[[ -r "${userresources}" ]] && xrdb -merge "${userresources}"
+[[ -r "${usermodmap}" ]]    && xmodmap "${usermodmap}"
+# }}}
+
+# Always start X11 with a clean log file
+if (cp /dev/null "${errorlog}"); then
+  chmod 600 "${errorlog}"
+  exec >"${errorlog}" 2>&1
+  break
+fi
+
+unclutter -idle 5 -root &
 
 xset -b +dpms r rate 250 50 &
 
 # Get back ctrl+alt+backspace in new versions of xorg
 setxkbmap -option terminate:ctrl_alt_bksp
 
-# Load Xdefaults
-if [ -f "$userresources" ]; then
-if [ -x /usr/bin/cpp ] ; then
-xrdb -merge "$userresources"
-  else
-xrdb -nocpp -merge "$userresources"
-  fi
-fi
- 
-if [ -f "$usermodmap" ]; then
-    xmodmap "$usermodmap"
-fi
-
 # Disable repeat for multimediakeys
 xset -r 129 -r 231 -r 198 -r 236 -r 160 &
+
+# Load additional fonts
+xset fp+ ~/.fonts/
 
 nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1 &
 
@@ -60,14 +66,12 @@ xsetroot -solid black &
 # Turn on numlock
 numlockx on &
 
-if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
-  eval `dbus-launch --sh-syntax --exit-with-session`
-fi
-
 #sync PRIMARY with clipboard 
 autocutsel -s PRIMARY -buttonup -fork &
 
-xsetroot -cursor_name arrow &
+# Pointer appearance
+#   - xcb does not support Xcursor yet
+xsetroot -cursor_name left_ptr
 
 urxvtd -q -o -f &
 
@@ -76,21 +80,23 @@ keychain --agents ssh,gpg --clear -q ~/.ssh/id_rsa ~/.ssh/mpd_rsa
 source ~/.keychain/$(uname -n)-sh
 source ~/.keychain/$(uname -n)-sh-gpg
 
-
 # Execute window manager into background
 case $1 in
 awesomewm)
-	exec awesome & wmpid=$!
-	;;
+    exec awesome & wmpid=$!
+    ;;
 openbox)
-	exec openbox & wmpid=$!
-	;;
+    exec openbox & wmpid=$!
+    ;;
 subtle)
-	exec subtle & wmpid=$!
-	;;
+    exec subtle & wmpid=$!
+    ;;
+debug)
+    exec valgrind -v "$2"
+    ;;
 *)
-	exec $DEFAULTWM & wmpid=$1
-	;;
+    exec $DEFAULTWM & wmpid=$1
+    ;;
 esac
 
 # Run these after the window manager has been started
