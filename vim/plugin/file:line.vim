@@ -1,3 +1,4 @@
+
 function! s:gotoline()
 	let file = bufname("%")
 	let names =  matchlist( file, '\(.*\):\(\d\+\)')
@@ -15,3 +16,4 @@ function! s:gotoline()
 endfunction
 
 autocmd! BufNewFile *:* nested call s:gotoline()
+
