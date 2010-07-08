@@ -1,9 +1,11 @@
 " ==================== Settings ==================== "
-set loadplugins
-set wildmode=list:full
-set guioptions=mB
+loadplugins
+set guioptions=B
+set titlestring=Firefox
+set history=10000
+set incsearch
 set hlsearch
-set complete=sbfh
+set smartcase
 set defsearch=yubnub
 set showmode
 set showtabline=2
@@ -14,6 +16,12 @@ set focuscontent
 set followhints=1
 set newtab=all
 set visualbell
+set complete=slb
+set wildoptions=auto
+set history=10000
+set noinsertmode
+set showstatuslinks=2
+set showtabline=0
 
 " emulate vim's "after"
 set runtimepath+=~/.vimperator/after,~/vimperator/after
@@ -39,6 +47,21 @@ noremap f   :forward<CR>
 map <Right> gt
 map <Left>  gT
 
+" Show/hide toolbars
+nmap <silent> <C-M> :set go+=Bm<CR>
+nmap <silent> <C-m> :set go-=Bm<CR>
+
+" Passthrough mode shortcut
+nmap c <C-z>
+
+"how/hide the buftabbar
+nmap <silent> <A-u> :set invbuftabs<CR>
+
+" Video control keys
+nmap <silent> <leader>p :stplay<CR>
+nmap <silent> <leader>P :stpause<CR>
+nmap <silent> <leader>l :stlarge<CR>
+nmap <silent> <leader>m :stmute<CR>
 " ==================== Firefox options ==================== "
 "Seems to screw up sessionmanager
 "set! browser.startup.page=1
@@ -69,12 +92,13 @@ set! nglayout.initialpaint.delay=0
 set! ui.submenuDelay=0
 set! browser.urlbar.clickSelectsAll=true
 set! browser.urlbar.doubleClickSelectsAll=false
+set! browser.enable_automatic_image_resizing=false
 
 " ==================== colorscheme ==================== "
-colorscheme desert
+colorscheme zenburn
 
 " force disable ime in commandline
-style -name commandline-ime chrome://* #liberator-commandline-command input { ime-mode: inactive; }
+"style -name commandline-ime chrome://* #liberator-commandline-command input { ime-mode: inactive; }
 
 " ==================== Abbreviations ==================== "
 
@@ -87,3 +111,72 @@ command doc tabopen http://stuff.gregf.org/meta/documentation/
 command api tabopen http://apidock.com/
 command tv tabopen http://www.sharetv.org
 command paste tabopen http://www.pastie.org
+
+" {{{ Custom Colors
+"
+" Buftab styling
+hi BufTab padding-left: 5px; padding-right: 5px;
+hi BufTabSelected background: #343434; padding-left: 5px; padding-right: 5px;
+
+" Hint font size
+hi Hint font-family: monospace; font-size: 13px; font-weight: bold; color: white; padding: 1px 3px; background: #744E7A;
+hi HintElem none: none;
+hi HintActive none: none;
+
+" Statusbar and commandline styling
+hi StatusLine background: #141414; color: #9FBC00; font-family: terminus; font-size: 12px; font-weight: normal;
+hi StatusLineBroken background: #1a1414; color: #9FBC00; font-family: terminus; font-size: 12px; font-weight: normal;
+hi StatusLineExtended background: #141a14; color: #9FBC00; font-family: terminus; font-size: 12px; font-weight: normal;
+hi StatusLineSecure background: #14141a; color: #9FBC00; font-family: terminus; font-size: 12px; font-weight: normal;
+
+hi CmdLine height: 0px; padding: 0px; font-family: terminus; font-size: 12px; font-weight: normal; color: white; background: #141414;
+hi Normal background: #141414; color: white;
+hi Question background: #141414; color: white;
+" }}}
+
+" {{{ Javascript functions
+" Go to numbered page
+js <<EOF
+mappings.add(config.browserModes, ["gr"],
+    "Go to numbered link",
+    function (count) { if (count) events.feedkeys(
+        "f,"+String(count)+","
+    ); },
+    { count: true });
+
+mappings.add(config.browserModes, ["gR"],
+    "Go to numbered link",
+    function (count) { if (count) events.feedkeys(
+        "F,"+String(count)+","
+    ); },
+    { count: true });
+EOF
+
+" Quickmark in background tab
+js <<EOF
+mappings.add(config.browserModes,
+    ["gN"], "Jump to a QuickMark in a new tab, inverting the 'activate' option",
+    function (arg) {
+        quickmarks.jumpTo(arg,
+            /\bquickmark\b/.test(options["activate"]) ?
+            liberator.NEW_BACKGROUND_TAB : liberator.NEW_TAB);
+    },
+    { arg: true });
+EOF
+
+" Show the Feed and Bookmark buttons on the statusbar
+javascript <<EOF
+(function(){
+    var statusPanel = document.createElement("statusbarpanel");
+    statusPanel.setAttribute("id", "buttons-panel-clone");
+    statusPanel.appendChild(document.getElementById("feed-button"));
+    statusPanel.appendChild(document.getElementById("star-button"));
+    statusPanel.firstChild.setAttribute("style", "padding: 0; max-height: 16px;");
+    document.getElementById("status-bar")
+            .insertBefore(statusPanel, document.getElementById("security-button"));
+})();
+EOF
+" }}}
+
+
+echo "[vimperator initialized]"
