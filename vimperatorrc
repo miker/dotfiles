@@ -16,7 +16,7 @@ set focuscontent
 set followhints=1
 set newtab=all
 set visualbell
-set complete=slb
+set complete=lbt
 set wildoptions=auto
 set history=10000
 set noinsertmode
@@ -56,6 +56,10 @@ nmap c <C-z>
 
 "how/hide the buftabbar
 nmap <silent> <A-u> :set invbuftabs<CR>
+
+"Session Manager
+noremap <leader>sl :sessionmanager load<CR>
+noremap <leader>ss :sessionmanager save<CR>
 
 " Video control keys
 nmap <silent> <leader>p :stplay<CR>
