@@ -28,6 +28,9 @@ export GIT_COMMITTER_NAME=$GIT_AUTHOR_NAME
 export AUTOFEATURE="true" 
 export RSPEC="true"
 
+#Fix for growisofs
+export MKISOFS='/usr/bin/genisoimage'
+
 # Some things we want set regardless
 export MANPAGER="most"
 export PAGER="most"
