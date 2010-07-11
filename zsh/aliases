@@ -95,12 +95,11 @@ alias prod='export RAILS_ENV="production"'
 alias dev='export RAILS_ENV="dev"'
 
 # git
-alias gl='git pull'
-alias gc='git clone'
+alias gl="git pull"
+alias gc="git clone"
 alias gp='git push'
 alias gpp='git push origin master:refs/heads/master'
 alias gd='git diff'
-alias gc='git commit'
 alias gca='git commit -a'
 alias gco='git checkout'
 alias gb='git branch'
@@ -109,8 +108,8 @@ alias gs='git status'
 alias ga='git add'
 alias gd='git diff'
 alias gci='git commit -v'
-alias gc="git clean -f"
 alias grm='git rm $(git ls-files --deleted)'
+alias gaa='git ls-files -o --exclude-per-directory=.gitignore | xargs git add'
 alias glg='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset" --abbrev-commit --date=relative'
 alias rlog='git log --pretty=format:"%h %Cblue%cr%Creset %cn %Cgreen%s%Creset"'
 alias glo='git log --date=local --pretty=full --stat'
@@ -123,10 +122,6 @@ alias sd='export DISPLAY=:0.0'
 alias cup='cvs -z3 update -Pd'
 alias fixdbus="dbus-uuidgen --ensure"
 alias wp="~/bin/wallpaper"
-alias burniso='wodim -v dev=/dev/sr0 speed=24'
-alias burndvdiso="growisofs -speed=8 -dvd-compat -Z /dev/sr0=$*"
-alias mkdvdiso="genisoimage -o dvd.iso  -R -J -hfs $*"
-alias mkisofs="genisoimage -o cd.iso -R -J $*"
 alias biosinfo='sudo dmidecode'
 alias gnp="git-notpushed"
 alias wcyy="mplayer http://68.142.81.164:80/citadelcc_WCYY_FM\?MSWMExt\=.asf"
