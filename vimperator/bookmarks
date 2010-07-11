@@ -1,0 +1,51 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""" Search Engines
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""" General Purpose
+"" Google
+bma -k=g http://google.com/search?q=%s&num=100
+"" Google: Feeling Lucky
+bma -k=gg http://google.com/search?btnI=1&q=%s
+"" YubNub
+bma -k=y http://yubnub.org/parser/parse?command=%s
+
+""" Websites
+"" Youtube
+bma -k=yt http://www.youtube.com/results?search_query=%s
+"" The Pirate Bay
+bma -k=tpb http://thepiratebay.org/search/%s
+"" BaconBits
+bma -k=bb http://baconbits.org/torrents.php?searchstr=%s
+"" BtJunkie
+bma -k=btj http://btjunkie.org/search?q=%s
+"" Danbooru
+bma -k=db http://danbooru.donmai.us/post?tags=%s
+"" MuF
+bma -k=muf http://www.megauploadforum.net/search.php?keywords=%s 
+
+""" Wikis
+"" Wikipedia
+bma -k=wk http://en.wikipedia.org/w/index.php?search=%s
+"" TVTropes
+bma -k=trope http://www.google.com/cse?cx=partner-pub-6610802604051523%3A2szln92pqym&ie=ISO-8859-1&q=%s
+
+""" Other
+"" Dictionary
+bma -k=dict http://dictionary.reference.com/browse/%s
+"" Urban Dictionary
+bma -k=udict http://www.urbandictionary.com/define.php?term=%s
+"" Thesaurus
+bma -k=thes http://thesaurus.reference.com/the?q=%s
+"" Validator
+bma -k=valid http://validator.w3.org/check?uri=%s
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""" Websites
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+bma -k=vimp http://code.google.com/p/vimperator-labs/
+bma -k=exh http://www.exherbo.org
+bma -k=pkg http:///summer.exherbo.org
+bma -k=bugs https://bugs.gentoo.org
+bma -k=muf http://www.megauploadforum.net/
+" vim: ft=vimperator :
