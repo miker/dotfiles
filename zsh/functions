@@ -535,4 +535,28 @@ function ketchup {
     fi
 }
 
+function burniso {
+    wodim -v dev=/dev/sr0 speed=24 $*
+}
+
+function burndliso {
+    growisofs -speed=4 -dvd-compat -Z /dev/sr0=$*
+}
+
+function burndvdiso {
+    growisofs -speed=8 -dvd-compat -Z /dev/sr0=$*
+}
+
+function burndvddir {
+     growisofs -Z /dev/sr0 -R -J -speed=4 $*
+}
+
+function mkdvdiso {
+    genisoimage -o dvd.iso -R -J -hfs $*
+}
+
+function mkisofs {
+    genisoimage -o cd.iso -R -J $*
+}
+
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
