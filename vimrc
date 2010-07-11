@@ -461,6 +461,10 @@ vmap P p :call setreg('"', getreg('0')) <CR>
 " Press ^F from insert mode to insert the current file name
 imap <C-F> <C-R>=expand("%")<CR>
 
+" Return to visual mode after indenting
+xmap < <gv
+xmap > >gv
+
 " }}}
 
 " {{{ Functions
