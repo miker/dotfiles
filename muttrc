@@ -251,9 +251,6 @@ folder-hook     .       push '.i'
 
 macro pager,editor,index <F8> :source\ /home/gregf/.muttrc<enter>
 
-
-folder-hook =family 'set signature=~/.mutt/family"'
-
 #{{{ Settings for sidebar patch
 # http://www.lunar-linux.org/index.php?option=com_content&task=view&id=44
 set sidebar_width=25
