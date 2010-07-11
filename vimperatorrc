@@ -18,6 +18,7 @@ set newtab=all
 set visualbell
 set complete=lbt
 set wildoptions=auto
+set wildmode=list:longest,full
 set history=10000
 set noinsertmode
 set showstatuslinks=2
@@ -51,6 +52,12 @@ map <Left>  gT
 nmap <silent> <C-M> :set go+=Bm<CR>
 nmap <silent> <C-m> :set go-=Bm<CR>
 
+" Quick buffer switch with the same mapping as in vim
+nmap <Leader>t :buffer!<Space>
+
+" C-l/F7: Search highlight toggle
+map <silent> <C-l> :noh<CR>
+
 " Passthrough mode shortcut
 nmap c <C-z>
 
@@ -61,11 +68,13 @@ nmap <silent> <A-u> :set invbuftabs<CR>
 noremap <leader>sl :sessionmanager load<CR>
 noremap <leader>ss :sessionmanager save<CR>
 
-" Video control keys
-nmap <silent> <leader>p :stplay<CR>
-nmap <silent> <leader>P :stpause<CR>
-nmap <silent> <leader>l :stlarge<CR>
-nmap <silent> <leader>m :stmute<CR>
+" Noscript
+map <leader>nst :noscript toggletemp<CR>
+map <leader>nsp :noscript popup<CR>
+map <leader>ns  :noscript toggleperm<CR>
+
+command print hardcopy
+
 " ==================== Firefox options ==================== "
 "Seems to screw up sessionmanager
 "set! browser.startup.page=1
@@ -78,11 +87,10 @@ set! browser.tabs.loadBookmarksInBackground=true
 " open tabs by javascript in background
 set! browser.tabs.loadDivertedInBackground=true
 " allow lots of popups for ldr
-set! dom.popup_maximum=1000
-set! browser.backspace_action=0 
+"set! dom.popup_maximum=1000
+set! browser.backspace_action=0
 set! geo.enabled=false
 set! general.warnOnAboutConfig=false
-"set! javascript.options.jit.chrome=true
 set! network.dns.disableIPv6=true
 set! network.http.max-connections=48
 set! network.http.max-connections-per-server=16
@@ -102,73 +110,52 @@ set! browser.enable_automatic_image_resizing=false
 colorscheme zenburn
 
 " force disable ime in commandline
-"style -name commandline-ime chrome://* #liberator-commandline-command input { ime-mode: inactive; }
+style -name commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
 
 " ==================== Abbreviations ==================== "
 
-command gmail tabopen www.google.com/mail
-command reader tabopen www.google.com/reader
-command reddit tabopen www.reddit.com
-command gh tabopen www.github.com
-command fm tabopen www.lastfm.com
-command doc tabopen http://stuff.gregf.org/meta/documentation/
-command api tabopen http://apidock.com/
-command tv tabopen http://www.sharetv.org
-command paste tabopen http://www.pastie.org
-
+" automatic pass-through mode on certain pages (do ':h autocommands' for details)
+autocmd LocationChange .* :js modes.passAllKeys = /gmail\.com/.test(buffer.URL)
+autocmd LocationChange .* :js modes.passAllKeys = /google.com\.com\/reader/.test(buffer.URL)
 " {{{ Custom Colors
 "
 " Buftab styling
 hi BufTab padding-left: 5px; padding-right: 5px;
 hi BufTabSelected background: #343434; padding-left: 5px; padding-right: 5px;
 
-" Hint font size
-hi Hint font-family: monospace; font-size: 13px; font-weight: bold; color: white; padding: 1px 3px; background: #744E7A;
-hi HintElem none: none;
-hi HintActive none: none;
-
-" Statusbar and commandline styling
-hi StatusLine background: #141414; color: #9FBC00; font-family: terminus; font-size: 12px; font-weight: normal;
-hi StatusLineBroken background: #1a1414; color: #9FBC00; font-family: terminus; font-size: 12px; font-weight: normal;
-hi StatusLineExtended background: #141a14; color: #9FBC00; font-family: terminus; font-size: 12px; font-weight: normal;
-hi StatusLineSecure background: #14141a; color: #9FBC00; font-family: terminus; font-size: 12px; font-weight: normal;
-
-hi CmdLine height: 0px; padding: 0px; font-family: terminus; font-size: 12px; font-weight: normal; color: white; background: #141414;
-hi Normal background: #141414; color: white;
-hi Question background: #141414; color: white;
 " }}}
 
-" {{{ Javascript functions
-" Go to numbered page
+" {{{ Readability
+noremap <silent> <leader>r :js readability()<CR>
 js <<EOF
-mappings.add(config.browserModes, ["gr"],
-    "Go to numbered link",
-    function (count) { if (count) events.feedkeys(
-        "f,"+String(count)+","
-    ); },
-    { count: true });
-
-mappings.add(config.browserModes, ["gR"],
-    "Go to numbered link",
-    function (count) { if (count) events.feedkeys(
-        "F,"+String(count)+","
-    ); },
-    { count: true });
+readability = function()
+{
+    let doc = content.document;
+    _readability_vars=doc.createElement('SCRIPT')
+    _readability_vars.type='text/javascript'
+    _readability_vars.innerHTML = "readStyle='style-apertura'; readSize='size-medium'; readMargin='margin-narrow'"
+    doc.getElementsByTagName('head')[0].appendChild(_readability_vars)
+    _readability_script=doc.createElement('SCRIPT')
+    _readability_script.type='text/javascript'
+    _readability_script.src='http://lab.arc90.com/experiments/readability/js/readability.js?x='+(Math.random())
+    doc.getElementsByTagName('head')[0].appendChild(_readability_script)
+    _readability_css=doc.createElement('LINK')
+    _readability_css.rel='stylesheet'
+    _readability_css.href='http://lab.arc90.com/experiments/readability/css/readability.css'
+    _readability_css.type='text/css'
+    doc.getElementsByTagName('head')[0].appendChild(_readability_css)
+    _readability_print_css=doc.createElement('LINK')
+    _readability_print_css.rel='stylesheet'
+    _readability_print_css.href='http://lab.arc90.com/experiments/readability/css/readability-print.css'
+    _readability_print_css.media='print'
+    _readability_print_css.type='text/css'
+    doc.getElementsByTagName('head')[0].appendChild(_readability_print_css)
+}
 EOF
 
-" Quickmark in background tab
-js <<EOF
-mappings.add(config.browserModes,
-    ["gN"], "Jump to a QuickMark in a new tab, inverting the 'activate' option",
-    function (arg) {
-        quickmarks.jumpTo(arg,
-            /\bquickmark\b/.test(options["activate"]) ?
-            liberator.NEW_BACKGROUND_TAB : liberator.NEW_TAB);
-    },
-    { arg: true });
-EOF
+" }}}
 
-" Show the Feed and Bookmark buttons on the statusbar
+" {{{ Show the Feed and Bookmark buttons on the statusbar
 javascript <<EOF
 (function(){
     var statusPanel = document.createElement("statusbarpanel");
@@ -181,6 +168,20 @@ javascript <<EOF
 })();
 EOF
 " }}}
+js <<EOF
+    toggle_element = function (name) {
+        document.getElementById(name).collapsed ^= 1;
+    }
+EOF
+" and now use it in mappings (':h key-notation'):
+map <silent> <F8> :js toggle_element('toolbar-menubar')<CR>
+map <silent> <F9> :js toggle_element('nav-bar')<CR>
 
+" Quickmarks
+delqm!
+source ~/.vimperator/qmarks
+
+" Bookmarks
+source ~/.vimperator/bookmarks
 
 echo "[vimperator initialized]"
