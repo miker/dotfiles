@@ -52,8 +52,8 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export ACK_OPTIONS="--color"
 
 export LANG=en_US.utf8
+export LC_CTYPE=C
 export LC_MESSAGES=C
-export LC_ALL=
 
 # {{{ Resource Limits
 limit stack 8192
