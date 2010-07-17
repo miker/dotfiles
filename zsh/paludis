@@ -6,7 +6,7 @@ if [[ -x /usr/bin/cave ]]; then
     export CAVE_RESOLVE_OPTIONS="--reinstall-scm weekly"
     export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --continue-on-failure if-satisfied"
     export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --resume-file ${CAVE_RESUME_FILE}"
-    export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --fetch-jobs 2"
+    #export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --fetch-jobs 2"
     export CAVE_RESUME_OPTIONS="--resume-file ${CAVE_RESUME_FILE}"
 
     alias c="export LC_ALL=C && s cave"
