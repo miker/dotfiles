@@ -1,11 +1,12 @@
 #!/bin/zsh -f
 
-if [[ -f /etc/exherbo-release ]]; then
+if [[ -x /usr/bin/cave ]]; then
     # options
     export CAVE_RESUME_FILE="${HOME}/.resume-cave"
     export CAVE_RESOLVE_OPTIONS="--reinstall-scm weekly"
     export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --continue-on-failure if-satisfied"
     export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --resume-file ${CAVE_RESUME_FILE}"
+    export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --fetch-jobs 2"
     export CAVE_RESUME_OPTIONS="--resume-file ${CAVE_RESUME_FILE}"
 
     alias c="s cave"
@@ -48,9 +49,7 @@ if [[ -f /etc/exherbo-release ]]; then
         fi
     }
 
-fi
-
-if [[ -f /etc/gentoo-release ]]; then
+elif [[ -x /usr/bin/paludis ]]; then
 
     # options
     export PALUDIS_CARRY_OUT_UPDATES="yes"
