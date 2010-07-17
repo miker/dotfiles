@@ -9,7 +9,7 @@ if [[ -x /usr/bin/cave ]]; then
     export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --fetch-jobs 2"
     export CAVE_RESUME_OPTIONS="--resume-file ${CAVE_RESUME_FILE}"
 
-    alias c="LC_ALL=C s cave"
+    alias c="export LC_ALL=C && s cave"
     alias cr="c resolve"
     alias crx="cr -x"
     alias cre="cr installed-packages"
