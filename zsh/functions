@@ -239,7 +239,7 @@ function mps { /bin/ps $@ -u $USER -o pid,ppid,%cpu,%mem,command ; }
 function mpsu { /bin/ps -u $@ -o pid,ppid,%cpu,%mem,command ; }
 
 # $1 should be something like /dev/sdb1
-function deviceinfo { udevinfo -a -p $(udevinfo -q path -n $1) }
+function deviceinfo { udevadm info -q all -n $1 }
 
 function ech {
     chpth=`qlist -C -I -e $1`
@@ -404,16 +404,14 @@ function sanitize {
     chown -R ${USER}:users "$@"
 }
 
-# Start nginx and tail the logfile
-# catch ^C and kill nginx
+# Start nginx and tail the logfile catch ^C and kill nginx
 function ss {
     TRAPINT() {
         print "Caught Control C, shutting down nginx"
         sudo /etc/init.d/nginx stop
     }
-    sudo /etc/init.d/nginx start
-    tail -f log/development.log
-
+    sudo /etc/init.d/nginx start tail -f
+    log/development.log
 }
 
 # Stolen:
