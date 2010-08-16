@@ -12,6 +12,8 @@ vim/spellfile.add.spl
 zsh/cache/*
 vim/vimrc.local
 mutt/aliases.rc
+mutt/certs
+mutt/cache/*
 vimperator/info
 vim/.VimballRecord
 gitconfig
