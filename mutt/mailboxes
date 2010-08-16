@@ -35,3 +35,5 @@ mailboxes =paludis
 mailboxes =exherbo
 mailboxes =exherbo/dev
 mailboxes =exherbo/commits
+mailboxes =openvz
+mailboxes =nanog
