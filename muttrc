@@ -65,12 +65,12 @@ folder-hook   "."   push "<collapse-all>"
 # }}}
 
 # {{{ Common Paths
+set tmpdir="$HOME/.mutt/cache"
 set signature="$HOME/.mutt/signature"
-set header_cache="$HOME/.tmp/mutt/hcache"
-set message_cachedir="$HOME/.tmp/mutt/msgcache/"
-set certificate_file="$HOME/.tmp/mutt/certs"
+set header_cache="$HOME/.mutt/cache/hcache"
+set message_cachedir="$HOME/.mutt/cache/mcache/"
+set certificate_file="$HOME/.mutt/certs"
 set mailcap_path="$HOME/.mailcap"
-set tmpdir="$HOME/.tmp/mutt"
 # }}}
 
 # {{{ Set some basic settings
