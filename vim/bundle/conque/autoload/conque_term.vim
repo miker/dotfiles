@@ -149,7 +149,7 @@ function! conque_term#set_mappings(action) "{{{
         execute 'autocmd ' . b:ConqueTerm_Var . ' BufLeave <buffer> call conque_term#on_blur()'
 
         " reposition cursor when going into insert mode
-        execute 'autocmd ' . b:ConqueTerm_Var . ' InsertEnter <buffer> python ' . b:ConqueTerm_Var . '.cursor_set = False'
+        execute 'autocmd ' . b:ConqueTerm_Var . ' InsertEnter <buffer> python ' . b:ConqueTerm_Var . '.insert_enter()'
 
         " read more output when this isn't the current buffer
         if g:ConqueTerm_ReadUnfocused == 1
@@ -252,9 +252,9 @@ function! conque_term#set_mappings(action) "{{{
 
     " send selected text into conque
     if l:action == 'start'
-        sil exe 'v' . map_modifier . 'map <silent> <F9> :<C-u>call conque_term#send_selected(visualmode())<CR>'
+        sil exe 'v' . map_modifier . 'map <silent> ' . g:ConqueTerm_SendVisKey . ' :<C-u>call conque_term#send_selected(visualmode())<CR>'
     else
-        sil exe 'v' . map_modifier . 'map <silent> <F9>'
+        sil exe 'v' . map_modifier . 'map <silent> ' . g:ConqueTerm_SendVisKey
     endif
 
     " remap paste keys
@@ -308,7 +308,6 @@ function! conque_term#set_mappings(action) "{{{
 
 endfunction " }}}
 
-
 " send selected text from another buffer
 function! conque_term#send_selected(type) "{{{
     let reg_save = @@
@@ -346,7 +345,7 @@ function! conque_term#read_all() "{{{
 
     try
         for i in range(1, g:ConqueTerm_Idx - 1)
-            execute 'python ConqueTerm_' . string(i) . '.read(1)'
+            execute 'python ConqueTerm_' . string(i) . '.read(1, False)'
         endfor
     catch
         " probably a deleted buffer
@@ -370,26 +369,34 @@ endfunction "}}}
 " Useful for making temp changes to global config
 function! conque_term#on_focus() " {{{
     " Disable NeoComplCache. It has global hooks on CursorHold and CursorMoved :-/
-    let s:NeoComplCache_WasEnabled = exists(':NeoComplCacheDisable')
+    let s:NeoComplCache_WasEnabled = exists(':NeoComplCacheLock')
     if s:NeoComplCache_WasEnabled == 2
-        NeoComplCacheDisable
+        NeoComplCacheLock
     endif
  
     " set poll interval to 50ms   
     let s:save_updatetime = &updatetime
     set updatetime=50
+
+    " if configured, go into insert mode
+    if g:ConqueTerm_InsertOnEnter == 1
+        startinsert!
+    endif
+
 endfunction " }}}
 
 " gets called when user exits conque buffer.
 " Useful for resetting changes to global config
 function! conque_term#on_blur() " {{{
     " re-enable NeoComplCache if needed
-    if exists('s:NeoComplCache_WasEnabled') && exists(':NeoComplCacheEnable') && s:NeoComplCache_WasEnabled == 2
-        NeoComplCacheEnable
+    if exists('s:NeoComplCache_WasEnabled') && exists(':NeoComplCacheUnlock') && s:NeoComplCache_WasEnabled == 2
+        NeoComplCacheUnlock
     endif
  
-    " reset poll interval to 2s   
-    if exists('s:save_updatetime')
+    " reset poll interval
+    if g:ConqueTerm_ReadUnfocused == 1
+        set updatetime=1000
+    elseif exists('s:save_updatetime')
         exe 'set updatetime=' . s:save_updatetime
     else
         set updatetime=2000
@@ -405,7 +412,7 @@ endfunction " }}}
 " **********************************************************************************************************
 
 let conque_py_dir = substitute(findfile('autoload/conque_term.vim', &rtp), 'conque_term.vim', '', '')
-exec "pyfile " . conque_py_dir . "conque.py"
-exec "pyfile " . conque_py_dir . "conque_subprocess.py"
-exec "pyfile " . conque_py_dir . "conque_screen.py"
+exec "pyfile " . conque_py_dir . "Conque.py"
+exec "pyfile " . conque_py_dir . "ConqueSubprocess.py"
+exec "pyfile " . conque_py_dir . "ConqueScreen.py"
 
