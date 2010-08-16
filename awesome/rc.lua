@@ -64,9 +64,6 @@ for s = 1, screen.count() do
     tags[s][1].selected = true
 end
 
--- }}}
-
--- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" }, config.date_format, 30 )
 
@@ -133,8 +130,9 @@ for s = 1, screen.count() do
 
     -- Create the wibox
     mywibox[s] = awful.wibox({ position = "top", screen = s })
-    -- Add widgets to the wibox - order matters
-    mywibox[s].widgets = {
+    
+   -- Add widgets to the wibox - order matters
+   mywibox[s].widgets = {
         {
             mytaglist[s],
             mypromptbox[s],
@@ -204,15 +202,20 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
     -- Application Launchers
     awful.key({ modkey,           }, "n", function () awful.util.spawn(config.apps.tmux) end),
-    awful.key({ modkey,           }, "p", function () awful.util.spawn(config.apps.launcher) end),
-    awful.key({ modkey,           }, "b", function () awful.util.spawn("/home/gregf/code/bin/gentoobugs/gentoobugs.rb") end),
-    awful.key({ modkey,           }, "o", function () awful.util.spawn("/home/gregf/code/bin/clipboard/clipboard.sh") end),
-    awful.key({ modkey,           }, "g", function () awful.util.spawn("/home/gregf/code/bin/google/google.sh") end),
-    awful.key({ modkey,           }, "y", function () awful.util.spawn("/home/gregf/code/bin/youtube/youtube.sh") end),
+    awful.key({ modkey            }, "p",     function ()
+    awful.util.spawn("dmenu_run -i -b -p 'Run command:' -nb '" .. 
+        beautiful.bg_normal .. "' -nf '" .. beautiful.fg_normal .. 
+        "' -sb '" .. beautiful.bg_focus .. 
+        "' -sf '" .. beautiful.fg_focus .. "'") 
+    end),
+    awful.key({ modkey,           }, "b", function () awful.util.spawn("/home/gregf/bingentoobugs") end),
+    awful.key({ modkey,           }, "o", function () awful.util.spawn("/home/gregf/bin/clipboard") end),
+    awful.key({ modkey,           }, "g", function () awful.util.spawn("/home/gregf/bin/google") end),
+    awful.key({ modkey,           }, "y", function () awful.util.spawn("/home/gregf/bin/youtube") end),
+    awful.key({ modkey,           }, "i", function () awful.util.spawn("/home/gregf/bin/uzbl") end),
     awful.key({ modkey,           }, "m", function () awful.util.spawn(config.apps.mail) end),
     awful.key({ modkey,           }, "l", function () awful.util.spawn(config.apps.music) end),
     awful.key({ config.keys.super,           }, "t", function () awful.util.spawn(config.apps.filemanager) end),
-    awful.key({ modkey,           }, "i", function () awful.util.spawn(config.apps.irc) end),
     awful.key({ modkey,           }, "h", function () awful.util.spawn("huludesktop") end),
     awful.key({ modkey,           }, "k", function () awful.util.spawn(config.apps.graphical_editor) end)
 
@@ -300,6 +303,8 @@ awful.rules.rules = {
       properties = { tag = tags[1][9] } },
     { rule = { class = "Gajim" },
       properties = { tag = tags[1][3] } },
+    { rule = { class = ".*Gajim" },
+      properties = { tag = tags[1][3] }, callback   = awful.client.setslave },
     { rule = { class = "Chrome" },
       properties = { tag = tags[1][2] } },
     { rule = { class = "Exe" },
