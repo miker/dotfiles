@@ -133,7 +133,6 @@ alias ra="echo 'awful.util.restart()' | awesome-client -"
 alias sv="gvim --remote-tab-silent"
 alias smv="s mv"
 alias srm="s rm"
-alias n="nitrogen ~/media/images/wallpaper/"
 alias tmr="tmux attach-session"
 alias images='feh -d -x -F -Z $PWD'
 alias wgetlist="wget -c -i"
