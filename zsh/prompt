@@ -167,4 +167,21 @@ function precmd() {
     vcs_info 'prompt'
 }
 
+bindkey -v
+zle-keymap-select () {
+if [[ ! $TERM == "linux" ]]; then
+    if [[ $KEYMAP = vicmd ]]; then
+      echo -ne "\033]12;#ff6565\007"
+    else
+      echo -ne "\033]12;#07A5FF\007"
+    fi
+fi
+}; zle -N zle-keymap-select
+zle-line-init () {
+if [[ ! $TERM == "linux" ]]; then
+  zle -K viins
+  echo -ne "\033]12;#07A5FF\007"
+fi
+}; zle -N zle-line-init
+
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
