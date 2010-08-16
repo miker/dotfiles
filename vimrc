@@ -284,7 +284,7 @@ set statusline+=%r      "read only flag
 set statusline+=%m      "modified flag
 
 " display current git branch
-set statusline+=%{GitBranchInfoString()}
+set statusline+=%{fugitive#statusline()}
 
 "display a warning if &et is wrong, or we have mixed-indenting
 set statusline+=%#error#
@@ -329,11 +329,23 @@ else
     hi CurrentLine guifg=white guibg=lightblue
 endif
 
+" If we have a BOM, always honour that rather than trying to guess.
+if &fileencodings !~? "ucs-bom"
+  set fileencodings^=ucs-bom
+endif
+
 " Always check for UTF-8 when trying to determine encodings.
 if &fileencodings !~? "utf-8"
-    set fileencodings+=utf-8
-else
-    set fileencodings+=default
+  " If we have to add this, the default encoding is not Unicode.
+  " We use this fact later to revert to the default encoding in plaintext/empty
+  " files.
+  let g:added_fenc_utf8 = 1
+  set fileencodings+=utf-8
+endif
+
+" Make sure we have a sane fallback for encoding detection
+if &fileencodings !~? "default"
+  set fileencodings+=default
 endif
 
 " {{{ Terminal fixes
@@ -400,7 +412,7 @@ nmap <C-J> gqap
 vmap <C-J> gq
 imap <C-J> <C-O>gqap
 
-imap ;; <Esc>
+imap jj <Esc>
 
 " Delete line with CTRL-K
 map <C-K> dd
@@ -462,8 +474,7 @@ vmap P p :call setreg('"', getreg('0')) <CR>
 imap <C-F> <C-R>=expand("%")<CR>
 
 " Return to visual mode after indenting
-xmap < <gv
-xmap > >gv
+xmap < <gv xmap > >gv
 
 " }}}
 
@@ -788,7 +799,7 @@ if has("autocmd")
     autocmd BufWritePre *.cpp,*.hpp,*.i,
                 \ *.rb,*.pl,*.sh,*.bash,*.plx,
                 \ *.ebuild,*.exheres-0,*.exlib,
-                \ *.e{build,class} 
+                \ *.e{build,class}
                 \ :call StripTrailingWhitespace()
 
     " Gentoo-specific settings for ebuilds.  These are the federally-mandated
@@ -818,6 +829,7 @@ if has("autocmd")
     " When editing a crontab file, set backupcopy to yes rather than auto. See
     " :help crontab and bug #53437.
     autocmd FileType crontab set backupcopy=yes
+
 endif
 
 
@@ -839,7 +851,7 @@ if (has("gui_running"))
     colorscheme two2tango
     "set guifont=Droid\ Sans\ Mono\ 12
     set guifont=inconsolata\ 14
-    set mousem=popup 
+    set mousem=popup
     set selection=exclusive " Allow one char past EOL
     set ttymouse=xterm2 " Terminal type for mouse code recognition
     set mousehide
