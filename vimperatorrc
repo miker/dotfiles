@@ -20,7 +20,7 @@ set complete=lbt
 set wildoptions=auto
 set wildmode=list:longest,full
 set history=10000
-set noinsertmode
+"set noinsertmode
 set showstatuslinks=2
 set showtabline=0
 
