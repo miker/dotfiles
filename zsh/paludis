@@ -9,7 +9,7 @@ if [[ -x /usr/bin/cave ]]; then
     #export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --fetch-jobs 2"
     export CAVE_RESUME_OPTIONS="--resume-file ${CAVE_RESUME_FILE}"
 
-    alias c="export LC_ALL=C && s cave"
+    alias c="s cave"
     alias cr="c resolve"
     alias crx="cr -x"
     alias cre="cr installed-packages"
@@ -24,10 +24,11 @@ if [[ -x /usr/bin/cave ]]; then
     alias cres="c resume -f ${CAVE_RESUME_FILE}"
     alias syn="c sync"
     alias  cu="c uninstall -x "
-    alias  cU="cu --remove-if-dependent */*"
-    alias cuu='cu --uninstalls-may-break */*'
+    alias  cU="cu --remove-if-dependent '*/*'"
+    alias cuu="cu --uninstalls-may-break '*/*'"
 
     alias ec="s eclectic config interactive"
+    alias dp="s dispatch-config"
 
     alias ex="c print-id-executables"
     alias sets="c print-sets"
