@@ -13,7 +13,7 @@ DEFAULTWM='awesome'
 
 # Set some enviroment varibles
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin
-export TMP="${HOME}/.tmp"
+export TMP="${HOME}/tmp"
 export TMDIR="${TMP}"
 export PAGER='most'
 export TERMCMD=/usr/bin/urxvt
@@ -100,9 +100,11 @@ debug)
 esac
 
 # Run these after the window manager has been started
-~/code/bin/wallpaper/wallpaper.rb &
+${HOME}/bin/wallpaper &
 nice -n10 ${BROWSER} & 
 nice -n19 gpodder &
+gajim &
+uxrvtc -name mutt -e mutt
 xsetroot -cursor_name left_ptr &
 caffeine &
 conky -d &
