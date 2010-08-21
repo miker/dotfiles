@@ -27,3 +27,6 @@ au BufNewFile,BufRead .autotest			set filetype=ruby
 
 " eRuby
 au BufNewFile,BufRead *.erb,*.rhtml			set filetype=eruby
+
+" God
+au BufNewFile,BufRead *.god set filetype=ruby

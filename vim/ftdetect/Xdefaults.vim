@@ -1,1 +1,1 @@
-autocmd bufwritepost .Xdefaults !xrdb -merge ~/.Xdefaults
+autocmd BufWritePre .Xdefaults :!xrdb -load ~/.Xdefaults
