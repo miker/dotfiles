@@ -26,6 +26,9 @@ OpenBSD)
     alias packages="wget ftp://ftp.openbsd.org/pub/OpenBSD/`uname -r`/packages/`machine -a`/index.txt -O /tmp/packages.list && $PAGER /tmp/packages.list"
     alias rm='nocorrect rm -i'
 
+    export LANG="C"
+    export LC_ALL="C"
+
 ;;
 FreeBSD)
     SSH_ASKPASS="/usr/local/bin/ssh-askpass-gtk2"
@@ -36,7 +39,6 @@ FreeBSD)
     alias portu="sudo csup -L 2 /etc/ports-cvsup"
     alias srcu="sudo csup -L 2 /etc/src-cvsup"
     export LANG="en_US.UTF-8"
-    export LC_CTYPE="en_US.UTF-8"
     export LC_ALL="en_US.UTF-8"
 
 ;;
@@ -44,8 +46,8 @@ Linux)
     #export SSH_ASKPASS="/usr/bin/gtk2-ssh-askpass"
 
     # We Want utf8
-    export LC_CTYPE=en_US.utf8
-    export LC_ALL=en_US.UTF8
+    export LANG="en_US.utf8"
+    export LC_ALL="en_US.UTF8"
 
     #aliases
     alias ls='ls -F --color --human-readable'
