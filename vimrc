@@ -14,12 +14,6 @@ call pathogen#helptags()
 set encoding=utf-8 nobomb    " BOM often causes trouble
 " Turn On word-wrapping
 set wrap
-" autoident
-set autoindent
-" Turn off backups
-set backup
-" Turn off swapfile
-set noswapfile
 " Soft tab 4
 set sw=4
 " Soft tab stop
@@ -30,20 +24,14 @@ set ts=4
 set showmode
 " Expand tabs to spaces
 set expandtab
-" Backups directory if on
-set backupdir=~/.backups/
 " Line breaks for linewrap
 set linebreak
 " Backspace over everything
 set bs=2
-" Auto indent
-set autoindent
 " No startup messages
 set shm+=atmI
 " Show matching brackets
 set showmatch
-" Temporary directory
-set dir=~/.tmp/vim/
 " Universal clipboard
 set clipboard=unnamed
 " Movement keys for wrapping
@@ -72,8 +60,6 @@ set breakat=\ ^I!@*-+;:,./?
 set nocompatible
 " Enable wild menu
 set wildmenu
-" Smart tab
-set smarttab
 " override ignorecase when there are uppercase characters
 set smartcase
 " Buffer updates
@@ -85,7 +71,7 @@ set printoptions+=syntax:y,number:y
 " improves performance -- let OS decide when to flush disk
 set nofsync
 " ruler
-set ruler
+set ruler " always show the ruler in the status bar
 set undolevels=999
 " ignore these in auto complete
 set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.info,.aux,.log,.dvi,..out
@@ -104,6 +90,33 @@ set ignorecase " ignore case search
 set smartcase  " override 'ignorecase' if the search pattern contains upper case
 set incsearch  " incremental search
 set nohlsearch
+set nostartofline " don't move the sursor to the start of the line when scrolling
+
+if v:version >= 703
+    " undo - set up persistent undo
+    set undofile
+    set undodir=~/.undo
+endif
+
+set errorbells                         " Get the error noticed
+set novisualbell                       " Shut the bell up
+
+set report=0 " report every change to me
+set tabstop=4
+set smarttab
+set shiftwidth=4
+set autoindent
+set backspace=start,indent,eol
+
+
+" == BACKUP ========================================================
+set nobackup                           " do not keep backups after close
+set nowritebackup                      " do not keep a backup while working
+set noswapfile                         " don't keep swp files either
+set backupdir=$HOME/.vim/backup        " store backups under ~/.vim/backup
+set backupcopy=yes                     " keep attributes of original file
+set backupskip=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*
+set directory=~/.vim/swap,~/tmp,.      " keep swp files under ~/.vim/swap
 
 " {{{ Set a shell
 set shell=sh
@@ -152,6 +165,12 @@ endif
 if has("syntax")
     syntax on
 endif
+
+" Highlight the diff, not the code
+if &diff
+    syntax off
+endif
+
 " }}}
 
 " {{{ Enable folding
@@ -224,19 +243,17 @@ let g:NERDShutUp=1
 " Settings for git status bar plugin
 let g:git_branch_status_head_current=1
 " NERDTree settings
-let NERDChristmasTree = 1
-let NERDTreeQuitOnOpen = 0
-let NERDTreeHighlightCursorline = 1
-let NERDTreeMapActivateNode='<CR>'
+let g:NERDChristmasTree = 1
+let g:NERDTreeQuitOnOpen = 0
+let g:NERDTreeHighlightCursorline = 1
+let g:NERDTreeMapActivateNode='<CR>'
 let g:NERDTreeChDirMode = 1
-let NERDTreeIgnore=['\.git','\.DS_Store', '\.svn', '\.cvs', '\.log']
+let g:NERDTreeIgnore=['\.git','\.DS_Store', '\.svn', '\.cvs', '\.log']
 
 " Append status line if enough room
 let g:fastgit_statusline = 'a'
 
 let g:gist_clip_command = 'xclip -selection clipboard'
-
-let g:git_branch_status_nogit=""
 
 let g:syntastic_enable_signs = 1
 let g:syntastic_auto_loc_list = 1
@@ -307,7 +324,7 @@ set statusline+=%{StatuslineCurrentHighlight()}\ \ "current highlight
 set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
 set statusline+=\ %P    "percent through file
-set laststatus=2
+set laststatus=2        " Always show status line
 
 " }}}
 
@@ -670,16 +687,12 @@ if (version >= 700)
             else
                 let s .= '%#TabLine#'
             endif
-
             " set the tab page number (for mouse clicks)
             let s .= '%' . i . 'T'
-
             " the label is made by MyTabLabel()
             let s .= ' %{MyTabLabel(' . i . ')} '
-
             let i = i + 1
         endwhile
-
         " after the last tab fill with TabLineFill and reset tab page nr
         let s .= '%#TabLineFill#%T'
         return s
@@ -700,6 +713,9 @@ if has("eval")
         if winwidth(0) > 90
             setlocal foldcolumn=0
             setlocal number
+            if v:version >= 703
+                setlocal rnu
+            endif
         else
             setlocal nonumber
             setlocal foldcolumn=0
@@ -781,7 +797,6 @@ if isdirectory(expand("$VIMRUNTIME/ftplugin"))
     endif
 endif
 
-
 if has("autocmd")
     au VimLeave * set nospell
 
@@ -793,8 +808,6 @@ if has("autocmd")
 
     "recalculate the tab warning flag when idle and after writing
     autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
-
-    autocmd BufWritePre .Xdefaults :!xrdb -load ~/.Xdefaults
 
     autocmd BufWritePre *.cpp,*.hpp,*.i,
                 \ *.rb,*.pl,*.sh,*.bash,*.plx,
@@ -831,18 +844,13 @@ if has("autocmd")
     autocmd FileType crontab set backupcopy=yes
 
 endif
-
-
 " }}}
 
 " {{{ GUI Options & Colorschemes
 
-"improve autocomplete menu color
-highlight pmenu ctermbg=238 gui=bold
-
 if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt'
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
-    colorscheme candyman
+    colorscheme rdark-terminal
 else
     colorscheme jammy
 endif
