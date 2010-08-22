@@ -2,7 +2,7 @@ scriptencoding utf-8
 " ----------------------------------------------------------------------------
 " File:     ~/.vimrc
 " Author:   Greg Fitzgerald <netzdamon@gmail.com>
-" Modified: Tue 29 Feb 2010 01:22:55 PM EDT
+" Modified: Sat 21 Aug 2010 08:03:21 PM EDT
 " ----------------------------------------------------------------------------
 "
 filetype off
@@ -26,8 +26,6 @@ set showmode
 set expandtab
 " Line breaks for linewrap
 set linebreak
-" Backspace over everything
-set bs=2
 " No startup messages
 set shm+=atmI
 " Show matching brackets
@@ -60,63 +58,51 @@ set breakat=\ ^I!@*-+;:,./?
 set nocompatible
 " Enable wild menu
 set wildmenu
-" override ignorecase when there are uppercase characters
-set smartcase
 " Buffer updates
 set lazyredraw
 " Faster scrolling updates when on a decent connection.
 set ttyfast
 " Print line numbers and syntax highlighting
 set printoptions+=syntax:y,number:y
-" improves performance -- let OS decide when to flush disk
-set nofsync
-" ruler
 set ruler " always show the ruler in the status bar
 set undolevels=999
 " ignore these in auto complete
-set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,.info,.aux,.log,.dvi,..out
+set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.la,*.so,*.obj,*.swp,*.log
 set wildchar=<TAB>
 set cmdheight=2
-set showtabline=1               " display tabbar
+set showtabline=1 " display tabbar
 " Set some global options for spell check
 set spelllang=en_us
 set spellfile=~/.vim/spell/spellfile.add
 set switchbuf=usetab
 set scrolloff=2 " minlines to show around cursor
 set sidescrolloff=4 " minchars to show around cursor
-" Search
 set wrapscan   " search wrap around the end of the file
 set ignorecase " ignore case search
 set smartcase  " override 'ignorecase' if the search pattern contains upper case
 set incsearch  " incremental search
-set nohlsearch
+set nohlsearch " Don't highlight old searches on start
 set nostartofline " don't move the sursor to the start of the line when scrolling
 
 if v:version >= 703
     " undo - set up persistent undo
     set undofile
-    set undodir=~/.undo
+    set undodir=$HOME/.undo
 endif
 
-set errorbells                         " Get the error noticed
-set novisualbell                       " Shut the bell up
+set errorbells " Get the error noticed
+set novisualbell " Shut the bell up
 
-set report=0 " report every change to me
-set tabstop=4
-set smarttab
-set shiftwidth=4
-set autoindent
-set backspace=start,indent,eol
+set report=0 " always report changes
+set backspace=start,indent,eol " Backspace over everything
 
-
-" == BACKUP ========================================================
 set nobackup                           " do not keep backups after close
 set nowritebackup                      " do not keep a backup while working
 set noswapfile                         " don't keep swp files either
-set backupdir=$HOME/.vim/backup        " store backups under ~/.vim/backup
+set backupdir=$HOME/.backup        " store backups under ~/.vim/backup
 set backupcopy=yes                     " keep attributes of original file
-set backupskip=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*
-set directory=~/.vim/swap,~/tmp,.      " keep swp files under ~/.vim/swap
+set backupskip=/tmp/*,$TMPDIR/*,$TMP/*
+set directory=$HOME/.vim/swap,$TMPDIR,$TMP    " keep swp files under ~/.vim/swap
 
 " {{{ Set a shell
 set shell=sh
@@ -176,7 +162,7 @@ endif
 " {{{ Enable folding
 set nofoldenable
 set foldmethod=marker
-"set foldlevelstart=0
+set foldlevelstart=0
 set foldnestmax=3       "deepest fold is 3 levels
 " }}}
 
@@ -248,7 +234,7 @@ let g:NERDTreeQuitOnOpen = 0
 let g:NERDTreeHighlightCursorline = 1
 let g:NERDTreeMapActivateNode='<CR>'
 let g:NERDTreeChDirMode = 1
-let g:NERDTreeIgnore=['\.git','\.DS_Store', '\.svn', '\.cvs', '\.log']
+let g:NERDTreeIgnore=['\.git', '\.svn', '\.cvs', '\.log']
 
 " Append status line if enough room
 let g:fastgit_statusline = 'a'
@@ -257,7 +243,6 @@ let g:gist_clip_command = 'xclip -selection clipboard'
 
 let g:syntastic_enable_signs = 1
 let g:syntastic_auto_loc_list = 1
-
 
 " Hightlight redundent spaces
 highlight RedundantSpaces ctermbg=red guibg=red
@@ -384,6 +369,7 @@ map <leader>nh :nohls <CR>
 nmap <silent> <C-H> :silent nohls<CR>
 noremap <Leader>res :call Restart()<CR>
 noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
+noremap <silent> <leader>uh :call UpdateRcHeader()<CR>
 noremap <Leader>ss :call StripTrailingWhitespace()<CR>
 " Setup mini ide for a project of mine
 noremap <Leader>md :call Mideo()<CR>
@@ -700,12 +686,12 @@ if (version >= 700)
 endif
 
 " Update header
-fun! <SID>UpdateRcHeader()
+function UpdateRcHeader()
     let l:c=col(".")
     let l:l=line(".")
     silent 1,10 s/\(Modified:\).*/\="Modified: ".strftime("%c")/
     call cursor(l:l, l:c)
-endfun
+endfunction
 
 if has("eval")
     " If we're in a wide window, enable line numbers.
@@ -724,26 +710,27 @@ if has("eval")
 endif
 
 function Athenry()
-    chdir /home/gregf/code/projects/active/athenry/
-    open TODO.md
+    chdir /home/gregf/work/projects/active/athenry/
+    open TODO.mkd
     NERDTreeFromBookmark athenry
 endfunction
 
 function Swindle()
-    chdir /home/gregf/code/projects/active/swindle/
+    chdir /home/gregf/work/projects/active/swindle/
     open TODO.mkd
     NERDTreeFromBookmark swindle
 endfunction
 
 function Mideo()
-    chdir /home/gregf/code/projects/active/mideo/
-    open TODO
+    chdir /home/gregf/work/projects/active/mideo/
+    open TODO.mkd
     NERDTreeFromBookmark mideo
 endfunction
 
-function Sass()
-    chdir /home/gregf/rewrite/blueprint/
-    NERDTree
+function OSnap()
+    chdir /home/gregf/work/projects/active/osnap/
+    open TODO
+    NERDTreeFromBookmark osnap 
 endfunction
 
 function ClearCache()
@@ -857,7 +844,7 @@ endif
 
 if (has("gui_running"))
     colorscheme two2tango
-    "set guifont=Droid\ Sans\ Mono\ 12
+    set guifont=Droid\ Sans\ Mono\ 10
     set guifont=inconsolata\ 14
     set mousem=popup
     set selection=exclusive " Allow one char past EOL
