@@ -2,3 +2,4 @@ au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,~/.tmp/mu
         \ :set ft=mail |
         \ :set spell |
         \ :set tw=72 |
+        \ :call HelpFixSpelling() |
