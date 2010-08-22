@@ -174,36 +174,6 @@ iab #e #!/usr/bin/env
 iab #r #!/usr/bin/ruby
 iab #b #!/bin/bash
 
-iab definatley definitely
-iab wahts what's
-iab responce response
-iab whats what's
-iab hows how's
-iab i I
-iab irc IRC
-iab isnt isn't
-iab wasnt wasn't
-iab internet Internet
-iab cant can't
-iab peolpe people
-iab linux Linux
-iab bsd BSD
-iab openbsd OpenBSD
-iab freebsd FreeBSD
-iab teh the
-iab iso ISO
-iab gwi GWI
-iab fairpoint FairPoint
-iab intranet Intranet
-iab athenry Athenry
-iab mideo Mideo
-iab paludis Paludis
-iab exherbo Exherbo
-iab gentoo Gentoo
-iab funtoo Funtoo
-iab Ok OK
-iab ok OK
-
 " }}}
 
 " {{{ Plugin settings
