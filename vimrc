@@ -73,7 +73,6 @@ set cmdheight=2
 set showtabline=1 " display tabbar
 " Set some global options for spell check
 set spelllang=en_us
-set spellfile=~/.vim/spell/spellfile.add
 set switchbuf=usetab
 set scrolloff=2 " minlines to show around cursor
 set sidescrolloff=4 " minchars to show around cursor
@@ -87,7 +86,7 @@ set nostartofline " don't move the sursor to the start of the line when scrollin
 if v:version >= 703
     " undo - set up persistent undo
     set undofile
-    set undodir=$HOME/.undo
+    set undodir=~/.undo
 endif
 
 set errorbells " Get the error noticed
@@ -96,13 +95,13 @@ set novisualbell " Shut the bell up
 set report=0 " always report changes
 set backspace=start,indent,eol " Backspace over everything
 
-set nobackup                           " do not keep backups after close
+"set nobackup                           " do not keep backups after close
 set nowritebackup                      " do not keep a backup while working
 set noswapfile                         " don't keep swp files either
-set backupdir=$HOME/.backup        " store backups under ~/.vim/backup
+set backupdir=~/.backups        " store backups under ~/.vim/backup
 set backupcopy=yes                     " keep attributes of original file
 set backupskip=/tmp/*,$TMPDIR/*,$TMP/*
-set directory=$HOME/.vim/swap,$TMPDIR,$TMP    " keep swp files under ~/.vim/swap
+set directory=/tmp/vimswap    " keep swp files under ~/.vim/swap
 
 " {{{ Set a shell
 set shell=sh
@@ -167,7 +166,8 @@ set foldnestmax=3       "deepest fold is 3 levels
 " }}}
 
 " {{{iabbrev
-iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+iab <DATE> <c-r>=strftime("%d/%m/%y")<CR>
+iab <TIME> <c-r>=strftime("%H:%M:%S")<CR>
 
 iab #p #!/usr/bin/perl
 iab #e #!/usr/bin/env
@@ -375,6 +375,8 @@ command! -nargs=+ PopupMap call s:popupMap(<f-args>)
 vmap bq :call VBlockquote ()<CR>
 vmap bqt :call VBlockquote("
 
+nmap <Leader>ms :wa<CR>:mksession! ~/.sessions/
+nmap <Leader>sl :wa<CR>:so ~/.sessions/
 
 " This group is stolen from mislav's vimrc
 " http://github.com/mislav/dotfiles/blob/master/vimrc
@@ -669,9 +671,7 @@ if has("eval")
         if winwidth(0) > 90
             setlocal foldcolumn=0
             setlocal number
-            if v:version >= 703
-                setlocal rnu
-            endif
+            setlocal nu
         else
             setlocal nonumber
             setlocal foldcolumn=0
@@ -700,7 +700,7 @@ endfunction
 function OSnap()
     chdir /home/gregf/work/projects/active/osnap/
     open TODO
-    NERDTreeFromBookmark osnap 
+    NERDTreeFromBookmark osnap
 endfunction
 
 function ClearCache()
