@@ -1,5 +1,11 @@
 #!/bin/zsh -f
 
+# global aliases
+alias -g SAD='&> /dev/null &|'
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+
 # file associations
 alias -s html=uzbl --uri=
 alias -s org=uzbl --uri=
@@ -38,7 +44,8 @@ alias la="l -a"
 alias lla="l -la"
 alias lg="l | grep -i $1"
 
-# nocorrect 
+
+# nocorrect
 alias rm='nocorrect rm'
 alias cp='nocorrect cp'
 alias mv='nocorrect mv'
@@ -63,6 +70,7 @@ alias grep='LC_ALL="C" grep'
 alias g="grep"
 alias p="${PAGER}"
 alias repo="cd /var/db/paludis/repositories/"
+alias a='ack'
 
 # default options
 alias ssh='ssh -AX'
@@ -79,20 +87,18 @@ alias poweroff="s poweroff"
 alias reboot="s reboot"
 alias shred='nocorrect ionice -c3 /usr/bin/shred -fuzv'
 alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l1 -v -r'
-alias pwgen='pwgen -sBnc 10'
+alias pwgen='pwgen -sBync 12'
 alias grep="grep -Hn"
+alias tudu='LC_ALL="C" tudu'
 
 # Rails
-alias sc='script/console'
-alias sp='script/plugin'
-alias db='script/dbconsole'
-alias a='autotest -rails'
 alias tlog='tail -f log/development.log'
 alias rst='touch tmp/restart.txt'
 alias migrate='rake db:migrate db:test:clone'
-alias remigrate="rake db:migrate && rake db:migrate:redo && rake db:schema:dump db:test:prepare"
+alias remigrate="rm db/*.sqlite3; rake db:migrate:redo && rake db:schema:dump && rake db:test:prepare"
 alias prod='export RAILS_ENV="production"'
 alias dev='export RAILS_ENV="dev"'
+alias b='bundle'
 
 # git
 alias gl="git pull"
@@ -151,6 +157,9 @@ alias minicom='minicom -c on'
 alias mkchangelog='git log --stat --name-only --date=short --abbrev-commit > ChangeLog'
 alias googlecl='/usr/bin/google'
 alias playaudio='mplayer -cdrom-device /dev/cdrom cdda://'
+alias ad='asciidoc -n -a data-uri -a toc'
+alias wget-mirror="wget -e robots=off --timestamping --recursive --level=inf --no-parent --page-requisites --convert-links --backup-converted"
+alias wget-fullpage="wget -e robots=off --page-requisites --span-hosts --convert-links"
 
 #games
 alias torchlight="wine ~/.wine/drive_c/Program\ Files/Runic\ Games/Torchlight/Torchlight.exe"
