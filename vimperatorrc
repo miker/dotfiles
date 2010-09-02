@@ -22,7 +22,6 @@ set wildmode=list:longest,full
 set history=10000
 "set noinsertmode
 set showstatuslinks=2
-set showtabline=0
 
 " emulate vim's "after"
 set runtimepath+=~/.vimperator/after,~/vimperator/after
@@ -62,7 +61,7 @@ map <silent> <C-l> :noh<CR>
 nmap c <C-z>
 
 "how/hide the buftabbar
-nmap <silent> <A-u> :set invbuftabs<CR>
+"nmap <silent> <A-u> :set invbuftabs<CR>
 
 "Session Manager
 noremap <leader>sl :sessionmanager load<CR>
@@ -86,8 +85,6 @@ set! browser.tabs.closeButtons=2
 set! browser.tabs.loadBookmarksInBackground=true
 " open tabs by javascript in background
 set! browser.tabs.loadDivertedInBackground=true
-" allow lots of popups for ldr
-"set! dom.popup_maximum=1000
 set! browser.backspace_action=0
 set! geo.enabled=false
 set! general.warnOnAboutConfig=false
@@ -105,9 +102,10 @@ set! ui.submenuDelay=0
 set! browser.urlbar.clickSelectsAll=true
 set! browser.urlbar.doubleClickSelectsAll=false
 set! browser.enable_automatic_image_resizing=false
+set! network.proxy.socks_remote_dns=true
 
 " ==================== colorscheme ==================== "
-colorscheme zenburn
+colorscheme customzenburn
 
 " force disable ime in commandline
 style -name commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
@@ -120,8 +118,8 @@ autocmd LocationChange .* :js modes.passAllKeys = /google.com\.com\/reader/.test
 " {{{ Custom Colors
 "
 " Buftab styling
-hi BufTab padding-left: 5px; padding-right: 5px;
-hi BufTabSelected background: #343434; padding-left: 5px; padding-right: 5px;
+"hi BufTab padding-left: 5px; padding-right: 5px;
+"hi BufTabSelected background: #343434; padding-left: 5px; padding-right: 5px;
 
 " }}}
 
@@ -176,6 +174,7 @@ EOF
 " and now use it in mappings (':h key-notation'):
 map <silent> <F8> :js toggle_element('toolbar-menubar')<CR>
 map <silent> <F9> :js toggle_element('nav-bar')<CR>
+
 
 " Quickmarks
 delqm!
