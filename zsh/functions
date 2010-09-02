@@ -404,15 +404,21 @@ function sanitize {
     chown -R ${USER}:users "$@"
 }
 
-# Start nginx and tail the logfile catch ^C and kill nginx
-function ss {
-    TRAPINT() {
-        print "Caught Control C, shutting down nginx"
-        sudo /etc/init.d/nginx stop
-    }
-    sudo /etc/init.d/nginx start tail -f
-    log/development.log
+# Stolen:
+# http://github.com/nono/dotfiles/blob/master/zshrc
+# Rails
+function rails_command {
+  local cmd=$1
+  shift
+  if [ -e script/rails ]; then
+    rails $cmd "$@"
+  else
+    script/$cmd "$@"
+  fi
 }
+function ss { rails_command "server" "thin" "$@" }
+function sc { rails_command "console" "$@" }
+function sg { rails_command "generate" "$@" }
 
 # Stolen:
 # http://cinderwick.ca/files/configs/bashrc
@@ -555,6 +561,10 @@ function mkdvdiso {
 
 function mkisofs {
     genisoimage -o cd.iso -R -J $*
+}
+
+function getlibs {
+    readelf -d /bin/mount | grep -i needed
 }
 
 # vim: set et sw=4 sts=4 ts=4 ft=zsh :
