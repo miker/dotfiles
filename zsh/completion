@@ -4,9 +4,6 @@ zstyle :compinstall filename '$HOME/.zshrc'
 autoload -U compinit
 compinit -u
 
-# Import custom completion files
-#autoload -U ~/.zsh/Completion/*(:t)
-
 # Follow GNU LS_COLORS
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
