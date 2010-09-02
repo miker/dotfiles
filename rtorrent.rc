@@ -14,14 +14,14 @@ max_peers_seed = 50
 max_uploads = 8
 
 # Download/Upload speed limits
-download_rate = 0 
+download_rate = 0
 upload_rate = 10
 
 # Default download directory
-directory = /home/gregf/media/downloads/torrents/
+directory = /home/gregf/media/downloads/torrents/downloading/
 
 # Session directory
-session = /home/gregf/.rtorrent/session
+session = /home/gregf/media/downloads/torrents/session/
 
 # Ports to use for listening
 port_range = 6881-6889
@@ -30,7 +30,7 @@ check_hash = yes
 use_udp_trackers = yes
 
 # Always try using encryption
-encryption = allow_incoming,require,require_RC4
+encryption = allow_incoming,require,require_RC4,enable_retry
 #encryption = allow_incoming,try_outgoing,enable_retry
 
 # Use DHT when needed
@@ -47,15 +47,23 @@ check_hash = no
 # Close torrents on low disk space
 schedule = low_diskspace,5,30,close_low_diskspace=500M
 
+#Every day "throttle_1" gets triggered at 01:00 and sets the download rate to unlimited, while "throttle_2" sets it to 25kb at 05:00. Using this the client may be made to perform a somewhat crude form of bandwidth scheduling. 
+#schedule = throttle_1,01:00:00,24:00:00,download_rate=0
+#schedule = throttle_2,05:00:00,24:00:00,download_rate=25 
+
 # Ratio handling
 ratio.enable=
-ratio.min.set=150
-ratio.max.set=200
+ratio.min.set=50
+ratio.max.set=100
 ratio.upload.set=100M
 
 system.method.set = group.seeding.ratio.command, d.close=
 
 # Watch directory for new torrents
-schedule = watch_directory1,5,5,"load_start=/home/gregf/*.torrent,d.set_directory=/home/gregf/media/downloads/torrents/"
-schedule = watch_directory2,5,5,"load_start=/home/gregf/media/downloads/*.torrent,d.set_directory=/home/gregf/media/downloads/torrents/"
-schedule = watch_directory3,5,5,"load_start=/home/gregf/.rtorrent/*.torrent,d.set_directory=/home/gregf/media/downloads/torrents/"
+schedule = watch_directory1,5,5,"load_start=/home/gregf/*.torrent,d.set_directory=/home/gregf/media/downloads/torrents/downloading/"
+schedule = watch_directory2,5,5,"load_start=/home/gregf/media/downloads/*.torrent,d.set_directory=/home/gregf/media/downloads/torrents/downloading/"
+schedule = watch_directory3,5,5,"load_start=/home/gregf/.rtorrent/*.torrent,d.set_directory=/home/gregf/media/downloads/torrents/downloading/"
+
+#for BSD or MacOSX use mv -n
+system.method.set_key = event.download.finished,move_complete,"execute=mv,-u,$d.get_base_path=,/home/gregf/media/downloads/torrents/finished/;d.set_directory=/home/gregf/media/downloads/torrents/finished/"
+
