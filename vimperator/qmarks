@@ -20,6 +20,12 @@ qma u http://www.lordofultima.com/en
 "" ShareTV
 qma s http://sharetv.org/user/gregf
 "" Gmail
-qma m https://mail.google.com/mail/?shva=1#
+qma m https://mail.google.com/mail/
+"Paludis
+qma p http://paludis.pioto.org/
+"Dev
+qma d http://0.0.0.0:3000/
+"api
+qma a http://www.apidock.com/
 
 " vim: ft=vimperator :
