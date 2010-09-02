@@ -81,7 +81,7 @@ set ignorecase " ignore case search
 set smartcase  " override 'ignorecase' if the search pattern contains upper case
 set incsearch  " incremental search
 set nohlsearch " Don't highlight old searches on start
-set nostartofline " don't move the sursor to the start of the line when scrolling
+set nostartofline " don't move the cursor to the start of the line when scrolling
 
 if v:version >= 703
     " undo - set up persistent undo
@@ -98,7 +98,7 @@ set backspace=start,indent,eol " Backspace over everything
 "set nobackup                           " do not keep backups after close
 set nowritebackup                      " do not keep a backup while working
 set noswapfile                         " don't keep swp files either
-set backupdir=~/.backups        " store backups under ~/.vim/backup
+set backupdir=~/.backups        " store backups under ~/.backups
 set backupcopy=yes                     " keep attributes of original file
 set backupskip=/tmp/*,$TMPDIR/*,$TMP/*
 set directory=/tmp/vimswap    " keep swp files under ~/.vim/swap
