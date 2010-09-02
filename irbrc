@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
+if RUBY_VERSION < '1.9'
+  require 'rubygems'
+end
 require 'color'
 require 'irb/completion'
 require 'irb/ext/save-history'
