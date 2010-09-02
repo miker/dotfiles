@@ -2,7 +2,7 @@
 # ----------------------------------------------------------------------------
 # File:     ~/.xinitrc
 # Author:   Greg Fitzgerald <netzdamon@gmail.com>
-# Modified: Mon 17 Aug 2009 01:54:04 PM EDT
+# Modified: Sat 21 Aug 2010 08:15:32 PM EDT
 # ----------------------------------------------------------------------------
 
 rm -f ~/.recently-used.xbel
@@ -13,7 +13,7 @@ DEFAULTWM='awesome'
 
 # Set some enviroment varibles
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin
-export TMP="${HOME}/tmp"
+export TMP="/tmp"
 export TMDIR="${TMP}"
 export PAGER='most'
 export TERMCMD=/usr/bin/urxvt
