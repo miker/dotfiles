@@ -1,1 +1,1 @@
-autocmd BufReadPost,BufNewFile,BufRead nginx.conf set syntax=nginx
+autocmd BufRead,BufNewFile nginx.*,/etc/nginx/**/* set ft=nginx

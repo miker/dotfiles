@@ -30,3 +30,6 @@ au BufNewFile,BufRead *.erb,*.rhtml			set filetype=eruby
 
 " God
 au BufNewFile,BufRead *.god set filetype=ruby
+
+" BluePill
+au BufNewFile,BufRead *.pill set filetype=ruby
