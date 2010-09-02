@@ -1,7 +1,11 @@
-#!/bin/zsh -f 
+#!/bin/zsh -f
 
 zstyle :compinstall filename '$HOME/.zshrc'
-compinit
+autoload -U compinit
+compinit -u
+
+# Import custom completion files
+#autoload -U ~/.zsh/Completion/*(:t)
 
 # Follow GNU LS_COLORS
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -11,13 +15,13 @@ zstyle ':completion:*:expand:*' keep-prefix true tag-order all-expansions
 
 # highlight parameters with uncommon names
 zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
- 
+
 # highlight aliases
 zstyle ':completion:*:aliases' list-colors "=*=$color[green]"
- 
+
 # highlight the original input.
 zstyle ':completion:*:original' list-colors "=*=$color[red];$color[bold]"
- 
+
 # highlight words like 'esac' or 'end'
 zstyle ':completion:*:reserved-words' list-colors "=*=$color[red]"
 
