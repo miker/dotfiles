@@ -98,7 +98,13 @@ alias migrate='rake db:migrate db:test:clone'
 alias remigrate="rm db/*.sqlite3; rake db:migrate:redo && rake db:schema:dump && rake db:test:prepare"
 alias prod='export RAILS_ENV="production"'
 alias dev='export RAILS_ENV="dev"'
-alias b='bundle'
+# Bundler
+alias b="bundle"
+alias bi="b install"
+alias bu="b update"
+alias bk="b check"
+alias bp="b package"
+alias bo="b open"
 
 # git
 alias gl="git pull"
