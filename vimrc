@@ -815,7 +815,8 @@ endif
 if (has("gui_running"))
     colorscheme two2tango
     set guifont=Droid\ Sans\ Mono\ 10
-    set guifont=inconsolata\ 14
+    "set guifont=inconsolata\ 14
+    "set guifont=Anonymous\ Pro\ 14
     set mousem=popup
     set selection=exclusive " Allow one char past EOL
     set ttymouse=xterm2 " Terminal type for mouse code recognition
