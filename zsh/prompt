@@ -110,7 +110,7 @@ else
             lprompt '<>' $PR_RED $PR_BLUE
             rprompt '<>' $PR_RED $PR_WHITE
             ;;
-        four)
+        bertha)
             lprompt '<>' $PR_RED $PR_GREEN
             rprompt '<>' $PR_RED $PR_WHITE
             ;;
