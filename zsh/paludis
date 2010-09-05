@@ -50,6 +50,10 @@ if [[ -x /usr/bin/cave ]]; then
         fi
     }
 
+    function csrx {
+        sudo cave resolve -x "repository/$1"
+    }
+
 elif [[ -x /usr/bin/paludis ]]; then
 
     # options
