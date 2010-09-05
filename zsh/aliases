@@ -88,7 +88,6 @@ alias reboot="s reboot"
 alias shred='nocorrect ionice -c3 /usr/bin/shred -fuzv'
 alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l1 -v -r'
 alias pwgen='pwgen -sBync 12'
-alias grep="grep -Hn"
 alias tudu='LC_ALL="C" tudu'
 
 # Rails
