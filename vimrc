@@ -73,6 +73,7 @@ set cmdheight=2
 set showtabline=1 " display tabbar
 " Set some global options for spell check
 set spelllang=en_us
+set dictionary=/usr/share/dict/words " will come in handy for tab completion
 set switchbuf=usetab
 set scrolloff=2 " minlines to show around cursor
 set sidescrolloff=4 " minchars to show around cursor
