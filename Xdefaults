@@ -8,23 +8,11 @@
 XTerm*cursorBlink: false
 XTerm*showBlinkAsBold: true
 XTerm*multiScroll: true
-<<<<<<< HEAD
-XTerm*cursorColor: #73B8D9 
-XTerm*colorMode: 	true
-XTerm*pointerColor:	blue
-XTerm*pointerColor2: 	yellow
-XTerm*borderWidth:	0
-<<<<<<< HEAD:Xdefaults
-=======
-XTerm*transparent:	true
->>>>>>> 583d018... some cleanups:Xdefaults
-=======
 XTerm*cursorColor: #73B8D9
 XTerm*colorMode: true
 XTerm*pointerColor: blue
 XTerm*pointerColor2: yellow
 XTerm*borderWidth: 0
->>>>>>> upstream/master
 XTerm*scrollBar:    false
 XTerm*loginShell: true
 XTerm*eightBitInput: false
@@ -37,7 +25,11 @@ XTerm*.multiScroll: true
 XTerm*.showBlinkAsBold: true
 XTerm*.utf8: 1
 XTerm*.visualBell: true
-XTerm*faceName: terminus:size=12:antialias=true
+XTerm*faceName: terminus:size=13:antialias=true
+!XTerm*faceName: andale mono
+!XTerm*faceName: terminus:size=13
+!XTerm*faceName: droid sans mono:size=12:antialias=true
+!XTerm*faceName: inconsolata:size:12:antialias=true
 XTerm*saveLines: 10000
 XTerm*on4Clicks: all
 XTerm*colorBDMode: true
@@ -69,7 +61,7 @@ URxvt*scrollTtyOutput:  false
 URxvt*inheritPixmap:    false
 URxvt*urgentOnBell:     true
 URxvt*perl-ext-common:    default,matcher,searchable-scrollback
-URxvt*urlLauncher:  firefox-bin
+URxvt*urlLauncher:  /usr/bin/chromium
 URxvt*matcher.button:   1
 URxvt*keysym.M-u: perl:mark-yank-urls:activate_mark_mode
 URxvt*underlineURLs: true
@@ -133,7 +125,7 @@ Xft.hintstyle: hintfull
 ! }}}
 
 !{{{ Cursor
-Xcursor.theme: PolarCursorTheme
+Xcursor.theme: redglass
 Xcursor.size: 18
 ! }}}
 
@@ -149,3 +141,5 @@ urxvt*urgentOnBell: true
 *VT100.Translations: #override  \
 	Alt<Key>;:       dabbrev-expand()
 !}}}
+
+! vim: set tabstop=4 shiftwidth=4 :
