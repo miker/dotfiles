@@ -84,6 +84,7 @@ set incsearch  " incremental search
 set nohlsearch " Don't highlight old searches on start
 set nostartofline " don't move the cursor to the start of the line when scrolling
 
+
 if v:version >= 703
     " undo - set up persistent undo
     set undofile
@@ -188,12 +189,6 @@ let g:rails_statusline=1
 let g:rails_subversion=0
 let g:rails_syntax=1
 let g:browser = 'firefox -new-tab '
-
-" Supertab
-let g:SuperTabMappingForward = '<S-Tab>'
-let g:SuperTabLongestHighlight = 1
-let g:SuperTabMidWordCompletion = 1
-let g:SuperTabRetainCompletionType = 1
 
 " Settings for NERDCommenter
 let g:NERDShutUp=1
