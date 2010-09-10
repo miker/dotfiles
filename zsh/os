@@ -68,10 +68,10 @@ Linux)
     function kbuild {
         if (( EUID != 0 )); then
             echo "* You must be root to run build_kernel!"
-            exit 1
+            return 1
         else
             mount /boot
-            time ( make -j3 clean && make -j3 all && make -j3 modules_install && make -j3 install )
+            time ( make -j2 clean && make -j2 all && make -j2 modules_install && make -j2 install )
             vim /boot/grub/grub.cfg
             umount /boot
             echo "* Reboot When Your Ready..."
