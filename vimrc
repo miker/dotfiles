@@ -190,6 +190,12 @@ let g:rails_subversion=0
 let g:rails_syntax=1
 let g:browser = 'firefox -new-tab '
 
+" Supertab
+let g:SuperTabMappingForward = '<S-Tab>'
+let g:SuperTabLongestHighlight = 1
+let g:SuperTabMidWordCompletion = 1
+let g:SuperTabRetainCompletionType = 1
+
 " Settings for NERDCommenter
 let g:NERDShutUp=1
 " Settings for git status bar plugin
@@ -342,6 +348,8 @@ noremap <Leader>md :call Mideo()<CR>
 noremap <Leader>at :call Athenry()<CR>
 noremap <Leader>sw :call Swindle()<CR>
 noremap <Leader>sa :call Sass()<CR>
+" toggle paste
+set pastetoggle=<F10>
 " Reformat everything
 noremap <Leader>gq gggqG
 " Reformat paragraph
@@ -676,19 +684,19 @@ if has("eval")
 endif
 
 function Athenry()
-    chdir /home/gregf/work/projects/active/athenry/
+    chdir /home/gregf/code/projects/active/athenry/
     open TODO.mkd
     NERDTreeFromBookmark athenry
 endfunction
 
 function Swindle()
-    chdir /home/gregf/work/projects/active/swindle/
+    chdir /home/gregf/code/projects/active/swindle/
     open TODO.mkd
     NERDTreeFromBookmark swindle
 endfunction
 
 function Mideo()
-    chdir /home/gregf/work/projects/active/mideo/
+    chdir /home/miker/projects/mideo.git/
     open TODO.mkd
     NERDTreeFromBookmark mideo
 endfunction
@@ -803,16 +811,23 @@ endif
 
 if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt'
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
-    colorscheme rdark-terminal
+    colorscheme dark-ruby
+    "colorscheme rdark-terminal
+    "colorscheme lucius
+    "colorscheme zenburn
+    "colorscheme soruby
+    "colorscheme ir_black
+    "colorscheme blackboard
 else
-    colorscheme jammy
+    colorscheme lucius
 endif
 
 if (has("gui_running"))
     colorscheme two2tango
-    set guifont=Droid\ Sans\ Mono\ 10
-    "set guifont=inconsolata\ 14
-    "set guifont=Anonymous\ Pro\ 14
+    "colorscheme mustang
+    "colorscheme vilight
+    "set guifont=Droid\ Sans\ Mono\ 12
+    set guifont=inconsolata\ 20
     set mousem=popup
     set selection=exclusive " Allow one char past EOL
     set ttymouse=xterm2 " Terminal type for mouse code recognition
@@ -822,6 +837,12 @@ if (has("gui_running"))
     map! <S-Insert> <MiddleMouse>
     " set some gui options
     set guioptions=a
+    set guioptions+=m
+    set guioptions+=T
+    set guioptions+=l
+    set guioptions+=L
+    set guioptions+=r
+    set guioptions+=R
     set mouse=a
 endif
 

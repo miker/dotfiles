@@ -133,6 +133,10 @@ alias sd='export DISPLAY=:0.0'
 alias cup='cvs -z3 update -Pd'
 alias fixdbus="dbus-uuidgen --ensure"
 alias wp="~/bin/wallpaper"
+alias burniso='wodim -v dev=/dev/sr0 speed=24'
+alias burndvdiso="growisofs -speed=8 -dvd-compat -Z /dev/sr0=$*"
+alias mkdvdiso="genisoimage -o dvd.iso  -R -J -hfs $*"
+alias mkisofs="genisoimage -o cd.iso -R -J $*"
 alias biosinfo='sudo dmidecode'
 alias gnp="git-notpushed"
 alias wcyy="mplayer http://68.142.81.164:80/citadelcc_WCYY_FM\?MSWMExt\=.asf"
