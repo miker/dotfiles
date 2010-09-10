@@ -56,6 +56,7 @@ alias mkdir='nocorrect mkdir -p'
 alias which="whence -a"
 alias c="clear"
 alias s='sudo -E'
+alias sudo='sudo -E'
 alias su='s -s'
 alias ej='eject -T'
 alias k='killall'
@@ -67,7 +68,6 @@ alias mls="nice -n1 mplayer -loop 0 -shuffle"
 alias mn="nice -n1 mplayer -nosound"
 alias find='LC_ALL="C" find'
 alias grep='LC_ALL="C" grep'
-alias g="grep"
 alias p="${PAGER}"
 alias repo="cd /var/db/paludis/repositories/"
 alias a='ack'
@@ -87,7 +87,7 @@ alias poweroff="s poweroff"
 alias reboot="s reboot"
 alias shred='nocorrect ionice -c3 /usr/bin/shred -fuzv'
 alias wipe='nocorrect ionice -c3 /usr/bin/wipe -l1 -v -r'
-alias pwgen='pwgen -sBync 12'
+alias pwgen='pwgen -Bync 12'
 alias tudu='LC_ALL="C" tudu'
 
 # Rails
