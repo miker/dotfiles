@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+DATE=$(date)
+YEAR=$(date +%Y)
+AUTHOR="$(echo $GIT_AUTHOR_NAME) <$(echo $GIT_AUTHOR_EMAIL)>"
+FILENAME=$(echo $1 | sed 's/[^/]*\///')
+FILE=$(echo $FILENAME | sed 's/\..*//')
+FILEBIG=$(echo $FILE | tr '[:lower:]' '[:upper:]')
+sed     "s/%%AUTHOR%%/$AUTHOR/g;
+        s/%%DATE%%/$DATE/g;
+        s/%%YEAR%%/$YEAR/g;
+        s/%%FILENAME%%/$FILENAME/g;
+        s/%%FILE%%/$FILE/g;
+        s/%%FILEBIG%%/$FILEBIG/g;"

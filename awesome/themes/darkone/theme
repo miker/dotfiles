@@ -1,49 +1,57 @@
 ---------------------------
 -- darkone awesome theme --
 ---------------------------
+
+-- BASICS
+theme = {} 
+theme.font = "droid sans mono 10"
+
+theme.bg_normal = "#303030"
+theme.bg_focus = "#3A3A3A"
+theme.bg_urgent = "#97B26B"
  
-font = droid sans mono 12
-bg_normal = #303030
-bg_focus = #3A3A3A
-bg_urgent = #97B26B
+theme.fg_normal = "#CCCCCC"
+theme.fg_focus = "#9BB037"
+theme.fg_urgent = "#000000"
  
-fg_normal = #CCCCCC
-fg_focus = #9BB037
-fg_urgent = #000000
+theme.border_width = "3" 
+theme.border_normal = "#000000"
+theme.border_focus = "#242424"
+theme.border_marked = "#CCCCCC"
  
-border_width = 3 
-border_normal = #000000
-border_focus = #242424
-border_marked = #CCCCCC
- 
-titlebar_close_button = true
-taglist_squares = true
+theme.titlebar_close_button = true
+theme.taglist_squares = true
 
-titlebar_close_button_img_normal = /usr/share/awesome/icons/titlebar/close.png
-titlebar_close_button_img_focus = /usr/share/awesome/icons/titlebar/close.png
+-- IMAGES
+theme.layout_fairh           = "/usr/share/awesome/themes/sky/layouts/fairh.png"
+theme.layout_fairv           = "/usr/share/awesome/themes/sky/layouts/fairv.png"
+theme.layout_floating        = "/usr/share/awesome/themes/sky/layouts/floating.png"
+theme.layout_magnifier       = "/usr/share/awesome/themes/sky/layouts/magnifier.png"
+theme.layout_max             = "/usr/share/awesome/themes/sky/layouts/max.png"
+theme.layout_fullscreen      = "/usr/share/awesome/themes/sky/layouts/fullscreen.png"
+theme.layout_tilebottom      = "/usr/share/awesome/themes/sky/layouts/tilebottom.png"
+theme.layout_tileleft        = "/usr/share/awesome/themes/sky/layouts/tileleft.png"
+theme.layout_tile            = "/usr/share/awesome/themes/sky/layouts/tile.png"
+theme.layout_tiletop         = "/usr/share/awesome/themes/sky/layouts/tiletop.png"
 
-taglist_squares_sel = /usr/share/awesome/themes/default/taglist/squarefw.png
-taglist_squares_unsel = /usr/share/awesome/themes/default/taglist/squarew.png
+theme.awesome_icon           = "/usr/share/awesome/themes/sky/awesome-icon.png"
+theme.tasklist_floating_icon = "/usr/share/awesome/themes/sky/layouts/floating.png"
 
-tasklist_floating_icon = /usr/share/awesome/themes/default/tasklist/floatingw.png
+-- from default for now...
+theme.menu_submenu_icon     = "/usr/share/awesome/themes/default/submenu.png"
+theme.taglist_squares_sel   = "/usr/share/awesome/themes/default/taglist/squarefw.png"
+theme.taglist_squares_unsel = "/usr/share/awesome/themes/default/taglist/squarew.png"
 
-# You can use your own layout icons like this:
-layout_dwindle = /usr/share/awesome/themes/default/layouts/dwindlew.png
-layout_fairh = /usr/share/awesome/themes/default/layouts/fairhw.png
-layout_fairv = /usr/share/awesome/themes/default/layouts/fairvw.png
-layout_floating = /usr/share/awesome/themes/default/layouts/floatingw.png
-layout_magnifier = /usr/share/awesome/themes/default/layouts/magnifierw.png
-layout_max = /usr/share/awesome/themes/default/layouts/maxw.png
-layout_spiral = /usr/share/awesome/themes/default/layouts/spiralw.png
-layout_tilebottom = /usr/share/awesome/themes/default/layouts/tilebottomw.png
-layout_tileleft = /usr/share/awesome/themes/default/layouts/tileleftw.png
-layout_tile = /usr/share/awesome/themes/default/layouts/tilew.png
-layout_tiletop = /usr/share/awesome/themes/default/layouts/tiletopw.png
+-- MISC
+theme.wallpaper_cmd         = { "nitrogen --restore" }
+theme.taglist_squares       = "true"
+theme.titlebar_close_button = "true"
+theme.menu_height           = "15"
+theme.menu_width            = "100"
 
-awesome_icon = /usr/share/awesome/icons/awesome16.png
+-- Define the image to load
+theme.titlebar_close_button_normal = "/usr/share/awesome/themes/default/titlebar/close_normal.png"
+theme.titlebar_close_button_focus  = "/usr/share/awesome/themes/default/titlebar/close_focus.png"
 
-menu_submenu_icon = /usr/share/awesome/themes/default/submenu.png
-menu_height   = 15
-menu_width    = 250
- 
-wallpaper_cmd = nitrogen --restore
+return theme
+-- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80

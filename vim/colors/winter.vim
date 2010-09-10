@@ -5,8 +5,8 @@
 " Abstract:       A color sheme file (only for GVIM) which uses a light grey 
 "                 background makes the VIM look like the scenes of winter.
 " Author:         CHE Wenlong <chewenlong AT buaa.edu.cn>
-" Version:        1.0
-" Last Change:    September 19, 2008
+" Version:        1.1
+" Last Change:    February 12, 2009
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -31,12 +31,10 @@ let colors_name = "winter"
 
 " Common
 hi Normal           guifg=#000000   guibg=#d4d0c8   gui=NONE
-hi Visual           guibg=#ccffff                   gui=NONE
-hi Cursor           guifg=#d4d0c8   guibg=#cd0000   gui=NONE
-hi Cursorline       guibg=#ccffff
-hi lCursor          guifg=#000000   guibg=#ffffff   gui=NONE
+hi Visual           guifg=#ffffff   guibg=#000080   gui=NONE
+hi Cursor           guifg=#d4d0c8   guibg=#0000ff   gui=NONE
 hi LineNr           guifg=#707070   guibg=#e0e0e0   gui=NONE
-hi Title            guifg=#202020   guibg=NONE      gui=bold
+hi Title            guifg=#202020   guibg=NONE      gui=NONE
 hi Underlined       guifg=#202020   guibg=NONE      gui=underline
 
 " Split
@@ -48,20 +46,20 @@ hi VertSplit        guifg=#909090   guibg=#909090   gui=NONE
 hi Folded           guifg=#707070   guibg=#e0e0e0   gui=NONE
 
 " Syntax
-hi Type             guifg=#009933   guibg=NONE      gui=bold
-hi Define           guifg=#1060a0   guibg=NONE      gui=bold
-hi Comment          guifg=#0080ff   guibg=NONE      gui=NONE
-hi Constant         guifg=#a07040   guibg=NONE      gui=NONE
-hi String           guifg=#a07040   guibg=NONE      gui=NONE
-hi Number           guifg=#cd0000   guibg=NONE      gui=NONE
-hi Statement        guifg=#fc548f   guibg=NONE      gui=bold
+hi Type             guifg=#0000ff   guibg=NONE      gui=NONE
+hi Define           guifg=#0000ff   guibg=NONE      gui=NONE
+hi Comment          guifg=#008080   guibg=NONE      gui=NONE
+hi Constant         guifg=#a000a0   guibg=NONE      gui=NONE
+hi String           guifg=#880000   guibg=NONE      gui=NONE
+hi Number           guifg=#ff0000   guibg=NONE      gui=NONE
+hi Statement        guifg=#0000ff   guibg=NONE      gui=NONE
 
 " Others
-hi PreProc          guifg=#1060a0    guibg=NONE     gui=NONE
-hi Error            guifg=#ff0000    guibg=#ffffff  gui=bold,underline
-hi Todo             guifg=#ff0000    guibg=#ffff00  gui=bold,underline
-hi Special          guifg=#8b038d    guibg=NONE     gui=NONE
-hi SpecialKey       guifg=#a07040    guibg=#e0e0e0  gui=NONE
+hi PreProc          guifg=#a000a0    guibg=NONE     gui=NONE
+hi Special          guifg=#a000a0    guibg=NONE     gui=NONE
+hi SpecialKey       guifg=#a000a0    guibg=NONE     gui=NONE
+hi Error            guifg=#ff0000    guibg=#ffffff  gui=NONE,underline
+hi Todo             guifg=#ff0000    guibg=#ffff00  gui=NONE,underline
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 

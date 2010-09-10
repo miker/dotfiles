@@ -1,6 +1,2 @@
-" Vim filetype detection file for Conky config files
-"
-" $Id$
-
-au BufNewFile,BufRead *.markdown set filetype=mrkd
-au BufNewFile,BufRead *.mrkd set filetype=mrkd
+" Markdown
+autocmd BufNewFile,BufRead *.{md,mkd,mkdn,mark*} set filetype=markdown

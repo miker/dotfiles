@@ -1,0 +1,88 @@
+#!/bin/zsh -f
+
+watch=(notme)  ## watch for everybody but me
+LOGCHECK=60  ## check every ... seconds for login/logout activity
+WATCHFMT='%n %a %l from %m at %t.'
+
+
+if [[ -d /var/tmp/ccache ]]; then
+    (( ${+CCACHE_DIR} )) || export CCACHE_DIR="/var/tmp/ccache"
+    (( ${+CCACHE_SIZE} )) || export CCACHE_SIZE="2G"
+
+fi
+
+export RCDIR="/etc/init.d/"
+
+# To many stupid scripts don't unset this so I'm using an alias for now
+#export GREP_OPTIONS="--color=auto -nsi"
+(( ${+TZ} )) || export TZ="EST5EDT"
+#export MPD_HOST="/home/gregf/.mpd/socket"
+export MPD_HOST="localhost"
+export MPD_PORT="6600"
+export GIT_AUTHOR_EMAIL="netzdamon@gmail.com"
+export GIT_AUTHOR_NAME="Greg Fitzgerald"
+export GIT_COMMITTER_EMAIL=$GIT_AUTHOR_EMAIL
+export GIT_COMMITTER_NAME=$GIT_AUTHOR_NAME
+
+# Some settings for autotest
+export AUTOFEATURE="true" 
+export RSPEC="true"
+
+#Fix for growisofs
+export MKISOFS='/usr/bin/genisoimage'
+
+# Some things we want set regardless
+export MANPAGER="most"
+export PAGER="most"
+export EDITOR="vim"
+export VISUAL="vim"
+export NNTPSERVER="news.gwi.net"
+export GPG_TTY=`tty` #backticks required
+
+#custom exports for coloured less
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;47;34m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+# }}}
+
+export ACK_OPTIONS="--color"
+
+# {{{ Resource Limits
+limit stack 8192
+#limit core unlimited
+limit core 0
+limit -s
+# }}}
+
+# {{{ Setup History Options
+HISTSIZE=10000              # size of history
+LISTMAX=1000                # never ask
+NULLCMD='cat'               # use cat for > null commands
+REPORTTIME=2                # report time if execution exceeds amount of seconds
+SAVEHIST=10000              # maximum of history events to be save
+LOGCHECK=60
+watch=(notme)               # watch login/logout
+WORDCHARS="*?_-.[]~/&;!#$%^(){}<>"
+                            # part of word in line editor
+HISTFILE=${HOME}/.history_zsh
+DIRSTACKSIZE=16
+# }}}
+
+# {{{ Term Settings
+#auto logout after timeout in seconds
+
+if [[ $TERM == "linux" ]]; then
+    TMOUT=1800
+fi
+
+## if we are in X then disable TMOUT
+case $TERM in
+    xterm*|rxvt|(dt|k|E)term|rxvt-*)
+    unset TMOUT
+    ;;
+esac
+

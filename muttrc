@@ -1,13 +1,18 @@
-###############################################################################
-# Mutt settings file for Greg Fitzgerald <netzdamon@gmail.com>
-#
-# Most recent update: Sun 25 May 2008 02:54:39 PM EDT
-#
-###############################################################################
-###############################################################################
-# I do not include this for the sake it has some passwords.
+# ----------------------------------------------------------------------------
+# File:     ~/.muttrc
+# Author:   Greg Fitzgerald <netzdamon@gmail.com>
+# Modified: Sat 27 Jun 2009 11:56:22 PM EDT
+# ----------------------------------------------------------------------------
+
+# {{{ Imap Settings
+
+#-----------------------------------------------------------------------------
+# I do not include this because it has some passwords.
 # Basic idea though.
-###############################################################################
+# ----------------------------------------------------------------------------
+
+source ~/.mutt/imap.rc
+
 #set imap_user = 'you@gmail.com'
 #set imap_pass = 'password'
 #set spoolfile = imaps://imap.gmail.com:993/INBOX
@@ -16,37 +21,59 @@
 #set postponed="imaps://imap.gmail.com/[Gmail]/Drafts"
 #set mbox="imaps://imap.gmail.com[Gmail]/All Mail"
 #set smtp_url="smtps://you:password@smtp.gmail.com"
-source ~/.mutt/imap.rc
 
+set forward_format="fwd: %s"
+set attribution="On %d, %n wrote:"
+set imap_list_subscribed=no
+set imap_check_subscribed=no
+set imap_peek=yes
+set imap_servernoise=yes
+# activate TLS 
+set ssl_starttls=yes
+# always use SSL
+set ssl_force_tls=yes
+unset imap_passive
+set use_from
+set use_envelope_from
+set mbox=!
+# }}}
+
+# {{{ Include Files
 # Setup some colors
-source ~/.mutt/colors.rc
+source ~/.mutt/colors.`tty -s && tput colors || echo 8`
+
 # Setup gnupg bindings
-source ~/.mutt/mutt.gpg
+source ~/.mutt/gpg.rc
 # Mailboxes
 source ~/.mutt/mailboxes
+# }}}
 
-#My email address, and some alternatives I use.
+# {{{ Name/Email address
 set realname="Greg Fitzgerald"
 set from="Greg Fitzgerald <netzdamon@gmail.com>"
 alternates (gregf@gregf.org|netzdamon@gmail.com|greg.fitzgerald@gmail.com|gregf@lizardhost.co.uk|gregf@feoc-uk.com|fgreg@ibiblio.org)
+# }}}
 
-# Prefer plaintext over html
+# {{{ Autoviews
+# order of preferred viewing formats:
 auto_view text/html
-alternative_order text/plain text/html
+alternative_order text/plain text/enriched text/html
+# }}}
 
+# {{{ Folder hooks
 folder-hook   "."   push "<collapse-all>"
+# }}}
 
+# {{{ Common Paths
+set tmpdir="$HOME/.mutt/cache"
+set signature="$HOME/.mutt/signature"
+set header_cache="$HOME/.mutt/cache/hcache"
+set message_cachedir="$HOME/.mutt/cache/mcache/"
+set certificate_file="$HOME/.mutt/certs"
+set mailcap_path="$HOME/.mailcap"
+# }}}
 
-#Set some paths
-set signature=~/.mutt/signature
-set header_cache="~/.tmp/mutt/hcache"
-set message_cachedir="~/.tmp/mutt/msgcache/"
-set certificate_file="~/.tmp/mutt/certs"
-set mailcap_path="~/.mailcap"
-set tmpdir=$HOME/.tmp/mutt
-
-
-#Set some basic settings
+# {{{ Set some basic settings
 set sleep_time = 0
 set ascii_chars=yes
 set thorough_search
@@ -60,77 +87,94 @@ set edit_headers=no
 set envelope_from=yes
 set fast_reply=yes
 set nouse_domain
-set metoo
 set include=yes
 set copy=yes
+set imap_idle=yes
 set imap_keepalive = 5
-set timeout = 600 # or 600
+set allow_ansi
 set wrap_search=yes
 set use_idn=yes
-set mail_check = 5
-set check_new
+set delete=yes
+set check_new=yes
 set mark_old=no
 set markers=no
 set menu_context=5
 set menu_move_off=yes
 set menu_scroll
-set metoo=no
 set pager_context=10
 set pager_index_lines=10
-set pager_stop=no
 set postpone=yes
 set quote_regexp="^([ \t]*[|>:])+"
 set read_inc=50
-set recall=no
 set resolve=no
 set smart_wrap
 set wrapmargin
+set collapse_unread
+set pager_index_lines=10
+set pager_stop=yes
+set reverse_alias=yes
+set auto_tag
+set wrap_search
 set sort=threads
-set check_mbox_size=yes
-set sort_aux=date
-unset strict_threads
-set sort_browser=reverse-date
+#set sort_aux=reverse-date
+set sort_aux=last-date-received
+set sort_browser=alpha
 set sort_alias=alias
 set suspend=no
 set tilde=yes
 set use_from=yes
 set user_agent=yes
 unset wait_key
-unset beep
-unset beep_new
+set beep
+set beep_new=yes
 unset askbcc
 unset askcc
-unset collapse_unread
 set quit=ask-yes
 set write_bcc=no
 set move=no
-set editor="vim +/^$ ++1 +':setf mail' +':set spell spelllang=en' +'set tw=72'"
+set editor="vim"
 set query_command="abook --mutt-query '%s'"
 set mask = '!(^\.)|(\.log$)|(\.lst$)|(\.cache$)' # Ignore these file types when browsing folders
-# I want attachments to stay with the email If I forward one
-set mime_forward=yes
-set mime_forward_rest=yes
-# My system is using utf8
+set mime_forward=ask-yes
+set mime_forward_rest=ask-yes
 set send_charset="us-ascii:utf-8"
 set charset=utf-8
+set pgp_verify_sig=no
+set recall
+set implicit_autoview  # use autoview, if a "copiousoutput" is in mailcap.
+set mailcap_sanitize   # remove ugly chars from mailcap % expands.
+# Polling frequency
+set mail_check=60
+# Poll the current mailbox 
+set timeout=10
+# Display download progress every 5K
+set net_inc=5
+
+# }}}
+
+# {{{ Mailing lists
+unset metoo
 set followup_to
 set honor_followup_to=yes
+source ~/.mutt/mailinglists
+# }}}
 
-# Some index formats
-#set status_format=" %r %b %f %n      Del %d      Msgs %m %l %> (%P)"
-#set pager_format="%-10.10i %[!%a %b %d %R]"
-set date_format="%I:%M%P %m/%d/%y  "
-set index_format="%d %-15.15L [%Z] %s"
-#set folder_format="%2C %t %8s %d %N %f"
+# {{{ Some index formats
+#set status_on_top
+set index_format="[%Z]-[%[!%Y-%m-%d %I:%M%P]]-[%-20.20F] %s %> %y[%4c]"
+set folder_format="%f"
+set attach_format="[%t][%1n][%4s] %T%d %> %m %M"
+# }}}
 
+# {{{ Header Info
 # Ignore all headers by default
 # Unigore ones I care to see
 ignore *
-unignore from: date subject to cc reply-to bcc
-unignore organization x-mailer: x-newsreader: user-agent:
-hdr_order From Date: From: To: Cc: Subject:
+unignore from: subject to cc date x-mailer x-url user-agent
+hdr_order date from to cc subject
+# }}}
 
-# Set some keybindings
+# {{{ Keybindings
 bind  pager /   search
 bind  pager L   list-reply
 bind  pager b   bounce-message
@@ -159,19 +203,55 @@ bind  pager   <right>  view-attachments
 bind  attach  <left>   exit
 bind  attach  <right>  view-attach
 bind  index   <right>  display-message
-macro index   <left> "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
 bind  browser <right>  select-entry
 bind  browser <left>   exit
 
-macro attach W <save-entry><kill-line>/home/gregf/downloads/attachments/
-macro attach E <save-entry><kill-line>/home/gregf/downloads/attachments/<enter>
+macro index,pager q <sync-mailbox><exit>
 
-macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
-macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
+# show the incoming mailboxes list (just like "mutt -y") and back when pressing "y"
+macro index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
+bind browser y exit
+
+macro attach W <save-entry><kill-line>/home/gregf/media/downloads/attachments/
+macro attach E <save-entry><kill-line>/home/gregf/media/downloads/attachments/<enter>
+
+# imitate the old search-body function
+macro index \eb "<search>~b " "search in message bodies"
+
+# simulate the old url menu
+macro index,pager,attach,compose \cb "\
+<enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
+<pipe-message> urlview<Enter>\
+<enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" \
+"call urlview to extract URLs out of a message"
+
+macro index,pager \cD <delete-thread><down>
+macro index,pager d <delete-message><down>
+
 
 macro index,pager a "<pipe-message>abook --add-email-quiet<return>"
 
-# Settings for sidebar patch
+bind pager G bottom # just like vi and less
+bind pager gg top # just like vi and less
+
+# Mark message as spam
+macro index,pager S "<save-message>=[Gmail]/Spam<enter>"
+# Mark message as ham
+macro index,pager H "<save-message>=INBOX<enter>"
+
+# http://www.jukie.net/bart/blog/20090608232531
+macro index     .i      "l((~N|~O|~F)!~D)|(~d<1w!~Q)\n"
+macro index     .n      "l~N\n"
+macro index     .o      "l(~N|~O)\n"
+macro index     .a      "l~A\n"
+macro index     .t      "l~d<1d\n"
+macro index     .y      "l~d<2d ~d>1d\n"
+
+folder-hook     .       push '.i'
+
+macro pager,editor,index <F8> :source\ /home/gregf/.muttrc<enter>
+
+#{{{ Settings for sidebar patch
 # http://www.lunar-linux.org/index.php?option=com_content&task=view&id=44
 set sidebar_width=25
 set sidebar_visible=yes
@@ -181,11 +261,13 @@ bind index n sidebar-next
 bind index o sidebar-open
 bind pager p sidebar-prev
 bind pager n sidebar-next
-bind pager o sidebar-open
+macro pager o sidebar-open <sync-mailbox>
+
 
 # b toggles sidebar visibility 
 macro index b '<enter-command>toggle sidebar_visible<enter>'
 macro pager b '<enter-command>toggle sidebar_visible<enter>'
+# }}}
+# }}}
 
-# View Special Formats
-auto_view text/html
+source ~/.mutt/aliases.rc

@@ -1,6 +1,12 @@
-text/html; /usr/bin/lynx -dump -force_html %s; needsterminal; copiousoutput;
-application/pdf; /usr/bin/evince %s
-image/jpeg; /usr/bin/feh -w %s
-image/gif; /usr/bin/feh -w %s
-image/png; /usr/bin/feh -w %s
-
+#text/html; w3m %s; nametemplate=%s.html; needsterminal
+#text/html; w3m -v -F -T text/html %s; edit=vim; compose=vim; nametemplate=%s.html; needsterminal
+text/html; lynx -stdin -dump -force_html ; copiousoutput
+application/pgp-keys; pgp -f < %s ; copiousoutput
+application/pdf; evince %s; test=test -n "$DISPLAY";
+image/*; feh -w %s; test=test -n "$DISPLAY";
+application/ms-tnef; tnef -t %s && read ans;
+application/msword; abiword %s; test=test -n "$DISPLAY";
+application/msword; antiword %s | most;
+text/richtext ; catdoc %s ; copiousoutput 
+text/*; less '%s'
+video/*; mplayer '%s'; needsterminal; test=test -n "$DISPLAY";

@@ -1,0 +1,11 @@
+#! /bin/zsh -f 
+   
+zmodload -i zsh/complist
+zmodload -i zsh/compctl
+zmodload -i zsh/computil
+zmodload -i zsh/zle
+zmodload -i zsh/zutil
+
+autoload -Uz compinit zrecompile colors vcs_info zcalc zmv 
+
+colors

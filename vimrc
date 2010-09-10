@@ -1,58 +1,41 @@
 scriptencoding utf-8
-"-----------------------------------------------------------------------
-" Vim settings file for Greg Fitzgerald
-" Most recent update: Fri 10 Oct 2008 05:24:41 PM EDT
-"-----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
+" File:     ~/.vimrc
+" Author:   Greg Fitzgerald <netzdamon@gmail.com>
+" Modified: Sat 21 Aug 2010 08:03:21 PM EDT
+" ----------------------------------------------------------------------------
+"
+filetype off
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
 
-"-----------------------------------------------------------------------
-" Settings
-"-----------------------------------------------------------------------
-
-" Turn Off word-wrapping
+" {{{ Settings
+" Set encoding
+set encoding=utf-8 nobomb    " BOM often causes trouble
+" Turn On word-wrapping
 set wrap
-" Turn off backups
-set nobackup
-" Turn off swapfile
-set noswapfile
 " Soft tab 4
 set sw=4
 " Soft tab stop
 set sts=4
 " Tab stop
 set ts=4
-" wrapping
-set wm=4
-set tw=80
+" Show mode
+set showmode
 " Expand tabs to spaces
 set expandtab
-" Highlight search
-set hlsearch
-" Backup extension if on
-set backupext=.bak
-" Backups directory if on
-set backupdir=~/.backups/
 " Line breaks for linewrap
 set linebreak
-" Backspace over everything
-set bs=2
-" Case-insensitive search
-set ignorecase
-" Auto indent
-set autoindent
 " No startup messages
-set shm+=Im
-" Use c indenting rules rather than smartindent
-set cindent
+set shm+=atmI
 " Show matching brackets
 set showmatch
-" Temporary directory
-set dir=~/.tmp/vim/
 " Universal clipboard
 set clipboard=unnamed
 " Movement keys for wrapping
 set ww+=<,>,[,]
 " Allow unsaved hidden buffers
-set hidden
+set nohidden
 " I like darkbackgrounds with light colors
 set background=dark
 " Never let a window be less than 1px
@@ -62,60 +45,174 @@ set showcmd
 " Nice big viminfo file
 set viminfo='1000,f1,:1000,/1000
 " History size
-set history=900
+set history=1000
 " Default fileformat
 set fileformat=unix
 " Display list of matching files for completion
-set wildmode=list:longest	" Display list of matching files for completion
-" Do not require end-of-line
-set noeol
+set wildmode=list:longest " Display list of matching files for completion
+" character to show that a line is wrapped
+set showbreak=>
 " Characters to break at for line wrapping
-set breakat=\ \	!@*-+;:,.?
-" Number of lines to jump when cursor reaches bottom
-"set scrolloff=5
-" Same thing for horizontal
-"set sidescroll=5
-" Override ignorecase if search has capital letters
-"set smartcase
-" No visual/audio bells
-"set vb t_vb=
-set visualbell
+set breakat=\ ^I!@*-+;:,./?
 " Do not stay vi compatible
 set nocompatible
-" Default encoding
-set encoding=utf-8
 " Enable wild menu
 set wildmenu
-" Smart tab
-set smarttab
 " Buffer updates
 set lazyredraw
-" Faster scrolling updates when on a decent connection. 
+" Faster scrolling updates when on a decent connection.
 set ttyfast
 " Print line numbers and syntax highlighting
 set printoptions+=syntax:y,number:y
-" improves performance -- let OS decide when to flush disk
-set nofsync
-" start the scrolling three lines before the border
-set scrolloff=3
-" Don't prompt me for crap
-set shortmess=atI
-" ruler
-set ruler
+set ruler " always show the ruler in the status bar
+set undolevels=999
 " ignore these in auto complete
-set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif
+set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.la,*.so,*.obj,*.swp,*.log
+set wildchar=<TAB>
+set cmdheight=2
+set showtabline=1 " display tabbar
+" Set some global options for spell check
+set spelllang=en_us
+set switchbuf=usetab
+set scrolloff=2 " minlines to show around cursor
+set sidescrolloff=4 " minchars to show around cursor
+set wrapscan   " search wrap around the end of the file
+set ignorecase " ignore case search
+set smartcase  " override 'ignorecase' if the search pattern contains upper case
+set incsearch  " incremental search
+set nohlsearch " Don't highlight old searches on start
+set nostartofline " don't move the cursor to the start of the line when scrolling
 
-"-----------------------------------------------------------------------
-" Plugin settings
-"-----------------------------------------------------------------------
+if v:version >= 703
+    " undo - set up persistent undo
+    set undofile
+    set undodir=~/.undo
+endif
 
-"Settings for HiMTCHBrkt
-let g:HiMtchBrkt_surround= 1
-let g:HiMtchBrktOn= 1
+set errorbells " Get the error noticed
+set novisualbell " Shut the bell up
+
+set report=0 " always report changes
+set backspace=start,indent,eol " Backspace over everything
+
+"set nobackup                           " do not keep backups after close
+set nowritebackup                      " do not keep a backup while working
+set noswapfile                         " don't keep swp files either
+set backupdir=~/.backups        " store backups under ~/.backups
+set backupcopy=yes                     " keep attributes of original file
+set backupskip=/tmp/*,$TMPDIR/*,$TMP/*
+set directory=/tmp/vimswap    " keep swp files under ~/.vim/swap
+
+" {{{ Set a shell
+set shell=sh
+" }}}
+
+" {{{ Our default /bin/sh is bash, not ksh, so syntax highlighting for .sh
+" files should default to bash. See :help sh-syntax and bug #101819.
+if has("eval")
+  let is_bash=1
+endif
+" }}}
+
+" Show tabs and trailing whitespace visually
+if (&termencoding == "utf-8") || has("gui_running")
+    if v:version >= 700
+        if has("gui_running")
+            set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
+        else
+            " xterm + terminus hates these
+            set list listchars=tab:»·,trail:·,extends:>,nbsp:_
+        endif
+    else
+        set list listchars=tab:»·,trail:·,extends:…
+    endif
+else
+    if v:version >= 700
+        set list listchars=tab:>-,trail:.,extends:>,nbsp:_
+    else
+        set list listchars=tab:>-,trail:.,extends:>
+    endif
+endif
+
+
+"Include $HOME in cdpath
+if has("file_in_path")
+    let &cdpath=','.expand("$HOME").','.expand("$HOME").'/code'
+endif
+
+" Enable fancy % matching
+if has("eval")
+    runtime! macros/matchit.vim
+endif
+
+" enable syntax highlightning (must come after autocmd!)
+" vim-tiny doesn't support syntax
+if has("syntax")
+    syntax on
+endif
+
+" Highlight the diff, not the code
+if &diff
+    syntax off
+endif
+
+" }}}
+
+" {{{ Enable folding
+set nofoldenable
+set foldmethod=marker
+set foldlevelstart=0
+set foldnestmax=3       "deepest fold is 3 levels
+" }}}
+
+" {{{iabbrev
+iab <DATE> <c-r>=strftime("%d/%m/%y")<CR>
+iab <TIME> <c-r>=strftime("%H:%M:%S")<CR>
+
+iab #p #!/usr/bin/perl
+iab #e #!/usr/bin/env
+iab #r #!/usr/bin/ruby
+iab #b #!/bin/bash
+
+" }}}
+
+" {{{ Plugin settings
+
+" rails.vim
+let g:rails_dbext=1
+let g:rails_default_database='sqlite3'
+let g:rails_gnu_screen=1
+let g:rails_mappings=1
+let g:rails_statusline=1
+let g:rails_subversion=0
+let g:rails_syntax=1
+let g:browser = 'firefox -new-tab '
+
+" Supertab
+let g:SuperTabMappingForward = '<S-Tab>'
+let g:SuperTabLongestHighlight = 1
+let g:SuperTabMidWordCompletion = 1
+let g:SuperTabRetainCompletionType = 1
+
 " Settings for NERDCommenter
 let g:NERDShutUp=1
 " Settings for git status bar plugin
 let g:git_branch_status_head_current=1
+" NERDTree settings
+let g:NERDChristmasTree = 1
+let g:NERDTreeQuitOnOpen = 0
+let g:NERDTreeHighlightCursorline = 1
+let g:NERDTreeMapActivateNode='<CR>'
+let g:NERDTreeChDirMode = 1
+let g:NERDTreeIgnore=['\.git', '\.svn', '\.cvs', '\.log']
+
+" Append status line if enough room
+let g:fastgit_statusline = 'a'
+
+let g:gist_clip_command = 'xclip -selection clipboard'
+
+let g:syntastic_enable_signs = 1
+let g:syntastic_auto_loc_list = 1
 
 " Hightlight redundent spaces
 highlight RedundantSpaces ctermbg=red guibg=red
@@ -125,11 +222,6 @@ match     RedundantSpaces /\s\+$\| \+\ze\t/
 set nomodeline
 let g:secure_modelines_verbose = 0
 let g:secure_modelines_modelines = 15
-
-let loaded_matchparen=1
-
-" http://vim.sourceforge.net/scripts/script.php?script_id=2328
-let g:nickname = "gregf"
 
 let g:secure_modelines_allowed_items = [
             \ "textwidth",   "tw",
@@ -142,40 +234,56 @@ let g:secure_modelines_allowed_items = [
             \ "readonly",    "ro",   "noreadonly", "noro",
             \ "rightleft",   "rl",   "norightleft", "norl"
             \ ]
+" }}}
 
-"-----------------------------------------------------------------------
-" Nice statusbar
-"-----------------------------------------------------------------------
+" {{{ Nice statusbar
+"statusline setup
+set statusline=%f       "tail of the filename
 
-set laststatus=2
-set statusline=
-set statusline+=%2*%-3.3n%0*\                " buffer number
-set statusline+=%f\                          " file name
-if has("eval")
-    let g:scm_cache = {}
-    fun! ScmInfo()
-        let l:key = getcwd()
-        if ! has_key(g:scm_cache, l:key)
-            if (isdirectory(getcwd() . "/.git"))
-                let g:scm_cache[l:key] = "[" . substitute(readfile(getcwd() . "/.git/HEAD", "", 1)[0],
-                            \ "^.*/", "", "") . "] "
-            else
-                let g:scm_cache[l:key] = ""
-            endif
-        endif
-        return g:scm_cache[l:key]
-    endfun
-    set statusline+=%{ScmInfo()}             " scm info
-endif
-set statusline+=%h%1*%m%r%w%0*               " flags
-set statusline+=\[%{strlen(&ft)?&ft:'none'}, " filetype
-set statusline+=%{&encoding},                " encoding
-set statusline+=%{&fileformat}]              " file format
-set statusline+=%=                           " right align
-set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
+"display a warning if fileformat isnt unix
+set statusline+=%#warningmsg#
+set statusline+=%{&ff!='unix'?'['.&ff.']':''}
+set statusline+=%*
 
+"display a warning if file encoding isnt utf-8
+set statusline+=%#warningmsg#
+set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'['.&fenc.']':''}
+set statusline+=%*
 
-" Nice window title
+set statusline+=%h      "help file flag
+set statusline+=%y      "filetype
+set statusline+=%r      "read only flag
+set statusline+=%m      "modified flag
+
+" display current git branch
+set statusline+=%{fugitive#statusline()}
+
+"display a warning if &et is wrong, or we have mixed-indenting
+set statusline+=%#error#
+set statusline+=%{StatuslineTabWarning()}
+set statusline+=%*
+
+set statusline+=%{StatuslineTrailingSpaceWarning()}
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+"display a warning if &paste is set
+set statusline+=%#error#
+set statusline+=%{&paste?'[paste]':''}
+set statusline+=%*
+
+set statusline+=%=      "left/right separator
+set statusline+=%{StatuslineCurrentHighlight()}\ \ "current highlight
+set statusline+=%c,     "cursor column
+set statusline+=%l/%L   "cursor line/total lines
+set statusline+=\ %P    "percent through file
+set laststatus=2        " Always show status line
+
+" }}}
+
+" {{{ Window title
 if has('title') && (has('gui_running') || &title)
     set titlestring=
     set titlestring+=%f\                                              " file name
@@ -184,10 +292,312 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
 endif
 
+"highlight the current line
+if v:version > 700
+    set cursorline
+    hi Cursorline ctermbg=Red guibg=#771c1c
+else
+    syntax match CurrentLine /.*\%#.*/
+    hi CurrentLine guifg=white guibg=lightblue
+endif
+
+" If we have a BOM, always honour that rather than trying to guess.
+if &fileencodings !~? "ucs-bom"
+  set fileencodings^=ucs-bom
+endif
+
+" Always check for UTF-8 when trying to determine encodings.
+if &fileencodings !~? "utf-8"
+  " If we have to add this, the default encoding is not Unicode.
+  " We use this fact later to revert to the default encoding in plaintext/empty
+  " files.
+  let g:added_fenc_utf8 = 1
+  set fileencodings+=utf-8
+endif
+
+" Make sure we have a sane fallback for encoding detection
+if &fileencodings !~? "default"
+  set fileencodings+=default
+endif
+
+" {{{ Terminal fixes
+if &term ==? "xterm" || &term  ==? "rxvt"
+  set t_Sb=^[4%dm
+  set t_Sf=^[3%dm
+  set ttymouse=xterm2
+endif
+
+" }}}
+
+" {{{ Key maps
+
+" Set map leader to ,
+let mapleader = ","
+noremap <silent> <C-z> :undo<CR>
+noremap <silent><C-L> :NERDTreeToggle<CR>
+map <leader>nh :nohls <CR>
+nmap <silent> <C-H> :silent nohls<CR>
+noremap <Leader>res :call Restart()<CR>
+noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
+noremap <silent> <leader>uh :call UpdateRcHeader()<CR>
+noremap <Leader>ss :call StripTrailingWhitespace()<CR>
+" Setup mini ide for a project of mine
+noremap <Leader>md :call Mideo()<CR>
+noremap <Leader>at :call Athenry()<CR>
+noremap <Leader>sw :call Swindle()<CR>
+noremap <Leader>sa :call Sass()<CR>
+" Reformat everything
+noremap <Leader>gq gggqG
+" Reformat paragraph
+noremap <Leader>gp gqap
+" Clear lines
+noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
+" Delete blank lines
+noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
+" Don't make a # force column zero.
+inoremap # X<BS>#
+noremap <Leader>rr :w\|!ruby %<cr>
+noremap <Leader>rb :w\|!bash %<cr>
+noremap <Leader>xd :w\|!xrdb -load ~/.Xdefaults %<cr>
+noremap <Leader>p :set paste<CR>
+noremap <Leader>nu :set invnumber<CR>
+noremap <Leader>sp :set spell<CR>
+noremap <Leader>nsp :set nospell<CR>
+noremap <Leader>pp :s/:/ /g<CR>:nohl<CR>
+noremap <Leader>cache :call ClearCache()<CR>
+noremap <Leader>doc :!rake documentation:generate<CR>
+noremap :close :bd!<CR>
+" Quick sudo saving from tpope
+command! -bar -nargs=0 SudoW :silent exe "write !sudo tee % >/dev/null" | silent edit!
+noremap <Leader>su :SudoW<CR>
+command! -nargs=+ PopupMap call s:popupMap(<f-args>)
+
+vmap bq :call VBlockquote ()<CR>
+vmap bqt :call VBlockquote("
+
+nmap <Leader>ms :wa<CR>:mksession! ~/.sessions/
+nmap <Leader>sl :wa<CR>:so ~/.sessions/
+
+" This group is stolen from mislav's vimrc
+" http://github.com/mislav/dotfiles/blob/master/vimrc
+
+" Format the current paragraph according to
+" the current 'textwidth' with CTRL-J:
+nmap <C-J> gqap
+vmap <C-J> gq
+imap <C-J> <C-O>gqap
+
+imap jj <Esc>
+
+" Delete line with CTRL-K
+map <C-K> dd
+imap <C-K> <C-O>dd
+
+" Use CTRL-S for saving, also in Insert mode
+noremap <C-S> :update<CR>
+vnoremap <C-S> <C-C>:update<CR>
+inoremap <C-S> <C-O>:update<CR>
+
+" CTRL-A is Select all
+noremap <C-A> gggH<C-O>G
+inoremap <C-A> <C-O>gg<C-O>gH<C-O>G
+cnoremap <C-A> <C-C>gggH<C-O>G
+onoremap <C-A> <C-C>gggH<C-O>G
+snoremap <C-A> <C-C>gggH<C-O>G
+xnoremap <C-A> <C-C>ggVG
+
+nnoremap <silent> <C-f> :call FindInNERDTree()<CR>
+
+noremap <leader>q ZQ
+noremap <leader>qa :qa<CR>
+
+" convert word into ruby symbol
+imap <C-k> <C-o>b:<Esc>Ea
+nmap <C-k> lbi:<Esc>E
+
+" bind control-l to hashrocket
+imap <C-l> <Space>=><Space>"
+" Hide search highlighting
+map <Leader>h :set invhls <CR>
+
+" Leader shortcuts for Rails commands
+map <Leader>m :Rmodel
+map <Leader>c :Rcontroller
+map <Leader>v :Rview
+map <Leader>u :Runittest
+map <Leader>f :Rfunctionaltest
+map <Leader>tm :RTmodel
+map <Leader>tc :RTcontroller
+map <Leader>tv :RTview
+map <Leader>tu :RTunittest
+map <Leader>tf :RTfunctionaltest
+map <Leader>sm :RSmodel
+map <Leader>sc :RScontroller
+map <Leader>sv :RSview
+map <Leader>su :RSunittest
+map <Leader>sf :RSfunctionaltest
+
+" Duplicate a selection
+" Visual mode: D
+vmap D y'>p
+
+" Press Shift+P while in visual mode to replace the selection without
+" overwriting the default register
+vmap P p :call setreg('"', getreg('0')) <CR>
+
+" Press ^F from insert mode to insert the current file name
+imap <C-F> <C-R>=expand("%")<CR>
+
+" Return to visual mode after indenting
+xmap < <gv xmap > >gv
+
+" }}}
+
+" {{{ Functions
+
+function UseRubyIndent ()
+    setlocal tabstop=2
+    setlocal softtabstop=2
+    setlocal shiftwidth=2
+    setlocal expandtab
+    setlocal autoindent
+
+    imap <buffer> <CR> <C-R>=PMADE_RubyEndToken()<CR>
+endfunction
+
+" Shift-Enter inserts 'end' for ruby scripts
+" Copyright (C) 2005-2007 pmade inc. (Peter Jones pjones@pmade.com)
+function PMADE_RubyEndToken ()
+    let current_line = getline('.')
+    let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?\(\s*#.*\)\?$'
+    let stuff_without_do = '^\s*\<\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)\>'
+    let with_do = '\<do\>\s*\(|\(,\|\s\|\w\)*|\s*\)\?\(\s*#.*\)\?$'
+
+    if getpos('.')[2] < len(current_line)
+        return "\<CR>"
+    elseif match(current_line, braces_at_end) >= 0
+        return "\<CR>}\<C-O>O"
+    elseif match(current_line, stuff_without_do) >= 0
+        return "\<CR>end\<C-O>O"
+    elseif match(current_line, with_do) >= 0
+        return "\<CR>end\<C-O>O"
+    else
+        return "\<CR>"
+    endif
+endfunction
+
+"return the syntax highlight group under the cursor ''
+function! StatuslineCurrentHighlight()
+    let name = synIDattr(synID(line('.'),col('.'),1),'name')
+    if name == ''
+        return ''
+    else
+        return '[' . name . ']'
+    endif
+endfunction
+
+"recalculate the trailing whitespace warning when idle, and after saving
+autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
+
+"return '[\s]' if trailing white space is detected
+"return '' otherwise
+function! StatuslineTrailingSpaceWarning()
+    if !exists("b:statusline_trailing_space_warning")
+        if search('\s\+$', 'nw') != 0
+            let b:statusline_trailing_space_warning = '[\s]'
+        else
+            let b:statusline_trailing_space_warning = ''
+        endif
+    endif
+    return b:statusline_trailing_space_warning
+endfunction
+
+"return '[&et]' if &et is set wrong
+"return '[mixed-indenting]' if spaces and tabs are used to indent
+"return an empty string if everything is fine
+function! StatuslineTabWarning()
+    if !exists("b:statusline_tab_warning")
+        let tabs = search('^\t', 'nw') != 0
+        let spaces = search('^ ', 'nw') != 0
+
+        if tabs && spaces
+            let b:statusline_tab_warning =  '[mixed-indenting]'
+        elseif (spaces && !&et) || (tabs && &et)
+            let b:statusline_tab_warning = '[&et]'
+        else
+            let b:statusline_tab_warning = ''
+        endif
+    endif
+    return b:statusline_tab_warning
+endfunction
+
+"return a warning for "long lines" where "long" is either &textwidth or 80 (if
+"no &textwidth is set)
+"
+"return '' if no long lines
+"return '[#x,my,$z] if long lines are found, were x is the number of long
+"lines, y is the median length of the long lines and z is the length of the
+"longest line
+function! StatuslineLongLineWarning()
+    if !exists("b:statusline_long_line_warning")
+        let long_line_lens = s:LongLines()
+
+        if len(long_line_lens) > 0
+            let b:statusline_long_line_warning = "[" .
+                        \ '#' . len(long_line_lens) . "," .
+                        \ 'm' . s:Median(long_line_lens) . "," .
+                        \ '$' . max(long_line_lens) . "]"
+        else
+            let b:statusline_long_line_warning = ""
+        endif
+    endif
+    return b:statusline_long_line_warning
+endfunction
+
+"return a list containing the lengths of the long lines in this buffer
+function! s:LongLines()
+    let threshold = (&tw ? &tw : 80)
+    let spaces = repeat(" ", &ts)
+
+    let long_line_lens = []
+
+    let i = 1
+    while i <= line("$")
+        let len = strlen(substitute(getline(i), '\t', spaces, 'g'))
+        if len > threshold
+            call add(long_line_lens, len)
+        endif
+        let i += 1
+    endwhile
+
+    return long_line_lens
+endfunction
+
+"find the median of the given array of numbers
+function! s:Median(nums)
+    let nums = sort(a:nums)
+    let l = len(nums)
+
+    if l % 2 == 1
+        let i = (l-1) / 2
+        return nums[i]
+    else
+        return (nums[l/2] + nums[(l/2)-1]) / 2
+    endif
+endfunction
+
+command! -nargs=0 RDocPreview call RDocRenderBufferToPreview()
+
+function! RDocRenderBufferToPreview()
+  let rdocoutput = "/tmp/vimrdoc/"
+  call system("rdoc " . bufname("%") . " --op " . rdocoutput)
+  call system("firefox ". rdocoutput . "index.html")
+endfunction
+
 "If possible, try to use a narrow number column.
 if v:version >= 700
     try
-        setlocal numberwidth=3
+        setlocal numberwidth=2
     catch
     endtry
 endif
@@ -235,115 +645,106 @@ if (version >= 700)
             else
                 let s .= '%#TabLine#'
             endif
-
             " set the tab page number (for mouse clicks)
             let s .= '%' . i . 'T'
-
             " the label is made by MyTabLabel()
             let s .= ' %{MyTabLabel(' . i . ')} '
-
             let i = i + 1
         endwhile
-
         " after the last tab fill with TabLineFill and reset tab page nr
         let s .= '%#TabLineFill#%T'
         return s
     endfunction
 endif
 
-"Update .*rc header
-fun! <SID>UpdateRcHeader()
+" Update header
+function UpdateRcHeader()
     let l:c=col(".")
     let l:l=line(".")
-    silent 1,10s-\(Most recent update:\).*-\="Most recent update: ".strftime("%c")-e
+    silent 1,10 s/\(Modified:\).*/\="Modified: ".strftime("%c")/
     call cursor(l:l, l:c)
-endfun
+endfunction
 
-""-----------------------------------------------------------------------
-"" Key maps
-""-----------------------------------------------------------------------
-
-map		:W :w
-map		:WQ :wq
-map		:wQ :wq
-map		:Q :q
-nmap <C-N> :tabn<CR>
-nmap <C-P> :tabp<CR>
-noremap <silent> <C-O> :FuzzyFinderTextMate<CR>
-noremap <silent> <F7> :Tlist<CR>
-noremap <silent> <F8> :FuzzyFinderMruFile<CR>
-noremap <silent> <F9> :NERDTreeToggle<CR>
-noremap <silent> <F10> :call <SID>Restart()<CR>
-noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
-"cmap w! %!sudo tee > /dev/null %
-" Spell check
-noremap <silent> <F1> z=
-" Spell Check (Reverse)
-noremap <silent> <F2> zw
-" Add word to word list
-noremap <silent> <F3> zg
-" Remove word from word list
-noremap <silent> <F4> zug
-" Split Window Movement
-map <F6> :wincmd w<CR> imap <F6> <c-[>:wincmd w<CR> map <S-F6> :wincmd W<CR> imap <S-F6> <c-[>:wincmd W<CR>
-" Setup mini ide for a project of mine
-noremap <silent> <F5> :call Mideo()<CR>
-" Setup a scratch buffer
-noremap <silent> <S-I> :tabe scratch<CR>
-" Refreshing the screen
-map		<C-l>		     :redraw<CR> imap	<C-l>		<Esc>:redraw<CR>
-" Set map leader to f12
-let mapleader = "\<F12>"
-" Reformat everything
-noremap <Leader>gq gggqG
-" Reformat paragraph
-noremap <Leader>gp gqap
-" Clear lines
-noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
-" Delete blank lines
-noremap <Leader>dbl :g/^$/d<CR>:nohls<CR>
-" Don't make a # force column zero.
-inoremap # X<BS>#
-
-""-----------------------------------------------------------------------
-"" Functions
-""-----------------------------------------------------------------------
-
-if version >= 700
-    au TabLeave * let g:MRUtabPage = tabpagenr()
-    fun MRUTab()
-        if exists( "g:MRUtabPage" )
-            exe "tabn " g:MRUtabPage
+if has("eval")
+    " If we're in a wide window, enable line numbers.
+    fun! <SID>WindowWidth()
+        if winwidth(0) > 90
+            setlocal foldcolumn=0
+            setlocal number
+            setlocal nu
+        else
+            setlocal nonumber
+            setlocal foldcolumn=0
         endif
     endfun
-    noremap <silent> gl :call MRUTab()<Cr>
 endif
 
+function Athenry()
+    chdir /home/gregf/work/projects/active/athenry/
+    open TODO.mkd
+    NERDTreeFromBookmark athenry
+endfunction
+
+function Swindle()
+    chdir /home/gregf/work/projects/active/swindle/
+    open TODO.mkd
+    NERDTreeFromBookmark swindle
+endfunction
+
 function Mideo()
-    chdir /home/gregf/mideo/
-    open TODO
+    chdir /home/gregf/work/projects/active/mideo/
+    open TODO.mkd
     NERDTreeFromBookmark mideo
 endfunction
 
-function <SID>Restart()
+function OSnap()
+    chdir /home/gregf/work/projects/active/osnap/
+    open TODO
+    NERDTreeFromBookmark osnap
+endfunction
+
+function ClearCache()
+    !rm -rf public/cache/*
+endfunction
+
+function Restart()
     !touch $PWD/tmp/restart.txt
 endfunction
 
 " Removes unnecessary whitespace
-if has("eval")
-    fun! <SID>StripWhite()
-        %s/[ \t]\+$//ge
-        %s!^\( \+\)\t!\=StrRepeat("\t", 1 + strlen(submatch(1)) / 8)!ge
-    endfun
+function StripTrailingWhitespace()
+    %s/[ \t]\+$//ge
+    %s!^\( \+\)\t!\=StrRepeat("\t", 1 + strlen(submatch(1)) / 8)!ge
+endfunction
 
-    fun! <SID>RemoveBlankLines()
-        %s/^[\ \t]*\n//g
-    endfun
-endif
+function RemoveBlankLines()
+    %s/^[\ \t]*\n//g
+endfunction
 
-""-----------------------------------------------------------------------
-"" auto commands
-""-----------------------------------------------------------------------
+function! VBlockquote(...) range
+    " Author: Ralf Arens
+    " put `| ' at beginning of line
+    exe a:firstline.",".a:lastline."s/^/| /"
+    " remove trailing whitespaces
+    exe a:firstline.",".a:lastline.'s/^| $/|/e'
+    " generate tail
+    exe a:lastline."put ='`----'"
+    " set mark
+    normal m'
+    " generate title
+    let @z = ',----'
+    if (a:0 != 0)
+        " -> extra argument a:1
+        let @z = @z."[ ".a:1." ]"
+    endif
+    exe a:firstline."put! z"
+    " jump back to mark
+    normal ''
+endfunction
+
+" }}}
+
+" {{{ auto commands
 
 if isdirectory(expand("$VIMRUNTIME/ftplugin"))
     if has("eval")
@@ -354,185 +755,83 @@ if isdirectory(expand("$VIMRUNTIME/ftplugin"))
 endif
 
 if has("autocmd")
-
-    autocmd FileType html,xhtml,xml,eruby,mako,ruby,haml,yaml,erb setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2 autoindent
-    autocmd FileType css setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
-    autocmd FileType javascript setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd FileType xslt,xml,xhtml,html set ts=2
-    autocmd FileType php set ts=4 complete+=k
-    autocmd BufReadPost,BufNewFile,BufRead rsnapshot.conf set noet
-
-    " When editing a file, jump to the last cursor position
-    autocmd BufReadPost *
-                \	if line("'\"") > 0 && line ("'\"") <= line("$")
-                \	|	exe "normal g'\""
-                \	| endif
-
-    au BufRead,BufNewFile *.e{build,class} let is_bash=1|setfiletype sh
-    au BufRead,BufNewFile *.e{build,class} set ts=4 sw=4 noexpandtab
-
-    au BufRead,BufNewFile COMMIT_EDITMSG setf git
-
-    autocmd BufNewFile,BufRead /tmp/mutt*
-                \ setf mail |
-                \ set spell |
-                \ set spell spelllang=en_us |
-                \ set spellfile=~/.vim/spellfile.add
-
-    au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,/tmp/mutt* :set ft=mail
-    au BufRead,BufNewFile .followup,.article,.letter,/tmp/pico*,nn.*,snd.*,~/.tmp/mutt/mutt* :set ft=mail
-    au! BufRead,BufNewFile *.haml :set ft=haml
-    au! BufRead,BufNewFile *.sass :set ft=sass
-    autocmd BufNewFile,BufRead *.inc
-                \		  if getline(1) =~ 'php'
-                \		|	setf php
-                \		| else
-                    \		|	setf perl
-                    \		| endif
-
-    autocmd BufNewFile *.pl	set noai | execute "normal a
-                \#!/usr/bin/perl -W\<CR>
-                \# $Id\$\<CR>
-                \\<CR>
-                \use strict;\<CR>
-                \use warnings;\<CR>
-                \\<CR>" | set ai
-
-    autocmd BufNewFile *.htm,*.html	set noai | execute "normal a
-                \<!DOCTYPE html PUBLIC \"-//W3C//XHTML 1.0 Transitional//EN\">\<CR>
-                \\<CR>
-                \<html lang=\"en-US\" xml:lang=\"en-US\" xmlns=\"http://www.w3.org/1999/XHTML\">\<CR>
-                \	<head>\<CR>
-                \		<title></title>\<CR>
-                \		<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\<CR>
-                \	</head>\<CR>
-                \	<body>\<CR>
-                \	</body>\<CR>
-                \</html>" | set ai
-endif
-
-if has("autocmd") && has("eval")
-    augroup gregf
-        autocmd!
-
-        " Automagic line numbers
-        autocmd BufEnter * :call <SID>WindowWidth()
-
-        " StripWhite space on save
-        "autocmd FileWritePre * :call <SID>StripWhite()
-        "autocmd FileAppendPre * :call <SID>StripWhite()
-        "autocmd FilterWritePre * :call <SID>StripWhite()
-        "autocmd BufWritePre * :call <SID>StripWhite()
-
-        " Update header in .vimrc and .bashrc before saving
-        autocmd BufWritePre *vimrc  :call <SID>UpdateRcHeader()
-        autocmd BufWritePre *zshrc :call <SID>UpdateRcHeader()
-
-        " Always do a full syntax refresh
-        autocmd BufEnter * syntax sync fromstart
-
-        " For svn-commit, don't create backups
-        autocmd BufRead svn-commit.tmp :setlocal nobackup
-
-        " m4 matchit support
-        autocmd FileType m4 :let b:match_words="(:),`:',[:],{:}"
-    augroup END
-endif
-
-" content creation
-if has("autocmd")
-    augroup content
-        autocmd!
-
-        autocmd BufNewFile *.rb 0put ='# vim: set sw=2 sts=2 et tw=80 :' |
-                    \ 0put ='#!/usr/bin/env ruby' | set sw=2 sts=2 et tw=80 |
-                    \ norm G
-
-        autocmd BufNewFile *.lua 0put ='# vim: set sw=4 sts=4 et tw=80 :' |
-                    \ 0put ='#!/usr/bin/env lua' | set sw=4 sts=4 et tw=80 |
-                    \ norm G
-
-        autocmd BufNewFile *.hh 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
-                    \ 1put ='' | call MakeIncludeGuards() |
-                    \ set sw=4 sts=4 et tw=80 | norm G
-
-        autocmd BufNewFile *.cc 0put ='/* vim: set sw=4 sts=4 et foldmethod=syntax : */' |
-                    \ 1put ='' | 2put ='' | call setline(3, '#include "' .
-                    \ substitute(expand("%:t"), ".cc$", ".hh", "") . '"') |
-                    \ set sw=4 sts=4 et tw=80 | norm G
-        autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
-        au! BufRead,BufNewFile *.mkd   setfiletype mkd
-
-        "ruby
-        autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-        autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-        autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-        autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-        "improve autocomplete menu color
-        highlight Pmenu ctermbg=238 gui=bold
-        au BufRead,BufNewFile *.js set ft=javascript.jquery
-        au BufRead,BufNewFile *.js.haml set ft=javascript.jquery
-        au BufRead,BufNewFile *.js.erb set ft=javascript.jquery
-        au BufRead,BufNewFile *.pp set ft=puppet
-    augroup END
-endif
-
-" turn off any existing search and spell checking
-if has("autocmd")
-    au VimEnter * nohls
     au VimLeave * set nospell
+
+    " Automagic line numbers
+    autocmd BufEnter * :call <SID>WindowWidth()
+
+    " Always do a full syntax refresh
+    autocmd BufEnter * syntax sync fromstart
+
+    "recalculate the tab warning flag when idle and after writing
+    autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
+
+    autocmd BufWritePre *.cpp,*.hpp,*.i,
+                \ *.rb,*.pl,*.sh,*.bash,*.plx,
+                \ *.ebuild,*.exheres-0,*.exlib,
+                \ *.e{build,class}
+                \ :call StripTrailingWhitespace()
+
+    " Gentoo-specific settings for ebuilds.  These are the federally-mandated
+    " required tab settings.  See the following for more information:
+    " http://www.gentoo.org/proj/en/devrel/handbook/handbook.xml
+    " Note that the rules below are very minimal and don't cover everything.
+    " Better to emerge app-vim/gentoo-syntax, which provides full syntax,
+    " filetype and indent settings for all things Gentoo.
+    autocmd BufRead,BufNewFile *.e{build,class} let is_bash=1|setfiletype sh
+    autocmd BufRead,BufNewFile *.e{build,class} set ts=4 sw=4 noexpandtab
+
+    " In text files, limit the width of text to 78 characters, but be careful
+    " that we don't override the user's setting.
+    autocmd BufNewFile,BufRead *.txt
+                \ if &tw == 0 && ! exists("g:leave_my_textwidth_alone") |
+                \     setlocal textwidth=78 |
+                \ endif
+
+    " When editing a file, always jump to the last cursor position
+    autocmd BufReadPost *
+                \ if ! exists("g:leave_my_cursor_position_alone") |
+                \     if line("'\"") > 0 && line ("'\"") <= line("$") |
+                \         exe "normal g'\"" |
+                \     endif |
+                \ endif
+
+    " When editing a crontab file, set backupcopy to yes rather than auto. See
+    " :help crontab and bug #53437.
+    autocmd FileType crontab set backupcopy=yes
+
 endif
+" }}}
 
-"-----------------------------------------------------------------------
-" GUI Options plus colorschemes
-"-----------------------------------------------------------------------
+" {{{ GUI Options & Colorschemes
 
-if &term == 'xterm' || &term == 'screen-bce' || &term == 'screen' || &term == 'rxvt-unicode'
+if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt'
     set t_Co=256 " Let ViM know we have a 256 color capible terminal
-    colorscheme zenburn
-    "colorscheme gigamo
-    "colorscheme peaksea
+    colorscheme rdark-terminal
 else
     colorscheme jammy
 endif
 
 if (has("gui_running"))
-    "colorscheme gigamo
-    "colorscheme darkspectrum 
-    "colorscheme kellys < friggen awesomeness
-    colorscheme wombat " < friggen awesomeness as well
-    set guifont=Droid\ Sans\ Mono\ 12
-    set mousem=popup	" Nice pop-up
-    set selection=exclusive	" Allow one char past EOL
-    set ttymouse=xterm2	" Terminal type for mouse code recognition
+    colorscheme two2tango
+    set guifont=Droid\ Sans\ Mono\ 10
+    "set guifont=inconsolata\ 14
+    "set guifont=Anonymous\ Pro\ 14
+    set mousem=popup
+    set selection=exclusive " Allow one char past EOL
+    set ttymouse=xterm2 " Terminal type for mouse code recognition
     set mousehide
-endif
-
-if has('gui')
-    set guioptions-=m
-    set guioptions-=T
-    set guioptions-=l
-    set guioptions-=L
-    set guioptions-=r
-    set guioptions-=R
-    set guioptions+=a
-endif
-
-" Nice window title
-if has('title') && (has('gui_running') || &title)
-    set titlestring=
-    set titlestring+=%f\                                              " file name
-    set titlestring+=%h%m%r%w                                         " flags
-    set titlestring+=\ -\ %{v:progname}                               " program name
-    set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
+    " Make shift-insert work like in xterm
+    map <S-Insert> <MiddleMouse>
+    map! <S-Insert> <MiddleMouse>
+    " set some gui options
+    set guioptions=a
+    set mouse=a
 endif
 
 "Extra terminal things
-if (&term =~ "xterm") && (&termencoding == "")
+if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt' && (&termencoding == "")
     set termencoding=utf-8
-endif
-
-if &term =~ "xterm"
     if has('title')
         set title
     endif
@@ -542,50 +841,9 @@ if &term =~ "xterm"
     endif
 endif
 
-"Include $HOME in cdpath
-if has("file_in_path")
-    let &cdpath=','.expand("$HOME").','.expand("$HOME").'/code'
+" Source local vimrc
+if exists(expand("~/.vim/vimrc.local"))
+    source ~/.vim/vimrc.local
 endif
-
-if has("eval")
-    " If we're in a wide window, enable line numbers.
-    fun! <SID>WindowWidth()
-        if winwidth(0) > 90
-            setlocal foldcolumn=2
-            setlocal number
-        else
-            setlocal nonumber
-            setlocal foldcolumn=0
-        endif
-    endfun
-endif
-
-" Enable fancy % matching
-if has("eval")
-    runtime! macros/matchit.vim
-endif
-
-"ruby
-autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-"improve autocomplete menu color
-highlight Pmenu ctermbg=238 gui=bold
-
-
-let g:SuperTabMappingForward = '<c-right>'
-let g:SuperTabMappingBackward = '<c-left>'
-let g:SuperTabLongestHighlight = 1 
-let g:SuperTabMidWordCompletion = 1
-let g:SuperTabRetainCompletionType = 1 
-
-" Set taglist plugin options
-let Tlist_Use_Right_Window = 1
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_Enable_Fold_Column = 0
-let Tlist_Compact_Format = 1
-let Tlist_File_Fold_Auto_Close = 0
-let Tlist_Inc_Winwidth = 1
 
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=120 :

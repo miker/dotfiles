@@ -14,6 +14,8 @@ update_interval 1
 out_to_console no
 default_outline_color c6df4d
 default_color f7ecc4
+temperature_unit fahrenheit
+format_human_readable
 
 #${font droid sans mono:size=14}${alignc}${time %A %d %Y}${font}
 #${font droid sans mono:size=12}${alignc}${time %I:%M:%S}${font}
@@ -26,11 +28,12 @@ ${color #e0f0aa}System Info: ${hr 1}${color}
  ${color #f2ce94}Processes: ${color}${processes}
  ${color #f2ce94}Disk IO: ${color}${diskio}
  ${color #f2ce94}CPU Usage: ${color}${cpu}%
- ${color #f7ecc4}${cpugraph 25 b4c950 e0f0aa}
+ ${color #f7ecc4}${cpugraph 25 b4c950 e0f0aa -l}
 ${color #e0f0aa}Networking: ${hr 1}${color}
- ${color #f2ce94}Down: ${color}${downspeed eth0}KB/s${offset 108}${color #f2ce94}Up: ${color}${upspeed eth0}KB/s
+ ${color #f2ce94}IP: ${color}${curl whatismyip.org 60}
+ ${color #f2ce94}Down: ${color}${downspeed eth0}KB/s${alignr}${color #f2ce94}Up: ${color}${upspeed eth0}KB/s
  ${color #f7ecc4}${downspeedgraph eth0 25,110 b4c950 e0f0aa} ${alignr}${color #f7ecc4}${upspeedgraph eth0 25,110 b4c950 e0f0aa}
- ${color #f2ce94}Down: ${color}${totaldown eth0} ${offset 100}${color #f2ce94}Up: ${color}${totalup eth0}
+ ${color #f2ce94}Down: ${color}${totaldown eth0} ${alignr}${color #f2ce94}Up: ${color}${totalup eth0}
 ${color #e0f0aa}File Systems: ${hr 1}${color}
  ${color #f2ce94}/home ${color}${fs_free_perc /home/}% Free
  ${color}${fs_used /home/} ${color #f2ce94}Used Of ${color}${fs_size /home/gregf/}
@@ -39,7 +42,11 @@ ${color #e0f0aa}File Systems: ${hr 1}${color}
 ${color #e0f0aa}Temperatures: ${hr 1}${color}
  ${color #f2ce94}CPU: ${color}${hwmon temp 2} ${color}- ${color #f2ce94}MB: ${color}${hwmon temp 1} ${color}- ${color #f2ce94}GPU: ${color}${nvidia temp}
 ${color #e0f0aa}Weather: ${hr 1}${color}
-${color}${execi 900 ~/code/bin/forecast/forecast.rb}
+ ${color #f2ce94}Tempature: ${color}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ KMLT temperature}F
+ ${color #f2ce94}Cloud Cover: ${color}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ KMLT cloud_cover}
+ ${color #f2ce94}Wind: ${color}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ KMLT wind_speed}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ KMLT wind_dir}
+ ${color #f2ce94}Humidity: ${color}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ KMLT humidity}%
+ ${color #f2ce94}Weather: ${color}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ KMLT weather}
 ${color #e0f0aa}Top Processes: ${hr 1}${color}
 ${color #f2ce94} Name            PID    CPU%   MEM%
 ${color} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
@@ -56,3 +63,8 @@ ${color #e0f0aa}Portage INFO: ${hr 1}${color}
  ${color #f2ce94}Progress: ${color}${execibar 30 ~/code/bin/pinfo/pinfo.rb -c}
  ${color #f2ce94}Current Package: ${color}${execi 30 ~/code/bin/pinfo/pinfo.rb -p}
  ${color #f2ce94}Current Status: ${color}${execi 30 ~/code/bin/pinfo/pinfo.rb -s}
+${if_mpd_playing}${color #e0f0aa}MPD: ${hr 1}${color}
+ ${color #f2ce94}Playing: ${color}${mpd_smart}
+ ${color}${mpd_bar 6 100}
+ ${color #f2ce94}Status: ${color}${mpd_status} ${alignr}${color #f2ce94}Bitrate: ${color}${mpd_bitrate}
+${endif}

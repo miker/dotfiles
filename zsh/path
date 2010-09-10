@@ -1,0 +1,15 @@
+#!/bin/zsh -f
+
+fpath=(~/.zsh/Completion $fpath)
+cdpath=(~/work/bin ~/work/projects ~/work/projects/active ~/media ~/media/videos )
+PATH="${HOME}/bin:/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin:/opt/virtualbox:/usr/share/texmf/bin:/usr/games/bin:/usr/local/libexec"
+MANPATH="/usr/local/man:$MANPATH"
+GEMPATH=`gem env gemdir`
+
+
+if (( EUID == 0 )); then
+    PATH="/sbin:/usr/sbin:/usr/local/sbin:$PATH"
+fi
+
+# remove duplicate entries from path,cdpath,manpath & fpath
+typeset -gU SCRIPTPATH MANPATH GEMPATH ROOTPATH cdpath fpath

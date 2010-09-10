@@ -1,0 +1,51 @@
+color   sidebar_new     brightyellow    default
+color   normal          white           default
+color   hdrdefault      white           default
+color   quoted          brightblue      default
+color   quoted1         brightgreen     default
+color   quoted2         brightred       default
+color   quoted3         brightyellow    default
+color   quoted4         brightcyan      default
+color   signature       cyan            default
+color   indicator   brightcyan     black
+color   error           brightred       default
+color   status          yellow      black
+color   tree            brightmagenta   default
+color   tilde           brightyellow            default
+color   attachment      brightyellow    default
+color   markers         brightred       default
+color   message         white           default
+color   search          brightwhite     magenta
+color   bold            brightyellow    default
+
+# messages from me
+color   index           green           default "~P !~N !~T !~F"
+color   index           green           white   "~P ~N !~T !~F"
+color   index           green           cyan    "~P ~T !~F"
+color   index           green           default "~P ~F"
+
+# unread
+color   index           brightyellow    default "~N !~T !~F !~p !~P"
+color   index           brightgreen             default "~F !~p !~P"
+color   index       brightyellow    default ~N
+
+color   index       white brightred ~D
+color   index       white brightred ~F
+color   index       white brightred ~T
+
+# message view
+color   header          brightred       default "[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.-]+"
+color   header          brightgreen     default "^[a-zA-Z-]+:"
+color   body            brightred       default "[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.-]+"
+color   body            brightblue      default "((ftp|http|https)://|(file|news):|www\\.)[-a-z0-9_.:]*[a-z0-9](/[^][{} \t\n\r\"<>()]*[^][{} \t\n\r\"<>().,:!])?/?"
+color   body        brightblue  default "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
+color   body        brightblue  default "[;:=][-][)/(|]"
+#  Colorize smileys:  :-)  ;-)  :-/  :-(
+color body  yellow default "[;:]-[)/(|]"
+color body  yellow default "[;:][)/(|]"
+color body  green default "[[:alpha:]]\+://[^ ]*"
+
+
+# attribution lines
+color   body            magenta         default ".* [^<]+ <[^>]+> wrote:"
+color   body            magenta         default "(^|[^[:alnum:]])[Oo]n [a-z0-9 ,]+( at [a-z0-9:,. +-]+)? wrote:"

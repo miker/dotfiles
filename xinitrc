@@ -1,59 +1,112 @@
 #!/bin/sh
+# ----------------------------------------------------------------------------
+# File:     ~/.xinitrc
+# Author:   Greg Fitzgerald <netzdamon@gmail.com>
+# Modified: Sat 21 Aug 2010 08:15:32 PM EDT
+# ----------------------------------------------------------------------------
+
+rm -f ~/.recently-used.xbel
+rm -f ~/.recently-used
 
 # Set your Default Window Manager
 DEFAULTWM='awesome'
-# Used to check awesome for memory leaks
-#DEFAULTWM='valgrind --leak-check=full --tool=memcheck --log-file=/home/gregf/.awesome/mem.log /usr/bin/awesome'
 
 # Set some enviroment varibles
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin
-export TMP=$HOME/.tmp
-export TMDIR=$TMP
-export TERMCMD=/usr/bin/xterm
-export BROWSER=/usr/bin/firefox
-export TERMINAL=/usr/bin/xterm
+export TMP="/tmp"
+export TMDIR="${TMP}"
+export PAGER='most'
+export TERMCMD=/usr/bin/urxvt
+export BROWSER=/usr/bin/firefox-bin
+export TERMINAL=$TERMCMD
 export GTK2_RC_FILES=$HOME/.gtkrc-2.0
 export MOZILLA_NEWTYPE=tab
+export SSH_ASKPASS=/usr/bin/gnome-ssh-askpass
+errorlog="${HOME}/.xsession-errors"
+#export XDG_CACHE_DIR="/var/cache/users/gregf/"
+RXVT_SOCKET="$HOME/.tmp/rxvt-unicode"
 
-unclutter -idle 30 -reset -root &
+# {{{ Resource and keymap settings
+usermodmap="${HOME}/.Xmodmap"
+userresources="${HOME}/.Xresources"
+sysmodmap="/etc/X11/xinit/.Xmodmap"
+sysresources="/etc/X11/xinit/.Xresources"
 
-#xmodmap ~/.Xmodmap
-xset -b -bc +dpms r rate 250 50
-xrdb -load ~/.Xdefaults
+# Merge system and user resources and keymaps
+[[ -r "${sysresources}" ]]  && xrdb -merge "${sysresources}"
+[[ -r "${sysmodmap}" ]]     && xmodmap "${sysmodmap}"
+[[ -r "${userresources}" ]] && xrdb -merge "${userresources}"
+[[ -r "${usermodmap}" ]]    && xmodmap "${usermodmap}"
+# }}}
 
-# Load multimedia keys
-xmodmap ~/.Xmodmap
+# Always start X11 with a clean log file
+if (cp /dev/null "${errorlog}"); then
+  chmod 600 "${errorlog}"
+  exec >"${errorlog}" 2>&1
+  break
+fi
 
-# Load Xdefaults
-xrdb -load ~/.Xdefaults
+unclutter -idle 5 -root &
+
+xset -b +dpms r rate 250 50 &
+
+# Get back ctrl+alt+backspace in new versions of xorg
+setxkbmap -option terminate:ctrl_alt_bksp
 
 # Disable repeat for multimediakeys
-xset -r 129 -r 231 -r 198 -r 236 -r 160
+xset -r 129 -r 231 -r 198 -r 236 -r 160 &
 
-# Make capslock key equal to escape
-#xmodmap -e "remove lock = Caps_Lock"
-#xmodmap -e "keysym Caps_Lock = Escape"
+# Load additional fonts
+xset fp+ ~/.fonts/
 
-# Not needed with 180.06 and above.
-#nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1
+nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1 &
 
 xsetroot -solid black &
 
 # Turn on numlock
-numlockx on
+numlockx on &
+
+#sync PRIMARY with clipboard 
+autocutsel -s PRIMARY -buttonup -fork &
+
+# Pointer appearance
+#   - xcb does not support Xcursor yet
+xsetroot -cursor_name left_ptr
+
+urxvtd -q -o -f &
 
 # Ask for keychain password
-keychain --clear -q ~/.ssh/id_dsa
-source ~/.keychain/`hostname`-sh > /dev/null
+keychain --agents ssh,gpg --clear -q ~/.ssh/id_rsa ~/.ssh/mpd_rsa
+source ~/.keychain/$(uname -n)-sh
+source ~/.keychain/$(uname -n)-sh-gpg
 
 # Execute window manager into background
-exec $DEFAULTWM & wmpid=$!
-   nitrogen --restore &
-   conky
-   xsetroot -cursor_name arrow &
-   #dbus-launch --exit-with-session &
-   xterm -T mutt -e mutt &
-   nice -n19 firefox &
-   nice -n19 liferea &
-   nice -n19 gpodder &
+case $1 in
+awesomewm)
+    exec awesome & wmpid=$!
+    ;;
+openbox)
+    exec openbox & wmpid=$!
+    ;;
+subtle)
+    exec subtle & wmpid=$!
+    ;;
+debug)
+    exec valgrind -v "$2"
+    ;;
+*)
+    exec $DEFAULTWM & wmpid=$1
+    ;;
+esac
+
+# Run these after the window manager has been started
+${HOME}/bin/wallpaper &
+nice -n10 ${BROWSER} & 
+nice -n19 gpodder &
+gajim &
+uxrvtc -name mutt -e mutt
+xsetroot -cursor_name left_ptr &
+caffeine &
+conky -d &
+
 wait $wmpid

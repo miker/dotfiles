@@ -1,3 +1,9 @@
+# ----------------------------------------------------------------------------
+# File:     /home/gregf/.screenrc
+# Author:   Greg Fitzgerald <netzdamon@gmail.com>
+# Modified: Thu 26 Mar 2009 09:31:17 PM EDT
+# ----------------------------------------------------------------------------
+
 setenv LC_CTYPE en_US.UTF-8
 defutf8 on
 utf8 on
@@ -64,25 +70,11 @@ bind v screen -t 'vim' vim
 bind i screen -t 'irssi' irssi
 bind z screen -t 'zsh' zsh
 bind t screen -t 'htop' htop
-bind g screen -t 'gila' ssh gila
+bind g screen -t 'norush' ssh norush
 bind h screen -t 'miker' ssh miker
 bind q screen -t 'quad' ssh quad
-bind w screen -t 'web' ssh web
 bind y screen -t 'ncmpc' ncmpc -c
 bind s screen -t 'root' sudo -s
-bind ; screen -t 'megan' ssh megan
-
-# binding the F1 - F8 keys to the first 8 screens, F11 = previous | F12 = next
-#bindkey -k k1 select 0
-#bindkey -k k2 select 1
-#bindkey -k k3 select 2
-#bindkey -k k4 select 3
-#bindkey -k k5 select 4
-#bindkey -k k6 select 5
-#bindkey -k k7 select 6
-#bindkey -k k8 select 7
-#bindkey -k F2 next
-#bindkey -k F1 prev
 
 # Launch some default programs
 screen zsh
@@ -102,7 +94,7 @@ focus
 select 0
 
 # erase background with current bg color
-defbce "on"
+#defbce "on"
 
 # disable Ctrl-S/Ctrl-Q "flow control"
 defflow off

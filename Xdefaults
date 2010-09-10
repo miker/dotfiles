@@ -1,5 +1,102 @@
-! Color Codes
-! black
+! ----------------------------------------------------------------------------
+! File:     ~/.Xdefaults
+! Author:   Greg Fitzgerald <netzdamon@gmail.com>
+! Modified: Tue 30 Jun 2009 12:13:16 AM EDT
+! ----------------------------------------------------------------------------
+
+!{{{ XTerm
+XTerm*cursorBlink: false
+XTerm*showBlinkAsBold: true
+XTerm*multiScroll: true
+<<<<<<< HEAD
+XTerm*cursorColor: #73B8D9 
+XTerm*colorMode: 	true
+XTerm*pointerColor:	blue
+XTerm*pointerColor2: 	yellow
+XTerm*borderWidth:	0
+<<<<<<< HEAD:Xdefaults
+=======
+XTerm*transparent:	true
+>>>>>>> 583d018... some cleanups:Xdefaults
+=======
+XTerm*cursorColor: #73B8D9
+XTerm*colorMode: true
+XTerm*pointerColor: blue
+XTerm*pointerColor2: yellow
+XTerm*borderWidth: 0
+>>>>>>> upstream/master
+XTerm*scrollBar:    false
+XTerm*loginShell: true
+XTerm*eightBitInput: false
+XTerm*hideScrollbar: true
+XTerm*hideTabbar: true
+XTerm*hideButton: true
+XTerm*hideMenubar: true
+XTerm*dynamicColors: true
+XTerm*.multiScroll: true
+XTerm*.showBlinkAsBold: true
+XTerm*.utf8: 1
+XTerm*.visualBell: true
+XTerm*faceName: terminus:size=12:antialias=true
+XTerm*saveLines: 10000
+XTerm*on4Clicks: all
+XTerm*colorBDMode: true
+XTerm*on2Clicks:  regex [^ \n]+
+XTerm*on3Clicks: regex (ftp|http|https|mailto|news|nntp|telnet|file|aim):[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;/?:@&~=%-]*))?
+XTerm*on5Clicks:  line
+XTerm*cutNewline: true
+XTerm*metaSendsEscape: true
+XTerm*locale: utf8
+XTerm*jumpScroll: true
+XTerm*scrollTtyOutput: false
+XTerm*underLine: true
+XTerm*utf8Title: true
+XTerm*scrollKey: true
+XTerm*bellIsUrgent: true
+!}}}
+
+!{{{ URxvt
+URxvt*loginShell:       false
+URxvt*saveLines:        5500
+URxvt*geometry:         100x25
+URxvt*depth:        32
+URxvt*modifier:         alt
+URxvt*scrollstyle:   plain
+URxvt*scrollColor:  #444444
+URxvt*scrollTtyKeypress: true
+URxvt*scrollWithBuffer: true
+URxvt*scrollTtyOutput:  false
+URxvt*inheritPixmap:    false
+URxvt*urgentOnBell:     true
+URxvt*perl-ext-common:    default,matcher,searchable-scrollback
+URxvt*urlLauncher:  firefox-bin
+URxvt*matcher.button:   1
+URxvt*keysym.M-u: perl:mark-yank-urls:activate_mark_mode
+URxvt*underlineURLs: true
+URxvt*termName: rxvt
+
+! appearance
+URxvt*transparent:        false
+URxvt*cursorBlink:        false
+URxvt*cursorOnTime:       400
+URxvt*cursorOffTime:      140
+URxvt*jumpScroll:         true
+URxvt*scrollBar:          false
+
+URxvt*font: xft:terminus:size=12:antialias=true
+URxvt*boldFont: xft:terminus:size=12:antialias=true:bold
+URxvt*italicFont: xft:terminus:size=12:antialias=true:italic
+URxvt*boldItalicFont: xft:terminus:size=12:antialias=true:italic
+
+!}}}
+! colors ---------------------------------------------------------------
+
+!{{{ colors
+!*background: #202020
+*background: #2e2e2e
+*foreground: #ffffff
+*cursorColor: #07A5FF
+
 *color0:             #242424
 *color8:             #828282
 ! red
@@ -24,112 +121,31 @@
 *color7:             #ffffff
 *color15:            #dedede
 
+!}}}
 
-! tangoesque scheme
-! Black
-!*color0: #000000
-!*color8: #555753
-!! Red
-!*color1: #ff6565
-!*color9: #ff8d8d
-!! Green
-!*color2: #93d44f
-!*color10: #c8e7a8
-!! Yellow
-!*color3: #eab93d
-!*color11: #ffc123
-!! Blue
-!*color4: #204a87
-!*color12: #3465a4
-!! Mangenta
-!*color5: #ce5c00
-!*color13: #f57900
-!! Cyan
-!*color6: #89b6e2
-!*color14: #46a4ff
-!! White
-!*color7: #cccccc
-!*color15: #ffffff
+!{{{ Font handling
+Xft.dpi: 120
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.rgba: rgb
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle: hintfull
+! }}}
 
-!XTerm settings
-XTerm*cursorBlink: false 
-XTerm*showBlinkAsBold: true
-XTerm*multiScroll: true
-XTerm*cursorColor: #73B8D9 
-XTerm*colorMode: 	true
-XTerm*pointerColor:	blue
-XTerm*pointerColor2: 	yellow
-XTerm*borderWidth:	0
-<<<<<<< HEAD:Xdefaults
-=======
-XTerm*transparent:	true
->>>>>>> 583d018... some cleanups:Xdefaults
-XTerm*scrollBar:    false
-XTerm*foreground: #ffffff
-XTerm*background: #000000
-XTerm*loginShell: true 
-XTerm*eightBitInput: false
-XTerm*hideScrollbar: true
-XTerm*hideTabbar: true
-XTerm*hideButton: true
-XTerm*hideMenubar: true
-XTerm*dynamicColors: true
-XTerm*.multiScroll: true
-XTerm*.showBlinkAsBold: true
-XTerm*.utf8: 1
-XTerm*.visualBell: true
-!XTerm*faceName: andale mono
-!XTerm*faceName: terminus:size=13
-XTerm*faceName: droid sans mono:size=12:antialias=true
-!XTerm*faceName: terminus:size=12:antialias=false
-XTerm*saveLines: 10000
-XTerm*on4Clicks: all
-XTerm*colorBDMode: true
-XTerm*on2Clicks:  regex [^ \n]+
-XTerm*on3Clicks: regex (ftp|http|https|mailto|news|nntp|telnet|file|aim):[A-Za-z0-9/](([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2})+(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;/?:@&~=%-]*))?
-XTerm*on5Clicks:  line
-XTerm*cutNewline: true
-XTerm*metaSendsEscape: true
-XTerm*locale: utf8
-XTerm*jumpScroll: true
-XTerm*scrollTtyOutput: false
-XTerm*underLine: true
-XTerm*utf8Title: true
-XTerm*scrollKey: true
-XTerm*bellIsUrgent: true
-
-!Cursors - Choose one
-!Xcursor.theme: Blue
-!Xcursor.theme: Grounation
-!Xcursor.theme: gentoo-silver
-!Xcursor.theme: gentoo-blue
-!Xcursor.theme: gentoo
-!Xcursor.theme: handhelds
-!Xcursor.theme: neutral 
-!Xcursor.theme: redglass
-!Xcursor.theme: Silver
-!Xcursor.theme: lil-polar
-!Xcursor.theme: whiteglass
+!{{{ Cursor
 Xcursor.theme: PolarCursorTheme
-!Xcursor.theme: PolarCursorTheme-Blue
-!Xcursor.theme: Polar
-!Xcursor.theme: PolarCursorTheme-Green
+Xcursor.size: 18
+! }}}
 
-Xcursor.size: 18 
+!{{{ irssi
+!   -- also: set 'vbell on' in screen
+!   --       set 'bell_msg' "\a in window!"
+irssi*urgentOnBell: true
+weechat*urgentOnBell: true
+urxvt*urgentOnBell: true
+!}}}
 
-!Xft settings
-Xft.dpi:                120
-Xft.hinting:            1 
-Xft.hintstyle:          hintfull
-Xft.antialias:          1 
-Xft.rgba:               rgb
-
-!Xautolock
-Xautolock.time: 45 
-Xautolock.locker: xlock
-
-!Xlock
-xlock.mode: blank
-
+!{{{ VT100
 *VT100.Translations: #override  \
 	Alt<Key>;:       dabbrev-expand()
+!}}}

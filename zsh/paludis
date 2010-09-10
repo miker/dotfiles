@@ -1,0 +1,106 @@
+#!/bin/zsh -f
+
+if [[ -x /usr/bin/cave ]]; then
+    # options
+    export CAVE_RESUME_FILE="${HOME}/.resume-cave"
+    export CAVE_RESOLVE_OPTIONS="--reinstall-scm weekly"
+    export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --continue-on-failure if-satisfied"
+    export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --resume-file ${CAVE_RESUME_FILE}"
+    #export CAVE_RESOLVE_OPTIONS="$CAVE_RESOLVE_OPTIONS --fetch-jobs 2"
+    export CAVE_RESUME_OPTIONS="--resume-file ${CAVE_RESUME_FILE}"
+
+    alias c="s cave"
+    alias cr="c resolve"
+    alias crx="cr -x"
+    alias cre="cr installed-packages"
+    alias crex="crx installed-packages"
+    alias ch="c help"
+    alias cs="c show"
+    alias csr="cs -t package 'repository/*'"
+    alias cq="c search"
+    alias cf="c fix-linkage"
+    alias cfx="cf -x"
+    alias cir="c resolve -x"
+    alias cres="c resume -f ${CAVE_RESUME_FILE}"
+    alias syn="c sync"
+    alias  cu="c uninstall -x "
+    alias  cU="cu --remove-if-dependent '*/*'"
+    alias cuu="cu --uninstalls-may-break '*/*'"
+
+    alias ec="s eclectic config interactive"
+    alias dp="s dispatch-config"
+
+    alias ex="c print-id-executables"
+    alias sets="c print-sets"
+    alias cfile="c print-owners"
+
+    alias whats-installed="cs \"*/*::/\" | $PAGER"
+
+    alias platforms="s vim /etc/paludis/platforms.conf"
+    alias opts="s vim /etc/paludis/options.conf"
+    alias mask="s vim /etc/paludis/package_mask.conf"
+    alias unmask="s vim /etc/paludis/package_unmask.conf"
+    alias bashrc="s vim /etc/paludis/bashrc"
+
+    function get_sync {
+        if [[ -e /etc/paludis/repositories/$1.conf ]]; then
+            egrep 'sync\s?=' /etc/paludis/repositories/$1.conf
+        else
+            echo "Repository /etc/paludis/repositories/$1.conf not found"
+        fi
+    }
+
+    function csrx {
+        sudo cave resolve -x "repository/$1"
+    }
+
+elif [[ -x /usr/bin/paludis ]]; then
+
+    # options
+    export PALUDIS_CARRY_OUT_UPDATES="yes"
+    export RECONCILIO_OPTIONS="--continue-on-failure if-satisfied"
+    export PALUDIS_RESUME_DIR="${HOME}/.resume-paludis"
+
+    export PALUDIS_OPTIONS="--log-level warning"
+    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-upgrade always"
+    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-circular discard"
+    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-suggested discard"
+    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-reinstall-scm weekly"
+    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --dl-reinstall if-use-changed"
+    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --continue-on-failure if-satisfied"
+    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --show-reasons summary"
+    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --show-use-descriptions all"
+    export PALUDIS_OPTIONS="$PALUDIS_OPTIONS --resume-command-template ${PALUDIS_RESUME_DIR}/paludis-resume-XXXXXX"
+
+    # shortcuts
+    alias   p="s paludis"
+    alias  pi="p --install"
+    alias  pu="p --uninstall"
+    alias  pU="p --uninstall-unused"
+    alias puu='p --permit-unsafe-uninstalls -u'
+    alias  pe="pi installed-packages -f; pi installed-packages"
+    alias  pw="pi world -f && pi world"
+    alias  pk="p --contents"
+    alias  ex='p --executables'
+    alias  pq="p --query"
+    alias ppi="pi -p"
+    alias ppu="pu -p"
+    alias ppU="pU -p"
+    alias ppe="ppi installed-packages"
+    alias ppw="ppi world"
+
+    alias syn="p --sync"
+
+    alias     pR="p --report"
+    alias     pc="p --regenerate-installable-cache && p --regenerate-installed-cache"
+    alias  reconcilio="s reconcilio"
+    alias precon="s reconcilio -p"
+    alias    inq="s inquisitio"
+
+    alias keywords="s vim /etc/paludis/keywords.conf"
+    alias use="s vim /etc/paludis/use.conf"
+    alias mask="s vim /etc/paludis/package_mask.conf"
+    alias unmask="s vim /etc/paludis/package_unmask.conf"
+    alias bashrc="s vim /etc/paludis/bashrc"
+
+fi

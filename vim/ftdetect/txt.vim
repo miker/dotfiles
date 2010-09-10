@@ -1,10 +1,1 @@
-au BufNewFile,BufRead todo set filetype=txt
-au BufNewFile,BufRead TODO set filetype=txt
-au BufNewFile,BufRead *.txt set filetype=txt
-au BufNewFile,BufRead *.asc set filetype=txt
-au BufNewFile,BufRead *.ascii set filetype=txt
-au BufNewFile,BufRead Changelog set filetype=txt
-au BufNewFile,BufRead CHANGELOG set filetype=txt
-au BufNewFile,BufRead Readme set filetype=txt
-au BufNewFile,BufRead README set filetype=txt
-au BufNewFile,BufRead readme set filetype=txt
+au BufRead,BufNewFile README,INSTALL,ChangeLog set ft=txt

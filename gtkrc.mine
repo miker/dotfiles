@@ -3,4 +3,5 @@ gtk-icon-theme-name = "Tango"
 gtk-cursor-theme-name = "PolarCursorTheme" 
 gtk-font-name="Bitstream Vera Sans 10"
 gtk-menu-popup-delay = 0
-gtk-show-hidden-files = 0
+gtk-show-hidden-files = 0 
+gtk-recent-files-max-age=0

@@ -1,0 +1,43 @@
+#!/bin/zsh -f 
+
+if [ "`id -gn`" = "`id -un`" -a `id -u` -gt 99 ]; then
+    umask 002
+else
+    umask 022
+fi
+# }}}
+
+# {{{ Return if non-interactive
+if [[ ! -o interactive ]]; then
+    return
+fi
+# }}}
+
+# {{{ Create some default files/directories if they don't exist.
+if ! [ -d ~/.ssh ]; then
+    mkdir -p ~/.ssh
+fi
+
+if ! [ -f ~/.ssh/known_hosts ]; then
+    touch ~/.ssh/known_hosts
+fi
+
+if ! [ -f ~/.viminfo ]; then
+    touch ~/.viminfo
+fi
+
+if [ -e /usr/bin/paludis ]; then
+    mkdir ~/.resume-paludis
+fi
+
+# Keychain
+if [[ -x `which keychain` ]] && [[ $UID -ne 0 ]]; then
+  eval `keychain --inherit any-once --eval -Q -q --ignore-missing ${HOME}.ssh/id_rsa`
+fi
+
+
+# Kill flow control
+if tty -s ; then
+    stty -ixon
+    stty -ixoff
+fi

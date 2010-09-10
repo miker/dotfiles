@@ -1,0 +1,7 @@
+--all
+--color
+--group
+--sort-files
+--type-add=ruby=.haml,.sass
+--type-add=gentoo=.ebuild,.eclass
+--type-add=exherbo=.exheres-0,.exlib

@@ -1,0 +1,1 @@
+au BufReadPost *.doc %!catdoc "%"

@@ -1,0 +1,187 @@
+#!/bin/zsh -f
+#
+# This file was written by Greg Fitzgerald <netzdamon@gmail.com>
+#
+# references
+#   http://www.zsh.org/mla/users/2006/msg01196.html
+#   http://dotfiles.org/~frogb/.zshrc
+#   http://kriener.org/articles/2009/06/04/zsh-prompt-magic
+#   http://www.jukie.net/~bart/blog/20100225104049
+
+
+setopt prompt_subst
+autoload colors
+colors
+
+autoload -Uz vcs_info
+
+# set some colors
+for COLOR in RED GREEN YELLOW WHITE BLACK CYAN; do
+    eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'
+    eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
+done
+PR_RST="%{${reset_color}%}"
+PR_RESET="%{%b%s%u$reset_color%}"
+PR_BG="%{%(?.$PR_RESET.%S)%}"
+
+# set formats
+# %b - branchname
+# %u - unstagedstr (see below)
+# %c - stangedstr (see below)
+# %a - action (e.g. rebase-i)
+# %R - repository path
+# %S - path in the repository
+FMT_BRANCH="${PR_GREEN}%b%u%c${PR_RST}" # e.g. master¹²
+FMT_ACTION="(${PR_CYAN}%a${PR_RST}%)"   # e.g. (rebase-i)
+FMT_PATH="%R${PR_YELLOW}/%S"              # e.g. ~/repo/subdir
+
+# check-for-changes can be really slow.
+# you should disable it, if you work with large repositories
+zstyle ':vcs_info:*:prompt:*' check-for-changes true
+zstyle ':vcs_info:*:prompt:*' unstagedstr '¹'  # display ¹ if there are unstaged changes
+zstyle ':vcs_info:*:prompt:*' stagedstr '²'    # display ² if there are staged changes
+zstyle ':vcs_info:*:prompt:*' actionformats "${FMT_BRANCH}${FMT_ACTION}//" "${FMT_PATH}"
+zstyle ':vcs_info:*:prompt:*' formats       "${FMT_BRANCH}//"              "${FMT_PATH}"
+zstyle ':vcs_info:*:prompt:*' nvcsformats   ""                             "%~"
+
+function lprompt {
+    local brackets=$1
+    local color1=$2
+    local color2=$3
+
+    local bracket_open="${color1}${brackets[1]}${PR_BG}"
+    local bracket_close="${color1}${brackets[2]}${PR_RESET}"
+
+    local git='$vcs_info_msg_0_'
+    local cwd="${color2}${SSH_CONNECTION+"%n@%m:"}%B%1~%b"
+
+    local vimode='${PR_VIMODE}'
+    local vicol='${PR_VICOLOR}'
+
+    PROMPT="${PR_BG}${bracket_open}${git}${cwd}${bracket_close}%# ${PR_RESET}"
+}
+
+function rprompt {
+    local brackets=$1
+    local color1=$2
+    local color2=$3
+
+    local bracket_open="${color1}${brackets[1]}${PR_RESET}"
+    local bracket_close="${color1}${brackets[2]}${PR_RESET}"
+    local colon="${color1}:"
+    local at="${color1}@${PR_RESET}"
+
+    local user_host="${color2}%n${at}${color2}%m"
+    local vcs_cwd='${${vcs_info_msg_1_%%.}/$HOME/~}'
+    local cwd="${color2}%B%20<..<${vcs_cwd}%<<%b"
+    local inner="${user_host}${colon}${cwd}"
+
+    RPROMPT="${PR_RESET}${bracket_open}${inner}${bracket_close}${PR_RESET}"
+}
+
+# -------------------------------
+# host dependent colouring
+
+#lprompt '[]' $PR_BRIGHT_BLACK $PR_WHITE
+#rprompt '()' $PR_BRIGHT_BLACK $PR_WHITE
+
+if [ $UID -eq 0 ]; then
+    lprompt '[]' $PR_RED $PR_RED
+    rprompt '()' $PR_RED $PR_RED
+else
+    case $HOST in
+        betsy)
+            lprompt '[]' $PR_BRIGHT_BLACK $PR_GREEN
+            rprompt '()' $PR_YELLOW $PR_WHITE
+            ;;
+        bint)
+            lprompt '[]' $BR_BRIGHT_BLACK $PR_CYAN
+            rprompt '()' $BR_BRIGHT_BLACK $PR_RED
+            ;;
+        quad)
+            lprompt '[]' $PR_WHITE $PR_GREEN
+            rprompt '()' $PR_YELLOW $PR_WHITE
+            ;;
+        betsy)
+            lprompt '<>' $PR_RED $PR_YELLOW
+            rprompt '<>' $PR_RED $PR_WHITE
+            ;;
+        slag)
+            lprompt '<>' $PR_RED $PR_BLUE
+            rprompt '<>' $PR_RED $PR_WHITE
+            ;;
+        bertha)
+            lprompt '<>' $PR_RED $PR_GREEN
+            rprompt '<>' $PR_RED $PR_WHITE
+            ;;
+
+        *)
+            if [ ${$(hostname)#*.} = "dirtyslag.org" ]; then
+                lprompt '[]' $PR_BRIGHT_BLACK $PR_WHITE
+                rprompt '()' $PR_BRIGHT_BLACK $PR_WHITE
+            else
+                lprompt '{}' $PR_WHITE $PR_WHITE
+                rprompt '()' $PR_WHITE $PR_WHITE
+            fi
+            ;;
+    esac
+fi
+
+if [ -n "$gentoo_chroot" ]; then
+    PROMPT="$bgc%{$fg[yellow]%}%B${gentoo_chroot}%b ${PROMPT}"
+fi
+
+# ------------------------------
+# this stuff updates screen and xterm titles as the command runs
+
+function title() {
+    case $TERM in
+        xterm*|rxvt*|urxvt*)
+            function zsh_term_prompt_precmd {
+                    print -Pn "\e]0;%n@%m: %~\a"
+            }
+            function zsh_term_prompt_premcd {
+                    local x="${${${1//\"/\\\"}//\$/\\\\\$}//\%/%%}"
+                    print -Pn "\e]0;%n@%m: %~  $x\a"
+            }
+            preexec_functions+='zsh_term_prompt_preexec'
+            precmd_functions+='zsh_term_prompt_precmd'
+            ;;
+        screen*)
+            function zsh_term_prompt_precmd {
+                    print -nR $'\033]0;'"zsh"$'\a'
+            }
+            function zsh_term_prompt_preexec {
+                    local x="${${${1//\"/\\\"}//\$/\\\\\$}//\%/%%}"
+                    print -nR $'\033]0;'"$x"$'\a'
+            }
+            preexec_functions+='zsh_term_prompt_preexec'
+            precmd_functions+='zsh_term_prompt_precmd'
+            ;;
+    esac
+}
+
+# precmd is called just before the prompt is printed
+function precmd() {
+    title "$1"
+    vcs_info 'prompt'
+}
+
+bindkey -v
+zle-keymap-select () {
+if [[ ! $TERM == "linux" ]]; then
+    if [[ $KEYMAP = vicmd ]]; then
+      echo -ne "\033]12;#ff6565\007"
+    else
+      echo -ne "\033]12;#07A5FF\007"
+    fi
+fi
+}; zle -N zle-keymap-select
+zle-line-init () {
+if [[ ! $TERM == "linux" ]]; then
+  zle -K viins
+  echo -ne "\033]12;#07A5FF\007"
+fi
+}; zle -N zle-line-init
+
+# vim: set et sw=4 sts=4 ts=4 ft=zsh :

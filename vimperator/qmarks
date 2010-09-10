@@ -1,0 +1,31 @@
+""" Websites
+"" Reddit
+qma R http://www.reddit.com/message/inbox/
+"" Github
+qma h http://github.com/gregf
+qma H https://github.com
+"" Glacicle git
+qma g http://git.gregf.org
+"" Vim.org
+qma e http://www.vim.org/scripts/index.php
+qma E http://www.vim.org/
+"" Google
+qma G https://www.google.com
+qma v http://www.google.com/voice
+qma r http://www.google.com/reader
+"Hulu
+qma t http://www.hulu.com/profile/queue
+"LoU
+qma u http://www.lordofultima.com/en
+"" ShareTV
+qma s http://sharetv.org/user/gregf
+"" Gmail
+qma m https://mail.google.com/mail/
+"Paludis
+qma p http://paludis.pioto.org/
+"Dev
+qma d http://0.0.0.0:3000/
+"api
+qma a http://www.apidock.com/
+
+" vim: ft=vimperator :
