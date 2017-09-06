@@ -1,0 +1,605 @@
+" Soft tab 4
+set sw=4
+" Soft tab stop
+set sts=4
+" Tab stop
+set ts=4
+" Show mode
+set showmode
+" Expand tabs to spaces
+set expandtab
+" Line breaks for linewrap
+
+" No startup messages
+set shm+=atmI
+" Show matching brackets
+set showmatch
+" Movement keys for wrapping
+set ww+=<,>,[,]
+" Allow unsaved hidden buffers
+set nohidden
+" Never let a window be less than 1px
+set winminheight=1
+" Show last command
+set showcmd
+" Nice big viminfo file
+set viminfo='1000,f1,:1000,/1000
+" History size
+set history=1000
+" Default fileformat
+set fileformat=unix
+" Display list of matching files for completion
+set wildmode=list:longest " Display list of matching files for completion
+" character to show that a line is wrapped
+set showbreak=>
+" Characters to break at for line wrapping
+set breakat=\ ^I!@*-+;:,./?
+" Do not stay vi compatible
+set nocompatible
+" Enable wild menu
+set wildmenu
+" Buffer updates
+set lazyredraw
+" Faster scrolling updates when on a decent connection.
+set ttyfast
+" Print line numbers and syntax highlighting
+set printoptions+=syntax:y,number:y
+set ruler " always show the ruler in the status bar
+set undolevels=999
+" ignore these in auto complete
+set wildignore+=.svn,CVS,.git,*.o,*.a,*.class,*.la,*.so,*.obj,*.swp,*.log
+set wildchar=<TAB>
+set cmdheight=2
+set showtabline=1 " display tabbar
+" Set some global options for spell check
+set spelllang=en_us
+set dictionary=/usr/share/dict/words " will come in handy for tab completion
+set switchbuf=usetab
+set scrolloff=2 " minlines to show around cursor
+set sidescrolloff=4 " minchars to show around cursor
+set wrapscan   " search wrap around the end of the file
+set ignorecase " ignore case search
+set smartcase  " override 'ignorecase' if the search pattern contains upper case
+set incsearch  " incremental search
+set nohlsearch " Don't highlight old searches on start
+set nostartofline " don't move the cursor to the start of the line when scrolling
+
+set errorbells " Get the error noticed
+set novisualbell " Shut the bell up
+
+set report=0 " always report changes
+set backspace=start,indent,eol " Backspace over everything
+
+"set nobackup                           " do not keep backups after close
+set nowritebackup                      " do not keep a backup while working
+set noswapfile                         " don't keep swp files either
+set backupdir=~/.backups        " store backups under ~/.backups
+set backupcopy=yes                     " keep attributes of original file
+set backupskip=/tmp/*,$TMPDIR/*,$TMP/*
+set directory=/tmp/vimswap    " keep swp files under ~/.vim/swap
+
+" {{{ Set a shell
+set shell=sh
+" }}}
+
+" {{{ Our default /bin/sh is bash, not ksh, so syntax highlighting for .sh
+" files should default to bash. See :help sh-syntax and bug #101819.
+if has("eval")
+  let is_bash=1
+endif
+" }}}
+
+" Show tabs and trailing whitespace visually
+if (&termencoding == "utf-8") || has("gui_running")
+    if v:version >= 700
+        if has("gui_running")
+            set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
+        else
+            " xterm + terminus hates these
+            set list listchars=tab:»·,trail:·,extends:>,nbsp:_
+        endif
+    else
+        set list listchars=tab:»·,trail:·,extends:…
+    endif
+else
+    if v:version >= 700
+        set list listchars=tab:>-,trail:.,extends:>,nbsp:_
+    else
+        set list listchars=tab:>-,trail:.,extends:>
+    endif
+endif
+
+"Include $HOME in cdpath
+if has("file_in_path")
+    let &cdpath=','.expand("$HOME").','.expand("$HOME").'/code'
+endif
+
+" Enable fancy % matching
+if has("eval")
+    runtime! macros/matchit.vim
+endif
+
+" enable syntax highlightning (must come after autocmd!)
+" vim-tiny doesn't support syntax
+if has("syntax")
+    syntax on
+endif
+
+" {{{ Enable folding
+set nofoldenable
+set foldmethod=marker
+set foldlevelstart=0
+set foldnestmax=3       "deepest fold is 3 levels
+" }}}
+
+" {{{iabbrev
+iab <DATE> <c-r>=strftime("%d/%m/%y")<CR>
+iab <TIME> <c-r>=strftime("%H:%M:%S")<CR>
+
+iab #p #!/usr/bin/perl
+iab #e #!/usr/bin/env
+iab #r #!/usr/bin/ruby
+iab #b #!/bin/bash
+
+" Settings for git status bar plugin
+let g:git_branch_status_head_current=1
+
+" Append status line if enough room
+let g:fastgit_statusline = 'a'
+
+" }}}
+
+" {{{ Nice statusbar
+"statusline setup
+set statusline=%f       "tail of the filename
+
+"display a warning if fileformat isnt unix
+set statusline+=%#warningmsg#
+set statusline+=%{&ff!='unix'?'['.&ff.']':''}
+set statusline+=%*
+
+"display a warning if file encoding isnt utf-8
+set statusline+=%#warningmsg#
+set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'['.&fenc.']':''}
+set statusline+=%*
+
+set statusline+=%h      "help file flag
+set statusline+=%y      "filetype
+set statusline+=%r      "read only flag
+set statusline+=%m      "modified flag
+
+" display current git branch
+set statusline+=%{fugitive#statusline()}
+
+"display a warning if &et is wrong, or we have mixed-indenting
+set statusline+=%#error#
+set statusline+=%{StatuslineTabWarning()}
+set statusline+=%*
+
+set statusline+=%{StatuslineTrailingSpaceWarning()}
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+"display a warning if &paste is set
+set statusline+=%#error#
+set statusline+=%{&paste?'[paste]':''}
+set statusline+=%*
+
+set statusline+=%=      "left/right separator
+set statusline+=%{StatuslineCurrentHighlight()}\ \ "current highlight
+set statusline+=%c,     "cursor column
+set statusline+=%l/%L   "cursor line/total lines
+set statusline+=\ %P    "percent through file
+set laststatus=2        " Always show status line
+
+" }}}
+
+" {{{ Window title
+if has('title') && (has('gui_running') || &title)
+    set titlestring=
+    set titlestring+=%f\                                              " file name
+    set titlestring+=%h%m%r%w                                         " flags
+    set titlestring+=\ -\ %{v:progname}                               " program name
+    set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}  " working directory
+endif
+
+"highlight the current line
+if v:version > 700
+    set cursorline
+    hi Cursorline ctermbg=Red guibg=#771c1c
+else
+    syntax match CurrentLine /.*\%#.*/
+    hi CurrentLine guifg=white guibg=lightblue
+endif
+
+" If we have a BOM, always honour that rather than trying to guess.
+if &fileencodings !~? "ucs-bom"
+  set fileencodings^=ucs-bom
+endif
+
+" Always check for UTF-8 when trying to determine encodings.
+if &fileencodings !~? "utf-8"
+  " If we have to add this, the default encoding is not Unicode.
+  " We use this fact later to revert to the default encoding in plaintext/empty
+  " files.
+  let g:added_fenc_utf8 = 1
+  set fileencodings+=utf-8
+endif
+
+" Make sure we have a sane fallback for encoding detection
+if &fileencodings !~? "default"
+  set fileencodings+=default
+endif
+
+" {{{ Terminal fixes
+if &term ==? "xterm" || &term  ==? "rxvt"
+  set t_Sb=^[4%dm
+  set t_Sf=^[3%dm
+  set ttymouse=xterm2
+endif
+
+" toggle paste
+set pastetoggle=<F10>
+
+noremap <Leader>p :set paste<CR>
+noremap <Leader>nu :set invnumber<CR>
+
+noremap <Leader>nsp :set nospell<CR>
+noremap <Leader>pp :s/:/ /g<CR>:nohl<CR>
+
+vmap bq :call VBlockquote ()<CR>
+vmap bqt :call VBlockquote("
+
+nmap <Leader>ms :wa<CR>:mksession! ~/.sessions/
+nmap <Leader>sl :wa<CR>:so ~/.sessions/
+
+" Delete line with CTRL-K
+map <C-K> dd
+imap <C-K> <C-O>dd
+
+" Use CTRL-S for saving, also in Insert mode
+noremap <C-S> :update<CR>
+vnoremap <C-S> <C-C>:update<CR>
+inoremap <C-S> <C-O>:update<CR>
+
+
+nnoremap <silent> <C-f> :call FindInNERDTree()<CR>
+
+noremap <leader>q ZQ
+noremap <leader>qa :qa<CR>
+
+" convert word into ruby symbol
+imap <C-k> <C-o>b:<Esc>Ea
+nmap <C-k> lbi:<Esc>E
+
+" bind control-l to hashrocket
+imap <C-l> <Space>=><Space>"
+" Hide search highlighting
+map <Leader>h :set invhls <CR>
+
+" Leader shortcuts for Rails commands
+map <Leader>m :Rmodel
+map <Leader>c :Rcontroller
+map <Leader>v :Rview
+map <Leader>u :Runittest
+map <Leader>f :Rfunctionaltest
+map <Leader>tm :RTmodel
+map <Leader>tc :RTcontroller
+map <Leader>tv :RTview
+map <Leader>tu :RTunittest
+map <Leader>tf :RTfunctionaltest
+map <Leader>sm :RSmodel
+map <Leader>sc :RScontroller
+map <Leader>sv :RSview
+map <Leader>su :RSunittest
+map <Leader>sf :RSfunctionaltest
+
+" Press ^F from insert mode to insert the current file name
+imap <C-F> <C-R>=expand("%")<CR>
+
+function UseRubyIndent ()
+    setlocal tabstop=2
+    setlocal softtabstop=2
+    setlocal shiftwidth=2
+    setlocal expandtab
+    setlocal autoindent
+
+    imap <buffer> <CR> <C-R>=PMADE_RubyEndToken()<CR>
+endfunction
+
+" Shift-Enter inserts 'end' for ruby scripts
+" Copyright (C) 2005-2007 pmade inc. (Peter Jones pjones@pmade.com)
+function PMADE_RubyEndToken ()
+    let current_line = getline('.')
+    let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?\(\s*#.*\)\?$'
+    let stuff_without_do = '^\s*\<\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)\>'
+    let with_do = '\<do\>\s*\(|\(,\|\s\|\w\)*|\s*\)\?\(\s*#.*\)\?$'
+
+    if getpos('.')[2] < len(current_line)
+        return "\<CR>"
+    elseif match(current_line, braces_at_end) >= 0
+        return "\<CR>}\<C-O>O"
+    elseif match(current_line, stuff_without_do) >= 0
+        return "\<CR>end\<C-O>O"
+    elseif match(current_line, with_do) >= 0
+        return "\<CR>end\<C-O>O"
+    else
+        return "\<CR>"
+    endif
+endfunction
+
+"return the syntax highlight group under the cursor ''
+function! StatuslineCurrentHighlight()
+    let name = synIDattr(synID(line('.'),col('.'),1),'name')
+    if name == ''
+        return ''
+    else
+        return '[' . name . ']'
+    endif
+endfunction
+
+"recalculate the trailing whitespace warning when idle, and after saving
+autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
+
+"return '[\s]' if trailing white space is detected
+"return '' otherwise
+function! StatuslineTrailingSpaceWarning()
+    if !exists("b:statusline_trailing_space_warning")
+        if search('\s\+$', 'nw') != 0
+            let b:statusline_trailing_space_warning = '[\s]'
+        else
+            let b:statusline_trailing_space_warning = ''
+        endif
+    endif
+    return b:statusline_trailing_space_warning
+endfunction
+
+"return '[&et]' if &et is set wrong
+"return '[mixed-indenting]' if spaces and tabs are used to indent
+"return an empty string if everything is fine
+function! StatuslineTabWarning()
+    if !exists("b:statusline_tab_warning")
+        let tabs = search('^\t', 'nw') != 0
+        let spaces = search('^ ', 'nw') != 0
+
+        if tabs && spaces
+            let b:statusline_tab_warning =  '[mixed-indenting]'
+        elseif (spaces && !&et) || (tabs && &et)
+            let b:statusline_tab_warning = '[&et]'
+        else
+            let b:statusline_tab_warning = ''
+        endif
+    endif
+    return b:statusline_tab_warning
+endfunction
+
+"return a warning for "long lines" where "long" is either &textwidth or 80 (if
+"no &textwidth is set)
+"
+"return '' if no long lines
+"return '[#x,my,$z] if long lines are found, were x is the number of long
+"lines, y is the median length of the long lines and z is the length of the
+"longest line
+function! StatuslineLongLineWarning()
+    if !exists("b:statusline_long_line_warning")
+        let long_line_lens = s:LongLines()
+
+        if len(long_line_lens) > 0
+            let b:statusline_long_line_warning = "[" .
+                        \ '#' . len(long_line_lens) . "," .
+                        \ 'm' . s:Median(long_line_lens) . "," .
+                        \ '$' . max(long_line_lens) . "]"
+        else
+            let b:statusline_long_line_warning = ""
+        endif
+    endif
+    return b:statusline_long_line_warning
+endfunction
+
+"return a list containing the lengths of the long lines in this buffer
+function! s:LongLines()
+    let threshold = (&tw ? &tw : 80)
+    let spaces = repeat(" ", &ts)
+
+    let long_line_lens = []
+
+    let i = 1
+    while i <= line("$")
+        let len = strlen(substitute(getline(i), '\t', spaces, 'g'))
+        if len > threshold
+            call add(long_line_lens, len)
+        endif
+        let i += 1
+    endwhile
+
+    return long_line_lens
+endfunction
+
+"find the median of the given array of numbers
+function! s:Median(nums)
+    let nums = sort(a:nums)
+    let l = len(nums)
+
+    if l % 2 == 1
+        let i = (l-1) / 2
+        return nums[i]
+    else
+        return (nums[l/2] + nums[(l/2)-1]) / 2
+    endif
+endfunction
+
+command! -nargs=0 RDocPreview call RDocRenderBufferToPreview()
+
+function! RDocRenderBufferToPreview()
+  let rdocoutput = "/tmp/vimrdoc/"
+  call system("rdoc " . bufname("%") . " --op " . rdocoutput)
+  call system("firefox ". rdocoutput . "index.html")
+endfunction
+
+if (version >= 700)
+    set completeopt=menu,longest,preview
+    map :bn :tabn
+    map :bp :tabp
+    set showtabline=2
+    set tabline=%!MyTabLine()
+
+    function MyTabLabel(n)
+        let buflist = tabpagebuflist(a:n)
+        let winnr = tabpagewinnr(a:n)
+        let bufname = bufname(buflist[winnr - 1])
+
+        if !strlen(bufname)
+            let bufname = '(nil)'
+        endif
+
+        let label = ''
+        " Add '+' if one of the buffers in the tab page is modified
+        let bufnr = 0
+        while bufnr < len(buflist)
+            if getbufvar(buflist[bufnr], "&modified")
+                let label = '+'
+                break
+            endif
+            let bufnr = bufnr + 1
+        endwhile
+        if !strlen(label)
+            let label = ' '
+        endif
+        let label .= bufname
+        return label
+    endfunction
+
+    function MyTabLine()
+        let s = ''
+        let i = 1
+        while i <= tabpagenr('$')
+            " select the highlighting
+            if i == tabpagenr()
+                let s .= '%#TabLineSel#'
+            else
+                let s .= '%#TabLine#'
+            endif
+            " set the tab page number (for mouse clicks)
+            let s .= '%' . i . 'T'
+            " the label is made by MyTabLabel()
+            let s .= ' %{MyTabLabel(' . i . ')} '
+            let i = i + 1
+        endwhile
+        " after the last tab fill with TabLineFill and reset tab page nr
+        let s .= '%#TabLineFill#%T'
+        return s
+    endfunction
+endif
+
+function Athenry()
+    chdir /home/gregf/code/projects/active/athenry/
+    open TODO.mkd
+    NERDTreeFromBookmark athenry
+endfunction
+
+function Swindle()
+    chdir /home/gregf/code/projects/active/swindle/
+    open TODO.mkd
+    NERDTreeFromBookmark swindle
+endfunction
+
+function Mideo()
+    chdir /home/miker/projects/mideo.git/
+    open TODO.mkd
+    NERDTreeFromBookmark mideo
+endfunction
+
+function OSnap()
+    chdir /home/gregf/work/projects/active/osnap/
+    open TODO
+    NERDTreeFromBookmark osnap
+endfunction
+
+function ClearCache()
+    !rm -rf public/cache/*
+endfunction
+
+function Restart()
+    !touch $PWD/tmp/restart.txt
+endfunction
+
+" Removes unnecessary whitespace
+function StripTrailingWhitespace()
+    %s/[ \t]\+$//ge
+    %s!^\( \+\)\t!\=StrRepeat("\t", 1 + strlen(submatch(1)) / 8)!ge
+endfunction
+
+function RemoveBlankLines()
+    %s/^[\ \t]*\n//g
+endfunction
+
+function! VBlockquote(...) range
+    " Author: Ralf Arens
+    " put `| ' at beginning of line
+    exe a:firstline.",".a:lastline."s/^/| /"
+    " remove trailing whitespaces
+    exe a:firstline.",".a:lastline.'s/^| $/|/e'
+    " generate tail
+    exe a:lastline."put ='`----'"
+    " set mark
+    normal m'
+    " generate title
+    let @z = ',----'
+    if (a:0 != 0)
+        " -> extra argument a:1
+        let @z = @z."[ ".a:1." ]"
+    endif
+    exe a:firstline."put! z"
+    " jump back to mark
+    normal ''
+endfunction
+
+if isdirectory(expand("$VIMRUNTIME/ftplugin"))
+    if has("eval")
+        filetype on
+        filetype plugin on
+        filetype indent on
+    endif
+endif
+
+    " Always do a full syntax refresh
+    autocmd BufEnter * syntax sync fromstart
+
+    "recalculate the tab warning flag when idle and after writing
+    autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
+
+    autocmd BufWritePre *.cpp,*.hpp,*.i,
+                \ *.rb,*.pl,*.sh,*.bash,*.plx,
+                \ *.ebuild,*.exheres-0,*.exlib,
+                \ *.e{build,class}
+                \ :call StripTrailingWhitespace()
+
+if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt'
+    set t_Co=256 " Let ViM know we have a 256 color capible terminal
+    colorscheme dark-ruby
+    "colorscheme rdark-terminal
+    "colorscheme lucius
+    "colorscheme zenburn
+    "colorscheme soruby
+    "colorscheme ir_black
+    "colorscheme blackboard
+else
+    colorscheme lucius
+endif
+
+"Extra terminal things
+if &term ==? 'xterm' || &term ==? 'screen' || &term ==? 'rxvt' && (&termencoding == "")
+    set termencoding=utf-8
+    if has('title')
+        set title
+    endif
+    if exists('&t_SI')
+        let &t_SI = "\<Esc>]12;lightgoldenrod\x7"
+        let &t_EI = "\<Esc>]12;grey80\x7"
+    endif
+endif
+
+
+
