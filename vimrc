@@ -154,7 +154,7 @@ let g:rails_syntax=1
 let g:browser = 'chromium '
 
 let g:tskelUserName="Mike Reynolds"
-let g:tskelUserEmail="Treynoldsmike@gmail.com"
+let g:tskelUserEmail="reynoldsmike@gmail.com"
 let g:tskelUserWWW="http://www.marskreations.com"
 let g:tskelDateFormat="%Y"
 let g:tskelLicense="MIT"
@@ -178,7 +178,7 @@ let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
 
 let g:syntastic_enable_signs = 1
-let g:syntastic_quiet_warnings=1
+let g:syntastic_quiet_messages = {'level': 'warnings'}
 
 let g:gundo_preview_bottom = 1
 let g:gundo_preview_height = 20
@@ -232,14 +232,14 @@ vmap <Leader>a: :Tabularize /:\zs<CR>
 noremap <leader>n :NERDTreeToggle<CR>
 noremap <leader>u :undo<CR>
 noremap <leader>ru :redo<CR>
-noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
-noremap <silent> <leader>uh :call UpdateRcHeader()<CR>
+"noremap <silent> <C-F12> :call UpdateDNSSerial()<CR>
+"noremap <silent> <leader>uh :call UpdateRcHeader()<CR>
 noremap <Leader>ss :call StripTrailingWhitespace()<CR>
 noremap <Leader>sb :call RemoveBlankLines()<CR>
 " Reformat everything
 noremap <Leader>gq gggqG
 " have Q reformat the current paragraph (or selected text if there is any):
-nnoremap Q gqap
+noremap Q gqap
 vnoremap Q gq
 " Clear lines
 noremap <Leader>clr :s/^.*$//<CR>:nohls<CR>
@@ -293,7 +293,7 @@ noremap <C-l> :call MoveTab(0)<CR>
 noremap <C-h> :call MoveTab(-2)<CR>
 
 " Clear the search buffer when hitting return
-:nnoremap <CR> :nohlsearch<cr>
+noremap <CR> :nohlsearch<cr>
 
 " This group is stolen from mislav's vimrc
 " http://github.com/mislav/dotfiles/blob/master/vimrc
